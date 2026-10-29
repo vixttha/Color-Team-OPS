@@ -15,5 +15,6 @@
   "max_retries": 1,
   "cloud_only": true,
   "runner_required": false,
-  "state": "AUTHORIZED"
+  "state": "AUTHORIZED",
+  "authorization_ref": "demo-owner-authorization-not-cryptographic"
 }

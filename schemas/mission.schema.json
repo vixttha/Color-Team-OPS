@@ -28,10 +28,12 @@
       "minLength": 1
     },
     "repository": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
     },
     "source_sha": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{40}$"
     },
     "allowed_teams": {
       "type": "array",
@@ -48,7 +50,8 @@
           "black-team",
           "gray-cell"
         ]
-      }
+      },
+      "minItems": 1
     },
     "allowed_actions": {
       "type": "array",
@@ -61,7 +64,8 @@
           "write_authorized_branch",
           "open_draft_pr"
         ]
-      }
+      },
+      "minItems": 1
     },
     "max_handoffs": {
       "type": "integer",
@@ -95,6 +99,58 @@
     },
     "permissions_note": {
       "type": "string"
+    },
+    "authorization_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorized_branch": {
+      "type": "string",
+      "pattern": "^(?!main$|master$)[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "AUTHORIZED"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "required": [
+          "authorization_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "allowed_actions": {
+            "contains": {
+              "enum": [
+                "write_authorized_branch",
+                "open_draft_pr"
+              ]
+            }
+          }
+        },
+        "required": [
+          "allowed_actions"
+        ]
+      },
+      "then": {
+        "required": [
+          "repository",
+          "source_sha",
+          "authorized_branch",
+          "authorization_ref"
+        ]
+      }
+    }
+  ]
 }
