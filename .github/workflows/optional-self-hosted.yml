@@ -1,0 +1,41 @@
+name: Color Team OPS - optional personal runners
+
+on:
+  workflow_dispatch:
+    inputs:
+      allow_personal_runners:
+        description: "I authorize testing trusted main on my personal Windows and Linux runners"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  optional-verification:
+    if: ${{ github.ref == 'refs/heads/main' && inputs.allow_personal_runners }}
+    name: Supplemental ${{ matrix.name }}
+    runs-on: ${{ matrix.labels }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            labels: [self-hosted, Windows, X64, color-team-ops]
+            shell: powershell
+            python: python
+          - name: Linux
+            labels: [self-hosted, Linux, X64, color-team-ops]
+            shell: bash
+            python: python3
+    steps:
+      - name: Checkout trusted main only
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Supplemental package and policy validation
+        shell: ${{ matrix.shell }}
+        run: ${{ matrix.python }} -B -m unittest discover -s tests -p "test_*.py" -v
