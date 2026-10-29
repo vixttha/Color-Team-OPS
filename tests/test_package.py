@@ -17,33 +17,10 @@ def obj(path):
 
 
 def validate(schema, data):
-    if "const" in schema:
-        assert data == schema["const"], "const violated"
-    if "enum" in schema:
-        assert data in schema["enum"], "enum violated"
-    kind = schema.get("type")
-    if kind == "object":
-        assert isinstance(data, dict), "object required"
-        assert set(schema.get("required", [])).issubset(data), "required missing"
-        properties = schema.get("properties", {})
-        if schema.get("additionalProperties") is False:
-            assert set(data).issubset(properties), "unexpected properties"
-        for name, value in data.items():
-            if name in properties:
-                validate(properties[name], value)
-    elif kind == "array":
-        assert isinstance(data, list), "array required"
-        if schema.get("uniqueItems"):
-            assert len(data) == len({json.dumps(item, sort_keys=True) for item in data})
-        for item in data:
-            validate(schema.get("items", {}), item)
-    elif kind == "string":
-        assert isinstance(data, str) and len(data) >= schema.get("minLength", 0)
-    elif kind == "integer":
-        assert type(data) is int
-        assert schema.get("minimum", data) <= data <= schema.get("maximum", data)
-    elif kind == "number":
-        assert type(data) in (int, float) and data >= schema.get("minimum", data)
+    from jsonschema import Draft202012Validator, FormatChecker
+
+    Draft202012Validator.check_schema(schema)
+    Draft202012Validator(schema, format_checker=FormatChecker()).validate(data)
 
 
 class PackageTests(unittest.TestCase):
