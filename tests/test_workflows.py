@@ -28,6 +28,7 @@ class WorkflowPolicyTests(unittest.TestCase):
         self.assertIn("allow_personal_runners:", OPTIONAL)
         self.assertIn("default: false", OPTIONAL)
         self.assertIn("refs/heads/main", OPTIONAL)
+        self.assertIn("github.actor == 'vixttha'", OPTIONAL)
         self.assertIn("ref: main", OPTIONAL)
         self.assertIn("runs-on: [self-hosted, Windows, X64, color-team-ops]", OPTIONAL)
         self.assertIn("runs-on: [self-hosted, Linux, X64, color-team-ops]", OPTIONAL)

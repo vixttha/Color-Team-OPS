@@ -13,7 +13,7 @@ Newest version first. Every version updates README.md, this changelog, acceptanc
 - README-per-version rule, independent review expectations and repository hygiene files.
 
 ### Outstanding
-- Passing GitHub Actions runs on the latest release commit and independent code audit.
+- Passing GitHub Actions runs on the latest release commit and independent code audit. Hosted jobs currently fail before runner allocation; tracked as GitHub issue #2.
 - Real installed-plugin skill acceptance, host integrations and plugin/repository source reconciliation.
 - Persistent autonomous cloud execution is not part of the skills-only v0.0.1 release.
 

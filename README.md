@@ -42,4 +42,4 @@ Host compatibility on chatgpt.com, kimi.ai, z.ai, grok.com and other browser ser
 
 ## Current status
 
-The private plugin v0.0.1 was created before the new CI and README work. GitHub changes do not update that installed package automatically. Draft [PR #1](https://github.com/vixttha/Color-Team-OPS/pull/1) remains unmerged; cloud CI, live skill acceptance, review and plugin/source reconciliation must be recorded before release approval.
+The private plugin v0.0.1 was created before the new CI and README work. GitHub changes do not update that installed package automatically. Draft [PR #1](https://github.com/vixttha/Color-Team-OPS/pull/1) remains unmerged; cloud CI, live skill acceptance, review and plugin/source reconciliation must be recorded before release approval. GitHub-hosted CI is currently **BLOCKED before any test step** ([issue #2](https://github.com/vixttha/Color-Team-OPS/issues/2)); personal runners must not replace its baseline.

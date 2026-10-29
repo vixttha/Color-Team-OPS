@@ -20,7 +20,7 @@ Repository release infrastructure and installed-plugin runtime are separate syst
 
 GitHub-hosted Ubuntu and Windows run the mandatory package, policy and workflow validation matrix on pull requests to main and pushes to main. No personal runner label or fallback is allowed in the baseline. The baseline may consume GitHub-hosted minutes for a private repo; that is a release-development cost, not an installed-plugin dependency.
 
-A separate, opt-in workflow may run supplemental Windows/Linux tests on the owner's labeled GitHub self-hosted runners. It MUST use manual workflow_dispatch, explicit affirmative input, trusted main source only, minimal token permissions, no secrets and no automatic PR triggers. It MUST NOT be a prerequisite for cloud CI or release acceptance. If owner runners are absent or offline, only optional supplemental results are unavailable.
+A separate, opt-in workflow may run supplemental Windows/Linux tests on the owner's labeled GitHub self-hosted runners. It MUST use manual workflow_dispatch, explicit affirmative input, the repository owner's verified github.actor identity, trusted main source only, minimal token permissions, no secrets and no automatic PR triggers. It MUST NOT be a prerequisite for cloud CI or release acceptance. If owner runners are absent or offline, only optional supplemental results are unavailable.
 
 GitHub self-hosted runners can be compromised by untrusted code and cannot be treated as ephemeral clean environments. Never dispatch untrusted pull request source to persistent owner machines. A reviewer must understand the trusted main code before manually triggering this workflow.
 
