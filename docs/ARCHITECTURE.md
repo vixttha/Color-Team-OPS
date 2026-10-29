@@ -23,3 +23,7 @@ A host-neutral remotely hosted HTTPS MCP/API, managed cloud database, authentica
 5. No outstanding authorized tasks => COMPLETE. Waiting for an outside event => IDLE.
 
 Proposed priorities are policy defaults and never override explicit scope or least privilege.
+
+## Development infrastructure is not plugin infrastructure
+
+Required *repository-release* testing uses GitHub-hosted Ubuntu/Windows. Personal GitHub runners are optional manual-only supplements, not a default, fallback, or product dependency. See [runner policy](design/RUNNER-POLICY.md), [ADR-0001](decisions/ADR-0001-runner-separation.md) and [release process](RELEASE-PROCESS.md). README and CHANGELOG must be updated each version.

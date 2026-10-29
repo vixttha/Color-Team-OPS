@@ -15,3 +15,12 @@
 ## Not claimable at v0.0.1
 
 Real unattended background execution, automatic completion triggers, guaranteed host transfer, authenticated independent review, real GitHub change verification by this plugin, or reliable 24/7 continuity. These require additional cloud APIs and deployment; skills alone are not a runtime.
+
+## Additional v0.0.1 release gates
+
+- [ ] Cloud-hosted Ubuntu and Windows matrix checks PASS for exact final SHA.
+- [ ] No required or automatic owner-runner dependency; optional workflow is manual-only, trusted-main only.
+- [ ] Canonical runner law in constitution, design policy and accepted ADR reviewed.
+- [ ] README, CHANGELOG and test evidence synchronized for this candidate.
+- [ ] Independent source/security review and actual installed-plugin skill trials evidenced.
+- [ ] Installed private plugin and GitHub source reconciled before approving release.
