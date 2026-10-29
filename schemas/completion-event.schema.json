@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "mission_id",
+    "team",
+    "status",
+    "evidence_state",
+    "summary"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "team": {
+      "enum": [
+        "orange-team",
+        "yellow-team",
+        "green-team",
+        "blue-team",
+        "red-team",
+        "purple-team",
+        "white-team",
+        "black-team",
+        "gray-cell"
+      ]
+    },
+    "status": {
+      "enum": [
+        "DONE",
+        "FAILED",
+        "BLOCKED"
+      ]
+    },
+    "evidence_state": {
+      "enum": [
+        "OBSERVED",
+        "UNVERIFIED",
+        "MISSING"
+      ]
+    },
+    "source_sha": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "category",
+          "description"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "enum": [
+              "authority",
+              "security",
+              "functional",
+              "deployment",
+              "defense",
+              "adversary",
+              "detection_gap",
+              "threat_intel",
+              "usability"
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

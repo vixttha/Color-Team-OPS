@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action",
+    "reason",
+    "mission_id"
+  ],
+  "properties": {
+    "action": {
+      "enum": [
+        "DISPATCH",
+        "COMPLETE",
+        "IDLE",
+        "BLOCK",
+        "ESCALATE",
+        "CAPABILITY_BLOCKED"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "next_team": {
+      "enum": [
+        "orange-team",
+        "yellow-team",
+        "green-team",
+        "blue-team",
+        "red-team",
+        "purple-team",
+        "white-team",
+        "black-team",
+        "gray-cell"
+      ]
+    },
+    "verification": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    },
+    "source_sha": {
+      "type": "string"
+    }
+  }
+}

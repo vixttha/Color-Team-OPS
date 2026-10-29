@@ -1,0 +1,19 @@
+{
+  "mission_id": "demo-m-001",
+  "host": "chatgpt.com",
+  "goal": "Review an authorized cloud-hosted repository API without writing",
+  "allowed_teams": [
+    "orange-team",
+    "yellow-team",
+    "red-team"
+  ],
+  "allowed_actions": [
+    "read",
+    "analyze"
+  ],
+  "max_handoffs": 5,
+  "max_retries": 1,
+  "cloud_only": true,
+  "runner_required": false,
+  "state": "AUTHORIZED"
+}
