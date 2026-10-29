@@ -133,7 +133,7 @@ class WorkflowPolicyTests(unittest.TestCase):
     def test_mutation_gains_job_permissions_is_caught(self):
         changed = HOSTED.replace(
             "    timeout-minutes: 10",
-            "    permissions:\\n      contents: write\\n    timeout-minutes: 10")
+            "    permissions:\n      contents: write\n    timeout-minutes: 10")
         with self.assertRaises(AssertionError):
             ensure_cloud(changed)
 
