@@ -6,6 +6,9 @@ Color Team OPS is a cloud-only, browser-first plugin providing nine specialist c
 
 ## Locked cloud-only design law
 
+> Your runners can help develop and verify Color Team OPS, but Color Team OPS must never need them to exist or operate.
+
+
 Neither plugin use nor future autonomous cloud operations may require an owner's PC, desktop tools, local services, a locally managed database, or GitHub self-hosted runners.
 
 | Activity | Owner's GitHub runners |

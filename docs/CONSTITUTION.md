@@ -4,6 +4,8 @@ These are product invariants. A skill, host, plugin, repo file, issue, prompt, r
 
 **L1 — Cloud-only:** All required product functionality MUST work through supported browser-accessible LLM hosts and authorized cloud APIs. NEVER require the user's PC, laptop, phone compute beyond ordinary browser use, local files, locally hosted services, localhost, Docker, SSH, desktop apps, locally installed CLIs, or any self-hosted worker. Cloud services necessarily run on provider hardware; the prohibition means no **user-owned or user-managed compute dependency**.
 
+> **Binding product law (verbatim):** Your runners can help develop and verify Color Team OPS, but Color Team OPS must never need them to exist or operate.
+
 **L2 — Runners optional, never prerequisites:** Availability of GitHub self-hosted/local runners, including in this repository, NEVER makes them required, automatically selected, or a runtime fallback. Workflow must remain usable when no runner exists, is offline, or is revoked. The installed plugin MUST NOT call them. Owner runners MAY be used, with explicit opt-in, for optional development tests, independent audits, package validation or release testing. GitHub-hosted CI is the mandatory repository release baseline, never a plugin runtime dependency.
 
 **L3 — Cross-host portable intent, not false compatibility:** Skills use portable Markdown and JSON contracts. Installation/execution on chatgpt.com, kimi.ai, z.ai, grok.com or other browser LLM sites depends on each site's documented plugin support. Never claim a plugin created on ChatGPT is automatically installed or fully executable elsewhere. Unsupported surfaces return CAPABILITY_BLOCKED with portable export guidance, never local setup instructions.

@@ -14,6 +14,9 @@ class PolicyTests(unittest.TestCase):
     def test_runner_policy_preserved(self):
         text = read("docs/design/RUNNER-POLICY.md")
         self.assertIn("Status: ACCEPTED", text)
+        law = "Your runners can help develop and verify Color Team OPS, but Color Team OPS must never need them to exist or operate."
+        for name in ("docs/CONSTITUTION.md", "docs/design/RUNNER-POLICY.md", "README.md", "docs/decisions/ADR-0001-runner-separation.md"):
+            self.assertIn(law, read(name))
         for phrase in (
             "Running development tests", "Performing independent audits",
             "Validating plugin packages", "Testing releases",

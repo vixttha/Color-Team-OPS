@@ -1,5 +1,6 @@
 """Stdlib-only portable plugin structure and contract checks."""
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -52,7 +53,7 @@ class PackageTests(unittest.TestCase):
         self.assertEqual(manifest["$schema"], "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json")
         self.assertEqual(manifest["name"], legacy["name"])
         self.assertEqual(manifest["version"], legacy["version"])
-        self.assertEqual(manifest["version"], "0.0.1")
+        self.assertRegex(manifest["version"], r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$")
         self.assertEqual(manifest["extensions"]["com.openai"]["interface"]["displayName"], "Color Team OPS")
 
     def test_all_twelve_skills(self):

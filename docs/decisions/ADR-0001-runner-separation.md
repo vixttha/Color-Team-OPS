@@ -9,6 +9,8 @@
 
 Color Team OPS must be a browser-first, cloud-only plugin. The repository has optional owner-managed Windows and Linux GitHub runners, but their existence must never create a product dependency. GitHub documents risks of running untrusted code on persistent self-hosted runners.
 
+> **Binding product law (verbatim):** Your runners can help develop and verify Color Team OPS, but Color Team OPS must never need them to exist or operate.
+
 ## Decision
 
 1. The mandatory repository CI baseline uses GitHub-hosted Ubuntu and Windows, not self-hosted runners.

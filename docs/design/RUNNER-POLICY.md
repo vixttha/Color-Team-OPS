@@ -2,6 +2,8 @@
 
 **Status: ACCEPTED. Effective: 2026-10-29. Scope: all product versions and integrations.**
 
+> **Binding product law (verbatim):** Your runners can help develop and verify Color Team OPS, but Color Team OPS must never need them to exist or operate.
+
 ## Constitutional distinction
 
 Repository release infrastructure and installed-plugin runtime are separate systems. All necessary plugin functions MUST work through supported browser-accessible platforms and authorized cloud services without user-owned compute, local daemons, local databases, localhost or owner-managed GitHub runners. This rule also applies to any future autonomous cloud backend.
