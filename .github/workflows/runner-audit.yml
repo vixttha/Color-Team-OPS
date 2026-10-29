@@ -1,0 +1,55 @@
+name: Color-Team-OPS runner acceptance
+on:
+  push:
+    branches: ['runner-audit/2026-10-29']
+    paths: ['.github/workflows/runner-audit.yml']
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: [self-hosted, Windows, X64, color-team-ops]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify Windows runner and workspace
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows' -or $env:RUNNER_ARCH -ne 'X64') { throw 'Runner identity mismatch' }
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Checkout SHA mismatch' }
+          if (-not (Test-Path -LiteralPath 'README.md')) { throw 'Repository checkout missing' }
+          $probe = Join-Path $env:GITHUB_WORKSPACE '.runner-audit-probe.txt'
+          'COLOR_TEAM_OPS_ACCEPTANCE_WINDOWS' | Set-Content -LiteralPath $probe
+          if ((Get-Content -LiteralPath $probe) -ne 'COLOR_TEAM_OPS_ACCEPTANCE_WINDOWS') { throw 'Workspace I/O failed' }
+          Remove-Item -LiteralPath $probe
+          if (git status --porcelain) { throw 'Checkout dirty after test' }
+          if ($LASTEXITCODE -ne 0) { throw 'Git status failed' }
+          Write-Output "COLOR_TEAM_OPS_ACCEPTANCE_WINDOWS $env:EXPECTED_SHA"
+  linux:
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify Linux runner and workspace
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$RUNNER_OS" = Linux
+          test "$RUNNER_ARCH" = X64
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test -f README.md
+          probe="$GITHUB_WORKSPACE/.runner-audit-probe.txt"
+          printf '%s\n' COLOR_TEAM_OPS_ACCEPTANCE_LINUX > "$probe"
+          test "$(cat "$probe")" = COLOR_TEAM_OPS_ACCEPTANCE_LINUX
+          rm -- "$probe"
+          test -z "$(git status --porcelain)"
+          echo "COLOR_TEAM_OPS_ACCEPTANCE_LINUX $EXPECTED_SHA"
