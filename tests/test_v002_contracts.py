@@ -111,6 +111,35 @@ class ContractTests(unittest.TestCase):
         for f,t,a in invalid:
             with self.subTest(transition=f+" "+t):
                 d=copy.deepcopy(self.trans);d.update(from_phase=f,to_phase=t,actor=a);rejected("transition-event",d)
+    def test_safety_halt_from_any_active_stage_by_head(self):
+        for from_phase in ("HEAD_READY", "WORKER_ACTIVE", "VALIDATION_PENDING", "INTERNAL_AUDIT_PENDING"):
+            for terminal in ("BLOCKED", "CAPABILITY_BLOCKED", "UNVERIFIED"):
+                d = copy.deepcopy(self.trans)
+                d.update(from_phase=from_phase, to_phase=terminal, actor="HEAD")
+                with self.subTest(from_phase=from_phase, to_phase=terminal):
+                    okay("transition-event", d)
+                    d["actor"] = "WORKER"
+                    rejected("transition-event", d)
+    def test_worker_never_skips_directly_to_completion(self):
+        d = copy.deepcopy(self.trans)
+        d.update(from_phase="WORKER_ACTIVE", to_phase="COMPLETE", actor="HEAD")
+        rejected("transition-event", d)
+        d["actor"] = "WORKER"
+        rejected("transition-event", d)
+    def test_non_dispatch_head_action_forbids_next_team(self):
+        d = copy.deepcopy(self.head)
+        d.update(action="BLOCK", actor="HEAD")
+        rejected("head-decision", d)
+        d.pop("next_team")
+        okay("head-decision", d)
+    def test_a_valid_gate_reference_is_not_proven_provider_evidence(self):
+        # This is a deliberate limitation of Draft 2020-12 structural checks.
+        d = copy.deepcopy(self.head)
+        d.update(action="COMPLETE", actor="HEAD",
+                 validation_record_ref="fabricated-validate",
+                 audit_record_ref="fabricated-audit")
+        d.pop("next_team")
+        okay("head-decision", d)  # REQUIRED future runtime trust check.
     def test_unknown_fields_rejected(self):
         for name, data in (("mission",self.mission),("work-order",self.work),("worker-event",self.worker),
                            ("evidence-claim",self.claim),("gate-record",self.gate),

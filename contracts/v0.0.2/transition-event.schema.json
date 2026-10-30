@@ -276,6 +276,222 @@
             "to_phase",
             "actor"
           ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_READY"
+            },
+            "to_phase": {
+              "const": "BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_READY"
+            },
+            "to_phase": {
+              "const": "CAPABILITY_BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_READY"
+            },
+            "to_phase": {
+              "const": "UNVERIFIED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "WORKER_ACTIVE"
+            },
+            "to_phase": {
+              "const": "BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "WORKER_ACTIVE"
+            },
+            "to_phase": {
+              "const": "CAPABILITY_BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "WORKER_ACTIVE"
+            },
+            "to_phase": {
+              "const": "UNVERIFIED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "VALIDATION_PENDING"
+            },
+            "to_phase": {
+              "const": "BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "VALIDATION_PENDING"
+            },
+            "to_phase": {
+              "const": "CAPABILITY_BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "VALIDATION_PENDING"
+            },
+            "to_phase": {
+              "const": "UNVERIFIED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "INTERNAL_AUDIT_PENDING"
+            },
+            "to_phase": {
+              "const": "BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "INTERNAL_AUDIT_PENDING"
+            },
+            "to_phase": {
+              "const": "CAPABILITY_BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "INTERNAL_AUDIT_PENDING"
+            },
+            "to_phase": {
+              "const": "UNVERIFIED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
         }
       ]
     }

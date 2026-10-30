@@ -16,3 +16,6 @@
 
 ## Review conclusion
 The contract structure **does not knowingly contradict** the approved five-stage one-lane design, the 12-skill structure, internal auditor independence limitations, or personal runner independence. No production v0.0.2 behavior is declared complete. Executable native tests and a trusted policy verifier remain distinct milestones.
+
+## Audit follow-up: fail-closed halt and false assurance coverage
+A review found that the initial strict phase-transition list did not represent a **Head-authorized emergency block from an active phase**, despite the design requiring immediate safe stops. The next candidate adds terminal BLOCKED/CAPABILITY_BLOCKED/UNVERIFIED paths **only** for Head, while still forbidding an early COMPLETE and preserving the ordinary five-phase audit route. Added targeted tests for this distinction, for non-dispatch next_team rejection, and for fake gate references that are structurally valid but unauthenticated. The original 19/19 Linux+Windows result applies only to commit `f091c68661f35799ab4d6483546d199ec09269d5`; changes require exact-SHA retesting.

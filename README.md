@@ -49,3 +49,6 @@ A follow-on [three-pass design resolution audit](docs/14-V0.0.2-DESIGN-RESOLUTIO
 
 ## D1: versioned contract reference (new design-stage prototype)
 The next stage adds [seven proposed JSON Schema contracts](contracts/v0.0.2/README.md), [the D1 contract map](docs/15-V0.0.2-CONTRACT-PROTOTYPE.md), a [Python reference test suite](tests/test_v002_contracts.py) and [test-scope preflight](docs/16-D1-SCHEMA-TEST-PREFLIGHT.md). These are **design/reference development assets, not a v0.0.2 plugin implementation or evidence that native tests passed**. Earlier three-pass audit reports describe the historical documentation-only snapshots, not these newly added files. Cross-record trusted policy and live provider verification remain to be built. None of the 12 installed skills was changed.
+
+## D1 safety audit follow-up
+The transition reference now explicitly permits **Head-authorized emergency BLOCKED/CAPABILITY_BLOCKED/UNVERIFIED** from active stages, without allowing a worker to claim COMPLETE or bypass required gates during successful execution. Regression tests demonstrate that a schema-valid COMPLETE containing arbitrary gate IDs is **still only a claim**, not authenticated mission completion. See [D1 design audit](docs/16-D1-SCHEMA-TEST-PREFLIGHT.md). The 19/19 dual-runner pass on `f091c686...` is historical evidence, not an automatic pass for the newest SHA.
