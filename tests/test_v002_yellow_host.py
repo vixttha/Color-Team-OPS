@@ -316,6 +316,58 @@ class HostLaneTests(unittest.TestCase):
         self.grant(target);self.dispatch();self.report();self.validate();self.audit()
         self.assert_rejected("INCOMPLETE_CRITERIA",self.complete)
 
+    def test_head_can_reenter_yellow_after_orange_for_distinct_repair_task(self):
+        target=mission(teams=["yellow-team","orange-team"],
+                       requirements=["yellow-team","orange-team"],
+                       criteria=["ci-pass","review-pass","repair-pass"])
+        target["max_handoffs"]=2
+        self.grant(target)
+        self.dispatch();self.report();self.validate();self.audit()
+        self.dispatch(revision=5,team="orange-team",task="task-002",
+                      criterion="review-pass",event="dispatch-002")
+        self.report(revision=6,task="task-002",receipt="ci:run-002",event="report-002")
+        self.validate(revision=7,event="validate-002")
+        self.audit(revision=8,event="audit-002")
+        self.dispatch(revision=9,team="yellow-team",task="task-003",
+                      criterion="repair-pass",event="dispatch-003")
+        self.report(revision=10,task="task-003",receipt="ci:run-003",event="report-003")
+        self.validate(revision=11,event="validate-003")
+        verified=self.audit(revision=12,event="audit-003")
+        self.assertEqual(verified["approved_teams"],["yellow-team","orange-team"])
+        self.assertEqual(len(verified["gates"]),6)
+        self.assertEqual(len(verified["used_task_ids"]),3)
+        final=self.complete(revision=13,event="complete-003")
+        self.assertEqual(final["phase"],"COMPLETE")
+        self.assertEqual(final["revision"],14)
+
+    def test_specialist_reentry_still_fails_closed_when_handoffs_exhausted(self):
+        target=mission(teams=["yellow-team","orange-team"],
+                       requirements=["yellow-team","orange-team"],
+                       criteria=["ci-pass","review-pass","repair-pass"])
+        target["max_handoffs"]=1
+        self.grant(target)
+        self.dispatch();self.report();self.validate();self.audit()
+        self.dispatch(revision=5,team="orange-team",task="task-002",
+                      criterion="review-pass",event="dispatch-002")
+        self.report(revision=6,task="task-002",receipt="ci:run-002",event="report-002")
+        self.validate(revision=7,event="validate-002")
+        self.audit(revision=8,event="audit-002")
+        self.assert_rejected("HANDOFF_BUDGET_EXCEEDED",self.dispatch,
+                             revision=9,team="yellow-team",task="task-003",
+                             criterion="repair-pass",event="dispatch-003")
+        self.assert_rejected("INCOMPLETE_CRITERIA",self.complete,revision=9)
+
+    def test_max_handoffs_has_explicit_finite_bound_without_team_count_coupling(self):
+        target=mission(teams=["yellow-team"],criteria=["ci-pass","second-pass"])
+        target["max_handoffs"]=33
+        self.assert_rejected("INVALID_HANDOFF_BUDGET",self.grant,target)
+        target["max_handoffs"]=1
+        self.grant(target)
+        self.dispatch();self.report();self.validate();self.audit()
+        second=self.dispatch(revision=5,team="yellow-team",task="task-002",
+                             criterion="second-pass",event="dispatch-002")
+        self.assertEqual(second["phase"],"WORKER_ACTIVE")
+
     def test_gate_records_keep_exact_verified_evidence_reference(self):
         state=self.through_audit()
         self.assertEqual([x["evidence_ref"] for x in state["gates"]],
