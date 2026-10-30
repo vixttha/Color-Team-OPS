@@ -88,10 +88,10 @@ def build(root: Path, source_sha: str, *, check_checkout: bool=True) -> BuildRes
             raise PackageError("GIT_TREE_UNVERIFIED")
         tracked={}
         try:
-            for entry in tree.split(b"\\0"):
+            for entry in tree.split(b"\0"):
                 if not entry:
                     continue
-                meta,name=entry.split(b"\\t",1)
+                meta,name=entry.split(b"\t",1)
                 mode,kind,object_id=meta.split(b" ",2)
                 relative_name=name.decode("utf-8")
                 if relative_name in tracked:
@@ -125,7 +125,7 @@ def build(root: Path, source_sha: str, *, check_checkout: bool=True) -> BuildRes
             raise PackageError("FILE_TOO_LARGE")
         body=path.read_bytes()
         if tracked is not None:
-            git_id=sha1(b"blob "+str(len(body)).encode("ascii")+b"\\0"+body).hexdigest().encode("ascii")
+            git_id=sha1(b"blob "+str(len(body)).encode("ascii")+b"\0"+body).hexdigest().encode("ascii")
             record=tracked.get(relative)
             if (record is None or record[0] not in (b"100644",b"100755")
                 or record[1]!=b"blob" or record[2]!=git_id):
