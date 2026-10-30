@@ -32,7 +32,7 @@ class PolicyTests(unittest.TestCase):
     def test_constitution_and_architecture(self):
         law = read("docs/CONSTITUTION.md")
         for phrase in (
-            "L1 — Cloud-only", "L2 — Runners optional", "L10 — No forced runner CI",
+            "L1 — Cloud-only", "L2 — Runners optional", "L10 — Product independence",
             "development tests", "independent audits", "README.md", "CHANGELOG.md",
             "ADR-0001",
         ):

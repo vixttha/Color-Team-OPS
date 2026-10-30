@@ -12,3 +12,4 @@ Thumbs.db
 dist/
 build/
 .cto-test-venv/
+.cto-test-deps/
