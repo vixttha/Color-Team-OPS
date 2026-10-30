@@ -278,7 +278,7 @@ class CloudAuthorityEngine:
         if not set(intent["required_teams"]).issubset(set(intent["allowed_teams"])):
             raise HostRejected("INVALID_SCOPE")
         if (type(intent["max_handoffs"]) is not int or intent["max_handoffs"] < 0
-                or intent["max_handoffs"] >= len(intent["allowed_teams"])):
+                or intent["max_handoffs"] > 32):
             raise HostRejected("INVALID_HANDOFF_BUDGET")
         if any(x not in ("read", "inspect", "report") for x in intent["allowed_actions"]):
             raise HostRejected("READ_ONLY_PILOT_SCOPE")
@@ -340,8 +340,6 @@ class CloudAuthorityEngine:
             raise HostRejected("BAD_PHASE")
         if team not in state["allowed_teams"] or criterion not in state["criteria"]:
             raise HostRejected("TASK_NOT_AUTHORIZED")
-        if team in state["approved_teams"]:
-            raise HostRejected("TEAM_ALREADY_COMPLETE")
         if len(state["used_task_ids"]) > state["max_handoffs"]:
             raise HostRejected("HANDOFF_BUDGET_EXCEEDED")
         if task_id in state["used_task_ids"]:
@@ -406,7 +404,7 @@ class CloudAuthorityEngine:
                   evidence_ref=task["receipt"],verdict="PASS")
         return self._append(state,event_id,"AUDIT_PASSED",subject,
                             dict(phase="HEAD_DECISION",gates=state["gates"]+[gate],
-                                 approved_teams=state["approved_teams"]+[task["team"]],
+                                 approved_teams=list(dict.fromkeys(state["approved_teams"]+[task["team"]])),
                                  validated_criteria=list(dict.fromkeys(state["validated_criteria"]+[task["criterion"]])),
                                  task=None))
 
