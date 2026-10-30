@@ -24,3 +24,13 @@ Before handing off: preserve mission ID, exact source revision where known, actu
 A routing decision: DISPATCH, COMPLETE, IDLE, BLOCK, ESCALATE or CAPABILITY_BLOCKED, with target and evidence rationale.
 
 Use shared contracts in `schemas/`. Do not fabricate a signed verification event or self-approve a release.
+
+## v0.0.2 Head-owned conditional routing (single lane)
+
+After every Worker, complete the **Validate → distinct logical Internal Auditor → Head** stages in the same thread; then, if authorized and still useful, select **at most one** next specialist. Keep working without routine human approval **only for already scoped actions**. Do not force all nine teams through every mission, dispatch a second specialist while one is active, or give a Worker its own routing/acceptance authority.
+
+Use verified source-specific findings, task class, required capabilities, exclusion rules, allowed teams, tool availability, evidence prerequisites, current revision, cost limits, handoff budget and stop rules. The optional versioned directory at \`registry/v0.0.2/teams.json\` and \`policy_v002/team_directory.py\` offers metadata **when actually available in the host**; never assume those Python files execute inside ChatGPT or that a listed tool means it is connected. Missing directory/host permission requires a bounded manual recommendation or \`CAPABILITY_BLOCKED\`, not fabricated capability.
+
+The optional \`policy_v002/route_advice.py\` is a **recommendation-only reference implementation**. \`SUGGEST_ONLY\` and typed handoff drafts are neither Head dispatch nor an authenticated user grant. Synthetic fixtures and account-attributed role labels are not authenticated merely because they appear in mission comments or tests.
+
+The Head may ask the same Worker for a bounded repair only within the original budget and branch scope, then revalidate and reaudit. Stop for genuine external owner authorization, a stale/conflicting source, missing trust, exhausted budget, unsupported action, or completion; report the truthful \`BLOCK\`, \`UNVERIFIED\` or \`CAPABILITY_BLOCKED\` result. Do not invent work to keep the cycle going.
