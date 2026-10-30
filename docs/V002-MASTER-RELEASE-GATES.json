@@ -25,10 +25,11 @@
       "checkpoint": "M2",
       "development": "REFERENCE_ACCEPTED",
       "production": "UNVERIFIED",
-      "basis": "35/35 focused registry tests; nine identities, 18 capability IDs",
+      "basis": "35/35 focused registry tests; exactly nine teams/18 capability IDs; imported Purple 36 source idea records and 5 feature candidates, all with source status preserved",
       "blockers": [
         "supported-host plugin workflow trial not run",
-        "tool rights not authenticated by registry"
+        "tool rights not authenticated by registry",
+        "Python library preservation suite authored but not executed as full-source test"
       ]
     },
     {
@@ -57,7 +58,7 @@
       "checkpoint": "M5",
       "development": "UNPUBLISHED_PACKAGE_CANDIDATE",
       "production": "BLOCKED",
-      "basis": "9 v0.0.1 specialist skill blobs unchanged; 3 coordinator SKILL.md files intentionally extended for bounded one-thread operation; manifests 0.0.2 and 13/13 GitHub-backed static continuity checks",
+      "basis": "9 v0.0.1 specialist skill blobs unchanged; 3 coordinator SKILL.md files intentionally extended for bounded one-thread operation; manifests 0.0.2 and 13/13 GitHub-backed static continuity checks; exact 47/47 Purple idea/feature source file hash matches, candidate records unshipped",
       "blockers": [
         "full exact current-source repository-wide Python suite NOT RUN",
         "tests/test_v002_skill_continuity.py authored but NOT EXECUTED by Python",
@@ -65,7 +66,8 @@
         "new Python routing/registry features not shown executable inside ChatGPT installed plugin",
         "production host user-consent/revocation and global cross-session lock unavailable",
         "independent M4 specialist quality corpus and paired trials unfinished",
-        "explicit owner approval to merge or publish missing"
+        "explicit owner approval to merge or publish missing",
+        "M4 independent evaluation and feature-promotion evidence do not automatically follow from imported proposal metadata"
       ]
     }
   ],
@@ -83,7 +85,7 @@
   "final_status": "BLOCKED_EXTERNAL_APPROVAL_AND_MISSING_EVIDENCE",
   "release_ready": false,
   "measured_99_percent_claim": false,
-  "latest_reviewed_source_sha": "c9f8f7f316368a746d308f23644298065ce746b2",
+  "latest_reviewed_source_sha": "30f9bd1db317e5958a34abc3f8a5b707bb8d7f7d",
   "skill_delta": {
     "unchanged_specialists": 9,
     "intentionally_updated_coordinators": 3,
@@ -96,5 +98,17 @@
       "source": "GitHub fetched exact candidate skill and manifest files"
     },
     "python_continuity_suite": "NOT_EXECUTED"
+  },
+  "library_integrated": {
+    "source_branch": "feature/v0.0.2-idea-feature-library-purple",
+    "source_sha": "2c150833867d506f3fb622a0d0e19f9c5330d5f8",
+    "idea_records": 36,
+    "feature_records": 5,
+    "exact_blob_parity": 47,
+    "source_idea_statuses": "adopted_or_captured_not_planned",
+    "source_feature_statuses": "proposed_not_planned_NOT_ASSERTED",
+    "verified_feature_ship_claims": 0,
+    "library_python_tests": "NOT_EXECUTED",
+    "source_verification": "GitHub tree and five feature records inspected"
   }
 }
