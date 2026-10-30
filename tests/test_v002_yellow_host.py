@@ -316,6 +316,34 @@ class HostLaneTests(unittest.TestCase):
         self.grant(target);self.dispatch();self.report();self.validate();self.audit()
         self.assert_rejected("INCOMPLETE_CRITERIA",self.complete)
 
+    def test_gate_records_keep_exact_verified_evidence_reference(self):
+        state=self.through_audit()
+        self.assertEqual([x["evidence_ref"] for x in state["gates"]],
+                         ["ci:run-001","ci:run-001"])
+        self.assertEqual([x["phase"] for x in state["gates"]],
+                         ["VALIDATE","INTERNAL_AUDIT"])
+
+    def test_second_task_cannot_replay_first_receipt_id(self):
+        target=mission(teams=["yellow-team","orange-team"],
+                       requirements=["yellow-team","orange-team"],
+                       criteria=["ci-pass","second-pass"])
+        self.grant(target);self.dispatch();self.report();self.validate();self.audit()
+        self.dispatch(revision=5,team="orange-team",task="task-002",
+                      criterion="second-pass",event="dispatch-002")
+        self.assert_rejected("EVIDENCE_REPLAY",self.report,revision=6,
+                             task="task-002",receipt="ci:run-001",event="report-002")
+
+    def test_distinct_second_receipt_can_advance_to_validation(self):
+        target=mission(teams=["yellow-team","orange-team"],
+                       requirements=["yellow-team","orange-team"],
+                       criteria=["ci-pass","second-pass"])
+        self.grant(target);self.dispatch();self.report();self.validate();self.audit()
+        self.dispatch(revision=5,team="orange-team",task="task-002",
+                      criterion="second-pass",event="dispatch-002")
+        new=self.report(revision=6,task="task-002",receipt="ci:run-002",event="report-002")
+        self.assertEqual(new["phase"],"VALIDATION_PENDING")
+        self.assertEqual(new["used_receipts"],["ci:run-001","ci:run-002"])
+
     def test_revocation_blocks_read_and_action_after_restart(self):
         self.grant();self.dispatch()
         self.assertEqual(self.host.revoke("mission-001",2,"head-token","revoke-001"),3)

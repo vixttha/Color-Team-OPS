@@ -295,7 +295,7 @@ class CloudAuthorityEngine:
             raise HostRejected("CONSENT_UNVERIFIED")
         state = dict(intent, head_subject=consent.subject, consent_id=consent.consent_id,
                      consent_digest=request_digest, expires_at=consent.expires_at,
-                     phase="HEAD_READY", task=None, used_task_ids=[],
+                     phase="HEAD_READY", task=None, used_task_ids=[], used_receipts=[],
                      approved_teams=[], validated_criteria=[],
                      gates=[], revoked=False, completion=None)
         self._fresh_sha(state)
@@ -356,9 +356,12 @@ class CloudAuthorityEngine:
         if state["phase"]!="WORKER_ACTIVE" or state["task"]["id"]!=task_id:
             raise HostRejected("BAD_PHASE")
         self._require_id(provider_record_id)
+        if provider_record_id in state["used_receipts"]:
+            raise HostRejected("EVIDENCE_REPLAY")
         task=dict(state["task"],receipt=provider_record_id,worker=subject)
         return self._append(state,event_id,"WORKER_REPORTED",subject,
-                            dict(phase="VALIDATION_PENDING",task=task))
+                            dict(phase="VALIDATION_PENDING",task=task,
+                                 used_receipts=state["used_receipts"]+[provider_record_id]))
 
     def _observe(self,state):
         task=state["task"]
@@ -384,7 +387,8 @@ class CloudAuthorityEngine:
             raise HostRejected("BAD_PHASE")
         self._observe(state)
         gate=dict(phase="VALIDATE",subject=subject,task_id=state["task"]["id"],
-                  criterion=state["task"]["criterion"],sha=state["source_sha"],verdict="PASS")
+                  criterion=state["task"]["criterion"],sha=state["source_sha"],
+                  evidence_ref=state["task"]["receipt"],verdict="PASS")
         return self._append(state,event_id,"VALIDATION_PASSED",subject,
                             dict(phase="INTERNAL_AUDIT_PENDING",gates=state["gates"]+[gate]))
 
@@ -398,7 +402,8 @@ class CloudAuthorityEngine:
                 state["gates"][-1]["sha"],state["gates"][-1]["task_id"])!=(state["source_sha"],task["id"]):
             raise HostRejected("VALIDATION_MISSING")
         gate=dict(phase="INTERNAL_AUDIT",subject=subject,task_id=task["id"],
-                  criterion=task["criterion"],sha=state["source_sha"],verdict="PASS")
+                  criterion=task["criterion"],sha=state["source_sha"],
+                  evidence_ref=task["receipt"],verdict="PASS")
         return self._append(state,event_id,"AUDIT_PASSED",subject,
                             dict(phase="HEAD_DECISION",gates=state["gates"]+[gate],
                                  approved_teams=state["approved_teams"]+[task["team"]],
