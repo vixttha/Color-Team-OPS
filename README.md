@@ -52,6 +52,10 @@ Invoke mission-control with a bounded authorized goal, then ops-director to sele
 
 Host compatibility on chatgpt.com, kimi.ai, z.ai, grok.com and other browser services must be separately verified. See portability guidance. A ChatGPT private plugin is not automatically installed elsewhere.
 
+## Full repository audit
+
+[Read the full v0.0.1 source/CI/security/identity audit](docs/audits/v0.0.1-full-repository-audit-2026-10-29.md). The package/skill source passes, while old Plugin Creator record removal, live-host mission testing, branch-protection verification and release hygiene have documented follow-up work. This audit does not start v0.0.2 or merge the GitHub PR.
+
 ## Security hardening in the v0.0.1 draft
 
 Orange/Yellow added cross-field mission authorization, evidence provenance and routing constraints. Red/Purple added Draft 2020-12 adversarial cases and parsed GitHub Actions workflow policy and mutation tests. These are source-level controls, not an independently authenticated cloud runtime.

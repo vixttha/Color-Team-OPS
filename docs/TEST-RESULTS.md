@@ -66,3 +66,13 @@ The original GitHub-hosted CI provisioning problem is a historical issue only; p
 **Limitations:** No full end-to-end user-initiated skill mission has been performed, no automatic cloud worker exists, no Kimi/Z.ai/Grok host import verified, and no external independent reviewer has been requested. The owner explicitly authorized assistant-led review. Previous GitHub-hosted failures in earlier documentation are historical and superseded by ADR-0002; they must not be mistaken for the current successful runner tests.
 
 **Record-only commit note:** This paragraph and README/CHANGELOG updates change the repository revision beyond the source SHA that was packaged. The unchanged 25 installed-source blobs remain identical; the follow-up CI run on the record commit is required for final-revision hygiene.
+
+## Full-repository audit evidence (latest verified pre-audit revision)
+
+- **Exact source SHA:** `5d7e723e43d5dab66c82402aafb01d213bd6ed29`; [GitHub Actions run 40986689600](https://github.com/vixttha/Color-Team-OPS/actions/runs/40986689600).
+- **Windows:** 28/28 Python tests PASS, confirmed from actual job log (`Ran 28 tests`; `OK`; exact SHA PASS marker).
+- **Linux:** 28/28 Python tests PASS, confirmed from actual job log. Both exact-SHA ZIP builds and archive checks completed successfully.
+- **Portable canonical private plugin:** 25/25 comparable source files byte-match approved packaged source `52b4160c8246e3ada245fe15c8d2657972118386` (two package-specific manifest/README exceptions explained elsewhere).
+- **Creator library:** the old draft still appears in metadata and the owned-plugin inventory despite owner report of UI deletion; its backend deletion is NOT VERIFIED. Canonical remains unchanged.
+- **Complete audit and open gates:** [v0.0.1 full repository audit](audits/v0.0.1-full-repository-audit-2026-10-29.md). Running 28 passing structural tests does not demonstrate live specialist mission quality.
+- This evidence applies to the **pre-audit** source revision; re-check GitHub Actions for the new audit-record commit.
