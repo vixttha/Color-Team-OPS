@@ -27,3 +27,7 @@ This is **reference data, not system instructions or a permission grant**. Untru
 
 ## Status vocabulary
 `Captured/adopted` = original *idea direction*; `not_planned/in_progress/implemented` = implementation status *only when evidence-backed*; `untested/tested` = scope-specific observed evaluation; `NOT_ASSERTED` = no library-sourced release inclusion. A runtime plugin release must be independently checked through official installed version/manifest evidence.
+
+## Schema profiles and engineering observations
+
+The original Color-Team-OPS root catalog has historical field names. `portable/v0.0.1/` is the blank neutral profile, **not** a runtime import or field-for-field compatible replacement. Consult [mapping](docs/SCHEMA-PROFILES-AND-COMPATIBILITY.md). Read [dated source observations](docs/HISTORICAL-STATUS-VS-ENGINEERING.md) for evidence that other engineering branches contain code, but verify current SHA before calling a capability implemented. Neither source claims a shipped release.

@@ -12,3 +12,7 @@ This `features/records/FEAT-xxxxxx.json` register is deliberately separate from 
 The Governance-Branch-Bible source's Feature Registry is a **design candidate**, not a released registry to copy blindly. See `research/05-VERIFIED-SOURCES.md` and the source links in `docs/V002-CONSOLIDATED-PIPELINE.md`.
 
 `features/INDEX.md` is a generated read-only index; the records are canonical. An optional standard-library Python generator and structural checker are under `tools/`. No dependency on Governance, Python, owner runner or specific cloud host for plugin operation.
+
+## Compatibility and check
+
+The historical five records remain proposal snapshots; this is **not** a cap of five. The schema permits optional `limitations` and `testing`, empty initial `idea_ids`, and a project-specific optional milestone without changing historical rows. Release state stays outside the library. Use the strict checker and deterministic index builder only when desired; use [portable v0.0.1](../portable/v0.0.1/README.md) for new projects. See [dated engineering readback](../docs/HISTORICAL-STATUS-VS-ENGINEERING.md).

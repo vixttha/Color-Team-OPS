@@ -52,8 +52,7 @@
       "required": [
         "created_by",
         "type",
-        "source",
-        "source_catalog_id"
+        "source"
       ],
       "properties": {
         "created_by": {

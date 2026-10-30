@@ -14,3 +14,7 @@ Create the next unused `IDEA-xxxxxx.json` following `ideas/schema/v1/idea.schema
 
 ## Interoperability / role boundary
 Ideas express possibilities and owner intent. Feature candidates under `features/records` reference these IDs but do not own release truth. Existing Color-Team-OPS Constitution, Head permissions, exact SHA, work-order schemas and outside release approvals stay in control. GitHub files are readable without Python/runner; developer validation script is optional, NEVER a plugin runtime dependency.
+
+## Compatibility and check
+
+Existing 36 records are a **historical snapshot**, not a maximum capacity. Additional local records may omit the old `origin.source_catalog_id`; do not recycle IDs or invent original Fxx provenance. Run `python tools/check_idea_feature_library.py` to detect malformed records and stale indexes. For an unrelated project use the empty [portable v0.0.1](../portable/v0.0.1/README.md) profile, not this historical source catalog. See [dated engineering readback](../docs/HISTORICAL-STATUS-VS-ENGINEERING.md).

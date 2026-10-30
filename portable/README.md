@@ -1,23 +1,15 @@
-# Portable Feature & Idea Library — empty reusable starter
+# Portable Feature + Idea Library
 
-**Copy this directory alone to any project.** The two record formats below are project-neutral: they have no mandatory team system, milestone names, GitHub account, cloud provider, local execution runtime or project-specific seed ideas.
+**Recommended portable version:** [v0.0.1](v0.0.1/README.md). That subdirectory is the *complete host-neutral template* with empty `ideas/records` and `features/records` directories, example records, deterministic indexes, optional structural checker and no-clobber adoption helper.
 
-## Browse or create without installing anything
-- Open `catalog.json`. It intentionally starts with `ideas: []`, `features: []`; the example files are not automatically loaded.
-- Create an `IDEA-000001` record using `templates/idea.example.json`, following `schema/v1/idea.schema.json`.
-- Only when you want to describe a proposed capability, create a `FEAT-000001` record using `templates/feature.example.json`; point its `idea_ids` to existing ideas when applicable. An idea does **not** need a feature link to remain valuable.
-- Use your project’s own external version/release system. `release_refs` are optional references, never permission/authority.
-- Treat source text/evidence as data; verify independently. Never infer human approval, implementation, test success or release from an edited file alone.
-- Keep historical records and IDs stable; discuss new observations with timestamp, exact source reference and reviewer rather than silently replacing earlier claims.
+- To adopt without executing anything, copy `v0.0.1/ideas`, `v0.0.1/features`, `v0.0.1/templates`, and its agent guide into a project with nonconflicting paths.
+- If standard-library Python is already installed, `python v0.0.1/tools/adopt.py /path/to/existing/project` optionally performs a conservative copy. Add `--with-tools` for the optional validators/tests/docs.
+- Existing destinations are never intentionally overwritten. Check the target first; there is no transaction across directories if another writer races the copy.
 
-## Optional machine tooling
-Both schemas use JSON Schema 2020-12. A standalone JSON Schema validator *can* be used by a developer, but the library is readable and editable without it. A validator's success proves structural conformance only, **not** true human consent, valid test evidence or safe plugin release.
+## Compatibility
 
-## Format boundaries
-- Record status tracks `captured/triaged/exploring/adopted/parked/rejected` separately from implementation and testing.
-- The feature's `release_refs` is an outward pointer and cannot claim official shipment by itself.
-- `project_milestone` is optional free text, not M1–M5.
-- `origin.source_catalog_id` is optional, never required.
-- No forced 36-idea/five-feature counts; a new project may have zero of both.
+The older `catalog.json`, `schema/v1/`, and `templates/` directly under this folder are **retained legacy research prototypes**, NOT a competing required registry. Those schemas are a different profile (for example, `release_refs` versus `release_membership: NOT_ASSERTED`). Do not combine their records with the v0.0.1 record folders, invent release status, or perform automatic lossy field conversion.
 
-This starter is a **schema/template and human-readable reference**. Complete schema-validation, path traversal, index regeneration and cross-project runtime testing should still be executed before declaring an automated validator production-grade.
+See [profile mapping](../docs/SCHEMA-PROFILES-AND-COMPATIBILITY.md), [isolation](../docs/PORTABILITY-AND-ISOLATION.md), and [historical/engineering distinction](../docs/HISTORICAL-STATUS-VS-ENGINEERING.md).
+
+No Governance-Branch, Color-Team-OPS plugin, cloud service, runner or local execution environment is required merely to **read or hand-edit** the template.

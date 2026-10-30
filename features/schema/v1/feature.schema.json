@@ -10,7 +10,6 @@
     "lifecycle_status",
     "implementation_status",
     "idea_ids",
-    "planned_milestone",
     "source_refs",
     "verified_evidence",
     "release_membership",
@@ -55,7 +54,6 @@
     },
     "idea_ids": {
       "type": "array",
-      "minItems": 1,
       "uniqueItems": true,
       "items": {
         "type": "string",
@@ -63,17 +61,12 @@
       }
     },
     "planned_milestone": {
-      "enum": [
-        "M1",
-        "M2",
-        "M3",
-        "M4",
-        "M5"
-      ]
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
     },
     "source_refs": {
       "type": "array",
-      "minItems": 1,
       "items": {
         "type": "object",
         "required": [
@@ -132,6 +125,44 @@
     },
     "authority_note": {
       "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "testing": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "untested",
+            "planned",
+            "in_progress",
+            "tested"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "pass",
+            "fail",
+            "mixed",
+            "inconclusive"
+          ]
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "allOf": [
