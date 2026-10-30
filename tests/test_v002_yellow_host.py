@@ -115,6 +115,106 @@ class HostLaneTests(unittest.TestCase):
     def through_audit(self):
         self.grant();self.dispatch();self.report();self.validate();return self.audit()
 
+    def enable_repair(self, limit=1):
+        self.identity.allowed[("head-token","head_repair")]="user-123"
+        target=mission()
+        target["max_local_repairs"]=limit
+        return target
+
+    def test_consent_default_forbids_same_task_repair(self):
+        self.grant();self.dispatch();self.report()
+        self.identity.allowed[("head-token","head_repair")]="user-123"
+        self.assert_rejected("REPAIR_BUDGET_EXCEEDED",self.host.request_repair,
+                             "mission-001",3,"head-token","repair-001")
+
+    def test_one_authorized_repair_then_validate_audit_head(self):
+        self.grant(self.enable_repair());self.dispatch();self.report()
+        self.evidence.outcome="FAIL"
+        self.assert_rejected("EVIDENCE_NOT_PASS",self.validate)
+        state=self.host.request_repair("mission-001",3,"head-token","repair-001")
+        self.assertEqual((state["phase"],state["revision"],state["task"]["repairs"]),
+                         ("WORKER_ACTIVE",4,1))
+        self.evidence.outcome="PASS"
+        self.report(revision=4,receipt="ci:run-002",event="report-002")
+        self.validate(revision=5,event="validate-002")
+        self.audit(revision=6,event="audit-002")
+        result=self.complete(revision=7,event="complete-002")
+        self.assertEqual((result["phase"],result["revision"]),("COMPLETE",8))
+        self.assertEqual(result["used_receipts"],["ci:run-001","ci:run-002"])
+        self.assertEqual([x["kind"] for x in self.store.history("mission-001")],
+            ["CONSENT_GRANTED","DISPATCH","WORKER_REPORTED","REPAIR_ORDERED",
+             "WORKER_REPORTED","VALIDATION_PASSED","AUDIT_PASSED","HEAD_COMPLETED"])
+
+    def test_two_consented_repairs_complete_and_third_refused(self):
+        self.grant(self.enable_repair(2));self.dispatch();self.report()
+        self.host.request_repair("mission-001",3,"head-token","repair-001")
+        self.report(revision=4,receipt="ci:run-002",event="report-002")
+        self.host.request_repair("mission-001",5,"head-token","repair-002")
+        self.report(revision=6,receipt="ci:run-003",event="report-003")
+        self.assert_rejected("REPAIR_BUDGET_EXCEEDED",self.host.request_repair,
+                             "mission-001",7,"head-token","repair-003")
+        self.validate(revision=7,event="validate-003")
+        self.audit(revision=8,event="audit-003")
+        final=self.complete(revision=9,event="complete-003")
+        self.assertEqual(final["revision"],10)
+        self.assertEqual(len(final["repair_history"]),2)
+        self.assertEqual(final["used_receipts"],
+                         ["ci:run-001","ci:run-002","ci:run-003"])
+
+    def test_repair_cannot_exceed_consent_bound(self):
+        self.grant(self.enable_repair(1));self.dispatch();self.report()
+        self.host.request_repair("mission-001",3,"head-token","repair-001")
+        self.report(revision=4,receipt="ci:run-002",event="report-002")
+        self.assert_rejected("REPAIR_BUDGET_EXCEEDED",self.host.request_repair,
+                             "mission-001",5,"head-token","repair-002")
+
+    def test_repair_without_signed_optional_scope_rejected(self):
+        target=mission()
+        target["max_local_repairs"]=3
+        self.assert_rejected("INVALID_REPAIR_BUDGET",self.grant,target)
+
+    def test_repair_with_impostor_head_rejected(self):
+        self.grant(self.enable_repair());self.dispatch();self.report()
+        self.identity.allowed[("impostor-token","head_repair")]="impostor-000"
+        self.assert_rejected("HEAD_NOT_AUTHORIZED",self.host.request_repair,
+                             "mission-001",3,"impostor-token","repair-001")
+
+    def test_repair_requires_exact_revision(self):
+        self.grant(self.enable_repair());self.dispatch();self.report()
+        self.assert_rejected("REVISION_CONFLICT",self.host.request_repair,
+                             "mission-001",2,"head-token","repair-001")
+
+    def test_repair_rejects_new_worker_principal(self):
+        self.grant(self.enable_repair());self.dispatch();self.report()
+        self.host.request_repair("mission-001",3,"head-token","repair-001")
+        self.identity.allowed[("other-worker","worker_report")]="other-principal"
+        self.assert_rejected("WORKER_PRINCIPAL_CHANGED",self.report,
+                             revision=4,receipt="ci:run-002",event="report-002",token="other-worker")
+
+    def test_repair_refuses_replayed_receipt(self):
+        self.grant(self.enable_repair());self.dispatch();self.report()
+        self.host.request_repair("mission-001",3,"head-token","repair-001")
+        self.assert_rejected("EVIDENCE_REPLAY",self.report,
+                             revision=4,receipt="ci:run-001",event="report-002")
+
+    def test_repair_history_survives_restart(self):
+        self.grant(self.enable_repair());self.dispatch();self.report()
+        self.host.request_repair("mission-001",3,"head-token","repair-001")
+        restored=SQLiteDevelopmentJournal(self.path).read("mission-001")
+        self.assertEqual(restored["repair_history"][0]["prior_receipt"],"ci:run-001")
+        self.assertEqual(restored["repair_history"][0]["repair_number"],1)
+
+    def test_repair_blocked_after_expiry(self):
+        self.grant(self.enable_repair());self.dispatch();self.report()
+        self.now=self.identity.consent_expires
+        self.assert_rejected("GRANT_EXPIRED",self.host.request_repair,
+                             "mission-001",3,"head-token","repair-001")
+
+    def test_repair_wrong_phase_rejected(self):
+        self.grant(self.enable_repair());self.dispatch()
+        self.assert_rejected("BAD_PHASE",self.host.request_repair,
+                             "mission-001",2,"head-token","repair-001")
+
     def test_entire_head_worker_validate_audit_head_lane(self):
         self.through_audit()
         final=self.complete()

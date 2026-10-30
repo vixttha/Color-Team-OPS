@@ -12,7 +12,7 @@ from typing import Mapping
 from .host_runtime import HostRejected, digest
 from .verifier import evaluate_completion
 
-VERSION = "cto-v002-m1-bridge-3"
+VERSION = "cto-v002-m1-bridge-4"
 PHASES = ("VALIDATE", "INTERNAL_AUDIT")
 EVENTS = ("DISPATCH", "WORKER_REPORTED", "VALIDATION_PASSED", "AUDIT_PASSED")
 TRANSITIONS = (
@@ -98,6 +98,8 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
             "required_teams", "allowed_actions", "criteria", "max_handoffs")
     try:
         intent = {key: state[key] for key in keys}
+        if "max_local_repairs" in state:
+            intent["max_local_repairs"] = state["max_local_repairs"]
         if (not state.get("head_subject") or not state.get("consent_id")
             or state.get("consent_digest") != digest(intent)):
             return result("BLOCKED", "CONSENT_MISMATCH")
@@ -107,7 +109,13 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
                transition_events, event_links)
     if any(not isinstance(x, (tuple, list)) for x in records):
         return result("BLOCKED", "RECORDS_INVALID")
-    # v3 interprets the exact ordered Yellow event journal. Every completed task
+    # Preserve explicit optional signed repair scope without turning an
+    # un-modeled retry into a fake pair of verified transition events.
+    if state.get("max_local_repairs",0) > mission.get("max_local_repairs",-1):
+        return result("BLOCKED", "REPAIR_CONSENT_SCOPE_MISMATCH")
+    if state.get("repair_history"):
+        return result("UNVERIFIED", "REPAIR_EVENT_TRACE_UNAVAILABLE")
+    # v4 interprets the exact ordered Yellow event journal. Every completed task
     # contributes four transitions and two validation/audit gate observations.
     # There is ONE D2 aggregate Validate and Audit record at Head closure.
     count = len(work_orders)

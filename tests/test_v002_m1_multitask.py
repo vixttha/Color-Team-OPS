@@ -178,8 +178,28 @@ class MultiTaskBridgeTests(unittest.TestCase):
     def test_expired_grant_stops(self):
         self.d["journal"].state["expires_at"]=1
         self.check("BLOCKED","GRANT_EXPIRED")
+    def test_optional_repair_grant_digest_is_checked(self):
+        self.d["journal"].state["max_local_repairs"]=2
+        keys=("mission_id","repository","branch","source_sha","allowed_teams",
+              "required_teams","allowed_actions","criteria","max_handoffs",
+              "max_local_repairs")
+        self.d["journal"].state["consent_digest"]=digest(
+            {k:self.d["journal"].state[k] for k in keys})
+        self.check("UNVERIFIED","REFERENCE_ALIGNED_AUTHORITY_UNVERIFIED")
+    def test_repair_history_without_explicit_bridge_mapping_unverified(self):
+        self.d["journal"].state["repair_history"]=[dict(task_id="t2",
+            prior_receipt="test:pre",repair_number=1)]
+        self.check("UNVERIFIED","REPAIR_EVENT_TRACE_UNAVAILABLE")
+    def test_signed_repair_budget_cannot_exceed_d2_scope(self):
+        self.d["journal"].state["max_local_repairs"]=3
+        keys=("mission_id","repository","branch","source_sha","allowed_teams",
+              "required_teams","allowed_actions","criteria","max_handoffs",
+              "max_local_repairs")
+        self.d["journal"].state["consent_digest"]=digest(
+            {k:self.d["journal"].state[k] for k in keys})
+        self.check("BLOCKED","REPAIR_CONSENT_SCOPE_MISMATCH")
     def test_version(self):
-        self.assertEqual(VERSION,"cto-v002-m1-bridge-3")
+        self.assertEqual(VERSION,"cto-v002-m1-bridge-4")
 
 if __name__=="__main__":
     unittest.main()

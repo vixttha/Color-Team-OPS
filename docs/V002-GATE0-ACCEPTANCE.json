@@ -26,7 +26,7 @@
     {
       "id": "M1",
       "needed": "multi-task Yellow→Orange→Yellow, finite repeat/repair, scope/replay/revision checks, evidence-linked gate, exact integrated source tests",
-      "current": "BLOCKED_PENDING_INTEGRATION"
+      "current": "MULTI_TASK_AND_CONSENT_BOUND_REPAIR_REFERENCE_CODE_AUTHORED_NATIVE_TESTS_NOT_RUN"
     },
     {
       "id": "M2",

@@ -262,8 +262,14 @@ class CloudAuthorityEngine:
         mandatory = ("mission_id","repository","branch","source_sha",
                      "allowed_teams","required_teams","allowed_actions","criteria",
                      "max_handoffs")
-        if any(k not in intent for k in mandatory) or set(intent) != set(mandatory):
+        if any(k not in intent for k in mandatory) or (set(intent)-set(mandatory)) - {"max_local_repairs"}:
             raise HostRejected("INVALID_INTENT")
+        # Backward-compatible default is ZERO repairs; explicit signed intent
+        # can consent to one or two within-task repair attempts.
+        if "max_local_repairs" in intent and (
+                type(intent["max_local_repairs"]) is not int
+                or intent["max_local_repairs"] < 0 or intent["max_local_repairs"] > 2):
+            raise HostRejected("INVALID_REPAIR_BUDGET")
         mission_id = intent["mission_id"]
         self._require_id(mission_id)
         if (not isinstance(intent["source_sha"], str) or not _HEX40.fullmatch(intent["source_sha"])
@@ -296,7 +302,7 @@ class CloudAuthorityEngine:
         state = dict(intent, head_subject=consent.subject, consent_id=consent.consent_id,
                      consent_digest=request_digest, expires_at=consent.expires_at,
                      phase="HEAD_READY", task=None, used_task_ids=[], used_receipts=[],
-                     approved_teams=[], validated_criteria=[],
+                     repair_history=[], approved_teams=[], validated_criteria=[],
                      gates=[], revoked=False, completion=None)
         self._fresh_sha(state)
         self.store.create(mission_id, state,
@@ -328,9 +334,14 @@ class CloudAuthorityEngine:
         self._require_id(event_id)
         updated = {k:v for k,v in state.items() if k != "revision"}
         updated.update(changes)
-        self.store.append(state["mission_id"], state["revision"], updated,
-                          dict(event_id=event_id, kind=kind, subject=subject,
-                               action=kind.lower(), at=self._now()))
+        active=changes.get("task") or state.get("task")
+        event=dict(event_id=event_id, kind=kind, subject=subject,
+                   action=kind.lower(), at=self._now())
+        if isinstance(active,dict):
+            event["task_id"]=active["id"]
+            if active.get("receipt"):
+                event["receipt"]=active["receipt"]
+        self.store.append(state["mission_id"], state["revision"], updated, event)
         return self.read(state["mission_id"])
 
     def dispatch(self, mission_id, expected_revision, token, event_id, *, team, task_id, criterion):
@@ -347,7 +358,7 @@ class CloudAuthorityEngine:
         return self._append(state,event_id,"DISPATCH",subject,
                             dict(phase="WORKER_ACTIVE",used_task_ids=state["used_task_ids"]+[task_id],
                                  task=dict(team=team,id=task_id,criterion=criterion,
-                                           receipt=None,worker=None)))
+                                           receipt=None,worker=None,repairs=0)))
 
     def worker_done(self,mission_id,expected_revision,token,event_id,*,task_id,provider_record_id):
         state, subject = self._load(mission_id,expected_revision,"worker_report",token)
@@ -356,10 +367,37 @@ class CloudAuthorityEngine:
         self._require_id(provider_record_id)
         if provider_record_id in state["used_receipts"]:
             raise HostRejected("EVIDENCE_REPLAY")
+        previous=state["task"].get("worker")
+        if previous is not None and previous != subject:
+            raise HostRejected("WORKER_PRINCIPAL_CHANGED")
         task=dict(state["task"],receipt=provider_record_id,worker=subject)
         return self._append(state,event_id,"WORKER_REPORTED",subject,
                             dict(phase="VALIDATION_PENDING",task=task,
                                  used_receipts=state["used_receipts"]+[provider_record_id]))
+
+    def request_repair(self,mission_id,expected_revision,token,event_id):
+        """Head-authorized retry of the SAME assigned task; no user-grant upgrade.
+
+        A fresh receipt must be presented on re-report. This dev journal event
+        is NOT a protected host attestation or full D2 repair-event contract.
+        """
+        state, subject=self._load(mission_id,expected_revision,"head_repair",token,require_head=True)
+        if (state["phase"]!="VALIDATION_PENDING" or state.get("task") is None
+                or not state["task"].get("worker") or not state["task"].get("receipt")):
+            raise HostRejected("BAD_PHASE")
+        limit=state.get("max_local_repairs",0)
+        repairs=state["task"].get("repairs",0)
+        if (type(limit) is not int or limit < 0 or limit > 2
+                or type(repairs) is not int or repairs >= limit):
+            raise HostRejected("REPAIR_BUDGET_EXCEEDED")
+        self._require_id(event_id)
+        prior=state["task"]["receipt"]
+        task=dict(state["task"],receipt=None,repairs=repairs+1)
+        history=list(state.get("repair_history",[]))
+        history.append(dict(task_id=task["id"],prior_receipt=prior,
+                            repair_number=repairs+1,head_subject=subject,event_id=event_id))
+        return self._append(state,event_id,"REPAIR_ORDERED",subject,
+                            dict(phase="WORKER_ACTIVE",task=task,repair_history=history))
 
     def _observe(self,state):
         task=state["task"]
