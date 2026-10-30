@@ -11,6 +11,12 @@ This existing isolated branch retains Color-Team-OPS's nine released specialist 
 4. [Prioritized issues, cross-team handoffs, proposed tests and deferred decisions](04-DECISIONS-AND-GAPS.md).
 5. [Primary authoritative sources, repository evidence and research limitations](05-VERIFIED-SOURCES.md).
 6. [Full uploaded alternative Gold/Black-infrastructure nine-team company role inventory (not adopted)](06-ALTERNATIVE-COMPANY-MODEL.md).
+7. [Approved direction, complete feature catalog, benefits, drawbacks, synergies and status](07-IDEA-APPROVAL-FEATURE-CATALOG.md).
+8. [Three coordinator roles versus proposed routing engine; duplication and authority audit](08-COORDINATOR-OVERLAP-AND-ROUTING-DESIGN.md).
+9. [99% routing-accuracy evaluation plan, held-out tests, baselines, confidence and costs](09-ROUTING-ACCURACY-EVALUATION-PLAN.md).
+10. [Conditional mission/first-team/last-team routing and blocked-path matrix](10-CONDITIONAL-MISSION-ROUTING-MATRIX.md).
+11. [**Canonical standalone cross-thread handoff: approved ideas, existing work, exact caveats and next steps**](11-CROSS-THREAD-CANONICAL-HANDOFF.md).
+
 
 ## Verified research principles
 - No universal authoritative nine-color *corporate-team* standard exists. Color mappings are contextual; Black Hat's development-centered InfoSec color wheel and NIST/NCCDC cyber competitions use different meanings for multiple colors.
