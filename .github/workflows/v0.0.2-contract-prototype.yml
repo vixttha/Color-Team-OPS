@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: cto-v002-contract-${{ github.ref }}
   cancel-in-progress: true
@@ -60,3 +61,23 @@ jobs:
         shell: powershell
         run: |
           if (Test-Path -LiteralPath '.cto-v002-test-venv') { Remove-Item -LiteralPath '.cto-v002-test-venv' -Recurse -Force }
+  live-github-provider-read:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/design/v0.0.2-team-contracts-single-lane'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact source for provider read
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Live GitHub REST read-only smoke
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$RUNNER_OS" = Linux
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 -B devtools/live_github_smoke.py
