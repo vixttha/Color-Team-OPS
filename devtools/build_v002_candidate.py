@@ -6,7 +6,7 @@ It never authenticates a user, dispatches an agent or executes policy_v002 Pytho
 from __future__ import annotations
 
 from dataclasses import dataclass
-from hashlib import sha256
+from hashlib import sha1, sha256
 from io import BytesIO
 from pathlib import Path, PurePosixPath
 import argparse
@@ -73,6 +73,32 @@ def build(root: Path, source_sha: str, *, check_checkout: bool=True) -> BuildRes
             raise PackageError("GIT_WORKTREE_UNVERIFIED") from None
         if dirty.strip():
             raise PackageError("DIRTY_SOURCE_CHECKOUT")
+    tracked = None
+    if check_checkout:
+        try:
+            git_root=subprocess.check_output(
+                ["git","-C",str(root),"rev-parse","--show-toplevel"],
+                stderr=subprocess.DEVNULL,text=True,timeout=10).strip()
+            tree=subprocess.check_output(
+                ["git","-C",str(root),"ls-tree","-rz","--full-tree",source_sha],
+                stderr=subprocess.DEVNULL,timeout=10)
+        except (subprocess.SubprocessError,FileNotFoundError,OSError):
+            raise PackageError("GIT_TREE_UNVERIFIED") from None
+        if Path(git_root).resolve()!=root or not isinstance(tree,bytes):
+            raise PackageError("GIT_TREE_UNVERIFIED")
+        tracked={}
+        try:
+            for entry in tree.split(b"\\0"):
+                if not entry:
+                    continue
+                meta,name=entry.split(b"\\t",1)
+                mode,kind,object_id=meta.split(b" ",2)
+                relative_name=name.decode("utf-8")
+                if relative_name in tracked:
+                    raise ValueError("duplicate git path")
+                tracked[relative_name]=(mode,kind,object_id)
+        except (ValueError,UnicodeDecodeError):
+            raise PackageError("GIT_TREE_UNVERIFIED") from None
     left=json.loads((root/"plugin.json").read_text(encoding="utf-8"))
     right=json.loads((root/".codex-plugin"/"plugin.json").read_text(encoding="utf-8"))
     if (left.get("name")!="color-team-ops" or left.get("version")!="0.0.2" or
@@ -81,10 +107,15 @@ def build(root: Path, source_sha: str, *, check_checkout: bool=True) -> BuildRes
     items={}
     total=0
     for path in _paths(root):
-        if path.is_symlink() or not path.is_file():
-            raise PackageError("MISSING_OR_SYMLINK_SOURCE")
         relative=path.relative_to(root).as_posix()
         pure=PurePosixPath(relative)
+        probe=root
+        for part in pure.parts:
+            probe=probe/part
+            if probe.is_symlink():
+                raise PackageError("MISSING_OR_SYMLINK_SOURCE")
+        if not path.is_file() or not path.resolve().is_relative_to(root):
+            raise PackageError("MISSING_OR_SYMLINK_SOURCE")
         if (pure.is_absolute() or ".." in pure.parts or "\\" in relative or
             relative in items or relative.startswith(".")):
             # .codex-plugin is explicitly allowed.
@@ -93,6 +124,12 @@ def build(root: Path, source_sha: str, *, check_checkout: bool=True) -> BuildRes
         if path.stat().st_size>_MAX_FILE:
             raise PackageError("FILE_TOO_LARGE")
         body=path.read_bytes()
+        if tracked is not None:
+            git_id=sha1(b"blob "+str(len(body)).encode("ascii")+b"\\0"+body).hexdigest().encode("ascii")
+            record=tracked.get(relative)
+            if (record is None or record[0] not in (b"100644",b"100755")
+                or record[1]!=b"blob" or record[2]!=git_id):
+                raise PackageError("SOURCE_NOT_IN_PINNED_GIT_TREE")
         total+=len(body)
         if total>_MAX_TOTAL:
             raise PackageError("PACKAGE_TOO_LARGE")
