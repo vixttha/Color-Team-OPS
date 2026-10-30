@@ -4,6 +4,7 @@ These do NOT substitute for building the real private GitHub checkout at an
 exact source SHA, uploading its ZIP, or running installed ChatGPT plugin trials.
 """
 import json
+from hashlib import sha1
 from pathlib import Path
 import tempfile
 import unittest
@@ -11,7 +12,7 @@ from unittest.mock import patch
 from io import BytesIO
 from zipfile import ZipFile
 
-from devtools.build_v002_candidate import build, validate_archive, PackageError
+from devtools.build_v002_candidate import build, validate_archive, PackageError, _paths
 
 SHA="a"*40
 TEAMS=("yellow-team","orange-team","green-team","red-team","blue-team",
@@ -104,10 +105,74 @@ class DeterministicBuildTests(unittest.TestCase):
                 build(self.root,SHA)
             self.assertEqual(str(issue.exception),"DIRTY_SOURCE_CHECKOUT")
 
+    def mock_clean_git(self, cmd, **kwargs):
+        if "rev-parse" in cmd and cmd[-1] == "HEAD":
+            return SHA+"\n"
+        if "status" in cmd:
+            return ""
+        if "rev-parse" in cmd and cmd[-1] == "--show-toplevel":
+            return str(self.root)+"\n"
+        if "ls-tree" in cmd:
+            entries=[]
+            for path in _paths(self.root):
+                content=path.read_bytes()
+                object_id=sha1(b"blob "+str(len(content)).encode("ascii")+b"\0"+content).hexdigest()
+                name=path.relative_to(self.root).as_posix()
+                entries.append(f"100644 blob {object_id}\t{name}\0".encode("utf-8"))
+            return b"".join(entries)
+        raise AssertionError("Unexpected Git invocation")
+
     def test_clean_checkout_at_matching_sha_is_allowed(self):
         with patch("devtools.build_v002_candidate.subprocess.check_output",
-                   side_effect=[SHA+"\n",""]):
+                   side_effect=self.mock_clean_git):
             self.assertEqual(build(self.root,SHA).source_sha,SHA)
+
+    def test_git_tree_requires_committed_payload_paths(self):
+        def missing_tree(cmd, **kwargs):
+            result=self.mock_clean_git(cmd, **kwargs)
+            return b"" if "ls-tree" in cmd else result
+        with patch("devtools.build_v002_candidate.subprocess.check_output",
+                   side_effect=missing_tree):
+            with self.assertRaises(PackageError) as issue:
+                build(self.root,SHA)
+        self.assertEqual(str(issue.exception),"SOURCE_NOT_IN_PINNED_GIT_TREE")
+
+    def test_git_tree_rejects_payload_digest_mismatch(self):
+        def forged_tree(cmd, **kwargs):
+            result=self.mock_clean_git(cmd, **kwargs)
+            if "ls-tree" in cmd:
+                first,remaining=result.split(b"\0",1)
+                metadata,path=first.split(b"\t",1)
+                return b"100644 blob "+b"0"*40+b"\t"+path+b"\0"+remaining
+            return result
+        with patch("devtools.build_v002_candidate.subprocess.check_output",
+                   side_effect=forged_tree):
+            with self.assertRaises(PackageError) as issue:
+                build(self.root,SHA)
+        self.assertEqual(str(issue.exception),"SOURCE_NOT_IN_PINNED_GIT_TREE")
+
+    def test_git_root_must_match_package_root(self):
+        def wrong_root(cmd, **kwargs):
+            if "rev-parse" in cmd and cmd[-1] == "--show-toplevel":
+                return str(self.root.parent)+"\n"
+            return self.mock_clean_git(cmd, **kwargs)
+        with patch("devtools.build_v002_candidate.subprocess.check_output",
+                   side_effect=wrong_root):
+            with self.assertRaises(PackageError) as issue:
+                build(self.root,SHA)
+        self.assertEqual(str(issue.exception),"GIT_TREE_UNVERIFIED")
+
+    def test_symlinked_ancestor_directory_is_rejected(self):
+        original=self.root/"docs"
+        relocated=self.root/"docs-real"
+        original.rename(relocated)
+        try:
+            original.symlink_to(relocated,target_is_directory=True)
+        except (OSError,NotImplementedError):
+            self.skipTest("directory symlinks not supported")
+        with self.assertRaises(PackageError) as issue:
+            self.build()
+        self.assertEqual(str(issue.exception),"MISSING_OR_SYMLINK_SOURCE")
 
     def test_git_unavailable_blocks(self):
         with patch("devtools.build_v002_candidate.subprocess.check_output",
