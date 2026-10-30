@@ -28,3 +28,24 @@ This establishes bounded deterministic test behavior for the synthetic adapter�
 
 ## Additional audit finding D2-AUD-003: cross-task evidence replay and budget
 A review of multi-worker cases found that although every evidence claim resolved to one task, a second Worker's event could reference the **first** task's claim ID. This could let a required Worker appear to present evidence it did not produce when all mission criteria were otherwise satisfied. **Fixed:** every referenced claim ID must resolve to the exact Worker event's `task_id`; reject `CROSS_TASK_EVIDENCE_REPLAY`. Also enforce the `max_handoffs` Head redispatch limit, which the earlier verifier had not checked. Added explicit two-worker success, over-budget and replay regression tests. These amendments require another final-SHA retest; prior test passes refer to earlier SHAs only.
+
+## Final D2 audited source and executed regression evidence
+
+**Observed final tested implementation SHA:** `4873611413f365b4cf7d49fc7095e4ff514ca6a8`.  
+**GitHub Actions run:** [41004276054](https://github.com/vixttha/Color-Team-OPS/actions/runs/41004276054), completed **success** on both owner-registered Windows and Linux jobs.  
+**Native test outcome:** **81/81 Python unittest methods PASS on Linux; 81/81 PASS on Windows** (162 platform-specific executions), corroborated by reading each job's actual log and the workflow's exact `head_sha`.  
+**Composition:** 23 preexisting D1 structural tests + 58 D2 policy/negative tests per platform.
+
+### Final three-pass D2 audit verdict
+1. **User-contract audit — PASS:** The Head-controlled five-phase single-lane design, nine original specialists, three coordination skills, bounded local repairs, optional owner-runner development testing, no required independent auditor conversation, and v0.0.1 branch isolation are preserved.
+2. **Implementation/regression audit — PASS for synthetic cases:** Source-bound authorization, trusted dispatch claims, terminal Head snapshot, attested phase transitions, evidence ownership, replay protection across tasks, Head handoff budget, final gate identity comparisons, and provider revision changes were tested. Multiple defects found during development were repaired, and no test failures remain in the final observed 81-test source revision.
+3. **Trust-boundary audit — INCOMPLETE for production:** Every `FakeAdapter` in these tests is synthetic. The read-only verifier cannot itself establish the authenticity of a future adapter, prevent concurrent external writes, issue a permission token, prove real user identity, certify a real provider receipt, run nine-team benchmarks, or approve a GitHub release. These remain separate engineering acceptance blockers.
+
+### Interpretation
+**D2 reference implementation and synthetic regression tests: ACCEPTED_AT_PROTOTYPE_LEVEL.**  
+**Authenticated provider/cloud integration: NOT IMPLEMENTED.**  
+**End-to-end single-thread host trials: NOT RUN.**  
+**Global single-writer runtime lock: NOT IMPLEMENTED.**  
+**v0.0.2 plugin release readiness: NOT ESTABLISHED.**
+
+This audit-result documentation is a new Git commit and must not inherit the prior code SHA's CI result without a new exact-SHA run. Provider-hosted artifacts may evolve; do not treat a past screenshot, runner PASS or an LLM-authored claim as independently verified live service state.
