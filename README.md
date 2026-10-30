@@ -20,6 +20,10 @@ A human can use the files directly in GitHub. An LLM can read and suggest edits 
 
 Run optional checks when Python happens to be available: `python tools/library.py check`, `python tools/library.py build`, `python -m unittest discover -s tests -v`. Copy `tools/` and `tests/` if those helpers are wanted.
 
+## One-way Governance isolation
+
+[The one-way boundary contract](docs/ONE-WAY-BOUNDARY.md) prohibits a Governance-Branch dependency on this side template, upstream registration, automatic synchronization, and overwriting Governance-owned `ideas/` or `features/` paths. The template may know the concept of Governance but cannot make Governance know it exists.
+
 ## Authority and trust
 
 An idea is not approval to implement. A feature record is not permission to run a tool, proof of test success, or evidence of release. This library never supersedes project owner decisions, `AGENTS.md`, code owners, protected branches, official release records or external acceptance gates.
