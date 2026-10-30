@@ -57,6 +57,10 @@ Real unattended background execution, automatic completion triggers, guaranteed 
 - [x] One canonical plugin: `plugins_6ae3edf1ea4c819182f275592273e2cc` at v0.0.1.
 - [x] The old ID `plugins_6ae3ccf13f548191bdcba269f33085d3` is explicitly `superseded_still_installed`; **not retired/uninstalled**.
 - [x] Machine-readable registry + ADR-0003 and repeatable release-ID guard tests added to repo.
-- [ ] Uninstall old private draft **only with explicit owner authorization** and record backend confirmation.
+- [x] Owner explicitly authorized deletion of the exact old ID `plugins_6ae3ccf13f548191bdcba269f33085d3`.
+- [x] Old plugin labeled `OLD Color Team OPS - DELETE` (label-only update auto-bumped the old draft's release to v0.0.2; canonical remains v0.0.1).
+- [x] Exact-ID uninstall attempted; result `not_installed`. Canonical Plugin Creator release verified unchanged.
+- [ ] **Creator library deletion BLOCKED:** old plugin remains in owned-plugin list; no Creator delete action exposed to this session. Owner can delete the labeled old record in the UI.
+- [ ] Verify old Creator record is absent, then update registry to retired/deleted; do not infer successful removal from uninstall connection result.
 - [ ] Conduct a real end-to-end ChatGPT mission (registry and read-only skill smoke tests already passed).
 - [ ] Merge PR #1 into `main` only after separate owner authorization; this is not implied by plugin upload.

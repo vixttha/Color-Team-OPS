@@ -14,10 +14,16 @@
   "superseded": [
     {
       "plugin_id": "plugins_6ae3ccf13f548191bdcba269f33085d3",
-      "release_id": "pluginrel_6ae3ccf25eb88191b39f5b72213e318f",
-      "version": "0.0.1",
-      "status": "superseded_still_installed",
-      "uninstallation": "requires_explicit_owner_authorization"
+      "release_id": "pluginrel_6ae3f34cfbb0819189daaaccaf298eb8",
+      "version": "0.0.2",
+      "status": "superseded_creator_record_present",
+      "uninstallation": "owner_authorized_creator_deletion_pending",
+      "display_name": "OLD Color Team OPS - DELETE",
+      "owner_authorized_deletion": true,
+      "connection_uninstall_result": "not_installed",
+      "creator_record_present": true,
+      "creator_delete_operation_available_in_session": false,
+      "last_verified": "2026-10-29"
     }
   ],
   "policies": {

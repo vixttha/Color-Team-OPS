@@ -42,8 +42,15 @@ class PluginIdentityTests(unittest.TestCase):
         for entry in retired:
             self.assertRegex(entry["plugin_id"], ID)
             self.assertNotEqual(entry["plugin_id"], canonical["plugin_id"])
-            self.assertEqual(entry["status"], "superseded_still_installed")
-            self.assertEqual(entry["uninstallation"], "requires_explicit_owner_authorization")
+            self.assertEqual(entry["status"], "superseded_creator_record_present")
+            self.assertEqual(entry["uninstallation"], "owner_authorized_creator_deletion_pending")
+            self.assertTrue(entry["owner_authorized_deletion"])
+            self.assertTrue(entry["creator_record_present"])
+            self.assertFalse(entry["creator_delete_operation_available_in_session"])
+            self.assertEqual(entry["connection_uninstall_result"], "not_installed")
+            self.assertIn("OLD", entry["display_name"])
+            self.assertEqual(entry["version"], "0.0.2")
+            self.assertRegex(entry["release_id"], r"^pluginrel_[0-9a-f]+$")
         self.assertIn("SUPERSEDED BUT STILL INSTALLED", read("docs/decisions/ADR-0003-canonical-plugin-identity.md"))
 
     def test_upgrade_policy_is_fail_closed(self):

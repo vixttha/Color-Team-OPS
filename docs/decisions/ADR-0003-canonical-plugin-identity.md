@@ -31,3 +31,11 @@ This document concerns **release-management bookkeeping only**. GitHub developme
 ## Limits of enforcement
 
 Repository tests validate the registry and its references; they **cannot** by themselves stop Plugin Creator from creating a second private plugin. Every creation/update/uninstall must therefore be preceded by checking the live Plugin Creator identity and version and receiving whatever owner authorization is required.
+
+## Operational addendum — approved deletion, Creator source still present (2026-10-29)
+
+The owner explicitly authorized removing **only** the old ID `plugins_6ae3ccf13f548191bdcba269f33085d3`, preserving canonical `plugins_6ae3edf1ea4c819182f275592273e2cc`. The old draft was relabeled `OLD Color Team OPS - DELETE`, producing old-draft release `0.0.2` / `pluginrel_6ae3f34cfbb0819189daaaccaf298eb8`; this is *not* the canonical product's v0.0.2.
+
+A scoped uninstall returned `not_installed`. Plugin Creator metadata and owned-plugin listing still show the old record, so its **library deletion is NOT DONE**. No Creator delete-record operation is exposed in this session. Registry status `superseded_creator_record_present` is authoritative until independently confirmed absent. Explicit owner authorization has already been granted; do not repeatedly request it for this exact deletion.
+
+The original historical ADR paragraph `SUPERSEDED BUT STILL INSTALLED` referred to the earlier state. The current condition is more precisely: **Creator library record exists, no installed connection identified**. Do not rewrite history to claim deletion. [Cleanup issue #5](https://github.com/vixttha/Color-Team-OPS/issues/5).

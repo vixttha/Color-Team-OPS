@@ -25,7 +25,7 @@ Newest version first. Every version updates README.md, this changelog, acceptanc
 ### Release identity incident prevention
 
 - ADR-0003 and `docs/PLUGIN-RELEASE-REGISTRY.json` establish exactly one canonical plugin ID.
-- Original private v0.0.1 draft is **superseded, still installed**, pending explicit owner authorization to uninstall.
+- Owner expressly authorized deletion of the old ID. It is relabeled **OLD Color Team OPS - DELETE** and currently appears as its own draft release v0.0.2 (label-only change; **not** the canonical product's v0.0.2). The exact-ID uninstall command returned `not_installed`, but Plugin Creator still lists the old record; **full deletion remains pending a Creator-library delete action**.
 - Added regression tests for plugin ID uniqueness, canonical version/source references, and mandatory release upgrade checks.
 - This is repository release governance only; the installed v0.0.1 package and its cloud-only runtime have not been changed.
 
@@ -34,4 +34,4 @@ Newest version first. Every version updates README.md, this changelog, acceptanc
 - New private ChatGPT v0.0.1 plugin created; all twelve skills registered/readable and 25/25 shared source files identical. Full interactive user mission trials and third-party host integrations remain unverified.
 - Persistent autonomous cloud execution is not part of the skills-only v0.0.1 release.
 
-Canonical private plugin `plugins_6ae3edf1ea4c819182f275592273e2cc` is new v0.0.1 (not a v0.0.2 update). The earlier private v0.0.1 plugin is superseded; it was not deleted. GitHub PR #1 is still draft until explicitly authorized to merge.
+Canonical private plugin `plugins_6ae3edf1ea4c819182f275592273e2cc` is new v0.0.1 (not a v0.0.2 update). The old private draft was relabeled, remains separately listed in Plugin Creator, and was **not deleted**; the owner has authorized removal. GitHub issue #5 tracks deletion confirmation. GitHub PR #1 is still draft until explicitly authorized to merge.
