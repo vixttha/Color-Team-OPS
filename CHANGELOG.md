@@ -2,7 +2,7 @@
 
 Newest version first. Every version updates README.md, this changelog, acceptance evidence and relevant architecture documents.
 
-## [0.0.1] — Draft; release acceptance incomplete
+## [0.0.1] — Private ChatGPT skills package created; GitHub PR remains draft
 
 ### Added
 - Nine color-team roles plus OPS Director, Verification Gate and Mission Control (12 skills).
@@ -12,7 +12,7 @@ Newest version first. Every version updates README.md, this changelog, acceptanc
 - Design-stage runner policy and accepted ADR-0001.
 - README-per-version rule, evidence-backed assistant audits and repository hygiene files.
 
-### Hardened on draft branch (not yet installed)
+### Security hardening (included in new canonical private package)
 - Mission and evidence JSON Schema Draft 2020-12 cross-field requirements, disallowing incomplete OBSERVED/PASS and branch-write claims.
 - Adversarial negative-schema regressions, semantically parsed workflow policy, and CI mutation tests.
 - Cloud-only development test dependencies, explicitly absent from installed skill runtime.
@@ -23,8 +23,8 @@ Newest version first. Every version updates README.md, this changelog, acceptanc
 - The owner selected the assistant to audit this release; outside independent review is not a prerequisite.
 
 ### Outstanding
-- Windows and Linux GitHub Actions tests ran and passed **25/25 each** on `021b7b8552776e0c14db6207292300ff22a43159`. Final-revision verification and plugin-source alignment remain the release gate.
-- Real installed-plugin skill acceptance, host integrations and plugin/repository source reconciliation.
+- Both Windows and Linux GitHub Actions jobs passed 25/25 tests at `52b4160c8246e3ada245fe15c8d2657972118386` ([run #40983579901](https://github.com/vixttha/Color-Team-OPS/actions/runs/40983579901)); Linux ZIP reproduced byte-for-byte.
+- New private ChatGPT v0.0.1 plugin created; all twelve skills registered/readable and 25/25 shared source files identical. Full interactive user mission trials and third-party host integrations remain unverified.
 - Persistent autonomous cloud execution is not part of the skills-only v0.0.1 release.
 
-The already-created Plugin Creator v0.0.1 release predates these GitHub-only maintenance changes. GitHub changes are not automatically installed.
+Canonical private plugin `plugins_6ae3edf1ea4c819182f275592273e2cc` is new v0.0.1 (not a v0.0.2 update). The earlier private v0.0.1 plugin is superseded; it was not deleted. GitHub PR #1 is still draft until explicitly authorized to merge.

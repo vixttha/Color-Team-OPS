@@ -18,12 +18,12 @@ Real unattended background execution, automatic completion triggers, guaranteed 
 
 ## Additional v0.0.1 release gates
 
-- [ ] Authorized owner-runner Windows and Linux GitHub Actions test jobs PASS on exact final SHA.
-- [ ] No installed-plugin or cloud-service dependency on owner runners; development test workflow is restricted to the trusted v0.0.1 release branch.
-- [ ] Permanent runner law and ADR-0002 CI choice reviewed.
-- [ ] README, CHANGELOG and test evidence synchronized for this candidate.
+- [x] Owner-runner Windows and Linux jobs both PASS on source revision `52b4160c8246e3ada245fe15c8d2657972118386` (25/25 each; CI run #40983579901). This was the package source revision before this record-only commit.
+- [x] No installed-plugin or cloud-service dependency on owner runners; development test workflow targets only the trusted v0.0.1 release branch.
+- [x] Permanent runner law and ADR-0002 CI choice reviewed.
+- [x] README, CHANGELOG and test evidence updated for the private v0.0.1 package.
 - [ ] Assistant's evidence-based audit and actual installed-plugin skill trials evidenced; outside review not required.
-- [ ] Installed private plugin and GitHub source reconciled before approving release.
+- [x] New canonical 0.0.1 private plugin created and 25/25 common source files compared byte-exact with GitHub; package README and auto-generated compatibility manifest differ intentionally.
 
 ## Security hardening acceptance (must pass before v0.0.1 approval)
 
@@ -41,5 +41,13 @@ Real unattended background execution, automatic completion triggers, guaranteed 
 - [x] Recorded complete [GitHub Actions run 40982601391](https://github.com/vixttha/Color-Team-OPS/actions/runs/40982601391).
 - [x] Owner-selected CI and assistant-led audit policy documented in ADR-0002.
 - [ ] Reverify the *latest* GitHub source commit after this documentation change.
-- [ ] Upload a matching **0.0.1** private ChatGPT plugin package and verify the file mapping, without silently creating v0.0.2.
-- [ ] Record real private-host invocation/acceptance where accessible; otherwise label it **NOT VERIFIED**, not PASS.
+- [x] New private ChatGPT plugin `plugins_6ae3edf1ea4c819182f275592273e2cc` created at **0.0.1** and source files verified.
+- [x] ChatGPT skill registry exposes all 12 roles; all are readable and frontmatter/cloud-only instructions present. **End-to-end interactive user mission behavior: NOT VERIFIED**. Other web LLM hosts: NOT VERIFIED.
+
+## v0.0.1 final scope and verdict
+
+**Source-and-package acceptance:** PASS for the *skills-only private ChatGPT release*, subject to final record-only commit tests. The creator returned private 0.0.1 release `pluginrel_6ae3edf2a4ec8191b5cf9c92c317db22`. The creator's original private draft remains distinct and is not canonical.
+
+**Audit:** assistant-led Orange/Yellow, Red/Purple, Green, Verification Gate and White review; not a separate independent reviewer. Owner explicitly selected the assistant as reviewer. No claim of actual unattended cloud orchestration, real verification signatures, third-party host compatibility or live mission performance.
+
+**Merge:** GitHub PR #1 remains draft. No user authorization to merge `main` is inferred from private plugin upload.

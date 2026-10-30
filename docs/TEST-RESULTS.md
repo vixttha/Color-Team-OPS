@@ -52,3 +52,17 @@ The owner explicitly directed use of their registered Windows/Linux GitHub runne
 - This is a **prior successfully tested source revision**; if acceptance documentation changes after it, the new final SHA must also pass CI. Record final run details in the PR discussion before promotion.
 
 The original GitHub-hosted CI provisioning problem is a historical issue only; per ADR-0002, the owner chose their connected runners for v0.0.1 release verification. This changes no runtime product law.
+
+## Package creation and ChatGPT registry verification — 2026-10-29
+
+**Exact installed portable source revision:** `52b4160c8246e3ada245fe15c8d2657972118386`. Canonical private Plugin Creator ID: `plugins_6ae3edf1ea4c819182f275592273e2cc`, release ID: `pluginrel_6ae3edf2a4ec8191b5cf9c92c317db22`, version `0.0.1`; URL: https://chatgpt.com/plugins/plugins_6ae3edf1ea4c819182f275592273e2cc.
+
+**Real GitHub Actions run:** [40983579901](https://github.com/vixttha/Color-Team-OPS/actions/runs/40983579901) on above SHA. **Windows SUCCESS, Linux SUCCESS, 25/25 tests on each.** Linux built two `git archive` ZIPs and verified their byte equality, ZIP CRC/content and SHA command with a successful job.
+
+**Private portable package:** 26 uploaded source files, deterministic `SHA-256 8fa207a624a47db3fe52a099e60b61a56c81a7fcb9c3af3e8a4853e54129179d`. Plugin Creator confirms 27 current files including the generated Codex compatibility overlay. **25/25 corresponding plugin/GitHub source files byte-exact**; package README deliberately differs from repository README; generated overlay is expected.
+
+**ChatGPT registry test:** `skills__list` exposed **12/12 Color Team OPS roles**, and `skills__read` successfully read all 12 with frontmatter and the cloud-only requirement; Mission Control, OPS Director and Verification Gate were also individually inspected for safe authority/evidence boundaries.
+
+**Limitations:** No full end-to-end user-initiated skill mission has been performed, no automatic cloud worker exists, no Kimi/Z.ai/Grok host import verified, and no external independent reviewer has been requested. The owner explicitly authorized assistant-led review. Previous GitHub-hosted failures in earlier documentation are historical and superseded by ADR-0002; they must not be mistaken for the current successful runner tests.
+
+**Record-only commit note:** This paragraph and README/CHANGELOG updates change the repository revision beyond the source SHA that was packaged. The unchanged 25 installed-source blobs remain identical; the follow-up CI run on the record commit is required for final-revision hygiene.
