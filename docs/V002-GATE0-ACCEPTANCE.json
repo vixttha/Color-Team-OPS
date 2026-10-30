@@ -15,7 +15,7 @@
     "integration/v0.0.2-master-single-thread"
   ],
   "active_worker": "yellow-team",
-  "current_checkpoint": "M1",
+  "current_checkpoint": "M2",
   "source_inventory": {
     "master_reference": "M1 single-task/zero-repair bridge; M2 9 team/18 capabilities; M3 advice; M4 270 unlabeled slots; M5 12 skill candidate",
     "repeat_worker": "Yellow repeat specialist engine source separately 263/263 per platform historically",
@@ -26,7 +26,7 @@
     {
       "id": "M1",
       "needed": "multi-task Yellow→Orange→Yellow, finite repeat/repair, scope/replay/revision checks, evidence-linked gate, exact integrated source tests",
-      "current": "MULTI_TASK_AND_CONSENT_BOUND_REPAIR_REFERENCE_CODE_AUTHORED_NATIVE_TESTS_NOT_RUN"
+      "current": "UNVERIFIED_NATIVE_EXECUTION_AND_REPAIR_ATTESTATION"
     },
     {
       "id": "M2",
@@ -70,5 +70,6 @@
     "no plugin runtime owned PC/runner"
   ],
   "host_trust_mode": "UNVERIFIED_REFERENCE_ONLY",
-  "release_ready": false
+  "release_ready": false,
+  "last_reviewed_sha": "9148d4ff53bb38c3466ccc2ac7fa1f6ff4cdf795"
 }
