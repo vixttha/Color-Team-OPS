@@ -1,3 +1,17 @@
+# Current v0.0.2 master candidate — October 30, 2026
+
+**Current source branch:** `integration/v0.0.2-master-single-thread`. **Status:** UNPUBLISHED / RELEASE BLOCKED. The first heading further below preserves the older design-branch README as historical context, not the current branch identity.
+
+This is **one v0.0.2 release mission**, with internal checkpoints M1–M5. In the same conversation the Head uses **Head → one Worker → Validate → logically distinct Internal Auditor → Head**. Within the user's already-authorized bounded work, continue through ordinary internal handoffs without requesting a new confirmation every time; still stop for externally restricted grants, paid services, merges or publication.
+
+**Candidate source now includes:** the existing nine specialist skills (byte-identical to v0.0.1), three **intentionally updated** coordinator skills (Mission Control, OPS Director, Verification Gate), portable schemas/examples and constitution; M1 reference bridge, M2 nine-team directory/18 capabilities, M3 advisory routing/typed handoff, M4 evaluation scaffold, and M5 blocked release gate records. There are **still exactly twelve skills**, not a 13th routing agent.
+
+**Evidence:** 137 focused M1–M4 Python tests passed in an isolated cloud test workspace with GitHub blob matches, but used synthetic adapters for D2/host integration. The current twelve-skill files and manifests passed 13/13 GitHub-backed static continuity checks. **A full current-SHA repository-wide test, actual installed ChatGPT v0.0.2 missions, 270 real independently labeled specialist cases, true hosted consent/revocation, cross-session lock and owner release approval remain unavailable or unverified.** Do not call the current candidate a released plugin or production-authenticated service.
+
+See [one-thread Head preflight](docs/V002-MASTER-HEAD-PREFLIGHT.md), [M5 coordinator-skill delta](docs/V002-M5-SKILL-CONTINUITY.md), [blocked release gate matrix](docs/V002-MASTER-RELEASE-GATES.json), and [M5 audit](docs/V002-M5-VALIDATION-AUDIT-HEAD.md). This repo remains **cloud-only, provider-neutral and independent of any hosting vendor**, and no user-owned runner is a plugin runtime dependency.
+
+---
+
 # Color Team OPS — Future v0.0.2 Architecture Ideas
 
 **Status: ISOLATED FUTURE-v0.0.2 DESIGN, PROTOTYPE CODE AND TESTS — not merged, published, installed or production-accepted.**

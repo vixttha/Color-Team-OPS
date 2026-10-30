@@ -57,12 +57,15 @@
       "checkpoint": "M5",
       "development": "UNPUBLISHED_PACKAGE_CANDIDATE",
       "production": "BLOCKED",
-      "basis": "v0.0.1 skill/schema/example/constitution blobs copied unchanged; v0.0.2 manifests candidate only",
+      "basis": "9 v0.0.1 specialist skill blobs unchanged; 3 coordinator SKILL.md files intentionally extended for bounded one-thread operation; manifests 0.0.2 and 13/13 GitHub-backed static continuity checks",
       "blockers": [
-        "exact current-source package Python tests not run",
-        "installed ChatGPT 12-skill trial missing",
-        "source-to-plugin artifact parity unverified",
-        "explicit owner release approval missing"
+        "full exact current-source repository-wide Python suite NOT RUN",
+        "tests/test_v002_skill_continuity.py authored but NOT EXECUTED by Python",
+        "actual v0.0.2 installed ChatGPT one-thread skill mission trial NOT RUN",
+        "new Python routing/registry features not shown executable inside ChatGPT installed plugin",
+        "production host user-consent/revocation and global cross-session lock unavailable",
+        "independent M4 specialist quality corpus and paired trials unfinished",
+        "explicit owner approval to merge or publish missing"
       ]
     }
   ],
@@ -79,5 +82,19 @@
   },
   "final_status": "BLOCKED_EXTERNAL_APPROVAL_AND_MISSING_EVIDENCE",
   "release_ready": false,
-  "measured_99_percent_claim": false
+  "measured_99_percent_claim": false,
+  "latest_reviewed_source_sha": "c9f8f7f316368a746d308f23644298065ce746b2",
+  "skill_delta": {
+    "unchanged_specialists": 9,
+    "intentionally_updated_coordinators": 3,
+    "unchanged_coordinator_files": 0,
+    "source_skill_count": 12,
+    "actual_installed_plugin_update": false,
+    "static_checks": {
+      "passed": 13,
+      "total": 13,
+      "source": "GitHub fetched exact candidate skill and manifest files"
+    },
+    "python_continuity_suite": "NOT_EXECUTED"
+  }
 }

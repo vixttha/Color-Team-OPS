@@ -1,3 +1,5 @@
+> **Historical M5 candidate audit, superseded on skill-file parity:** After this report's original candidate, the master branch intentionally updated the three existing coordinator SKILL.md files for the one-thread workflow. **Only nine specialist skills remain byte-identical to v0.0.1**; the three coordinator skills now differ. See [M5 coordinator-skill delta](V002-M5-SKILL-CONTINUITY.md) and [current release gates](V002-MASTER-RELEASE-GATES.json). Historical source tests below remain tied to their recorded SHA, not the current HEAD. Release remains blocked.
+
 # Color Team OPS v0.0.2 — M5 final package / Internal Auditor / Head gate
 
 **Master mission:** `CTO-V002-SINGLE-THREAD`
