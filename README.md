@@ -25,3 +25,7 @@ No Python, external account, cloud vendor, GitHub Actions runner, plugin, or loc
 The 36 idea and 5 feature records remain an **unchanged historical snapshot**. The checker is now count-neutral, references and indexes are validated, and the unrelated-project template is available at [`portable/v0.0.1`](portable/v0.0.1/README.md) with an optional no-clobber adopter. New generic adoption must start from that blank starter, not from the historical records.
 
 Read [schema-profile reconciliation](docs/SCHEMA-PROFILES-AND-COMPATIBILITY.md), [historical versus engineering status](docs/HISTORICAL-STATUS-VS-ENGINEERING.md), and [test/acceptance instructions](docs/PORTABILITY-FIX-ACCEPTANCE-2026-10-30.md). `portable/` root files remain backward-compatibility research examples; they are **not** a second authoritative release catalog. No runtime or v0.0.2 integration branch was changed by this work.
+
+## New owner-requested concept (separate from original 36)
+
+The 36 imported idea records and five proposed feature umbrellas above remain the frozen historical source set. A **37th, newly captured idea** is [IDEA-000037 — One-action mission pipeline planner and adaptive team launcher](ideas/records/IDEA-000037.json), with a [detailed concept and acceptance boundaries](docs/IDEA-000037-ONE-ACTION-MISSION-PIPELINE.md). This addition is captured/not_planned/untested and not approved for v0.0.2 implementation or release; the optional library is still not a runtime dependency.
