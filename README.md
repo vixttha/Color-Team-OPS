@@ -70,3 +70,6 @@ The [signed host authority reader](policy_v002/host_authority.py), [live GitHub 
 
 ## D5 — Read-only provider provenance pilot (NOT role authority)
 The [D5 observed-records contract](docs/24-D5-PROVIDER-PROVENANCE-PILOT.md) and [optional GitHub provenance inspector](policy_v002/pilot_provenance.py) check ordered issue records and source-bound GitHub CI evidence from [Issue #7](https://github.com/vixttha/Color-Team-OPS/issues/7). The verifier's result **never authenticates Head, Worker, Validator or Internal Auditor merely from GitHub comment labels**, and never claims an issued production host grant. This optional GitHub adapter is compatible with [CTO-LOCK-001 provider-neutrality law](docs/23-CTO-LOCK-001-CLOUD-PROVIDER-NEUTRALITY.md).
+
+## D5 audit and architecture regression
+The [D5 pilot audit](docs/25-D5-PILOT-PROVENANCE-AUDIT.md) records both the initial test failure and the repaired live provider check. [Owner-law regression checks](tests/test_v002_neutrality.py) assert cloud-only and runner independence at the core-contract boundary without making GitHub or any hosting vendor mandatory. The pilot confirms real provider observations, **not** authenticated internal team-role identities or production user consent.
