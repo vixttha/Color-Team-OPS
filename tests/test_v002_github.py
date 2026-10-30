@@ -251,21 +251,21 @@ class RestReaderTests(unittest.TestCase):
         self.reader._opener=FakeOpener([
             {"total_count":101,"jobs":page1},{"total_count":101,"jobs":page2}
         ])
-        rows=self.reader.latest_jobs("owner/repo",123)
+        rows=self.reader.attempt_jobs("owner/repo",123,1)
         self.assertEqual(len(rows),101)
         self.assertEqual(len(self.reader._opener.requests),2)
     def test_jobs_duplicate_ids_rejected(self):
         self.reader._opener=FakeOpener([{"total_count":2,"jobs":[{"id":1},{"id":1}]}])
         with self.assertRaises(ProviderReadError):
-            self.reader.latest_jobs("owner/repo",123)
+            self.reader.attempt_jobs("owner/repo",123,1)
     def test_jobs_incomplete_page_rejected(self):
         self.reader._opener=FakeOpener([{"total_count":2,"jobs":[]}])
         with self.assertRaises(ProviderReadError):
-            self.reader.latest_jobs("owner/repo",123)
+            self.reader.attempt_jobs("owner/repo",123,1)
     def test_jobs_over_cap_rejected(self):
         self.reader._opener=FakeOpener([{"total_count":1001,"jobs":[]}])
         with self.assertRaises(ProviderReadError):
-            self.reader.latest_jobs("owner/repo",123)
+            self.reader.attempt_jobs("owner/repo",123,1)
     def test_invalid_run_identifier_rejected(self):
         with self.assertRaises(ProviderReadError):
             self.reader.workflow_run("owner/repo",0)
