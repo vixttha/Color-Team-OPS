@@ -58,7 +58,10 @@ def check_release_workflow(source):
         assert "requirements-ci.txt" in source_code
         assert "python" in source_code
         assert "unittest discover -s tests" in source_code
-        assert ".cto-test-venv" in source_code or ".cto-test-deps" in source_code
+        if name == "windows":
+            assert ".cto-test-venv" in source_code
+        else:
+            assert "import jsonschema, yaml" in source_code
         assert "runner identity mismatch" in source_code.lower() or "RUNNER_NAME" in source_code
         for token in ("secrets.", "curl ", "wget ", "invoke-webrequest", "pull_request", "workflow_call", "| bash"):
             assert token not in source_code.lower()
