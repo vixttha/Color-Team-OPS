@@ -61,3 +61,6 @@ The [D3 read-only GitHub adapter](policy_v002/github_provider.py) provides bound
 
 ## D3 audited reference status
 [D3 three-pass security and evidence audit](docs/20-D3-PROVIDER-EVIDENCE-AUDIT.md) records the source-bound tests, the separate real GitHub connector observations, and the unimplemented protected-host authorization requirements. The D3 implementation is a read-only reference adapter; a synthetic HostAuthority fixture cannot authenticate real mission grants.
+
+## D4 protected authority reference and real GitHub REST evidence
+The [signed host authority reader](policy_v002/host_authority.py), [live GitHub reader smoke](devtools/live_github_smoke.py), [authority regressions](tests/test_v002_authority.py), [trust-boundary design](docs/21-D4-HOST-AUTHORITY.md), and [three-pass D4 audit](docs/22-D4-HOST-AUTHORITY-AUDIT.md) are included on this isolated v0.0.2 branch. The live Python GitHub REST read succeeded in owner-runner development CI. A protected issuer and real user-approved mission ledger have NOT been deployed; the v0.0.2 plugin is not released.
