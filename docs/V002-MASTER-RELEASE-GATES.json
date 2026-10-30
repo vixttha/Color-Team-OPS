@@ -1,0 +1,83 @@
+{
+  "schema_version": "cto-v002-master-gates-1",
+  "mission_id": "CTO-V002-SINGLE-THREAD",
+  "version_target": "0.0.2",
+  "candidate_branch": "integration/v0.0.2-master-single-thread",
+  "previous_release": {
+    "branch": "release/v0.0.1-cloud-only",
+    "sha": "fc77a647554cd40fb94839b3eb99e5f0ce4210a9",
+    "version": "0.0.1",
+    "modified": false
+  },
+  "stages": [
+    {
+      "checkpoint": "M1",
+      "development": "REFERENCE_ACCEPTED",
+      "production": "UNVERIFIED",
+      "basis": "43/43 focused fixture tests, Yellow/Orange code consistency repairs",
+      "blockers": [
+        "full integrated D1-D5 exact-SHA suite unrun",
+        "protected cloud issuer absent",
+        "single-task bridge migration incomplete"
+      ]
+    },
+    {
+      "checkpoint": "M2",
+      "development": "REFERENCE_ACCEPTED",
+      "production": "UNVERIFIED",
+      "basis": "35/35 focused registry tests; nine identities, 18 capability IDs",
+      "blockers": [
+        "supported-host plugin workflow trial not run",
+        "tool rights not authenticated by registry"
+      ]
+    },
+    {
+      "checkpoint": "M3",
+      "development": "REFERENCE_ACCEPTED",
+      "production": "UNVERIFIED",
+      "basis": "34/34 focused routing tests; draft-only handoff, no auto-dispatch",
+      "blockers": [
+        "host-protected routing and role attestations unrun",
+        "real routing quality unmeasured"
+      ]
+    },
+    {
+      "checkpoint": "M4",
+      "development": "EVALUATION_SCAFFOLD_ONLY",
+      "production": "BLOCKED",
+      "basis": "25/25 focused lab tests; 270 unlabeled slots",
+      "blockers": [
+        "270 independent labeled specialist cases missing",
+        "actual tool/model/host trials missing",
+        "holdouts and paired ablations unrun",
+        "quality thresholds not established"
+      ]
+    },
+    {
+      "checkpoint": "M5",
+      "development": "UNPUBLISHED_PACKAGE_CANDIDATE",
+      "production": "BLOCKED",
+      "basis": "v0.0.1 skill/schema/example/constitution blobs copied unchanged; v0.0.2 manifests candidate only",
+      "blockers": [
+        "exact current-source package Python tests not run",
+        "installed ChatGPT 12-skill trial missing",
+        "source-to-plugin artifact parity unverified",
+        "explicit owner release approval missing"
+      ]
+    }
+  ],
+  "nonnegotiable": {
+    "product": "cloud-only, provider-neutral, hosting-platform-independent",
+    "teams": 9,
+    "coordination_skills": 3,
+    "single_active_worker": true,
+    "automatic_team_handoffs_within_authorized_scope": true,
+    "production_authenticated_mission_evidence": false,
+    "owner_runner_runtime_required": false,
+    "auto_merge_or_publish_allowed": false,
+    "paid_cloud_provisioning_allowed": false
+  },
+  "final_status": "BLOCKED_EXTERNAL_APPROVAL_AND_MISSING_EVIDENCE",
+  "release_ready": false,
+  "measured_99_percent_claim": false
+}
