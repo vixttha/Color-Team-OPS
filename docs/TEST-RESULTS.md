@@ -36,3 +36,7 @@ The successful runner-acceptance workflow on the separate runner-audit branch di
 - **Independent external reviewer acceptance:** NOT RECEIVED. PR #1 remains draft.
 
 **Result:** Source-level repair evidence is positive; overall release acceptance is BLOCKED.
+
+## 2026-10-29 — Owner-corrected v0.0.1 test plan
+
+The owner explicitly directed use of their registered Windows/Linux GitHub runners for v0.0.1 release testing, and assigned the assistant to audit it. The earlier mandatory GitHub-hosted CI requirement is superseded by [ADR-0002](decisions/ADR-0002-ci-runner-choice.md); previous provider-runner failures remain historical evidence, not the selected release gate. The self-hosted runners must **never** be required by the installed plugin or its future cloud services. No test PASS is claimed until actual job logs on the exact v0.0.1 SHA are obtained. The existing private Plugin Creator v0.0.1 release remains out of date until reconciled.

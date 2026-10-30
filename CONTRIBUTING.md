@@ -4,6 +4,6 @@ Use reviewable branches and narrow PRs; explain exact source SHA, scope, risk, t
 
 Every new version MUST update README.md, CHANGELOG.md, docs/TEST-RESULTS.md and affected design docs. Follow [release process](docs/RELEASE-PROCESS.md) and [runner policy](docs/design/RUNNER-POLICY.md).
 
-GitHub-hosted CI is the mandatory release baseline. Running Python tests on a developer's computer is optional convenience only. Owner Windows/Linux runners are strictly manual supplements and must never execute untrusted PR code.
+For v0.0.1 the owner has authorized GitHub Actions tests on the registered Windows/Linux self-hosted runners; the trusted version branch is the only trigger. This choice never turns development runners into installed plugin infrastructure. Do not test untrusted PR code.
 
 The CODEOWNERS file expresses review ownership; protections and required reviews need separate GitHub ruleset settings.

@@ -21,7 +21,7 @@ Neither plugin use nor future autonomous cloud operations may require an owner's
 | Powering its autonomous operations | Never required |
 | Serving as its database or cloud backend | Never required |
 
-**Release CI is not plugin runtime.** GitHub-hosted Linux/Windows validation is the mandatory repository release baseline; owner runners are opt-in supplemental validation only. The cloud baseline must pass with both personal runners offline. No untrusted PR code is permitted on personal runners.
+**Release CI is not plugin runtime.** For v0.0.1, the owner explicitly authorized running the release tests on the registered Windows and Linux GitHub self-hosted runners. The plugin remains usable when those runners are off or unregistered. No untrusted pull-request code may run on personal machines. The earlier GitHub-hosted-only CI policy has been superseded by ADR-0002.
 
 Canonical law: [Constitution](docs/CONSTITUTION.md), [Runner policy](docs/design/RUNNER-POLICY.md), [ADR-0001](docs/decisions/ADR-0001-runner-separation.md).
 
@@ -33,8 +33,9 @@ See [Changelog](CHANGELOG.md), [Release process](docs/RELEASE-PROCESS.md), [Cont
 
 ## CI structure
 
-- Mandatory GitHub-hosted Ubuntu/Windows matrix: .github/workflows/cloud-ci.yml (PRs to main and pushes to main).
-- Optional owner Windows/Linux: .github/workflows/optional-self-hosted.yml (manual workflow_dispatch, trusted main only, explicit opt-in, never a required check).
+- **Authorized v0.0.1 verification:** `.github/workflows/v0.0.1-runner-ci.yml` runs Linux and Windows tests only on the dedicated v0.0.1 release branch, with read-only GitHub credentials and pinned source revision.
+- **No GitHub-hosted requirement:** GitHub-hosted jobs are not required for v0.0.1. This testing choice is version-specific, not a dependency of the plugin.
+- [ADR-0002](docs/decisions/ADR-0002-ci-runner-choice.md) supersedes the CI-selection portion of ADR-0001.
 - Developer convenience only: python -B -m unittest discover -s tests -p "test_*.py" -v. Running this on your own computer is never a requirement for installing or using the plugin.
 
 ## Basic usage
@@ -47,12 +48,12 @@ Host compatibility on chatgpt.com, kimi.ai, z.ai, grok.com and other browser ser
 
 Orange/Yellow added cross-field mission authorization, evidence provenance and routing constraints. Red/Purple added Draft 2020-12 adversarial cases and parsed GitHub Actions workflow policy and mutation tests. These are source-level controls, not an independently authenticated cloud runtime.
 
-The required GitHub-hosted CI remains blocked **before runner assignment** ([issue #2](https://github.com/vixttha/Color-Team-OPS/issues/2)); cloud-only independent tests are supplemental evidence, not GitHub CI PASS. The installed private v0.0.1 plugin **does not yet contain the updated contracts and governance docs**. Plugin Creator requires an actual release update, which may advance the version; do not silently promote a new version during v0.0.1 review.
+Previous GitHub-hosted CI runs failed before runner assignment ([historical issue #2](https://github.com/vixttha/Color-Team-OPS/issues/2)). The project owner has now selected the registered Windows/Linux runners for v0.0.1 development and acceptance tests instead. The installed private v0.0.1 plugin **does not yet contain the updated contracts and governance docs**. Plugin Creator requires an actual release update, which may advance the version; keep version 0.0.1 until the release is ready; do not silently start v0.0.2.
 
 See [contract trust boundaries](docs/CONTRACT-TRUST-MODEL.md), [test coverage](docs/TESTING.md), and [Purple Team review issue #3](https://github.com/vixttha/Color-Team-OPS/issues/3).
 
-The [five-team execution and release-gate audit](docs/audits/v0.0.1-five-team-execution.md) records the evidence and remaining blockers; no internal audit is represented as an independent approval.
+The [five-team execution and release-gate audit](docs/audits/v0.0.1-five-team-execution.md) records the earlier review. A fresh v0.0.1 owner-directed audit will use real test evidence; the assistant can audit the work but does not mislabel its own assessment as an external independent review.
 
 ## Current status
 
-The private plugin v0.0.1 was created before the new CI and README work. GitHub changes do not update that installed package automatically. Draft [PR #1](https://github.com/vixttha/Color-Team-OPS/pull/1) remains unmerged; cloud CI, live skill acceptance, review and plugin/source reconciliation must be recorded before release approval. GitHub-hosted CI is currently **BLOCKED before any test step** ([issue #2](https://github.com/vixttha/Color-Team-OPS/issues/2)); personal runners must not replace its baseline.
+The private plugin v0.0.1 was created before the new CI and README work. GitHub changes do not update that installed package automatically. Draft [PR #1](https://github.com/vixttha/Color-Team-OPS/pull/1) remains unmerged. Remaining acceptance is actual runner test evidence, the assistant's evidence-based audit, live plugin acceptance and source/plugin reconciliation. Test hardware is never required for plugin use.

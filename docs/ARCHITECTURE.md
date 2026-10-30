@@ -26,4 +26,4 @@ Proposed priorities are policy defaults and never override explicit scope or lea
 
 ## Development infrastructure is not plugin infrastructure
 
-Required *repository-release* testing uses GitHub-hosted Ubuntu/Windows. Personal GitHub runners are optional manual-only supplements, not a default, fallback, or product dependency. See [runner policy](design/RUNNER-POLICY.md), [ADR-0001](decisions/ADR-0001-runner-separation.md) and [release process](RELEASE-PROCESS.md). README and CHANGELOG must be updated each version.
+v0.0.1 *repository-release* verification uses the owner's explicitly authorized Windows/Linux GitHub runners on the version branch. They are **development tools only**, not a dependency of any installed skill, cloud operation or future cloud backend. See [runner policy](design/RUNNER-POLICY.md), [ADR-0002](decisions/ADR-0002-ci-runner-choice.md) and [release process](RELEASE-PROCESS.md). README and CHANGELOG must be updated each version.
