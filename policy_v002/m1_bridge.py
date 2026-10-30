@@ -12,7 +12,7 @@ from typing import Mapping
 from .host_runtime import HostRejected, digest
 from .verifier import evaluate_completion
 
-VERSION = "cto-v002-m1-bridge-2"
+VERSION = "cto-v002-m1-bridge-3"
 PHASES = ("VALIDATE", "INTERNAL_AUDIT")
 EVENTS = ("DISPATCH", "WORKER_REPORTED", "VALIDATION_PASSED", "AUDIT_PASSED")
 TRANSITIONS = (
@@ -107,75 +107,125 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
                transition_events, event_links)
     if any(not isinstance(x, (tuple, list)) for x in records):
         return result("BLOCKED", "RECORDS_INVALID")
+    # v3 interprets the exact ordered Yellow event journal. Every completed task
+    # contributes four transitions and two validation/audit gate observations.
+    # There is ONE D2 aggregate Validate and Audit record at Head closure.
     count = len(work_orders)
-    if (count != 1 or len(worker_events) != 1 or len(evidence_claims) != 1
-        or len(gate_records) != 2 or len(transition_events) != 4
-        or len(event_links) != 4 or len(history) != 5 or len(state.get("gates", [])) != 2):
+    if (count < 1 or len(worker_events) != count or len(evidence_claims) != count
+        or len(gate_records) != 2 or len(transition_events) != 4*count
+        or len(event_links) != 4*count or len(history) != 1+4*count
+        or len(state.get("gates", [])) != 2*count):
         return result("UNVERIFIED", "M1_TRACE_OR_MIGRATION_UNAVAILABLE")
-    if (state.get("revision") != 5 or [e.get("revision") for e in history] != [1,2,3,4,5]
+    if count - 1 > state["max_handoffs"]:
+        return result("BLOCKED", "HANDOFF_BUDGET_EXCEEDED")
+    if (state.get("revision") != 1+4*count
+        or [e.get("revision") for e in history] != list(range(1,2+4*count))
         or history[0].get("kind") != "CONSENT_GRANTED"
         or history[0].get("consent_id") != state["consent_id"]
         or history[0].get("subject") != state["head_subject"]):
         return result("BLOCKED", "JOURNAL_TRACE_MISMATCH")
-    order, worker, claim = work_orders[0], worker_events[0], evidence_claims[0]
-    if any(not isinstance(x, dict) for x in (order,worker,claim)):
+    if not all(isinstance(x, dict) for x in
+               list(work_orders)+list(worker_events)+list(evidence_claims)):
         return result("BLOCKED", "RECORDS_INVALID")
-    task, receipt = order.get("task_id"), claim.get("provider_record_id")
-    if (order.get("mission_id") != mission["mission_id"]
+    tasks = [w.get("task_id") for w in work_orders]
+    teams = [w.get("team") for w in work_orders]
+    receipts = [c.get("provider_record_id") for c in evidence_claims]
+    claims = [c.get("claim_id") for c in evidence_claims]
+    if (any(not isinstance(x, str) or not x for x in tasks+teams+receipts+claims)
+        or len(set(tasks)) != count or len(set(receipts)) != count
+        or len(set(claims)) != count
+        or state.get("used_task_ids") != tasks
+        or state.get("used_receipts") != receipts):
+        return result("BLOCKED", "TASK_OR_RECEIPT_MISMATCH")
+    if not set(teams).issubset(set(state.get("approved_teams", []))):
+        return result("BLOCKED", "WORK_INCOMPLETE")
+    if (set(state.get("approved_teams", [])) != set(teams)
+        or len(state.get("approved_teams", [])) != len(set(teams))):
+        return result("BLOCKED", "TEAM_SUMMARY_MISMATCH")
+    used_criteria = set()
+    previous_event_ids = set()
+    for n, (order, worker, claim) in enumerate(zip(work_orders,worker_events,evidence_claims)):
+        task = tasks[n]
+        receipt = receipts[n]
+        if (order.get("mission_id") != mission["mission_id"]
             or order.get("source_sha") != sha
             or order.get("authorization_ref") != mission.get("authorization_ref")
             or worker.get("mission_id") != mission["mission_id"]
             or worker.get("source_sha") != sha):
-        return result("BLOCKED", "TASK_PROVENANCE_MISMATCH")
-    if (not isinstance(task,str) or not task or not isinstance(receipt,str) or not receipt
-        or state.get("used_task_ids") != [task] or state.get("used_receipts") != [receipt]
-        or worker.get("task_id") != task or worker.get("team") != order.get("team")
-        or worker.get("outcome") != "DONE" or worker.get("local_repairs") != 0
-        or worker.get("evidence_claim_ids") != [claim.get("claim_id")]
-        or claim.get("mission_id") != mission["mission_id"]
-        or claim.get("task_id") != task or claim.get("source_sha") != sha):
-        return result("BLOCKED", "TASK_OR_RECEIPT_MISMATCH")
-    for i, phase in enumerate(PHASES):
-        gate = state["gates"][i]
-        if (not isinstance(gate, dict) or gate.get("phase") != phase
-            or gate.get("task_id") != task or gate.get("sha") != sha
-            or gate.get("criterion") not in order.get("criteria_ids", [])
-            or gate.get("evidence_ref") != receipt or gate.get("verdict") != "PASS"
-            or not gate.get("subject")):
-            return result("BLOCKED", "GATE_RECEIPT_MISMATCH")
-        # This checks journal consistency, not authenticated role independence.
-        if gate["subject"] != history[i + 3].get("subject"):
-            return result("BLOCKED", "GATE_ACTOR_LINK_MISMATCH")
-    for i, kind in enumerate(EVENTS):
-        event, link, transition = history[i+1], event_links[i], transition_events[i]
-        if (not isinstance(link, dict) or not isinstance(transition,dict)
-            or event.get("kind") != kind
-            or link.get("journal_event_id") != event.get("event_id")
-            or link.get("journal_revision") != event.get("revision")
-            or link.get("transition_id") != transition.get("transition_id")
-            or transition.get("mission_id") != mission["mission_id"]
-            or transition.get("source_sha") != sha
-            or link.get("task_id") != task or link.get("source_sha") != sha):
-            return result("BLOCKED", "TRANSITION_LINK_MISMATCH")
-        if ((transition.get("from_phase"), transition.get("to_phase"), transition.get("actor"))
-                != TRANSITIONS[i]):
-            return result("BLOCKED", "TRANSITION_ROLE_MISMATCH")
-        if not isinstance(event.get("subject"), str) or not event["subject"]:
-            return result("BLOCKED", "JOURNAL_ACTOR_MISSING")
-        if i == 0 and event["subject"] != state["head_subject"]:
-            return result("BLOCKED", "HEAD_DISPATCH_ACTOR_MISMATCH")
-    if (not set(state.get("required_teams", [])).issubset(state.get("approved_teams", []))
-        or not set(state.get("criteria", [])).issubset(state.get("validated_criteria", []))):
+            return result("BLOCKED", "TASK_PROVENANCE_MISMATCH")
+        if (worker.get("task_id") != task or worker.get("team") != order.get("team")
+            or worker.get("outcome") != "DONE"
+            or worker.get("evidence_claim_ids") != [claims[n]]
+            or claim.get("mission_id") != mission["mission_id"]
+            or claim.get("task_id") != task or claim.get("source_sha") != sha):
+            return result("BLOCKED", "TASK_OR_RECEIPT_MISMATCH")
+        repairs = worker.get("local_repairs")
+        if (type(repairs) is not int or repairs < 0
+            or type(order.get("max_local_repairs")) is not int
+            or repairs > order["max_local_repairs"]
+            or repairs > mission.get("max_local_repairs", -1)):
+            return result("BLOCKED", "REPAIR_BUDGET_EXCEEDED")
+        # A v3 bridge cannot invent authenticated repair transitions or omit
+        # intermediary failed receipts. A positive repair count needs a future
+        # explicit versioned repair-event contract, not just a label.
+        if repairs:
+            return result("UNVERIFIED", "REPAIR_EVENT_TRACE_UNAVAILABLE")
+        criteria_ids = order.get("criteria_ids", [])
+        if (not isinstance(criteria_ids, list) or not criteria_ids
+            or not set(criteria_ids).issubset(set(state["criteria"]))):
+            return result("BLOCKED", "TASK_CRITERION_SCOPE_MISMATCH")
+        used_criteria.update(criteria_ids)
+        for phase_idx, phase in enumerate(PHASES):
+            g = state["gates"][2*n+phase_idx]
+            if (not isinstance(g, dict) or g.get("phase") != phase
+                or g.get("task_id") != task or g.get("sha") != sha
+                or g.get("criterion") not in criteria_ids
+                or g.get("evidence_ref") != receipt or g.get("verdict") != "PASS"
+                or not isinstance(g.get("subject"), str) or not g["subject"]):
+                return result("BLOCKED", "GATE_RECEIPT_MISMATCH")
+            if g["subject"] != history[3+4*n+phase_idx].get("subject"):
+                return result("BLOCKED", "GATE_ACTOR_LINK_MISMATCH")
+        for i, kind in enumerate(EVENTS):
+            index = 1 + 4*n + i
+            event, link, transition = history[index], event_links[4*n+i], transition_events[4*n+i]
+            if (not isinstance(event, dict) or not isinstance(link,dict)
+                or not isinstance(transition,dict)
+                or event.get("kind") != kind
+                or link.get("journal_event_id") != event.get("event_id")
+                or link.get("journal_revision") != event.get("revision")
+                or link.get("transition_id") != transition.get("transition_id")
+                or transition.get("mission_id") != mission["mission_id"]
+                or transition.get("source_sha") != sha
+                or link.get("task_id") != task or link.get("source_sha") != sha):
+                return result("BLOCKED", "TRANSITION_LINK_MISMATCH")
+            if not isinstance(event.get("event_id"), str) or not event["event_id"]:
+                return result("BLOCKED", "JOURNAL_EVENT_ID_INVALID")
+            if event["event_id"] in previous_event_ids:
+                return result("BLOCKED", "JOURNAL_EVENT_REPLAY")
+            previous_event_ids.add(event["event_id"])
+            expected = (("HEAD_READY" if n == 0 else "HEAD_DECISION"),
+                        "WORKER_ACTIVE", "HEAD") if i == 0 else TRANSITIONS[i]
+            if ((transition.get("from_phase"), transition.get("to_phase"),
+                 transition.get("actor")) != expected):
+                return result("BLOCKED", "TRANSITION_ROLE_MISMATCH")
+            if not isinstance(event.get("subject"),str) or not event["subject"]:
+                return result("BLOCKED", "JOURNAL_ACTOR_MISSING")
+            if i == 0 and event["subject"] != state["head_subject"]:
+                return result("BLOCKED", "HEAD_DISPATCH_ACTOR_MISMATCH")
+    if (not set(state.get("required_teams", [])).issubset(set(teams))
+        or not set(state.get("criteria", [])).issubset(used_criteria)
+        or set(state.get("validated_criteria", [])) != set(state["criteria"])):
         return result("BLOCKED", "WORK_INCOMPLETE")
     if any(not isinstance(g, dict) for g in gate_records):
         return result("BLOCKED", "AGGREGATE_GATE_INVALID")
     gates = {g.get("phase"):g for g in gate_records}
-    if set(gates) != set(PHASES):
+    if len(gates) != 2 or set(gates) != set(PHASES):
         return result("BLOCKED", "AGGREGATE_GATE_INVALID")
     for g in gates.values():
         if (g.get("mission_id") != mission["mission_id"]
             or g.get("verdict") != "PASS" or g.get("source_sha") != sha
-            or g.get("evidence_refs") != [claim.get("claim_id")]
+            or not isinstance(g.get("evidence_refs"),list)
+            or set(g["evidence_refs"]) != set(claims)
             or set(g.get("criterion_ids", [])) != set(state["criteria"])):
             return result("BLOCKED", "AGGREGATE_GATE_INVALID")
     if (not isinstance(head_decision, dict)

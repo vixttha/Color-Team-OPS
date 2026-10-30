@@ -133,7 +133,7 @@ class M1BridgeTests(unittest.TestCase):
         self.check("UNVERIFIED","JOURNAL_INTEGRITY_UNVERIFIED")
     def test_malformed_work_criterion_fails_closed(self):
         self.d["work_orders"][0]["criteria_ids"]=None
-        self.check("BLOCKED","MALFORMED_REFERENCE_RECORD")
+        self.check("BLOCKED","TASK_CRITERION_SCOPE_MISMATCH")
     def test_malformed_journal_event_fails_closed(self):
         self.d["journal"].events[2]=None
         self.check("BLOCKED","MALFORMED_REFERENCE_RECORD")
@@ -159,7 +159,7 @@ class M1BridgeTests(unittest.TestCase):
         self.d["journal"].events[2]["subject"]=""
         self.check("BLOCKED","JOURNAL_ACTOR_MISSING")
     def test_bridge_version_is_pinned(self):
-        self.assertEqual(VERSION,"cto-v002-m1-bridge-2")
+        self.assertEqual(VERSION,"cto-v002-m1-bridge-3")
 
 
 if __name__=="__main__":
