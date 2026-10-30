@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "IDEA-000020",
+  "title": "Evaluation laboratory / role-specific benchmarks",
+  "summary": "Evidence of actual specialist competence",
+  "kind": "feature",
+  "origin": {
+    "created_by": "joint",
+    "type": "brainstorm",
+    "source": "2026-10-30 Color-Team-OPS architecture and routing discussion",
+    "source_catalog_id": "F20"
+  },
+  "lifecycle_status": "adopted",
+  "implementation_status": "not_planned",
+  "testing": {
+    "status": "untested"
+  },
+  "importance": "high",
+  "complexity": "unknown",
+  "categories": [
+    "architecture",
+    "routing"
+  ],
+  "positive_effects": [
+    "Evidence of actual specialist competence"
+  ],
+  "negative_effects": [
+    "Dataset construction, cost and grading errors"
+  ],
+  "synergy_note": "F02/F04/F09/F22",
+  "related_ideas": [
+    "IDEA-000002",
+    "IDEA-000004",
+    "IDEA-000009",
+    "IDEA-000022"
+  ],
+  "evidence": [
+    {
+      "relation": "context",
+      "claim": "The source catalog records this concept and its owner-discussion status, not an executed implementation.",
+      "repository": "vixttha/Color-Team-OPS",
+      "source_sha": "b59bd2b7fa289b77cec7f9c2f42eedfcccd2449a",
+      "path": "research/07-IDEA-APPROVAL-FEATURE-CATALOG.md"
+    }
+  ],
+  "decision": {
+    "decision_scope": "idea_direction_only",
+    "decided_by": "owner",
+    "reason": "User explicitly favored or approved this idea/direction; no implementation or version release is authorized by this record."
+  },
+  "source_status_text": "Favorably selected idea, pilot proposal exists"
+}

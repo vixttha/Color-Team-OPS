@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Color-Team-OPS Idea Record v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "summary",
+    "kind",
+    "origin",
+    "lifecycle_status",
+    "implementation_status",
+    "testing",
+    "importance",
+    "complexity",
+    "categories",
+    "positive_effects",
+    "negative_effects",
+    "synergy_note",
+    "related_ideas",
+    "evidence",
+    "source_status_text"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^IDEA-[0-9]{6}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "enum": [
+        "feature",
+        "research",
+        "architecture",
+        "governance",
+        "process"
+      ]
+    },
+    "origin": {
+      "type": "object",
+      "required": [
+        "created_by",
+        "type",
+        "source",
+        "source_catalog_id"
+      ],
+      "properties": {
+        "created_by": {
+          "enum": [
+            "human",
+            "assistant",
+            "joint",
+            "imported"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "source_catalog_id": {
+          "type": "string",
+          "pattern": "^F[0-9]{2}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "lifecycle_status": {
+      "enum": [
+        "captured",
+        "triaged",
+        "exploring",
+        "decision_ready",
+        "adopted",
+        "parked",
+        "rejected",
+        "superseded",
+        "duplicate",
+        "retired"
+      ]
+    },
+    "implementation_status": {
+      "enum": [
+        "not_planned",
+        "planned",
+        "in_progress",
+        "implemented",
+        "removed",
+        "not_applicable"
+      ]
+    },
+    "testing": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "untested",
+            "planned",
+            "in_progress",
+            "tested"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "pass",
+            "fail",
+            "mixed",
+            "inconclusive"
+          ]
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "importance": {
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "complexity": {
+      "enum": [
+        "trivial",
+        "low",
+        "medium",
+        "high",
+        "very_high",
+        "unknown"
+      ]
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "positive_effects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "negative_effects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "synergy_note": {
+      "type": "string"
+    },
+    "related_ideas": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^IDEA-[0-9]{6}$"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "relation",
+          "claim",
+          "repository",
+          "source_sha",
+          "path"
+        ],
+        "properties": {
+          "relation": {
+            "enum": [
+              "supports",
+              "contradicts",
+              "context",
+              "derived_from"
+            ]
+          },
+          "claim": {
+            "type": "string",
+            "minLength": 1
+          },
+          "repository": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_sha": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "decision": {
+      "type": "object",
+      "required": [
+        "decision_scope",
+        "decided_by",
+        "reason"
+      ],
+      "properties": {
+        "decision_scope": {
+          "type": "string"
+        },
+        "decided_by": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_status_text": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lifecycle_status": {
+            "const": "adopted"
+          }
+        },
+        "required": [
+          "lifecycle_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "decision"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "testing": {
+            "properties": {
+              "status": {
+                "const": "tested"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "testing"
+        ]
+      },
+      "then": {
+        "properties": {
+          "testing": {
+            "required": [
+              "status",
+              "outcome",
+              "refs"
+            ],
+            "properties": {
+              "refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

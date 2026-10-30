@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "IDEA-000021",
+  "title": "Routing-specific benchmark (accepted next team OR stop)",
+  "summary": "Directly tests claimed 99% routing target",
+  "kind": "feature",
+  "origin": {
+    "created_by": "joint",
+    "type": "brainstorm",
+    "source": "2026-10-30 Color-Team-OPS architecture and routing discussion",
+    "source_catalog_id": "F21"
+  },
+  "lifecycle_status": "captured",
+  "implementation_status": "not_planned",
+  "testing": {
+    "status": "untested"
+  },
+  "importance": "unknown",
+  "complexity": "unknown",
+  "categories": [
+    "architecture",
+    "routing"
+  ],
+  "positive_effects": [
+    "Directly tests claimed 99% routing target"
+  ],
+  "negative_effects": [
+    "Multiple valid routes, label quality, class imbalance"
+  ],
+  "synergy_note": "F01/F07/F09/F20",
+  "related_ideas": [
+    "IDEA-000001",
+    "IDEA-000007",
+    "IDEA-000009",
+    "IDEA-000020"
+  ],
+  "evidence": [
+    {
+      "relation": "context",
+      "claim": "The source catalog records this concept and its owner-discussion status, not an executed implementation.",
+      "repository": "vixttha/Color-Team-OPS",
+      "source_sha": "b59bd2b7fa289b77cec7f9c2f42eedfcccd2449a",
+      "path": "research/07-IDEA-APPROVAL-FEATURE-CATALOG.md"
+    }
+  ],
+  "source_status_text": "New test-suite emphasis"
+}
