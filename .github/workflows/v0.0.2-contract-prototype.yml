@@ -1,4 +1,4 @@
-name: Color Team OPS v0.0.2 D1 contract prototype (owner runners)
+name: Color Team OPS v0.0.2 D1-D2 contract and policy reference (owner runners)
 on:
   push:
     branches:
@@ -29,7 +29,7 @@ jobs:
           test "$RUNNER_OS" = Linux
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           python3 -c "import jsonschema; print('jsonschema available')"
-          python3 -B -m unittest discover -s tests -p 'test_v002_contracts.py' -v
+          python3 -B -m unittest discover -s tests -p 'test_v002_*.py' -v
           echo "CTO_V002_D1_LINUX_PASS $EXPECTED_SHA"
   windows:
     if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/design/v0.0.2-team-contracts-single-lane'
@@ -52,8 +52,8 @@ jobs:
           $py = Join-Path $env:GITHUB_WORKSPACE '.cto-v002-test-venv\Scripts\python.exe'
           & $py -m pip install --disable-pip-version-check -r requirements-v002-test.txt
           if ($LASTEXITCODE -ne 0) { throw 'Dependency install failed' }
-          & $py -B -m unittest discover -s tests -p 'test_v002_contracts.py' -v
-          if ($LASTEXITCODE -ne 0) { throw 'D1 schema tests failed' }
+          & $py -B -m unittest discover -s tests -p 'test_v002_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'D1-D2 reference tests failed' }
           Write-Output "CTO_V002_D1_WINDOWS_PASS $env:EXPECTED_SHA"
       - name: Remove isolated test venv
         if: always()
