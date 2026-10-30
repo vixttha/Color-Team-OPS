@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "id": "IDEA-000037",
+  "title": "One-action mission pipeline planner and adaptive team launcher",
+  "summary": "From one project request, Head proposes an editable milestone/task pipeline, maps work to eligible Color Teams, then a user action such as 'Work on this' launches one governed, evidence-verified sequential mission without re-prompting for ordinary internal handoffs.",
+  "kind": "feature",
+  "origin": {
+    "created_by": "joint",
+    "type": "owner-requested-new-idea",
+    "source": "2026-10-30 Color-Team-OPS Purple Team conversation: owner enjoyed the master issue/pipeline/task assignment workflow during v0.0.2 M5 and explicitly requested elaboration and capture as a new idea."
+  },
+  "lifecycle_status": "captured",
+  "implementation_status": "not_planned",
+  "testing": {
+    "status": "untested"
+  },
+  "importance": "high",
+  "complexity": "very_high",
+  "categories": [
+    "mission-planning",
+    "workflow-orchestration",
+    "adaptive-routing",
+    "user-experience",
+    "team-coordination"
+  ],
+  "positive_effects": [
+    "A single plain-language request becomes a visible, editable delivery plan with explicit tasks, dependencies, team assignments, acceptance gates and likely blockers.",
+    "The owner can review a complete plan and initiate the already-approved scope with one 'Work on this' action instead of writing a long meta prompt or manually switching teams.",
+    "Head dynamically reassigns subsequent tasks among the existing nine specialist teams, one at a time, with evidence-based Validate/Internal Auditor gates and bounded repairs.",
+    "Source-linked mission status and artifacts make work auditable and restartable rather than relying on chat-only claims."
+  ],
+  "negative_effects": [
+    "A plan generator can invent requirements, dependencies or specialist competence; owner-facing draft review and scope/evidence checks are essential.",
+    "A one-action launch could be mistaken for unlimited permission to publish, provision, spend, attack systems or bypass authorization; privileged actions must still need explicit grants.",
+    "Chat-only role switching is not authenticated multi-agent execution, unattended background processing or a global cross-session lock; actual host capabilities must be verified.",
+    "Automatic replanning can loop or inflate cost; enforce one active specialist, task budgets, dependency validation, explicit stop conditions and traceable change approvals."
+  ],
+  "synergy_note": "Builds on IDEA-000001 routing, IDEA-000002 directory, IDEA-000006 handoffs, IDEA-000009 OPS Director, IDEA-000017 bounded single lane, IDEA-000018 tool/permission checks, IDEA-000019 release gate, IDEA-000027 budgets and IDEA-000034 playbooks. Distinct new value: user-facing plan generation, readable team-staffed task graph and an authorized 'Work on this' launch; never a 13th skill or mandatory library dependency.",
+  "related_ideas": [
+    "IDEA-000001",
+    "IDEA-000002",
+    "IDEA-000006",
+    "IDEA-000009",
+    "IDEA-000017",
+    "IDEA-000018",
+    "IDEA-000019",
+    "IDEA-000027",
+    "IDEA-000034"
+  ],
+  "evidence": [
+    {
+      "relation": "context",
+      "claim": "The existing v0.0.2 release plan describes manually composed milestones, conditional team allocation, Head-controlled one-worker routing and verification gates. It does not establish an implemented user-facing one-action mission launcher.",
+      "repository": "vixttha/Color-Team-OPS",
+      "source_sha": "f66c99a79a5037832c28c5e5661473d4cda9d8d7",
+      "path": "docs/V002-FULL-RELEASE-PIPELINE-36-FEATURE-TRACEABILITY.md"
+    }
+  ],
+  "source_status_text": "2026-10-30 owner requested this new idea be elaborated and captured while v0.0.2 was at M5. Captured design direction only; not approved for implementation or v0.0.2 release."
+}
