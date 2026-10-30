@@ -6,7 +6,7 @@
 
 **High clarified:** Old routing demonstration only compared claimed verifier identity/digest and did not authenticate proof; updated design refuses to call such checks verified without trust anchors.
 
-**High fixed in policy:** Local self-hosted GitHub runners, though available on an unrelated branch, are never a prerequisite and never a default fallback. v0.0.1 has no workflows or local runner execution.
+**High fixed in policy:** Local self-hosted GitHub runners, though available on an unrelated branch, are never a prerequisite and never a default fallback. Initial skills-only plugin package had no workflows or local runner execution. The GitHub **development repository now contains two CI workflows**: a required GitHub-hosted matrix and an optional manual owner-runner supplement. Neither workflow is a runtime dependency of the installed plugin.
 
 **Medium fixed:** Site compatibility advertised conditionally, not as universal automatic import; no provider-specific tool IDs assumed; no silent privilege escalation.
 

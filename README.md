@@ -43,6 +43,14 @@ Invoke mission-control with a bounded authorized goal, then ops-director to sele
 
 Host compatibility on chatgpt.com, kimi.ai, z.ai, grok.com and other browser services must be separately verified. See portability guidance. A ChatGPT private plugin is not automatically installed elsewhere.
 
+## Security hardening in the v0.0.1 draft
+
+Orange/Yellow added cross-field mission authorization, evidence provenance and routing constraints. Red/Purple added Draft 2020-12 adversarial cases and parsed GitHub Actions workflow policy and mutation tests. These are source-level controls, not an independently authenticated cloud runtime.
+
+The required GitHub-hosted CI remains blocked **before runner assignment** ([issue #2](https://github.com/vixttha/Color-Team-OPS/issues/2)); cloud-only independent tests are supplemental evidence, not GitHub CI PASS. The installed private v0.0.1 plugin **does not yet contain the updated contracts and governance docs**. Plugin Creator requires an actual release update, which may advance the version; do not silently promote a new version during v0.0.1 review.
+
+See [contract trust boundaries](docs/CONTRACT-TRUST-MODEL.md), [test coverage](docs/TESTING.md), and [Purple Team review issue #3](https://github.com/vixttha/Color-Team-OPS/issues/3).
+
 ## Current status
 
 The private plugin v0.0.1 was created before the new CI and README work. GitHub changes do not update that installed package automatically. Draft [PR #1](https://github.com/vixttha/Color-Team-OPS/pull/1) remains unmerged; cloud CI, live skill acceptance, review and plugin/source reconciliation must be recorded before release approval. GitHub-hosted CI is currently **BLOCKED before any test step** ([issue #2](https://github.com/vixttha/Color-Team-OPS/issues/2)); personal runners must not replace its baseline.

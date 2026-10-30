@@ -24,3 +24,12 @@ Real unattended background execution, automatic completion triggers, guaranteed 
 - [ ] README, CHANGELOG and test evidence synchronized for this candidate.
 - [ ] Independent source/security review and actual installed-plugin skill trials evidenced.
 - [ ] Installed private plugin and GitHub source reconciled before approving release.
+
+## Security hardening acceptance (must pass before v0.0.1 approval)
+
+- [ ] Validate JSON Schema Draft 2020-12 conditionals with the real `jsonschema` checker; accept valid examples and reject incomplete authorization/evidence/PASS/DISPATCH cases.
+- [ ] Validate GitHub Actions effective triggers, job conditions, exact hosted target, least privilege and command allowlist with a YAML parser; demonstrate that mutation tests catch removed guards and injected triggers/actions.
+- [ ] Confirm that field-shaped `authorization_ref`, `observed_by` and `verifier_identity` are untrusted claims, not self-authenticating credentials.
+- [ ] Obtain **actual successful hosted GitHub CI** for both Ubuntu/Windows jobs against final exact SHA; independent cloud execution alone does not meet this gate.
+- [ ] Match installed plugin files against approved GitHub source revision, with versioning correctly handled by Plugin Creator.
+- [ ] Obtain independently attributable review and affirmative release authorization, or report BLOCKED.

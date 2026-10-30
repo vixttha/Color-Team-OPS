@@ -22,3 +22,17 @@ The successful runner-acceptance workflow on the separate runner-audit branch di
 
 **Security boundary:** owner-runner jobs remain opt-in only, restricted to authenticated owner `vixttha` and trusted `main`. Neither source CI nor future plugin runtime may automatically fall back to personal runners.
 
+
+## Orange/Yellow and Red/Purple repair validation — 2026-10-29
+
+**Source revision tested:** `1795f0a87fcffec93d197e88edbc75144c98101c` (superseded by later documentation commit; never reuse as final SHA evidence).
+
+- **Schema contract tests:** Three JSON Schemas self-validate under Draft 2020-12; all three official samples pass. A set of 15 adversarial probes rejects all 15 expected-invalid samples (7 base invalid-input probes plus 8 historical semantic bypasses). A separate 27-case source-level suite was reported earlier; this evidence is bounded to the tested revisions.
+- **Workflow policy tests:** 13 source-specific parsed YAML and mutation cases passed using the GitHub workflow file content matched by Git blob hashes. This verifies syntax/policy invariants in the observed files, **not GitHub CI execution**.
+- Tests were executed in an ephemeral cloud container, not on any owner computer or personal GitHub runner.
+- **Native repository test suite in GitHub Actions:** NOT RUN. Hosted jobs fail before runner assignment. Latest observed [run 40976607605](https://github.com/vixttha/Color-Team-OPS/actions/runs/40976607605) on the above revision: both hosted runners unavailable with zero job steps. Cause unconfirmed; see [issue #2](https://github.com/vixttha/Color-Team-OPS/issues/2).
+- **Real cloud authorization/identity checking:** NOT IMPLEMENTED in v0.0.1; JSON schema checks alone are not proof.
+- **Installed private plugin reconciliation:** NOT DONE as of this record; Creator's plugin remains `0.0.1` from the earlier source.
+- **Independent external reviewer acceptance:** NOT RECEIVED. PR #1 remains draft.
+
+**Result:** Source-level repair evidence is positive; overall release acceptance is BLOCKED.

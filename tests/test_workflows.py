@@ -1,5 +1,4 @@
 """Red/Purple semantic validation of effective GitHub Actions policies."""
-import copy
 import unittest
 from pathlib import Path
 import yaml
@@ -8,8 +7,6 @@ ROOT = Path(__file__).resolve().parents[1]
 HOSTED = (ROOT / ".github/workflows/cloud-ci.yml").read_text(encoding="utf-8")
 OPTIONAL = (ROOT / ".github/workflows/optional-self-hosted.yml").read_text(encoding="utf-8")
 CHECKOUT = "actions/checkout@11d5960a326750d5838078e36cf38b85af677262"
-REPO_OWNER = "vixttha"
-MAIN = "refs/heads/main"
 DOLLAR = chr(36)
 
 

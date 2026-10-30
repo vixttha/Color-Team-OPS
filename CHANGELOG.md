@@ -12,6 +12,12 @@ Newest version first. Every version updates README.md, this changelog, acceptanc
 - Design-stage runner policy and accepted ADR-0001.
 - README-per-version rule, independent review expectations and repository hygiene files.
 
+### Hardened on draft branch (not yet installed)
+- Mission and evidence JSON Schema Draft 2020-12 cross-field requirements, disallowing incomplete OBSERVED/PASS and branch-write claims.
+- Adversarial negative-schema regressions, semantically parsed workflow policy, and CI mutation tests.
+- Cloud-only development test dependencies, explicitly absent from installed skill runtime.
+- Corrected preflight evidence so source/installed package divergence remains clearly visible.
+
 ### Outstanding
 - Passing GitHub Actions runs on the latest release commit and independent code audit. Hosted jobs currently fail before runner allocation; tracked as GitHub issue #2.
 - Real installed-plugin skill acceptance, host integrations and plugin/repository source reconciliation.
