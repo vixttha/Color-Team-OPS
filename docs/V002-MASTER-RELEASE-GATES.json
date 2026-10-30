@@ -12,13 +12,13 @@
   "stages": [
     {
       "checkpoint": "M1",
-      "development": "REFERENCE_ACCEPTED",
+      "development": "MULTITASK_REFERENCE_AUTHORED_PENDING_NATIVE_VALIDATION",
       "production": "UNVERIFIED",
-      "basis": "43/43 focused fixture tests, Yellow/Orange code consistency repairs",
+      "basis": "Three-task sequential Yellow→Orange→Yellow bridge and consent-bound bounded repair source authored; source code/static reviews only on current integration candidate",
       "blockers": [
-        "full integrated D1-D5 exact-SHA suite unrun",
-        "protected cloud issuer absent",
-        "single-task bridge migration incomplete"
+        "full integrated D1–D5 and current-SHA native suite not run",
+        "signed in-task repair event bridge to versioned D2 transition attestation incomplete",
+        "production-authenticated protected host and durable consent issuer absent"
       ]
     },
     {
@@ -44,21 +44,20 @@
     },
     {
       "checkpoint": "M4",
-      "development": "EVALUATION_SCAFFOLD_ONLY",
+      "development": "270_DRAFT_SCENARIOS_AWAITING_INDEPENDENT_ORACLES",
       "production": "BLOCKED",
-      "basis": "25/25 focused lab tests; 270 unlabeled slots",
+      "basis": "270 distinct model-authored draft cases (nine teams x 30, normal/edge/adversarial), all label_status=DRAFT_NEEDS_INDEPENDENT_ORACLE and outcome_status=NOT_RUN",
       "blockers": [
-        "270 independent labeled specialist cases missing",
-        "actual tool/model/host trials missing",
-        "holdouts and paired ablations unrun",
-        "quality thresholds not established"
+        "270 independent pre-registered labels and reviewer references missing",
+        "real model/tool/host trials and source-bound results missing",
+        "blinded holdouts, paired baseline, ablations, and thresholds not established"
       ]
     },
     {
       "checkpoint": "M5",
       "development": "UNPUBLISHED_PACKAGE_CANDIDATE",
       "production": "BLOCKED",
-      "basis": "9 v0.0.1 specialist skill blobs unchanged; 3 coordinator SKILL.md files intentionally extended for bounded one-thread operation; manifests 0.0.2 and 13/13 GitHub-backed static continuity checks; exact 47/47 Purple idea/feature source file hash matches, candidate records unshipped",
+      "basis": "12 source skills with 9 v0.0.1 specialists and 3 updated coordinators; source-level candidate package builder strengthened with pinned git-tree payload verification and ancestor symlink refusal; 18 package tests authored, not natively executed",
       "blockers": [
         "full exact current-source repository-wide Python suite NOT RUN",
         "tests/test_v002_skill_continuity.py authored but NOT EXECUTED by Python",
@@ -67,7 +66,9 @@
         "production host user-consent/revocation and global cross-session lock unavailable",
         "independent M4 specialist quality corpus and paired trials unfinished",
         "explicit owner approval to merge or publish missing",
-        "M4 independent evaluation and feature-promotion evidence do not automatically follow from imported proposal metadata"
+        "M4 independent evaluation and feature-promotion evidence do not automatically follow from imported proposal metadata",
+        "two real independently verified identical ZIP builds with exact source digest NOT RUN",
+        "M5 pinned Git tree/source-integrity patch and 18 package tests not natively executed"
       ]
     }
   ],
@@ -85,7 +86,7 @@
   "final_status": "BLOCKED_EXTERNAL_APPROVAL_AND_MISSING_EVIDENCE",
   "release_ready": false,
   "measured_99_percent_claim": false,
-  "latest_reviewed_source_sha": "30f9bd1db317e5958a34abc3f8a5b707bb8d7f7d",
+  "latest_reviewed_source_sha": "adc4c85a55f03cfa3175206b9a15ef9eb55efd70",
   "skill_delta": {
     "unchanged_specialists": 9,
     "intentionally_updated_coordinators": 3,
@@ -109,6 +110,22 @@
     "source_feature_statuses": "proposed_not_planned_NOT_ASSERTED",
     "verified_feature_ship_claims": 0,
     "library_python_tests": "NOT_EXECUTED",
-    "source_verification": "GitHub tree and five feature records inspected"
+    "source_verification": "GitHub tree and five feature records inspected",
+    "source_branch_current_sha": "7ded28574388f4382dd974d981785e4745dd857c",
+    "current_source_parity": "NOT_REVALIDATED_AFTER_SOURCE_BRANCH_ADVANCED"
+  },
+  "latest_review_type": "GITHUB_SOURCE_AND_METADATA_ONLY_NATIVE_AND_HOST_NOT_RUN",
+  "package_hardening": {
+    "candidate_source_before_gate_update": "adc4c85a55f03cfa3175206b9a15ef9eb55efd70",
+    "builder_blob": "2ebed6f4a0e733724d521f32ec404e5f8e5b2623",
+    "test_blob": "3ec1f0d1419112dc4ef7c4bbd2afb8e689bcbbcb",
+    "checks": [
+      "git tree root binding",
+      "every included payload matches a tracked Git blob at source SHA",
+      "symlinked ancestor path rejection"
+    ],
+    "tests_authored": 18,
+    "tests_executed_at_candidate_sha": 0,
+    "status": "SOURCE_AUTHORED_STATIC_INSPECTED_NATIVE_UNVERIFIED"
   }
 }
