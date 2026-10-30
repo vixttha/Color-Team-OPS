@@ -121,6 +121,12 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
     if any(not isinstance(x, dict) for x in (order,worker,claim)):
         return result("BLOCKED", "RECORDS_INVALID")
     task, receipt = order.get("task_id"), claim.get("provider_record_id")
+    if (order.get("mission_id") != mission["mission_id"]
+            or order.get("source_sha") != sha
+            or order.get("authorization_ref") != mission.get("authorization_ref")
+            or worker.get("mission_id") != mission["mission_id"]
+            or worker.get("source_sha") != sha):
+        return result("BLOCKED", "TASK_PROVENANCE_MISMATCH")
     if (not isinstance(task,str) or not task or not isinstance(receipt,str) or not receipt
         or state.get("used_task_ids") != [task] or state.get("used_receipts") != [receipt]
         or worker.get("task_id") != task or worker.get("team") != order.get("team")
@@ -147,6 +153,8 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
             or link.get("journal_event_id") != event.get("event_id")
             or link.get("journal_revision") != event.get("revision")
             or link.get("transition_id") != transition.get("transition_id")
+            or transition.get("mission_id") != mission["mission_id"]
+            or transition.get("source_sha") != sha
             or link.get("task_id") != task or link.get("source_sha") != sha):
             return result("BLOCKED", "TRANSITION_LINK_MISMATCH")
         if ((transition.get("from_phase"), transition.get("to_phase"), transition.get("actor"))
@@ -165,11 +173,14 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
     if set(gates) != set(PHASES):
         return result("BLOCKED", "AGGREGATE_GATE_INVALID")
     for g in gates.values():
-        if (g.get("verdict") != "PASS" or g.get("source_sha") != sha
+        if (g.get("mission_id") != mission["mission_id"]
+            or g.get("verdict") != "PASS" or g.get("source_sha") != sha
             or g.get("evidence_refs") != [claim.get("claim_id")]
             or set(g.get("criterion_ids", [])) != set(state["criteria"])):
             return result("BLOCKED", "AGGREGATE_GATE_INVALID")
-    if (not isinstance(head_decision, dict) or head_decision.get("source_sha") != sha
+    if (not isinstance(head_decision, dict)
+        or head_decision.get("mission_id") != mission["mission_id"]
+        or head_decision.get("source_sha") != sha
         or head_decision.get("actor") != "HEAD"
         or head_decision.get("action") not in ("COMPLETE", "BLOCKED_EXTERNAL_APPROVAL")
         or head_decision.get("validation_record_ref") != gates["VALIDATE"].get("record_id")
