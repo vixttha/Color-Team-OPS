@@ -34,9 +34,9 @@ class FakeAdapter:
         }
         self.gates = {
             "v1": GateAttestation("m1", "v1", "VALIDATE", "PASS", SHA,
-                                 frozenset(("criterion1",)), frozenset(("c1",)), "VALIDATOR", True),
+                                 frozenset(("criterion1",)), frozenset(("c1",)), "VALIDATOR", "trusted:validator", True),
             "a1": GateAttestation("m1", "a1", "INTERNAL_AUDIT", "PASS", SHA,
-                                 frozenset(("criterion1",)), frozenset(("c1",)), "INTERNAL_AUDITOR", True),
+                                 frozenset(("criterion1",)), frozenset(("c1",)), "INTERNAL_AUDITOR", "trusted:auditor", True),
         }
         self.exclusive = False
         self.snapshot = MissionSnapshot("m1", "HEAD_DECISION", None, None, SHA, True)
@@ -167,6 +167,12 @@ class PolicyTests(unittest.TestCase):
     def test_claimless_required_worker_rejected(self):
         self.data["worker_events"][0]["evidence_claim_ids"] = []
         self.assert_outcome("BLOCKED", "REQUIRED_WORK_UNVERIFIED")
+    def test_gate_claimed_verifier_must_match_authenticated_identity(self):
+        self.data["gate_records"][0]["verifier_ref"] = "impostor"
+        self.assert_outcome("BLOCKED", "GATE_ATTESTATION_MISMATCH")
+    def test_gate_attestation_verifier_identity_mismatch(self):
+        self.trust.gates["a1"] = replace(self.trust.gates["a1"], verifier_ref="different-actor")
+        self.assert_outcome("BLOCKED", "GATE_ATTESTATION_MISMATCH")
     def test_clean_internal_completion(self):
         self.assert_outcome("PASS", "INTERNAL_COMPLETION_VERIFIED")
     def test_external_approval_separate_from_internal_completion(self):

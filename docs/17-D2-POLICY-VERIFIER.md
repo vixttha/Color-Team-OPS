@@ -36,3 +36,6 @@ The verifier now also requires a **trusted mission snapshot at HEAD_DECISION wit
 
 ## Audit repair: duplicate-result diagnostic precedence
 The first full phase-trace run on `e3ffa5d7a0f64956559dea9b4f1f0174e15b73c0` failed one of 76 Linux tests: two separate worker result IDs for the same task were safely blocked, but labeled `REQUIRED_WORK_UNVERIFIED` instead of `MULTIPLE_TASK_RESULTS`. The corrected verifier detects multiple task-result records before checking required-team proof. This is an observed diagnostic accuracy repair, not evidence of live provider authentication; subsequent exact-SHA retests are required.
+
+## Follow-up security audit: authenticated verifier reference
+The gate record's `verifier_ref` must match the trusted gate attestation identity, not merely the phase and PASS outcome. This is now compared explicitly, with two new negative tests. This is **still conditional on a genuine trusted host adapter**, not real authenticated production evidence. Full results and limitations are recorded in [D2 audit](18-D2-POLICY-AUDIT.md).

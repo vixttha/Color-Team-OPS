@@ -52,6 +52,7 @@ class GateAttestation:
     criterion_ids: FrozenSet[str]
     evidence_refs: FrozenSet[str]
     role: str
+    verifier_ref: str
     valid: bool
 
 
@@ -325,6 +326,7 @@ def evaluate_completion(
                     or attested.role != ("VALIDATOR" if phase == "VALIDATE" else "INTERNAL_AUDITOR")
                     or attested.verdict != "PASS" or attested.source_sha != sha
                     or attested.criterion_ids != criteria
+                    or attested.verifier_ref != gate["verifier_ref"]
                     or attested.evidence_refs != set(gate["evidence_refs"])):
                 return _answer("BLOCKED", "GATE_ATTESTATION_MISMATCH", "Trusted gate attestation differs from claim.", sha)
 
