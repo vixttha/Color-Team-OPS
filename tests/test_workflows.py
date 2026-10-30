@@ -42,7 +42,7 @@ def check_release_workflow(source):
         assert job["runs-on"] == labels
         assert job["timeout-minutes"] == "20"
         steps = job["steps"]
-        assert len(steps) == (3 if name == "windows" else 5)
+        assert len(steps) == (3 if name == "windows" else 4)
         assert steps[0] == {
             "name": "Checkout exact tested source",
             "uses": CHECKOUT,
@@ -65,7 +65,7 @@ def check_release_workflow(source):
         assert "runner identity mismatch" in source_code.lower() or "RUNNER_NAME" in source_code
         for token in ("secrets.", "curl ", "wget ", "invoke-webrequest", "pull_request", "workflow_call", "| bash"):
             assert token not in source_code.lower()
-        cleanup_index = 2 if name == "windows" else 4
+        cleanup_index = 2 if name == "windows" else 3
         if name == "linux":
             package = steps[2]
             assert set(package) == {"name", "shell", "env", "run"}
@@ -76,17 +76,6 @@ def check_release_workflow(source):
             assert "sha256sum" in package["run"]
             assert "git rev-parse HEAD" in package["run"]
             assert "plugin.json" in package["run"] and "schemas skills" in package["run"]
-            upload = steps[3]
-            assert upload == {
-                "name": "Upload verified v0.0.1 package",
-                "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
-                "with": {
-                    "name": "color-team-ops-v0.0.1-package",
-                    "path": "color-team-ops-v0.0.1.zip",
-                    "retention-days": "7",
-                    "if-no-files-found": "error",
-                },
-            }
         cleanup = steps[cleanup_index]
         assert cleanup["if"] == "always()"
         assert cleanup["shell"] == shell

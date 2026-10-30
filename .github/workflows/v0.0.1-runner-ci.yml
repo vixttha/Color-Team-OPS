@@ -71,13 +71,6 @@ jobs:
           python3 -c "import zipfile; z=zipfile.ZipFile('color-team-ops-v0.0.1.zip'); assert z.testzip() is None; p=z.namelist(); assert 'plugin.json' in p; assert sum(x.startswith('skills/') and x.endswith('/SKILL.md') for x in p)==12; assert not any(x.startswith('.github/') or x.startswith('tests/') for x in p)"
           sha256sum color-team-ops-v0.0.1.zip
           rm -- color-team-ops-v0.0.1-check.zip
-      - name: Upload verified v0.0.1 package
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: color-team-ops-v0.0.1-package
-          path: color-team-ops-v0.0.1.zip
-          retention-days: 7
-          if-no-files-found: error
       - name: Clean Linux test environment
         if: always()
         shell: bash
