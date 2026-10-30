@@ -1,0 +1,27 @@
+{
+  "interface": {
+    "capabilities": [],
+    "category": "Productivity",
+    "defaultPrompt": "Use Color Team OPS to plan and route a bounded cloud-only software development mission. Check host capabilities and request no local runner.",
+    "developerName": "Victor Lambov",
+    "displayName": "Color Team OPS",
+    "longDescription": "Twelve cloud-only, provider-neutral specialist and coordination skills. v0.0.2 development candidate adds reference capability registry, advisory Head routing, evidence contracts and evaluation scaffolding. Production-authenticated mission execution is NOT yet supported or verified.",
+    "shortDescription": "Cloud-only coding team skills"
+  },
+  "name": "color-team-ops",
+  "version": "0.0.2",
+  "description": "Cloud-only, browser-first, evidence-gated software engineering role skills; never requires local hardware, self-hosted runners or desktop tooling.",
+  "author": {
+    "name": "Victor Lambov",
+    "email": "buktop03@gmail.com"
+  },
+  "keywords": [
+    "security",
+    "software-development",
+    "cloud-only",
+    "team-routing",
+    "code-review"
+  ],
+  "repository": "https://github.com/vixttha/Color-Team-OPS",
+  "skills": "./skills"
+}

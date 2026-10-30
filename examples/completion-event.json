@@ -1,0 +1,14 @@
+{
+  "event_id": "demo-e-1",
+  "mission_id": "demo-m-001",
+  "team": "yellow-team",
+  "status": "DONE",
+  "evidence_state": "UNVERIFIED",
+  "summary": "Example only; no tests executed",
+  "findings": [
+    {
+      "category": "security",
+      "description": "Illustrative finding requiring evidence"
+    }
+  ]
+}
