@@ -40,3 +40,4 @@
 | IDEA-000034 | Solo developer mission playbooks | captured | not_planned | F34 |
 | IDEA-000035 | DORA-style delivery health outcomes (secondary measures) | captured | not_planned | F35 |
 | IDEA-000036 | Cross-thread canonical handoff / decision record | captured | not_planned | F36 |
+| IDEA-000037 | One-action mission pipeline planner and adaptive team launcher | captured | not_planned | — |
