@@ -41,3 +41,6 @@ Previous Yellow exact-source evidence: [run 41016921417](https://github.com/vixt
 5. No authenticated global cross-session single-writer enforcement is available.
 
 **Owner law:** Keep Color Team OPS cloud-only, provider-neutral and independent of any specific hosting platform. No Vercel/Supabase/GitHub runtime mandate, no user-owned runner requirement, no release/merge/paid service authorization.
+
+## Yellow adversarial repair 1 — malformed input fail-closed
+The bridge now returns `BLOCKED / MALFORMED_REFERENCE_RECORD` when a malformed user-supplied task, transition or journal field would otherwise raise an exception. Two negative tests cover malformed work-order criteria and malformed journal events. This is not an authenticated host issuer and no production authority was added.

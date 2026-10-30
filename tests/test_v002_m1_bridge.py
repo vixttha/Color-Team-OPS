@@ -129,6 +129,12 @@ class M1BridgeTests(unittest.TestCase):
             raise HostRejected("JOURNAL_INTEGRITY_FAILURE")
         self.d["journal"].read=bad
         self.check("UNVERIFIED","JOURNAL_INTEGRITY_UNVERIFIED")
+    def test_malformed_work_criterion_fails_closed(self):
+        self.d["work_orders"][0]["criteria_ids"]=None
+        self.check("BLOCKED","MALFORMED_REFERENCE_RECORD")
+    def test_malformed_journal_event_fails_closed(self):
+        self.d["journal"].events[2]=None
+        self.check("BLOCKED","MALFORMED_REFERENCE_RECORD")
     def test_bridge_version_is_pinned(self):
         self.assertEqual(VERSION,"cto-v002-m1-bridge-1")
 

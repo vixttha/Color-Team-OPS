@@ -6,6 +6,7 @@ provider receipts and durable revocation before production completion.
 """
 from __future__ import annotations
 from dataclasses import dataclass
+from functools import wraps
 from datetime import datetime, timezone
 from typing import Mapping
 from .host_runtime import HostRejected, digest
@@ -23,6 +24,20 @@ class M1Finding:
     source_sha: str
     policy_verdict: str = "NOT_RUN"
 
+def _fail_closed(fn):
+    @wraps(fn)
+    def wrapped(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except Exception:
+            # Never turn malformed untrusted records into a crash or a PASS.
+            mission = kwargs.get("mission")
+            sha = mission.get("source_sha", "") if isinstance(mission, dict) else ""
+            return M1Finding("BLOCKED", "MALFORMED_REFERENCE_RECORD", sha)
+    return wrapped
+
+
+@_fail_closed
 def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
                         gate_records, transition_events, head_decision,
                         journal=None, event_links=(), trust=None,
