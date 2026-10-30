@@ -1,0 +1,85 @@
+name: Color Team OPS Yellow host authority development tests (optional owner runners)
+on:
+  push:
+    branches:
+      - feature/v0.0.2-yellow-host-authority
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+  issues: read
+concurrency:
+  group: cto-yellow-authority-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-yellow-host-authority'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact contract prototype revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate schemas and negative cases (Linux)
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$RUNNER_OS" = Linux
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 -c "import jsonschema; print('jsonschema available')"
+          python3 -B -m unittest discover -s tests -p 'test_v002_*.py' -v
+          echo "CTO_V002_D1_LINUX_PASS $EXPECTED_SHA"
+  windows:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-yellow-host-authority'
+    runs-on: [self-hosted, Windows, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact contract prototype revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate schemas and negative cases (Windows)
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Owner Windows runner identity mismatch' }
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Source revision mismatch' }
+          python -m venv .cto-v002-test-venv
+          $py = Join-Path $env:GITHUB_WORKSPACE '.cto-v002-test-venv\Scripts\python.exe'
+          & $py -m pip install --disable-pip-version-check -r requirements-v002-test.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency install failed' }
+          & $py -B -m unittest discover -s tests -p 'test_v002_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'D1-D2 reference tests failed' }
+          Write-Output "CTO_V002_D1_WINDOWS_PASS $env:EXPECTED_SHA"
+      - name: Remove isolated test venv
+        if: always()
+        shell: powershell
+        run: |
+          if (Test-Path -LiteralPath '.cto-v002-test-venv') { Remove-Item -LiteralPath '.cto-v002-test-venv' -Recurse -Force }
+  live-github-provider-read:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-yellow-host-authority'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact source for provider read
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Live GitHub REST read-only smoke
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$RUNNER_OS" = Linux
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 -B -m devtools.live_github_smoke
+          python3 -B -m devtools.live_d5_pilot
