@@ -10,6 +10,7 @@ This existing isolated branch retains Color-Team-OPS's nine released specialist 
 3. [Solo developer: what to use each for, typical sequence and practical sample missions](03-SOLO-DEV-MISSIONS.md).
 4. [Prioritized issues, cross-team handoffs, proposed tests and deferred decisions](04-DECISIONS-AND-GAPS.md).
 5. [Primary authoritative sources, repository evidence and research limitations](05-VERIFIED-SOURCES.md).
+6. [Full uploaded alternative Gold/Black-infrastructure nine-team company role inventory (not adopted)](06-ALTERNATIVE-COMPANY-MODEL.md).
 
 ## Verified research principles
 - No universal authoritative nine-color *corporate-team* standard exists. Color mappings are contextual; Black Hat's development-centered InfoSec color wheel and NIST/NCCDC cyber competitions use different meanings for multiple colors.
