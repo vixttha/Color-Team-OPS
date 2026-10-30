@@ -255,13 +255,6 @@ def evaluate_completion(
         if not work_orders or not worker_events:
             return _answer("BLOCKED", "MISSING_WORK", "At least one scoped task and worker event required.", sha)
         events_by_task = {}
-        # Required specialist work must produce at least one resolvable claim.
-        for order in work_orders:
-            if order["team"] in required:
-                matching = [ev for ev in worker_events if ev["task_id"] == order["task_id"]]
-                if len(matching) != 1 or not matching[0]["evidence_claim_ids"]:
-                    return _answer("BLOCKED", "REQUIRED_WORK_UNVERIFIED",
-                                   "Required team task has no source-bound evidence claim.", sha)
         claim_ids = set()
         for event in worker_events:
             order = work_map.get(event["task_id"])
@@ -277,6 +270,11 @@ def evaluate_completion(
 
         if set(events_by_task) != set(work_map) or not required.issubset({w["team"] for w in work_orders}):
             return _answer("BLOCKED", "REQUIRED_WORK_INCOMPLETE", "Required current-SHA team tasks have not completed.", sha)
+        # Diagnose duplicate results BEFORE checking missing required-team proof.
+        for order in work_orders:
+            if order["team"] in required and not events_by_task[order["task_id"]]["evidence_claim_ids"]:
+                return _answer("BLOCKED", "REQUIRED_WORK_UNVERIFIED",
+                               "Required team task has no source-bound evidence claim.", sha)
 
         claims = {c["claim_id"]: c for c in evidence_claims}
         if set(claims) != claim_ids:
