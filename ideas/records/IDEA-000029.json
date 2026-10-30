@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "IDEA-000029",
+  "title": "Monitoring and feedback-driven regression corpus",
+  "summary": "Real failures inform targeted improvements",
+  "kind": "feature",
+  "origin": {
+    "created_by": "joint",
+    "type": "brainstorm",
+    "source": "2026-10-30 Color-Team-OPS architecture and routing discussion",
+    "source_catalog_id": "F29"
+  },
+  "lifecycle_status": "captured",
+  "implementation_status": "not_planned",
+  "testing": {
+    "status": "untested"
+  },
+  "importance": "unknown",
+  "complexity": "unknown",
+  "categories": [
+    "architecture",
+    "routing"
+  ],
+  "positive_effects": [
+    "Real failures inform targeted improvements"
+  ],
+  "negative_effects": [
+    "Privacy, data minimization, sampling bias"
+  ],
+  "synergy_note": "F20/F23/F28",
+  "related_ideas": [
+    "IDEA-000020",
+    "IDEA-000023",
+    "IDEA-000028"
+  ],
+  "evidence": [
+    {
+      "relation": "context",
+      "claim": "The source catalog records this concept and its owner-discussion status, not an executed implementation.",
+      "repository": "vixttha/Color-Team-OPS",
+      "source_sha": "b59bd2b7fa289b77cec7f9c2f42eedfcccd2449a",
+      "path": "research/07-IDEA-APPROVAL-FEATURE-CATALOG.md"
+    }
+  ],
+  "source_status_text": "Proposed; no background process implied"
+}
