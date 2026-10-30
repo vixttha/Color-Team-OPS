@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from types import MappingProxyType
 from typing import Mapping, Optional
 import json
 import re
@@ -95,7 +96,16 @@ class TeamDirectory:
                     or not cap["evidence_expected"].strip()):
                     raise RegistryRejected("MISSING_EVIDENCE_EXPECTATION")
             result.append(item)
-        return tuple(result)
+        # Snapshot metadata deeply; caller-owned JSON must not alter later routing.
+        frozen = []
+        for team in result:
+            caps = tuple(MappingProxyType({
+                **cap,
+                "tags": tuple(cap["tags"]),
+                "requires_tools": tuple(cap["requires_tools"]),
+            }) for cap in team["capabilities"])
+            frozen.append(MappingProxyType({**team, "capabilities": caps}))
+        return tuple(frozen)
 
     def teams(self) -> tuple[str, ...]:
         return tuple(sorted(x["id"] for x in self._teams))
@@ -141,6 +151,9 @@ class TeamDirectory:
         selected = tuple(x[3] for x in matches[:limit])
         if not selected:
             return SearchResult("ABSTAIN",VERSION,(),"NO_PERMITTED_MATCH")
+        if required_capabilities and not set(required_capabilities).issubset(
+                {item.capability_id for item in selected}):
+            return SearchResult("ABSTAIN",VERSION,selected,"REQUIRED_CAPABILITIES_UNMET")
         if all(x.missing_tools for x in selected):
             return SearchResult("CAPABILITY_BLOCKED",VERSION,selected,"MISSING_DECLARED_TOOLS")
         return SearchResult("CANDIDATES",VERSION,selected,

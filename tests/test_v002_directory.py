@@ -106,6 +106,23 @@ class DirectoryTests(unittest.TestCase):
         self.assertNotIn("vercel",body)
         self.assertNotIn("supabase",body)
         self.assertNotIn("owner-runner",body)
+    def test_caller_mutation_cannot_poison_loaded_directory(self):
+        self.doc["teams"][0]["capabilities"][0]["tags"].append("oauth")
+        self.assertEqual(self.directory.search(query="oauth",
+            permitted_teams=("yellow-team",)).status,"ABSTAIN")
+    def test_loaded_team_records_are_immutable(self):
+        with self.assertRaises(TypeError):
+            self.directory._teams[0]["name"]="Forged Team"
+    def test_missing_required_capability_is_not_satisfied(self):
+        out=self.directory.search(query="backend",permitted_teams=("yellow-team",),
+            required_capabilities=("yellow.feature-build","orange.auth-review"),
+            available_tools=("repo-read","repo-write"))
+        self.assertEqual((out.status,out.reason),("ABSTAIN","REQUIRED_CAPABILITIES_UNMET"))
+    def test_result_limit_cannot_hide_missing_required_capabilities(self):
+        out=self.directory.search(query="",permitted_teams=("yellow-team",),
+            required_capabilities=("yellow.feature-build","yellow.regression-test"),
+            available_tools=("repo-read","repo-write"),limit=1)
+        self.assertEqual(out.status,"ABSTAIN")
     def test_registry_metadata_not_grants(self):
         self.assertEqual(self.doc["source_classification"],"development_metadata_not_grants")
 
