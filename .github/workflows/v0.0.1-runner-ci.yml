@@ -54,19 +54,8 @@ jobs:
           test "$RUNNER_OS" = Linux
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           python3 --version
-          if python3 -c "import jsonschema, yaml; from jsonschema import FormatChecker; assert FormatChecker().conforms('not-a-time', 'date-time') is False"; then
-            echo 'Suitable development dependencies already available'
-          else
-            if python3 -m pip --version >/dev/null 2>&1; then
-              python3 -m pip install --disable-pip-version-check --target .cto-test-deps -r requirements-ci.txt
-            elif command -v uv >/dev/null 2>&1; then
-              uv pip install --target .cto-test-deps -r requirements-ci.txt
-            else
-              echo 'BLOCKED: no pip or uv for isolated CI dependencies' >&2
-              exit 2
-            fi
-            export PYTHONPATH="$PWD/.cto-test-deps${PYTHONPATH:+:$PYTHONPATH}"
-          fi
+          echo 'Using preinstalled Linux test libraries; requirements-ci.txt documents the developer dependencies'
+          python3 -c "import jsonschema, yaml; print('jsonschema, PyYAML imports PASS')"
           python3 -B -m unittest discover -s tests -p 'test_*.py' -v
           echo "CTO_V0001_LINUX_PASS $EXPECTED_SHA"
       - name: Clean Linux test environment

@@ -33,7 +33,7 @@ class PolicyTests(unittest.TestCase):
         law = read("docs/CONSTITUTION.md")
         for phrase in (
             "L1 — Cloud-only", "L2 — Runners optional", "L10 — Product independence",
-            "development tests", "independent audits", "README.md", "CHANGELOG.md",
+            "development tests", "self-audits", "README.md", "CHANGELOG.md",
             "ADR-0001",
         ):
             self.assertIn(phrase, law)
