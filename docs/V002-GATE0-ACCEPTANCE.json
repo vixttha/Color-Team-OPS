@@ -1,0 +1,74 @@
+{
+  "schema_version": "cto-v002-gate0-1",
+  "mission_id": "CTO-V002-SINGLE-THREAD",
+  "issue": 8,
+  "version": "0.0.2",
+  "observed_at": "2026-10-30",
+  "owner_scope": "existing authenticated conversation work on isolated branch; no merge, paid provisioning, production host, publication, credential or permission change",
+  "integration_branch": "integration/v0.0.2-master-single-thread",
+  "source_at_preflight": "984ba437bae41f26b2ade703c704ffcd1c8347ba",
+  "yellow_source": {
+    "branch": "feature/v0.0.2-yellow-live-host-readiness",
+    "sha": "72d09023f9edc29638f26d734262905346069bb3"
+  },
+  "allowed_write_branches": [
+    "integration/v0.0.2-master-single-thread"
+  ],
+  "active_worker": "yellow-team",
+  "current_checkpoint": "M1",
+  "source_inventory": {
+    "master_reference": "M1 single-task/zero-repair bridge; M2 9 team/18 capabilities; M3 advice; M4 270 unlabeled slots; M5 12 skill candidate",
+    "repeat_worker": "Yellow repeat specialist engine source separately 263/263 per platform historically",
+    "runtime": "skills-only Markdown coordination; no authenticated production host",
+    "optional_ideas": "Purple 36 ideas/5 candidate umbrellas; not a release gate"
+  },
+  "acceptance": [
+    {
+      "id": "M1",
+      "needed": "multi-task Yellow→Orange→Yellow, finite repeat/repair, scope/replay/revision checks, evidence-linked gate, exact integrated source tests",
+      "current": "BLOCKED_PENDING_INTEGRATION"
+    },
+    {
+      "id": "M2",
+      "needed": "nine-team role/capability knowledge, lazy loading, host/plugin practice, library absent independence",
+      "current": "REFERENCE_ONLY"
+    },
+    {
+      "id": "M3",
+      "needed": "one prompt Head-controlled adaptive sequential routing and stop with correct handoff evidence",
+      "current": "REFERENCE_ONLY"
+    },
+    {
+      "id": "TRUST",
+      "needed": "production host only if formally mandatory; actual authenticated consent/issuer/ledger/locking never synthetic",
+      "current": "SCOPE_NEEDS_OWNER_CLASSIFICATION_NOT_WAIVED"
+    },
+    {
+      "id": "M4",
+      "needed": "270 independently labeled/real measured team trials, baseline comparison, no false 99% claims",
+      "current": "UNLABELED_PLACEHOLDERS"
+    },
+    {
+      "id": "M5",
+      "needed": "12 skills version/package, exact source regression, reproducible ZIP, real canonical plugin trials, owner release approval",
+      "current": "SOURCE_CANDIDATE_NOT_RELEASE"
+    }
+  ],
+  "limits": {
+    "one_worker": true,
+    "worker_local_repairs_max": 2,
+    "head_handoffs_per_assignment": 4,
+    "no_new_paid_services": true,
+    "no_self_hosted_runner_invocation": true
+  },
+  "locked_laws": [
+    "cloud-only",
+    "provider-neutral",
+    "hosting-independent",
+    "nine specialist teams",
+    "three coordinator skills",
+    "no plugin runtime owned PC/runner"
+  ],
+  "host_trust_mode": "UNVERIFIED_REFERENCE_ONLY",
+  "release_ready": false
+}
