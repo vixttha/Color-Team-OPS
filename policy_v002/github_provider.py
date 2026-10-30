@@ -55,6 +55,27 @@ class GitHubReader(Protocol):
     """A GitHub REST GET-only reader, instantiated within a trusted host."""
     def repository(self, repository: str) -> Mapping: ...
     def branch_ref(self, repository: str, branch: str) -> Mapping: ...
+    def issue(self, repository: str, issue_number: int) -> Mapping:
+        if type(issue_number) is not int or issue_number < 1:
+            raise ProviderReadError("Invalid issue number")
+        return self._get(_path_for_repo(repository) + "/issues/" + str(issue_number))
+
+    def issue_comments(self, repository: str, issue_number: int) -> list[Mapping]:
+        if type(issue_number) is not int or issue_number < 1:
+            raise ProviderReadError("Invalid issue number")
+        path = _path_for_repo(repository) + "/issues/" + str(issue_number) + "/comments"
+        records: list[Mapping] = []
+        for page in range(1, 7):
+            batch = self._get(path + "?per_page=100&page=" + str(page), expect_list=True)
+            records.extend(batch)
+            if len(records) > 500:
+                raise ProviderReadError("Excessive issue-comment history")
+            if len(batch) < 100:
+                if len({row.get("id") for row in records}) != len(records):
+                    raise ProviderReadError("Duplicate issue comment identifiers")
+                return records
+        raise ProviderReadError("Issue-comment pagination limit exceeded")
+
     def workflow_run(self, repository: str, run_id: int) -> Mapping: ...
     def attempt_jobs(self, repository: str, run_id: int, attempt: int) -> list[Mapping]: ...
 
@@ -72,7 +93,7 @@ class GitHubRESTReader:
         self._timeout = timeout
         self._opener = build_opener(_NoRedirects())
 
-    def _get(self, path: str) -> Mapping:
+    def _get(self, path: str, *, expect_list: bool = False) -> Mapping | list[Mapping]:
         if not path.startswith("/") or "//" in path or "\n" in path or "\r" in path:
             raise ProviderReadError("Unsafe API path")
         token = self._token_supplier()
@@ -99,7 +120,10 @@ class GitHubRESTReader:
             data = json.loads(raw)
         except (ValueError, UnicodeError) as exc:
             raise ProviderReadError("Malformed GitHub response") from exc
-        if not isinstance(data, dict):
+        if expect_list:
+            if not isinstance(data, list) or any(not isinstance(item, dict) for item in data):
+                raise ProviderReadError("Expected GitHub object list")
+        elif not isinstance(data, dict):
             raise ProviderReadError("Expected GitHub object")
         return data
 

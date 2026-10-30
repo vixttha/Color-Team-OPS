@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   actions: read
+  issues: read
 concurrency:
   group: cto-v002-contract-${{ github.ref }}
   cancel-in-progress: true
@@ -81,3 +82,4 @@ jobs:
           test "$RUNNER_OS" = Linux
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           python3 -B -m devtools.live_github_smoke
+          python3 -B -m devtools.live_d5_pilot
