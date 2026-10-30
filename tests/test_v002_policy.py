@@ -173,6 +173,70 @@ class PolicyTests(unittest.TestCase):
     def test_gate_attestation_verifier_identity_mismatch(self):
         self.trust.gates["a1"] = replace(self.trust.gates["a1"], verifier_ref="different-actor")
         self.assert_outcome("BLOCKED", "GATE_ATTESTATION_MISMATCH")
+
+    def add_second_worker(self):
+        self.data["mission"]["required_teams"].append("orange-team")
+        self.data["mission"]["acceptance_criteria"].append("criterion2")
+        self.data["work_orders"].append(dict(
+            schema_version=V,mission_id="m1",task_id="t2",issued_by="HEAD",
+            team="orange-team",source_sha=SHA,scope_actions=["read"],
+            criteria_ids=["criterion2"],max_local_repairs=2,authorization_ref="ref1"))
+        self.data["worker_events"].append(dict(
+            schema_version=V,event_id="e2",mission_id="m1",task_id="t2",
+            team="orange-team",source_sha=SHA,outcome="DONE",
+            evidence_claim_ids=["c2"],summary="second task done",local_repairs=0))
+        self.data["evidence_claims"].append(dict(
+            schema_version=V,claim_id="c2",mission_id="m1",task_id="t2",
+            source_sha=SHA,provider="github",provider_record_id="test:2",
+            claim="second test ran",claimed_by="worker"))
+        self.trust.observations[("github","test:2")] = Observation(
+            "m1","t2","github","test:2",SHA,"criterion2","PASS")
+        self.trust.auth = replace(self.trust.auth, approved_task_ids=frozenset(("t1","t2")))
+        self.trust.dispatches.add(("m1","t2","orange-team",SHA))
+        for row in self.data["gate_records"]:
+            row["criterion_ids"].append("criterion2")
+            row["evidence_refs"].append("c2")
+        for ref in ("v1","a1"):
+            old = self.trust.gates[ref]
+            self.trust.gates[ref] = replace(
+                old,criterion_ids=frozenset(("criterion1","criterion2")),
+                evidence_refs=frozenset(("c1","c2")))
+        for i,(before,after,who) in enumerate((
+            ("HEAD_DECISION","WORKER_ACTIVE","HEAD"),
+            ("WORKER_ACTIVE","VALIDATION_PENDING","WORKER"),
+            ("VALIDATION_PENDING","INTERNAL_AUDIT_PENDING","VALIDATOR"),
+            ("INTERNAL_AUDIT_PENDING","HEAD_DECISION","INTERNAL_AUDITOR"),
+        ),5):
+            trans_id="tr"+str(i)
+            self.data["transition_events"].append(dict(
+                schema_version=V,transition_id=trans_id,mission_id="m1",
+                from_phase=before,to_phase=after,actor=who,source_sha=SHA,reason="second bounded task"))
+            self.trust.transitions[trans_id] = TransitionAttestation(
+                "m1",trans_id,before,after,who,SHA,"t2","orange-team",True)
+
+    def test_sequential_two_team_completion(self):
+        self.add_second_worker()
+        self.assert_outcome("PASS","INTERNAL_COMPLETION_VERIFIED")
+    def test_handoff_budget_is_enforced(self):
+        self.add_second_worker()
+        self.data["mission"]["max_handoffs"]=0
+        self.assert_outcome("BLOCKED","HANDOFF_BUDGET_EXCEEDED")
+    def test_cross_task_evidence_claim_replay_rejected(self):
+        self.add_second_worker()
+        self.data["mission"]["acceptance_criteria"]=["criterion1"]
+        self.data["work_orders"][1]["criteria_ids"]=["criterion1"]
+        self.data["worker_events"][1]["evidence_claim_ids"]=["c1"]
+        self.data["evidence_claims"].pop()
+        for gate in self.data["gate_records"]:
+            gate["criterion_ids"]=["criterion1"]
+            gate["evidence_refs"]=["c1"]
+        for ref in ("v1","a1"):
+            old=self.trust.gates[ref]
+            self.trust.gates[ref]=replace(
+                old,criterion_ids=frozenset(("criterion1",)),
+                evidence_refs=frozenset(("c1",)))
+        self.assert_outcome("BLOCKED","CROSS_TASK_EVIDENCE_REPLAY")
+
     def test_clean_internal_completion(self):
         self.assert_outcome("PASS", "INTERNAL_COMPLETION_VERIFIED")
     def test_external_approval_separate_from_internal_completion(self):

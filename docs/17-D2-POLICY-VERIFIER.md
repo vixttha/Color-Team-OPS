@@ -39,3 +39,6 @@ The first full phase-trace run on `e3ffa5d7a0f64956559dea9b4f1f0174e15b73c0` fai
 
 ## Follow-up security audit: authenticated verifier reference
 The gate record's `verifier_ref` must match the trusted gate attestation identity, not merely the phase and PASS outcome. This is now compared explicitly, with two new negative tests. This is **still conditional on a genuine trusted host adapter**, not real authenticated production evidence. Full results and limitations are recorded in [D2 audit](18-D2-POLICY-AUDIT.md).
+
+## Cross-task and handoff-budget audit repair
+A second audit identified that two different tasks could cite the same claimed provider observation ID. The reference verifier now binds each worker event's claim references to **that exact task**, preventing cross-team evidence replay. It also enforces the Head redispatch budget (`max_handoffs` counts assignments **after the first**, including same-team reassignment; local in-task repair is separately budgeted). Three new tests cover two valid sequential teams, exceeded handoffs and replayed cross-task claims. Neither rule constitutes independent provider authentication absent a genuine TrustAdapter.

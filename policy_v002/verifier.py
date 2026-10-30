@@ -216,6 +216,9 @@ def evaluate_completion(
         # establish global cross-chat exclusivity.
         if len(transition_events) != 4 * len(work_orders) or not work_orders:
             return _answer("BLOCKED", "MISSION_TRACE_INVALID", "Missing or extra stage transitions.", sha)
+        if len(work_orders) - 1 > mission["max_handoffs"]:
+            return _answer("BLOCKED", "HANDOFF_BUDGET_EXCEEDED",
+                           "Head redispatch count exceeds the mission handoff budget.", sha)
         for index, order in enumerate(work_orders):
             expected = (
                 ("HEAD_READY" if index == 0 else "HEAD_DECISION", "WORKER_ACTIVE", "HEAD"),
@@ -280,6 +283,12 @@ def evaluate_completion(
         claims = {c["claim_id"]: c for c in evidence_claims}
         if set(claims) != claim_ids:
             return _answer("BLOCKED", "CLAIM_LINKAGE_INVALID", "Worker claims and evidence records do not match.", sha)
+        # A claim is bound to ONE task; another worker cannot reuse its ID.
+        for event in worker_events:
+            for claim_id in event["evidence_claim_ids"]:
+                if claims[claim_id]["task_id"] != event["task_id"]:
+                    return _answer("BLOCKED", "CROSS_TASK_EVIDENCE_REPLAY",
+                                   "Evidence claim reused by a different worker task.", sha)
 
         verified_criteria = set()
         positive_evidence = set()
