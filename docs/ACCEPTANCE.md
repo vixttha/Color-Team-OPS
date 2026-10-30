@@ -33,3 +33,13 @@ Real unattended background execution, automatic completion triggers, guaranteed 
 - [ ] Obtain **actual successful owner-runner GitHub Actions** for both Windows/Linux jobs against final exact SHA.
 - [ ] Match installed plugin files against approved GitHub source revision, with versioning correctly handled by Plugin Creator.
 - [ ] Complete the assistant's Red/Purple/White audit and obtain affirmative owner release authorization, or report BLOCKED.
+
+## Verified real v0.0.1 test evidence
+
+- [x] Windows GitHub runner: 25/25 source-validation tests passed on commit `021b7b8552776e0c14db6207292300ff22a43159`.
+- [x] Linux GitHub runner: 25/25 source-validation tests passed on the same commit.
+- [x] Recorded complete [GitHub Actions run 40982601391](https://github.com/vixttha/Color-Team-OPS/actions/runs/40982601391).
+- [x] Owner-selected CI and assistant-led audit policy documented in ADR-0002.
+- [ ] Reverify the *latest* GitHub source commit after this documentation change.
+- [ ] Upload a matching **0.0.1** private ChatGPT plugin package and verify the file mapping, without silently creating v0.0.2.
+- [ ] Record real private-host invocation/acceptance where accessible; otherwise label it **NOT VERIFIED**, not PASS.

@@ -40,3 +40,15 @@ The successful runner-acceptance workflow on the separate runner-audit branch di
 ## 2026-10-29 — Owner-corrected v0.0.1 test plan
 
 The owner explicitly directed use of their registered Windows/Linux GitHub runners for v0.0.1 release testing, and assigned the assistant to audit it. The earlier mandatory GitHub-hosted CI requirement is superseded by [ADR-0002](decisions/ADR-0002-ci-runner-choice.md); previous provider-runner failures remain historical evidence, not the selected release gate. The self-hosted runners must **never** be required by the installed plugin or its future cloud services. No test PASS is claimed until actual job logs on the exact v0.0.1 SHA are obtained. The existing private Plugin Creator v0.0.1 release remains out of date until reconciled.
+
+## Owner-runner CI results — 2026-10-29
+
+- **Commit tested:** `021b7b8552776e0c14db6207292300ff22a43159`.
+- **Actual GitHub Actions run:** https://github.com/vixttha/Color-Team-OPS/actions/runs/40982601391 — conclusion **SUCCESS**, both jobs successfully assigned to the named registered runners.
+- **Windows:** `color-team-ops-windows-01`, 25 tests, all passed; checkout, test, cleanup and job completed successfully.
+- **Linux:** `color-team-ops-linux-01`, 25 tests, all passed; checkout, test, cleanup and job completed successfully.
+- **Both jobs:** checked exact commit SHA and runner identity; GitHub token had read-only repository contents permissions. The dependencies used for tests are developer-only; no application service was installed.
+- These results validate **source contracts, workflow policy, regression checks and package structure** only. They do not prove live browser skill behavior or authenticate arbitrary claims of external test evidence.
+- This is a **prior successfully tested source revision**; if acceptance documentation changes after it, the new final SHA must also pass CI. Record final run details in the PR discussion before promotion.
+
+The original GitHub-hosted CI provisioning problem is a historical issue only; per ADR-0002, the owner chose their connected runners for v0.0.1 release verification. This changes no runtime product law.

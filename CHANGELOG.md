@@ -23,7 +23,7 @@ Newest version first. Every version updates README.md, this changelog, acceptanc
 - The owner selected the assistant to audit this release; outside independent review is not a prerequisite.
 
 ### Outstanding
-- Real successful Windows/Linux runner tests on the final version source SHA and complete assistant audit.
+- Windows and Linux GitHub Actions tests ran and passed **25/25 each** on `021b7b8552776e0c14db6207292300ff22a43159`. Final-revision verification and plugin-source alignment remain the release gate.
 - Real installed-plugin skill acceptance, host integrations and plugin/repository source reconciliation.
 - Persistent autonomous cloud execution is not part of the skills-only v0.0.1 release.
 

@@ -56,4 +56,4 @@ The [five-team execution and release-gate audit](docs/audits/v0.0.1-five-team-ex
 
 ## Current status
 
-The private plugin v0.0.1 was created before the new CI and README work. GitHub changes do not update that installed package automatically. Draft [PR #1](https://github.com/vixttha/Color-Team-OPS/pull/1) remains unmerged. Remaining acceptance is actual runner test evidence, the assistant's evidence-based audit, live plugin acceptance and source/plugin reconciliation. Test hardware is never required for plugin use.
+The private plugin v0.0.1 was created before the new CI and README work. GitHub changes do not update that installed package automatically. Draft [PR #1](https://github.com/vixttha/Color-Team-OPS/pull/1) remains unmerged. Windows and Linux runners **both executed and passed 25/25 tests** on revision `021b7b8552776e0c14db6207292300ff22a43159` ([GitHub Actions run](https://github.com/vixttha/Color-Team-OPS/actions/runs/40982601391)). Remaining release work is final-revision verification, the assistant's audit and final-version private ChatGPT plugin upload/source reconciliation. Test hardware is never required for plugin use.
