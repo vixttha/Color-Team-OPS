@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "IDEA-000001",
+  "title": "Example idea",
+  "summary": "Describe a possible improvement without assuming approval.",
+  "origin": {
+    "source_note": "Human planning conversation; replace with actual origin.",
+    "created_by": "human"
+  },
+  "lifecycle_status": "captured",
+  "implementation_status": "not_planned",
+  "testing": {
+    "status": "untested"
+  },
+  "benefits": [
+    "Expected benefit, if supported"
+  ],
+  "drawbacks": [
+    "Possible downside"
+  ],
+  "related_ideas": [],
+  "categories": [
+    "planning"
+  ],
+  "importance": "unknown",
+  "complexity": "unknown",
+  "evidence": []
+}

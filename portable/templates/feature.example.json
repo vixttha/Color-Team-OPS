@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "FEAT-000001",
+  "title": "Example feature candidate",
+  "summary": "Proposed capability; not yet implemented or approved for release.",
+  "lifecycle_status": "proposed",
+  "implementation_status": "not_planned",
+  "idea_ids": [
+    "IDEA-000001"
+  ],
+  "acceptance_criteria": [
+    "Define an observable acceptance test."
+  ],
+  "evidence": [],
+  "release_refs": [],
+  "limitations": [
+    "Not tested or shipped."
+  ]
+}
