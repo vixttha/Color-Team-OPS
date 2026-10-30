@@ -80,4 +80,4 @@ jobs:
           test "$RUNNER_NAME" = color-team-ops-linux-01
           test "$RUNNER_OS" = Linux
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
-          python3 -B devtools/live_github_smoke.py
+          python3 -B -m devtools.live_github_smoke
