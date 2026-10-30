@@ -58,3 +58,6 @@ A [read-only deterministic verifier](policy_v002/verifier.py) now connects the D
 
 ## D3 — GitHub provider evidence integration (prototype)
 The [D3 read-only GitHub adapter](policy_v002/github_provider.py) provides bounded provider lookups and is designed for protected host-issued mission-run bindings, alongside the [D3 trust-boundary guide](docs/19-D3-GITHUB-EVIDENCE-ADAPTER.md). **GitHub evidence does not authenticate Head, user consent or audit independence**; a real host ledger and credential boundary are not yet installed. Tests are designed to mock GitHub responses, while an actual connected GitHub workflow run has been separately inspected. Not a v0.0.2 plugin release.
+
+## D3 audited reference status
+[D3 three-pass security and evidence audit](docs/20-D3-PROVIDER-EVIDENCE-AUDIT.md) records the source-bound tests, the separate real GitHub connector observations, and the unimplemented protected-host authorization requirements. The D3 implementation is a read-only reference adapter; a synthetic HostAuthority fixture cannot authenticate real mission grants.
