@@ -32,3 +32,6 @@ These are **design reading links**, not independently run tests or proof of capa
 
 ## Audit terminology
 Three checks by one assistant are **three audit passes, not three independent external auditors**. Audit outcomes may check document consistency but cannot establish unimplemented behavior or security claims. `docs/09-THREE-PASS-AUDIT.md` records the concrete passes performed on this branch.
+
+## Resolved-at-design versus still-unproven
+The following **engineering proposals** address previously open design topics without rewriting user decisions: [CTO-002-A](10-SINGLE-LANE-LOCKING-DECISION.md) selects optional managed SQL/fencing/gateway enforcement; [CTO-002-B](11-AUTHENTICATED-EVIDENCE-DECISION.md) selects authenticated provider observations and criterion verification; [CTO-002-C](12-SPECIALIST-PERFORMANCE-DECISION.md) selects nine role-specific benchmark suites with proposed repeated pilots. [Combined record](13-V0.0.2-DECISION-RECORD-AND-ROADMAP.md) clearly separates these ideas from v0.0.2 shipped features. Source authorities: PostgreSQL, Redis, GitHub, OWASP, OpenAI and NIST links appear in the detailed decisions. No external-source claim implies live integration or a completed evaluation.

@@ -45,3 +45,6 @@ An internally verified mission may conclude inside the same thread. If an extern
 - How a host distinguishes internal challenge phase from external actor identity.
 - Which specialist reference material is authoritative, versioned and maintainable.
 - Whether dedicated cloud state/lock enforcement becomes an optional enhanced mode without degrading cloud-only skills-first operation.
+
+## 2026-10-29 follow-on design-resolution addendum
+The three technical questions have a **selected candidate design** but are not automatically owner-approved product scope or tested functionality. See [lock policy](10-SINGLE-LANE-LOCKING-DECISION.md), [evidence trust](11-AUTHENTICATED-EVIDENCE-DECISION.md), [evaluation](12-SPECIALIST-PERFORMANCE-DECISION.md), and [combined decision and remaining approvals](13-V0.0.2-DECISION-RECORD-AND-ROADMAP.md). Preserve the above open questions that remain unresolved at *implementation* level; do not call them runtime solved.

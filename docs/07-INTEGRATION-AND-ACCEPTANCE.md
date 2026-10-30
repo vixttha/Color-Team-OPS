@@ -40,3 +40,6 @@
 
 ## Adoption gate
 No automatic promotion to future v0.0.2. This documentation is a design candidate; owner approval, verified behavioral test evidence and release readiness are separately required. Never treat internal audit as an independent third-party audit.
+
+## Decision dependencies and rollout split
+Detailed plans: [Locking](10-SINGLE-LANE-LOCKING-DECISION.md), [Evidence](11-AUTHENTICATED-EVIDENCE-DECISION.md), [Performance](12-SPECIALIST-PERFORMANCE-DECISION.md), [Decision register](13-V0.0.2-DECISION-RECORD-AND-ROADMAP.md). First ship only a capabilities-honest, skills-first verified mission path after actual tests and owner acceptance; the managed cloud exclusivity option is conditional on separate authorization, provider selection, cost cap and integration tests. Never make optional infrastructure a hidden prerequisite for ordinary single-thread work.

@@ -41,3 +41,6 @@ Every observation should bind: mission ID, task/team, tool/provider identity, ac
 
 ## Failure examples that must be tested
 Fake PASS JSON; forged `observed_by`; nonexistent CI run; stale SHA; green test of previous revision; unapproved branch write; worker selecting next team; auditor self-certifying independence; White team treated as code auditor; invalid phase transition; duplicated event; no cloud tool available; conflicting write lane; attempts to require local/user runners.
+
+## Selected provenance policy for future design
+Use a tiered `CLAIMED → OBSERVED → CORROBORATED → CRITERION_VERIFIED` evidence model. Evidence Resolver is a **Verification Gate function, not a new specialist**. All outcomes must bind to actual permissioned provider records and exact acceptance criteria; source SHA, run status and executed steps matter. Absent authenticated resolution remains UNVERIFIED, never narrative PASS. See [Decision CTO-002-B](11-AUTHENTICATED-EVIDENCE-DECISION.md).

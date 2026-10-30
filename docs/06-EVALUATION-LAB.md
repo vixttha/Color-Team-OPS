@@ -44,3 +44,6 @@ No global "zero mistakes" guarantee: aim to reduce error probability, detect sev
 
 ## Operational separation
 This lab is **development/testing infrastructure**, not a thirteenth runtime skill, not a local dependency and not a mandatory always-on service. User runners may optionally help develop/test it with permission; the installed Color Team OPS must run without them.
+
+## Candidate pilot protocol and promotion gates
+The suggested 270 distinct pilot cases remain proposed, not run. The expanded [Decision CTO-002-C](12-SPECIALIST-PERFORMANCE-DECISION.md) defines fixed oracles, severity, hidden holdouts, 3 repeated runs per approved configuration (810 total proposed runs), paired baseline comparisons, no observed critical authorization/fabrication failures, and **preregistered, as-yet-OPEN numeric thresholds**. No false zero-mistake guarantee and no forced paid evaluation platform.

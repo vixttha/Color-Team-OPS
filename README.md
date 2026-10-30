@@ -40,3 +40,6 @@ One active worker *per mission* and one user-facing conversation are core user g
 ## Proposed, not yet accepted
 
 The user has expressed approval of the overall direction, but every new detailed contract, benchmark, state extension and integration step in these documents remains a **candidate design for a future v0.0.2** pending acceptance. Do not silently modify the v0.0.1 release or treat documentation as shipped capability.
+
+## Future v0.0.2 decisions: detailed candidate specifications
+These topics were open during the original nine-document design review. They now have **proposed technical decisions, not implemented guarantees**: [single-lane locking](docs/10-SINGLE-LANE-LOCKING-DECISION.md), [authenticated evidence](docs/11-AUTHENTICATED-EVIDENCE-DECISION.md), [specialist performance](docs/12-SPECIALIST-PERFORMANCE-DECISION.md), and the [combined roadmap/decision register](docs/13-V0.0.2-DECISION-RECORD-AND-ROADMAP.md). Basic skills-only use never requires an extra auditor chat, a local runner or a managed backend. Guaranteed cross-chat exclusive writes remain **UNVERIFIED unless cloud gateway and all relevant enforcement are actually established**. Evaluations and cloud services here are future design only.

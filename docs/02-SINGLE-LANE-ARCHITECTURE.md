@@ -63,3 +63,6 @@ Head-level dispatch: at most one team selected per decision; track work fingerpr
 
 ## External release gate
 Completing a technical mission is not the same as merging or publishing. If external approval is required by repo policy, report internal completion separately from unfulfilled release authorization. No default independent auditor **conversation** is needed to complete ordinary internal work.
+
+## Cloud-enforced exclusive writes (optional future mode)
+The base one-chat protocol above does **not** create a global lock. The selected future design uses a provider-managed transactional mission/resource record and monotonically increasing fencing epoch, checked at a controlled write gateway; every write also rechecks GitHub target revision. Only gateway-mediated operations can be claimed exclusive, and direct provider writes require separate restrictions. In absence of enforcement, guaranteed-single-writer mutations are CAPABILITY_BLOCKED rather than claimed safe. See [Decision CTO-002-A](10-SINGLE-LANE-LOCKING-DECISION.md).
