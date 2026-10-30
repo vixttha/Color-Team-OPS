@@ -43,3 +43,6 @@ The user has expressed approval of the overall direction, but every new detailed
 
 ## Future v0.0.2 decisions: detailed candidate specifications
 These topics were open during the original nine-document design review. They now have **proposed technical decisions, not implemented guarantees**: [single-lane locking](docs/10-SINGLE-LANE-LOCKING-DECISION.md), [authenticated evidence](docs/11-AUTHENTICATED-EVIDENCE-DECISION.md), [specialist performance](docs/12-SPECIALIST-PERFORMANCE-DECISION.md), and the [combined roadmap/decision register](docs/13-V0.0.2-DECISION-RECORD-AND-ROADMAP.md). Basic skills-only use never requires an extra auditor chat, a local runner or a managed backend. Guaranteed cross-chat exclusive writes remain **UNVERIFIED unless cloud gateway and all relevant enforcement are actually established**. Evaluations and cloud services here are future design only.
+
+## Design-resolution audit
+A follow-on [three-pass design resolution audit](docs/14-V0.0.2-DESIGN-RESOLUTION-AUDIT.md) covers the three new technical decisions and final commit isolation. This review validates documentation consistency only—not a deployed lock, actual hosted evidence service, executed specialist benchmarks or a production v0.0.2 release.
