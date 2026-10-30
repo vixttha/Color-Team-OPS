@@ -195,6 +195,7 @@ class SQLiteDevelopmentJournal:
     def read(self, mission_id: str) -> Optional[dict]:
         con = self._connect()
         try:
+            con.execute("BEGIN")
             state, revision, _ = self._read_in_tx(con, mission_id)
             return dict(state, revision=revision) if state is not None else None
         finally:
@@ -203,6 +204,7 @@ class SQLiteDevelopmentJournal:
     def history(self, mission_id: str) -> list[dict]:
         con = self._connect()
         try:
+            con.execute("BEGIN")
             _, _, _ = self._read_in_tx(con, mission_id)
             rows = con.execute(
                 "SELECT revision,entry_hash,entry FROM mission_events "
@@ -258,7 +260,8 @@ class CloudAuthorityEngine:
         if not isinstance(intent, dict):
             raise HostRejected("INVALID_INTENT")
         mandatory = ("mission_id","repository","branch","source_sha",
-                     "allowed_teams","required_teams","allowed_actions","criteria")
+                     "allowed_teams","required_teams","allowed_actions","criteria",
+                     "max_handoffs")
         if any(k not in intent for k in mandatory) or set(intent) != set(mandatory):
             raise HostRejected("INVALID_INTENT")
         mission_id = intent["mission_id"]
@@ -274,6 +277,9 @@ class CloudAuthorityEngine:
                 raise HostRejected("INVALID_SCOPE")
         if not set(intent["required_teams"]).issubset(set(intent["allowed_teams"])):
             raise HostRejected("INVALID_SCOPE")
+        if (type(intent["max_handoffs"]) is not int or intent["max_handoffs"] < 0
+                or intent["max_handoffs"] >= len(intent["allowed_teams"])):
+            raise HostRejected("INVALID_HANDOFF_BUDGET")
         if any(x not in ("read", "inspect", "report") for x in intent["allowed_actions"]):
             raise HostRejected("READ_ONLY_PILOT_SCOPE")
         request_digest = digest(intent)
@@ -336,6 +342,8 @@ class CloudAuthorityEngine:
             raise HostRejected("TASK_NOT_AUTHORIZED")
         if team in state["approved_teams"]:
             raise HostRejected("TEAM_ALREADY_COMPLETE")
+        if len(state["used_task_ids"]) > state["max_handoffs"]:
+            raise HostRejected("HANDOFF_BUDGET_EXCEEDED")
         if task_id in state["used_task_ids"]:
             raise HostRejected("TASK_REPLAY")
         return self._append(state,event_id,"DISPATCH",subject,

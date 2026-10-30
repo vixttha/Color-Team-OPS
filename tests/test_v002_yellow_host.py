@@ -73,7 +73,8 @@ def mission(name="mission-001",teams=None,requirements=None,criteria=None):
     return dict(mission_id=name,repository="sample/repo",branch="feature/yellow",
                 source_sha=SHA,allowed_teams=teams or ["yellow-team"],
                 required_teams=requirements or ["yellow-team"],
-                allowed_actions=["read","inspect"],criteria=criteria or ["ci-pass"])
+                allowed_actions=["read","inspect"],criteria=criteria or ["ci-pass"],
+                max_handoffs=(len(teams)-1) if teams is not None else 0)
 
 
 class HostLaneTests(unittest.TestCase):
@@ -289,6 +290,25 @@ class HostLaneTests(unittest.TestCase):
         self.grant(target);self.dispatch();self.report();self.validate();self.audit()
         self.assert_rejected("TASK_REPLAY",self.dispatch,revision=5,team="orange-team",
                              task="task-001",criterion="second-pass",event="dispatch-002")
+
+    def test_zero_handoff_budget_blocks_second_team(self):
+        target=mission(teams=["yellow-team","orange-team"],
+                       requirements=["yellow-team","orange-team"],criteria=["ci-pass","second-pass"])
+        target["max_handoffs"]=0
+        self.grant(target);self.dispatch();self.report();self.validate();self.audit()
+        self.assert_rejected("HANDOFF_BUDGET_EXCEEDED",self.dispatch,revision=5,
+            team="orange-team",task="task-002",criterion="second-pass",event="dispatch-002")
+
+    def test_invalid_handoff_budget_refused_at_consent(self):
+        target=mission()
+        target["max_handoffs"]=-1
+        self.assert_rejected("INVALID_HANDOFF_BUDGET",self.grant,target)
+
+    def test_budget_is_part_of_exact_consent_digest(self):
+        a=mission()
+        b=mission()
+        b["max_handoffs"]=1
+        self.assertNotEqual(digest(a),digest(b))
 
     def test_second_team_needed_before_final_head_completion(self):
         target=mission(teams=["yellow-team","orange-team"],requirements=["yellow-team","orange-team"],
