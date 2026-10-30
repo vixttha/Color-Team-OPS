@@ -36,7 +36,9 @@ def scenario():
     stages=[("grant","CONSENT_GRANTED"),("dispatch","DISPATCH"),
             ("report","WORKER_REPORTED"),("validate","VALIDATION_PASSED"),
             ("audit","AUDIT_PASSED")]
-    events=[dict(revision=i,event_id=e,kind=k,subject="head-fixture",
+    subjects=("head-fixture", "head-fixture", "worker-fixture",
+              "validator-fixture", "auditor-fixture")
+    events=[dict(revision=i,event_id=e,kind=k,subject=subjects[i-1],
                  consent_id="fixture-grant" if i==1 else None)
             for i,(e,k) in enumerate(stages,1)]
     links=[dict(transition_id="tr"+str(i),journal_event_id=stages[i][0],
@@ -135,8 +137,29 @@ class M1BridgeTests(unittest.TestCase):
     def test_malformed_journal_event_fails_closed(self):
         self.d["journal"].events[2]=None
         self.check("BLOCKED","MALFORMED_REFERENCE_RECORD")
+    def test_bad_head_role_claim_rejected(self):
+        self.d["head_decision"]["actor"]="IMPOSTOR"
+        self.check("BLOCKED","HEAD_DECISION_MISMATCH")
+    def test_wrong_transition_actor_rejected(self):
+        self.d["transition_events"][2]["actor"]="HEAD"
+        self.check("BLOCKED","TRANSITION_ROLE_MISMATCH")
+    def test_gate_actor_not_linked_to_journal_event(self):
+        self.d["journal"].state["gates"][0]["subject"]="worker-fixture"
+        self.check("BLOCKED","GATE_ACTOR_LINK_MISMATCH")
+    def test_inconsistent_completion_flag_rejected(self):
+        self.d["journal"].state["completion"]="INTERNAL_READ_ONLY_VERIFIED"
+        self.check("BLOCKED","HEAD_PHASE_INVALID")
+    def test_forged_head_dispatch_actor_rejected(self):
+        self.d["journal"].events[1]["subject"]="impostor"
+        self.check("BLOCKED","HEAD_DISPATCH_ACTOR_MISMATCH")
+    def test_gate_reference_in_head_decision_rejected(self):
+        self.d["head_decision"]["audit_record_ref"]="forged"
+        self.check("BLOCKED","HEAD_DECISION_MISMATCH")
+    def test_missing_journal_actor_rejected(self):
+        self.d["journal"].events[2]["subject"]=""
+        self.check("BLOCKED","JOURNAL_ACTOR_MISSING")
     def test_bridge_version_is_pinned(self):
-        self.assertEqual(VERSION,"cto-v002-m1-bridge-1")
+        self.assertEqual(VERSION,"cto-v002-m1-bridge-2")
 
 
 if __name__=="__main__":

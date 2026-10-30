@@ -12,9 +12,15 @@ from typing import Mapping
 from .host_runtime import HostRejected, digest
 from .verifier import evaluate_completion
 
-VERSION = "cto-v002-m1-bridge-1"
+VERSION = "cto-v002-m1-bridge-2"
 PHASES = ("VALIDATE", "INTERNAL_AUDIT")
 EVENTS = ("DISPATCH", "WORKER_REPORTED", "VALIDATION_PASSED", "AUDIT_PASSED")
+TRANSITIONS = (
+    ("HEAD_READY", "WORKER_ACTIVE", "HEAD"),
+    ("WORKER_ACTIVE", "VALIDATION_PENDING", "WORKER"),
+    ("VALIDATION_PENDING", "INTERNAL_AUDIT_PENDING", "VALIDATOR"),
+    ("INTERNAL_AUDIT_PENDING", "HEAD_DECISION", "INTERNAL_AUDITOR"),
+)
 ACTION_MAP = {"read": "read", "analyze": "inspect"}
 
 @dataclass(frozen=True)
@@ -70,7 +76,8 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
             return result("BLOCKED", "GRANT_EXPIRED")
     except (TypeError, ValueError, OverflowError):
         return result("UNVERIFIED", "CLOCK_UNAVAILABLE")
-    if state.get("phase") != "HEAD_DECISION" or state.get("task") is not None:
+    if (state.get("phase") != "HEAD_DECISION" or state.get("task") is not None
+        or state.get("completion") is not None):
         return result("BLOCKED", "HEAD_PHASE_INVALID")
     match = {"mission_id": "mission_id", "repository": "repository",
              "source_sha": "source_sha", "authorized_branch": "branch",
@@ -130,6 +137,9 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
             or gate.get("evidence_ref") != receipt or gate.get("verdict") != "PASS"
             or not gate.get("subject")):
             return result("BLOCKED", "GATE_RECEIPT_MISMATCH")
+        # This checks journal consistency, not authenticated role independence.
+        if gate["subject"] != history[i + 3].get("subject"):
+            return result("BLOCKED", "GATE_ACTOR_LINK_MISMATCH")
     for i, kind in enumerate(EVENTS):
         event, link, transition = history[i+1], event_links[i], transition_events[i]
         if (not isinstance(link, dict) or not isinstance(transition,dict)
@@ -139,6 +149,13 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
             or link.get("transition_id") != transition.get("transition_id")
             or link.get("task_id") != task or link.get("source_sha") != sha):
             return result("BLOCKED", "TRANSITION_LINK_MISMATCH")
+        if ((transition.get("from_phase"), transition.get("to_phase"), transition.get("actor"))
+                != TRANSITIONS[i]):
+            return result("BLOCKED", "TRANSITION_ROLE_MISMATCH")
+        if not isinstance(event.get("subject"), str) or not event["subject"]:
+            return result("BLOCKED", "JOURNAL_ACTOR_MISSING")
+        if i == 0 and event["subject"] != state["head_subject"]:
+            return result("BLOCKED", "HEAD_DISPATCH_ACTOR_MISMATCH")
     if (not set(state.get("required_teams", [])).issubset(state.get("approved_teams", []))
         or not set(state.get("criteria", [])).issubset(state.get("validated_criteria", []))):
         return result("BLOCKED", "WORK_INCOMPLETE")
@@ -152,7 +169,11 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
             or g.get("evidence_refs") != [claim.get("claim_id")]
             or set(g.get("criterion_ids", [])) != set(state["criteria"])):
             return result("BLOCKED", "AGGREGATE_GATE_INVALID")
-    if not isinstance(head_decision,dict) or head_decision.get("source_sha") != sha:
+    if (not isinstance(head_decision, dict) or head_decision.get("source_sha") != sha
+        or head_decision.get("actor") != "HEAD"
+        or head_decision.get("action") not in ("COMPLETE", "BLOCKED_EXTERNAL_APPROVAL")
+        or head_decision.get("validation_record_ref") != gates["VALIDATE"].get("record_id")
+        or head_decision.get("audit_record_ref") != gates["INTERNAL_AUDIT"].get("record_id")):
         return result("BLOCKED", "HEAD_DECISION_MISMATCH")
     if trust is None:
         return result("UNVERIFIED", "REFERENCE_ALIGNED_AUTHORITY_UNVERIFIED")
