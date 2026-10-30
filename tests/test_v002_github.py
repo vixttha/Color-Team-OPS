@@ -27,7 +27,7 @@ class HostFixture(FakeAdapter):
         super().__init__()
         self.repo_id = RID
         self.binding = RunBinding("m1", "t1", "criterion1", RID,
-            "owner/repo", BRANCH, SHA, RUN, PATH, "push",
+            "owner/repo", BRANCH, SHA, RUN, 1, PATH, "push",
             ("linux", "windows"),
             (("linux", LINUX_STEP), ("windows", WINDOWS_STEP)))
     def expected_repository_id(self, repository):
@@ -48,10 +48,10 @@ class ReaderFixture:
             "run_attempt": 1, "status": "completed", "conclusion": "success"
         }
         self.jobs = [
-            {"id": 1, "run_id": RUN, "name": "linux", "status": "completed",
+            {"id": 1, "run_id": RUN, "head_sha": SHA, "name": "linux", "status": "completed",
              "conclusion": "success",
              "steps": [{"name": LINUX_STEP, "status": "completed", "conclusion": "success"}]},
-            {"id": 2, "run_id": RUN, "name": "windows", "status": "completed",
+            {"id": 2, "run_id": RUN, "head_sha": SHA, "name": "windows", "status": "completed",
              "conclusion": "success",
              "steps": [{"name": WINDOWS_STEP, "status": "completed", "conclusion": "success"}]},
         ]
@@ -61,7 +61,9 @@ class ReaderFixture:
         return copy.deepcopy(self.ref)
     def workflow_run(self, repository, run_id):
         return copy.deepcopy(self.run)
-    def latest_jobs(self, repository, run_id):
+    def attempt_jobs(self, repository, run_id, attempt):
+        if attempt != 1:
+            raise ProviderReadError("wrong attempt fixture")
         return copy.deepcopy(self.jobs)
 
 
@@ -139,6 +141,15 @@ class BridgeTests(unittest.TestCase):
     def test_duplicate_required_job_name_not_evidence(self):
         self.reader.jobs.append(copy.deepcopy(self.reader.jobs[0]))
         self.assert_verdict("UNVERIFIED","EVIDENCE_UNAVAILABLE")
+    def test_run_attempt_mismatch_not_evidence(self):
+        self.reader.run["run_attempt"] = 2
+        self.assert_verdict("UNVERIFIED", "EVIDENCE_UNAVAILABLE")
+    def test_binding_attempt_mismatch_not_evidence(self):
+        self.host.binding = replace(self.host.binding, run_attempt=2)
+        self.assert_verdict("UNVERIFIED", "EVIDENCE_UNAVAILABLE")
+    def test_job_head_sha_mismatch_not_evidence(self):
+        self.reader.jobs[0]["head_sha"] = OTHER_SHA
+        self.assert_verdict("UNVERIFIED", "EVIDENCE_UNAVAILABLE")
     def test_run_id_wrong_not_evidence(self):
         self.reader.run["id"]=RUN+1
         self.assert_verdict("UNVERIFIED","EVIDENCE_UNAVAILABLE")
@@ -222,9 +233,17 @@ class RestReaderTests(unittest.TestCase):
         reader._opener=FakeOpener([])
         with self.assertRaises(ProviderReadError):
             reader.repository("owner/repo")
+    def test_attempt_specific_jobs_endpoint(self):
+        self.reader._opener = FakeOpener([{"total_count":0,"jobs":[]}])
+        self.reader.attempt_jobs("owner/repo",123,3)
+        self.assertIn("/actions/runs/123/attempts/3/jobs?",
+                      self.reader._opener.requests[0].full_url)
+    def test_invalid_attempt_rejected(self):
+        with self.assertRaises(ProviderReadError):
+            self.reader.attempt_jobs("owner/repo",123,0)
     def test_jobs_complete_one_page(self):
         self.reader._opener=FakeOpener([{"total_count":1,"jobs":[{"id":1,"name":"linux"}]}])
-        rows=self.reader.latest_jobs("owner/repo",123)
+        rows=self.reader.attempt_jobs("owner/repo",123,1)
         self.assertEqual(len(rows),1)
     def test_jobs_paginate_without_truncation(self):
         page1=[{"id":i} for i in range(100)]

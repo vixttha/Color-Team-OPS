@@ -56,7 +56,7 @@ class GitHubReader(Protocol):
     def repository(self, repository: str) -> Mapping: ...
     def branch_ref(self, repository: str, branch: str) -> Mapping: ...
     def workflow_run(self, repository: str, run_id: int) -> Mapping: ...
-    def latest_jobs(self, repository: str, run_id: int) -> list[Mapping]: ...
+    def attempt_jobs(self, repository: str, run_id: int, attempt: int) -> list[Mapping]: ...
 
 
 class GitHubRESTReader:
@@ -117,13 +117,14 @@ class GitHubRESTReader:
             raise ProviderReadError("Invalid workflow run ID")
         return self._get(_path_for_repo(repository) + "/actions/runs/" + str(run_id))
 
-    def latest_jobs(self, repository: str, run_id: int) -> list[Mapping]:
-        if type(run_id) is not int or run_id < 1:
-            raise ProviderReadError("Invalid workflow run ID")
-        path = _path_for_repo(repository) + "/actions/runs/" + str(run_id) + "/jobs"
+    def attempt_jobs(self, repository: str, run_id: int, attempt: int) -> list[Mapping]:
+        if type(run_id) is not int or run_id < 1 or type(attempt) is not int or attempt < 1:
+            raise ProviderReadError("Invalid workflow run ID or attempt")
+        path = (_path_for_repo(repository) + "/actions/runs/" + str(run_id)
+                + "/attempts/" + str(attempt) + "/jobs")
         jobs = []
         for page in range(1, 12):
-            response = self._get(path + "?per_page=100&filter=latest&page=" + str(page))
+            response = self._get(path + "?per_page=100&page=" + str(page))
             total = response.get("total_count")
             batch = response.get("jobs")
             if type(total) is not int or total < 0 or total > _MAX_JOBS or not isinstance(batch, list):
@@ -153,6 +154,7 @@ class RunBinding:
     branch: str
     source_sha: str
     run_id: int
+    run_attempt: int
     workflow_path: str
     event: str
     required_jobs: tuple[str, ...]
@@ -228,7 +230,8 @@ class GitHubBackedTrustAdapter:
         binding = self._host.run_binding(provider_record_id)
         if binding is None or not isinstance(binding, RunBinding):
             return None
-        if (binding.run_id != int(match.group(1)) or type(binding.repository_id) is not int
+        if (binding.run_id != int(match.group(1)) or type(binding.run_attempt) is not int
+                or binding.run_attempt < 1 or type(binding.repository_id) is not int
                 or binding.repository_id < 1 or not _SHA.fullmatch(binding.source_sha)
                 or not _valid_branch(binding.branch) or not _WORKFLOW.fullmatch(binding.workflow_path)
                 or binding.event != "push" or not binding.criterion_id or not binding.mission_id
@@ -257,15 +260,15 @@ class GitHubBackedTrustAdapter:
                 or run.get("path") != binding.workflow_path
                 or run.get("event") != binding.event
                 or run.get("status") != "completed"
-                or type(run.get("run_attempt")) is not int or run["run_attempt"] < 1):
+                or type(run.get("run_attempt")) is not int or run["run_attempt"] != binding.run_attempt):
             return None
 
         if run.get("conclusion") not in ("success", "failure"):
             return None
-        jobs = self._reader.latest_jobs(binding.repository, binding.run_id)
+        jobs = self._reader.attempt_jobs(binding.repository, binding.run_id, binding.run_attempt)
         matches = {}
         for job in jobs:
-            if job.get("run_id") != binding.run_id:
+            if job.get("run_id") != binding.run_id or job.get("head_sha") != binding.source_sha:
                 return None
             name = job.get("name")
             if name in binding.required_jobs:

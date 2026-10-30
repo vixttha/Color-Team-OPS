@@ -9,7 +9,7 @@ The new `policy_v002/github_provider.py` implements GitHub REST read-only calls 
 
 **HostAuthority** must independently authenticate (or fail closed on) the user/mission grant, exact repository numeric identity, allowed teams/actions, Head decisions, task dispatch, mission snapshot, ordered transitions and separate Validate/Internal Auditor attestations. A worker-provided JSON claim is never that HostAuthority. The adapter's `HostAuthority` protocol is a boundary *requiring a future protected implementation*; an arbitrary fake host in unit tests is **not** an authenticated mission-state store.
 
-**RunBinding** is a trusted host-created immutable mapping from `run:ID` to mission ID, task ID, criterion ID, repository numeric ID/name, branch, exact source SHA, expected workflow file/event, required job names and **per-job** named executed test steps. The verifier resolves the provider record again from GitHub and rejects an unrelated run, wrong branch, wrong source, wrong repository (including forks), renamed workflow, skipped work, missing jobs/steps, invalid/partial pagination, unknown IDs and unverifiable results.
+**RunBinding** is a trusted host-created immutable mapping from `run:ID` to mission ID, task ID, criterion ID, repository numeric ID/name, branch, exact source SHA, **immutable run attempt**, expected workflow file/event, required job names and **per-job** named executed test steps. The verifier resolves the provider record again from GitHub and rejects an unrelated run, wrong branch, wrong source, wrong repository (including forks), renamed workflow, skipped work, missing jobs/steps, invalid/partial pagination, unknown IDs and unverifiable results.
 
 **Trust levels:** a successful workflow and named steps prove those GitHub-reported checks completed, **not** absence of software bugs. Only a pre-registered criterion with a suitable test suite and observed run supports a narrow PASS. Not all GitHub workflow jobs implement meaningful tests. Head still needs the existing D2 requirement for both distinct verified internal gates at final SHA.
 
@@ -35,3 +35,6 @@ Source references:
 - https://docs.github.com/en/rest/actions/workflow-runs
 - https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app
 - https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/best-practices-for-creating-a-github-app
+
+## Attempt-pinned evidence hardening
+GitHub supports reruns of the same workflow run ID. Each protected `RunBinding` therefore pins a **specific run_attempt**, and the REST adapter reads `/actions/runs/{run_id}/attempts/{attempt}/jobs`, not an unqualified latest-job list. The provider run's reported attempt and **every job's head_sha** must match the binding. This prevents a later retry from silently replacing the receipt and a mismatched job from being used as proof. The added negative tests cover rerun mismatch, attempt-specific job endpoints and job revision mismatch. This is not an independently authenticated mission or a full GitHub App installation.
