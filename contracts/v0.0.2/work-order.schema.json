@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future v0.0.2 Head issued work order",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "mission_id",
+    "task_id",
+    "issued_by",
+    "team",
+    "source_sha",
+    "scope_actions",
+    "criteria_ids",
+    "max_local_repairs",
+    "authorization_ref"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.0.2-prototype"
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issued_by": {
+      "const": "HEAD"
+    },
+    "team": {
+      "enum": [
+        "yellow-team",
+        "orange-team",
+        "green-team",
+        "blue-team",
+        "red-team",
+        "purple-team",
+        "white-team",
+        "black-team",
+        "gray-cell"
+      ]
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "scope_actions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "read",
+          "analyze",
+          "propose_patch",
+          "write_authorized_branch",
+          "open_draft_pr"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "criteria_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "max_local_repairs": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "authorization_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "recommendation_context": {
+      "type": "string"
+    }
+  }
+}

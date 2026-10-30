@@ -46,3 +46,6 @@ These topics were open during the original nine-document design review. They now
 
 ## Design-resolution audit
 A follow-on [three-pass design resolution audit](docs/14-V0.0.2-DESIGN-RESOLUTION-AUDIT.md) covers the three new technical decisions and final commit isolation. This review validates documentation consistency only—not a deployed lock, actual hosted evidence service, executed specialist benchmarks or a production v0.0.2 release.
+
+## D1: versioned contract reference (new design-stage prototype)
+The next stage adds [seven proposed JSON Schema contracts](contracts/v0.0.2/README.md), [the D1 contract map](docs/15-V0.0.2-CONTRACT-PROTOTYPE.md), a [Python reference test suite](tests/test_v002_contracts.py) and [test-scope preflight](docs/16-D1-SCHEMA-TEST-PREFLIGHT.md). These are **design/reference development assets, not a v0.0.2 plugin implementation or evidence that native tests passed**. Earlier three-pass audit reports describe the historical documentation-only snapshots, not these newly added files. Cross-record trusted policy and live provider verification remain to be built. None of the 12 installed skills was changed.

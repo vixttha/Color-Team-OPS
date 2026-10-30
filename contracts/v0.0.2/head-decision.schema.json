@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future v0.0.2 Head-only next action (not an authenticated actor)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_id",
+    "mission_id",
+    "actor",
+    "action",
+    "reason",
+    "source_sha"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.0.2-prototype"
+    },
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor": {
+      "const": "HEAD"
+    },
+    "action": {
+      "enum": [
+        "DISPATCH",
+        "REPAIR",
+        "COMPLETE",
+        "IDLE",
+        "BLOCK",
+        "CAPABILITY_BLOCKED",
+        "UNVERIFIED",
+        "BLOCKED_EXTERNAL_APPROVAL"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "next_team": {
+      "enum": [
+        "yellow-team",
+        "orange-team",
+        "green-team",
+        "blue-team",
+        "red-team",
+        "purple-team",
+        "white-team",
+        "black-team",
+        "gray-cell"
+      ]
+    },
+    "validation_record_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "audit_record_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "external_approval_required": {
+      "type": "boolean"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "enum": [
+              "DISPATCH",
+              "REPAIR"
+            ]
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "then": {
+        "required": [
+          "next_team"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "next_team"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "enum": [
+              "COMPLETE",
+              "BLOCKED_EXTERNAL_APPROVAL"
+            ]
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "then": {
+        "required": [
+          "validation_record_ref",
+          "audit_record_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "const": "BLOCKED_EXTERNAL_APPROVAL"
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "then": {
+        "properties": {
+          "external_approval_required": {
+            "const": true
+          }
+        },
+        "required": [
+          "external_approval_required"
+        ]
+      }
+    }
+  ]
+}

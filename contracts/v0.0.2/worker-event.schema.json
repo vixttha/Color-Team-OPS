@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future v0.0.2 worker result is a claim, never a PASS",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "mission_id",
+    "task_id",
+    "team",
+    "source_sha",
+    "outcome",
+    "evidence_claim_ids",
+    "summary",
+    "local_repairs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.0.2-prototype"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "team": {
+      "enum": [
+        "yellow-team",
+        "orange-team",
+        "green-team",
+        "blue-team",
+        "red-team",
+        "purple-team",
+        "white-team",
+        "black-team",
+        "gray-cell"
+      ]
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "outcome": {
+      "enum": [
+        "DONE",
+        "FAILED",
+        "BLOCKED"
+      ]
+    },
+    "evidence_claim_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "local_repairs": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "recommend_next_team": {
+      "enum": [
+        "yellow-team",
+        "orange-team",
+        "green-team",
+        "blue-team",
+        "red-team",
+        "purple-team",
+        "white-team",
+        "black-team",
+        "gray-cell"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  }
+}

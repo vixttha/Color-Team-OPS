@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future v0.0.2 untrusted evidence claim/pointer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "claim_id",
+    "mission_id",
+    "task_id",
+    "source_sha",
+    "provider",
+    "provider_record_id",
+    "claim",
+    "claimed_by"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.0.2-prototype"
+    },
+    "claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claimed_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claimed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

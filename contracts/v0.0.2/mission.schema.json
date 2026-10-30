@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future v0.0.2 mission contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "mission_id",
+    "host",
+    "goal",
+    "allowed_teams",
+    "required_teams",
+    "allowed_actions",
+    "max_handoffs",
+    "max_local_repairs",
+    "cloud_only",
+    "runner_required",
+    "mode",
+    "state",
+    "acceptance_criteria"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.0.2-prototype"
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "host": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "authorized_branch": {
+      "type": "string",
+      "pattern": "^(?!main$|master$)[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$"
+    },
+    "authorization_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_teams": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "yellow-team",
+          "orange-team",
+          "green-team",
+          "blue-team",
+          "red-team",
+          "purple-team",
+          "white-team",
+          "black-team",
+          "gray-cell"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "required_teams": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "yellow-team",
+          "orange-team",
+          "green-team",
+          "blue-team",
+          "red-team",
+          "purple-team",
+          "white-team",
+          "black-team",
+          "gray-cell"
+        ]
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "allowed_actions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "read",
+          "analyze",
+          "propose_patch",
+          "write_authorized_branch",
+          "open_draft_pr"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "max_handoffs": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "max_local_repairs": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "cloud_only": {
+      "const": true
+    },
+    "runner_required": {
+      "const": false
+    },
+    "mode": {
+      "enum": [
+        "SKILLS_ONLY",
+        "ENFORCED_CLOUD"
+      ]
+    },
+    "state": {
+      "enum": [
+        "DRAFT",
+        "AUTHORIZED",
+        "COMPLETE",
+        "IDLE",
+        "BLOCKED",
+        "CANCELLED"
+      ]
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "requires_global_exclusive_write": {
+      "type": "boolean"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "AUTHORIZED"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "required": [
+          "authorization_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "allowed_actions": {
+            "contains": {
+              "enum": [
+                "write_authorized_branch",
+                "open_draft_pr"
+              ]
+            }
+          }
+        },
+        "required": [
+          "allowed_actions"
+        ]
+      },
+      "then": {
+        "required": [
+          "repository",
+          "source_sha",
+          "authorized_branch",
+          "authorization_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "requires_global_exclusive_write": {
+            "const": true
+          }
+        },
+        "required": [
+          "requires_global_exclusive_write"
+        ]
+      },
+      "then": {
+        "properties": {
+          "mode": {
+            "const": "ENFORCED_CLOUD"
+          }
+        }
+      }
+    }
+  ]
+}

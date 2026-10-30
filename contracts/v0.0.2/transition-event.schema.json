@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future v0.0.2 allowed stage transitions (shape only)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "transition_id",
+    "mission_id",
+    "from_phase",
+    "to_phase",
+    "actor",
+    "source_sha",
+    "reason"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.0.2-prototype"
+    },
+    "transition_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_phase": {
+      "enum": [
+        "HEAD_READY",
+        "WORKER_ACTIVE",
+        "VALIDATION_PENDING",
+        "INTERNAL_AUDIT_PENDING",
+        "HEAD_DECISION",
+        "COMPLETE",
+        "IDLE",
+        "BLOCKED",
+        "CAPABILITY_BLOCKED",
+        "UNVERIFIED",
+        "BLOCKED_EXTERNAL_APPROVAL"
+      ]
+    },
+    "to_phase": {
+      "enum": [
+        "HEAD_READY",
+        "WORKER_ACTIVE",
+        "VALIDATION_PENDING",
+        "INTERNAL_AUDIT_PENDING",
+        "HEAD_DECISION",
+        "COMPLETE",
+        "IDLE",
+        "BLOCKED",
+        "CAPABILITY_BLOCKED",
+        "UNVERIFIED",
+        "BLOCKED_EXTERNAL_APPROVAL"
+      ]
+    },
+    "actor": {
+      "enum": [
+        "HEAD",
+        "WORKER",
+        "VALIDATOR",
+        "INTERNAL_AUDITOR"
+      ]
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "record_ref": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_READY"
+            },
+            "to_phase": {
+              "const": "WORKER_ACTIVE"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_DECISION"
+            },
+            "to_phase": {
+              "const": "WORKER_ACTIVE"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "WORKER_ACTIVE"
+            },
+            "to_phase": {
+              "const": "VALIDATION_PENDING"
+            },
+            "actor": {
+              "const": "WORKER"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "VALIDATION_PENDING"
+            },
+            "to_phase": {
+              "const": "INTERNAL_AUDIT_PENDING"
+            },
+            "actor": {
+              "const": "VALIDATOR"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "INTERNAL_AUDIT_PENDING"
+            },
+            "to_phase": {
+              "const": "HEAD_DECISION"
+            },
+            "actor": {
+              "const": "INTERNAL_AUDITOR"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_DECISION"
+            },
+            "to_phase": {
+              "const": "COMPLETE"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_DECISION"
+            },
+            "to_phase": {
+              "const": "IDLE"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_DECISION"
+            },
+            "to_phase": {
+              "const": "BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_DECISION"
+            },
+            "to_phase": {
+              "const": "CAPABILITY_BLOCKED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_DECISION"
+            },
+            "to_phase": {
+              "const": "UNVERIFIED"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        },
+        {
+          "properties": {
+            "from_phase": {
+              "const": "HEAD_DECISION"
+            },
+            "to_phase": {
+              "const": "BLOCKED_EXTERNAL_APPROVAL"
+            },
+            "actor": {
+              "const": "HEAD"
+            }
+          },
+          "required": [
+            "from_phase",
+            "to_phase",
+            "actor"
+          ]
+        }
+      ]
+    }
+  ]
+}
