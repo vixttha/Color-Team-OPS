@@ -13,6 +13,8 @@
 10. MITRE ATT&CK: https://attack.mitre.org/resources/ — observed adversary behaviors for threat-informed intelligence and testing.
 11. GitHub branch protection docs: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches — trusted checks / branch rules.
 
+12. Jobs and Skills Australia, Software Engineer occupation profile: https://www.jobsandskills.gov.au/data/occupation-and-industry-profiles/occupations-osca/273333-software-engineer — directly recognizes Software Engineer work and illustrative specializations (AI Engineer, Backend / Full Stack / Database developer, etc.). It **does not** associate these roles with cybersecurity colors.
+
 **Original Color-Team-OPS repository sources (authenticated direct connector reads)**
 - Existing release: https://github.com/vixttha/Color-Team-OPS/tree/release/v0.0.1-cloud-only
 - Release Black: https://github.com/vixttha/Color-Team-OPS/blob/release/v0.0.1-cloud-only/skills/black-team/SKILL.md
