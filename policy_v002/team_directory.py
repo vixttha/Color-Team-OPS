@@ -60,7 +60,8 @@ class TeamDirectory:
             or not isinstance(doc["teams"], list) or len(doc["teams"]) != 9):
             raise RegistryRejected("REGISTRY_VERSION_OR_SHAPE_INVALID")
         ids = [item.get("id") if isinstance(item, dict) else None for item in doc["teams"]]
-        if (any(not isinstance(x,str) for x in ids) or set(ids) != EXPECTED_TEAMS\n            or len(ids) != len(set(ids))):
+        if (any(not isinstance(x,str) for x in ids) or set(ids) != EXPECTED_TEAMS
+            or len(ids) != len(set(ids))):
             raise RegistryRejected("TEAM_IDENTITY_SET_MISMATCH")
         all_caps = set()
         result = []
