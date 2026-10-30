@@ -1,6 +1,6 @@
 # Color Team OPS
 
-**Development version: v0.0.1 — private skills-only plugin; acceptance incomplete.**
+**Current version: v0.0.1 — private skills-only ChatGPT release accepted; interactive missions not verified, GitHub PR #1 still draft.**
 
 Color Team OPS is a cloud-only, browser-first plugin providing nine specialist color teams and three coordinating skills (12 total). v0.0.1 provides portable instructions and evidence contracts; it does not provide an unattended cloud runtime, autonomous GitHub writing, a hosted MCP service, or verified installation on every browser LLM host.
 
@@ -24,6 +24,14 @@ Neither plugin use nor future autonomous cloud operations may require an owner's
 **Release CI is not plugin runtime.** For v0.0.1, the owner explicitly authorized running the release tests on the registered Windows and Linux GitHub self-hosted runners. The plugin remains usable when those runners are off or unregistered. No untrusted pull-request code may run on personal machines. The earlier GitHub-hosted-only CI policy has been superseded by ADR-0002.
 
 Canonical law: [Constitution](docs/CONSTITUTION.md), [Runner policy](docs/design/RUNNER-POLICY.md), [ADR-0001](docs/decisions/ADR-0001-runner-separation.md).
+
+## Canonical plugin identity and version safety
+
+**Canonical ChatGPT v0.0.1:** [Color Team OPS](https://chatgpt.com/plugins/plugins_6ae3edf1ea4c819182f275592273e2cc), plugin ID `plugins_6ae3edf1ea4c819182f275592273e2cc`, release `pluginrel_6ae3edf2a4ec8191b5cf9c92c317db22`, packaged GitHub source SHA `52b4160c8246e3ada245fe15c8d2657972118386`.
+
+**Superseded draft:** `plugins_6ae3ccf13f548191bdcba269f33085d3` is **still installed** as a separate private v0.0.1 plugin. Do not confuse it with the canonical release or claim it has been uninstalled. Its removal requires explicit owner authorization and backend confirmation.
+
+[ADR-0003](docs/decisions/ADR-0003-canonical-plugin-identity.md) and the [identity registry](docs/PLUGIN-RELEASE-REGISTRY.json) lock a single canonical plugin ID. Future versions must use the same ID or stop for an explicit identity/version decision; never silently duplicate a private plugin or bump SemVer.
 
 ## Versions and repository hygiene
 

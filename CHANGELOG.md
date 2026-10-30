@@ -22,6 +22,13 @@ Newest version first. Every version updates README.md, this changelog, acceptanc
 - ADR-0002 supersedes the mandatory GitHub-hosted baseline portion of ADR-0001. Hosted CI startup failures are historical and no longer the chosen test path for this release.
 - The owner selected the assistant to audit this release; outside independent review is not a prerequisite.
 
+### Release identity incident prevention
+
+- ADR-0003 and `docs/PLUGIN-RELEASE-REGISTRY.json` establish exactly one canonical plugin ID.
+- Original private v0.0.1 draft is **superseded, still installed**, pending explicit owner authorization to uninstall.
+- Added regression tests for plugin ID uniqueness, canonical version/source references, and mandatory release upgrade checks.
+- This is repository release governance only; the installed v0.0.1 package and its cloud-only runtime have not been changed.
+
 ### Outstanding
 - Both Windows and Linux GitHub Actions jobs passed 25/25 tests at `52b4160c8246e3ada245fe15c8d2657972118386` ([run #40983579901](https://github.com/vixttha/Color-Team-OPS/actions/runs/40983579901)); Linux ZIP reproduced byte-for-byte.
 - New private ChatGPT v0.0.1 plugin created; all twelve skills registered/readable and 25/25 shared source files identical. Full interactive user mission trials and third-party host integrations remain unverified.

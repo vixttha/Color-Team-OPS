@@ -51,3 +51,12 @@ Real unattended background execution, automatic completion triggers, guaranteed 
 **Audit:** assistant-led Orange/Yellow, Red/Purple, Green, Verification Gate and White review; not a separate independent reviewer. Owner explicitly selected the assistant as reviewer. No claim of actual unattended cloud orchestration, real verification signatures, third-party host compatibility or live mission performance.
 
 **Merge:** GitHub PR #1 remains draft. No user authorization to merge `main` is inferred from private plugin upload.
+
+## Canonical plugin identity safeguard
+
+- [x] One canonical plugin: `plugins_6ae3edf1ea4c819182f275592273e2cc` at v0.0.1.
+- [x] The old ID `plugins_6ae3ccf13f548191bdcba269f33085d3` is explicitly `superseded_still_installed`; **not retired/uninstalled**.
+- [x] Machine-readable registry + ADR-0003 and repeatable release-ID guard tests added to repo.
+- [ ] Uninstall old private draft **only with explicit owner authorization** and record backend confirmation.
+- [ ] Conduct a real end-to-end ChatGPT mission (registry and read-only skill smoke tests already passed).
+- [ ] Merge PR #1 into `main` only after separate owner authorization; this is not implied by plugin upload.

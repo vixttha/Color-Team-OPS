@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "product": "color-team-ops",
+  "canonical": {
+    "plugin_id": "plugins_6ae3edf1ea4c819182f275592273e2cc",
+    "release_id": "pluginrel_6ae3edf2a4ec8191b5cf9c92c317db22",
+    "version": "0.0.1",
+    "source_sha": "52b4160c8246e3ada245fe15c8d2657972118386",
+    "plugin_url": "https://chatgpt.com/plugins/plugins_6ae3edf1ea4c819182f275592273e2cc",
+    "scope": "USER",
+    "discoverability": "PRIVATE",
+    "status": "active_private"
+  },
+  "superseded": [
+    {
+      "plugin_id": "plugins_6ae3ccf13f548191bdcba269f33085d3",
+      "release_id": "pluginrel_6ae3ccf25eb88191b39f5b72213e318f",
+      "version": "0.0.1",
+      "status": "superseded_still_installed",
+      "uninstallation": "requires_explicit_owner_authorization"
+    }
+  ],
+  "policies": {
+    "use_same_canonical_plugin_id_for_future_versions": true,
+    "require_explicit_owner_version_approval": true,
+    "forbid_duplicate_new_plugin_without_explicit_approval": true,
+    "require_reconcile_installed_source_before_acceptance": true,
+    "require_verified_uninstallation_before_retired_claim": true,
+    "owner_runner_is_never_plugin_runtime_dependency": true,
+    "update_readme_and_changelog_every_version": true
+  },
+  "verified_at": "2026-10-29"
+}

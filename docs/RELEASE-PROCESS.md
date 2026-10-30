@@ -1,5 +1,14 @@
 # Release process and repository hygiene
 
+## Single-canonical-plugin guard — required before every Plugin Creator operation
+
+1. Read `docs/PLUGIN-RELEASE-REGISTRY.json` and `docs/decisions/ADR-0003-canonical-plugin-identity.md`, then verify the **existing canonical plugin ID** with the Plugin Creator live read APIs.
+2. Before create/update, confirm exact source SHA and existing version. If a Creator update will auto-increment the version, stop instead of making a second same-name plugin; get **explicit owner approval** for a new version or replacement.
+3. If the registry lists a superseded plugin, label it `superseded_still_installed` until a permitted uninstall succeeds; keep **actual uninstall evidence** before claiming it has been retired.
+4. After update/release, verify every portable installed file and all twelve skills; record canonical plugin ID, exact Creator release ID, GitHub revision, ZIP digest, real test run and supported-host limitations.
+5. Treat any duplicate-identity ambiguity or unverified installed state as a release blocker. Never mark a plugin `retired_uninstalled` based only on its README or this registry.
+6. Update README and CHANGELOG for every version; never modify the accepted v0.0.1 package silently. This governance guard is for release work, not installed-plugin runtime.
+
 ## Every version
 
 1. Work in a narrow PR branch, review diff and maintain exact-SHA evidence. Never force-push an accepted revision.
