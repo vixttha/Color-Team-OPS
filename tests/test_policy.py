@@ -26,8 +26,8 @@ class PolicyTests(unittest.TestCase):
         ):
             self.assertIn(phrase, text)
         self.assertGreaterEqual(text.count("Never required"), 3)
-        self.assertIn("manual workflow_dispatch", text)
-        self.assertIn("GitHub-hosted", text)
+        self.assertIn("release/v0.0.1-cloud-only", text)
+        self.assertIn("ADR-0002", text)
 
     def test_constitution_and_architecture(self):
         law = read("docs/CONSTITUTION.md")
