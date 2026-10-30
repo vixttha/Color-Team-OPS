@@ -121,6 +121,50 @@ class RoutingTests(unittest.TestCase):
     def test_malformed_forbidden_capability_fails_closed(self):
         self.check("BLOCKED","INVALID_ROUTING_METADATA",
                    forbidden_capabilities=({"not":"a string"},))
+    def test_yellow_orange_yellow_advisory_sequence_without_auto_dispatch(self):
+        first=recommend_one(intent(dispatch_count=0,max_handoffs=2,
+           prior_gate_status="NOT_REQUIRED",task_text="backend",
+           permitted_teams=("yellow-team","orange-team"),
+           required_capabilities=("yellow.feature-build",),
+           available_tools=("repo-read","repo-write")))
+        middle=recommend_one(intent(dispatch_count=1,max_handoffs=2,
+           permitted_teams=("yellow-team","orange-team"),
+           required_capabilities=("orange.auth-review",),task_text="oauth",
+           available_tools=("repo-read",)))
+        last=recommend_one(intent(dispatch_count=2,max_handoffs=2,
+           permitted_teams=("yellow-team","orange-team"),
+           required_capabilities=("yellow.regression-test",),task_text="regression",
+           available_tools=("repo-read",)))
+        self.assertEqual([x.suggested_team for x in (first,middle,last)],
+                         ["yellow-team","orange-team","yellow-team"])
+        self.assertTrue(all(x.status=="SUGGEST_ONLY" for x in (first,middle,last)))
+
+    def test_second_team_cannot_skip_previous_audit(self):
+        self.check("UNVERIFIED","PRIOR_GATES_NOT_VERIFIED",
+                   dispatch_count=1,prior_gate_status="AUDIT_MISSING")
+
+    def test_reentry_stops_after_consent_handoff_budget(self):
+        self.check("BLOCKED","HANDOFF_BUDGET_EXCEEDED",
+                   dispatch_count=3,max_handoffs=2)
+
+    def test_handoff_draft_exposes_budget_and_source_but_no_privilege(self):
+        r=intent()
+        a=recommend_one(r)
+        d=handoff_draft(r,a,criterion_ids=("criterion-1",),
+                evidence_refs=("receipt-1",),
+                previous_validation_ref="val-1",previous_audit_ref="audit-1")
+        self.assertEqual((d.previous_validation_ref,d.previous_audit_ref),
+                         ("val-1","audit-1"))
+        self.assertEqual((d.remaining_handoffs,d.source_sha),(1,SHA))
+        self.assertEqual(d.authorization_status,"UNVERIFIED_HOST_GRANT")
+        self.assertIn("MISSING_TRUSTED_GATE",d.stop_conditions)
+
+    def test_bad_prior_gate_reference_fails_closed(self):
+        r=intent()
+        with self.assertRaises(RegistryRejected):
+            handoff_draft(r,recommend_one(r),criterion_ids=("criterion-1",),
+                          evidence_refs=(),previous_audit_ref="broken/../../path")
+
     def test_not_a_new_skill_or_new_specialist(self):
         v=recommend_one(intent())
         self.assertIn(v.suggested_team,("yellow-team","orange-team","green-team",

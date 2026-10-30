@@ -53,6 +53,13 @@ class HandoffDraft:
     criterion_ids: tuple[str,...]
     evidence_refs: tuple[str,...]
     authorization_status: str  # ALWAYS UNVERIFIED_HOST_GRANT
+    objective: str = ""
+    declared_tools: tuple[str,...] = ()
+    prior_gate_status: str = "UNVERIFIED"
+    remaining_handoffs: int = 0
+    stop_conditions: tuple[str,...] = ()
+    previous_validation_ref: Optional[str] = None
+    previous_audit_ref: Optional[str] = None
 
 
 def recommend_one(intent: RouteIntent, directory: Optional[TeamDirectory] = None) -> RouteAdvice:
@@ -135,7 +142,9 @@ def recommend_one(intent: RouteIntent, directory: Optional[TeamDirectory] = None
 
 
 def handoff_draft(intent: RouteIntent, advice: RouteAdvice, *,
-                  criterion_ids: tuple[str,...], evidence_refs: tuple[str,...]) -> HandoffDraft:
+                  criterion_ids: tuple[str,...], evidence_refs: tuple[str,...],
+                  previous_validation_ref: Optional[str] = None,
+                  previous_audit_ref: Optional[str] = None) -> HandoffDraft:
     if (not isinstance(intent,RouteIntent) or not isinstance(advice,RouteAdvice)
         or advice.status!="SUGGEST_ONLY" or advice.mission_id!=intent.mission_id
         or advice.source_sha!=intent.source_sha
@@ -146,9 +155,23 @@ def handoff_draft(intent: RouteIntent, advice: RouteAdvice, *,
         or len(set(criterion_ids))!=len(criterion_ids)
         or not isinstance(evidence_refs,tuple)
         or any(not isinstance(x,str) or not _ID.fullmatch(x) for x in evidence_refs)
-        or len(set(evidence_refs))!=len(evidence_refs)):
+        or len(set(evidence_refs))!=len(evidence_refs)
+        or (previous_validation_ref is not None
+            and (not isinstance(previous_validation_ref,str)
+                 or not _ID.fullmatch(previous_validation_ref)))
+        or (previous_audit_ref is not None
+            and (not isinstance(previous_audit_ref,str)
+                 or not _ID.fullmatch(previous_audit_ref)))):
         raise RegistryRejected("INVALID_UNAUTHENTICATED_HANDOFF")
     return HandoffDraft("DRAFT_ONLY",intent.mission_id,intent.source_sha,
                         intent.mission_revision,advice.suggested_team,
                         advice.capability_id,advice.playbook_ref,criterion_ids,
-                        evidence_refs,"UNVERIFIED_HOST_GRANT")
+                        evidence_refs,"UNVERIFIED_HOST_GRANT",
+                        objective=intent.task_text,
+                        declared_tools=intent.available_tools,
+                        prior_gate_status=intent.prior_gate_status,
+                        remaining_handoffs=max(0,intent.max_handoffs-intent.dispatch_count),
+                        stop_conditions=("SOURCE_CHANGED","MISSING_TRUSTED_GATE",
+                                         "BUDGET_EXHAUSTED","TOOL_UNAVAILABLE"),
+                        previous_validation_ref=previous_validation_ref,
+                        previous_audit_ref=previous_audit_ref)
