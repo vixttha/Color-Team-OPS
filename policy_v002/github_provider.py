@@ -55,27 +55,8 @@ class GitHubReader(Protocol):
     """A GitHub REST GET-only reader, instantiated within a trusted host."""
     def repository(self, repository: str) -> Mapping: ...
     def branch_ref(self, repository: str, branch: str) -> Mapping: ...
-    def issue(self, repository: str, issue_number: int) -> Mapping:
-        if type(issue_number) is not int or issue_number < 1:
-            raise ProviderReadError("Invalid issue number")
-        return self._get(_path_for_repo(repository) + "/issues/" + str(issue_number))
-
-    def issue_comments(self, repository: str, issue_number: int) -> list[Mapping]:
-        if type(issue_number) is not int or issue_number < 1:
-            raise ProviderReadError("Invalid issue number")
-        path = _path_for_repo(repository) + "/issues/" + str(issue_number) + "/comments"
-        records: list[Mapping] = []
-        for page in range(1, 7):
-            batch = self._get(path + "?per_page=100&page=" + str(page), expect_list=True)
-            records.extend(batch)
-            if len(records) > 500:
-                raise ProviderReadError("Excessive issue-comment history")
-            if len(batch) < 100:
-                if len({row.get("id") for row in records}) != len(records):
-                    raise ProviderReadError("Duplicate issue comment identifiers")
-                return records
-        raise ProviderReadError("Issue-comment pagination limit exceeded")
-
+    def issue(self, repository: str, issue_number: int) -> Mapping: ...
+    def issue_comments(self, repository: str, issue_number: int) -> list[Mapping]: ...
     def workflow_run(self, repository: str, run_id: int) -> Mapping: ...
     def attempt_jobs(self, repository: str, run_id: int, attempt: int) -> list[Mapping]: ...
 
@@ -135,6 +116,27 @@ class GitHubRESTReader:
             raise ProviderReadError("Invalid branch ref")
         path = _path_for_repo(repository)
         return self._get(path + "/git/ref/heads/" + "/".join(quote(p, safe="") for p in branch.split("/")))
+
+    def issue(self, repository: str, issue_number: int) -> Mapping:
+        if type(issue_number) is not int or issue_number < 1:
+            raise ProviderReadError("Invalid issue number")
+        return self._get(_path_for_repo(repository) + "/issues/" + str(issue_number))
+
+    def issue_comments(self, repository: str, issue_number: int) -> list[Mapping]:
+        if type(issue_number) is not int or issue_number < 1:
+            raise ProviderReadError("Invalid issue number")
+        path = _path_for_repo(repository) + "/issues/" + str(issue_number) + "/comments"
+        records: list[Mapping] = []
+        for page in range(1, 7):
+            batch = self._get(path + "?per_page=100&page=" + str(page), expect_list=True)
+            records.extend(batch)
+            if len(records) > 500:
+                raise ProviderReadError("Excessive issue-comment history")
+            if len(batch) < 100:
+                if len({row.get("id") for row in records}) != len(records):
+                    raise ProviderReadError("Duplicate issue comment identifiers")
+                return records
+        raise ProviderReadError("Issue-comment pagination limit exceeded")
 
     def workflow_run(self, repository: str, run_id: int) -> Mapping:
         if type(run_id) is not int or run_id < 1:
