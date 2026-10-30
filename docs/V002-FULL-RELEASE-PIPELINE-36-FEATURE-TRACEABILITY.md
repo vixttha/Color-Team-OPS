@@ -1,9 +1,11 @@
+> **P1 CORRECTION / SUPERSEDING SCOPE RULE — 2026-10-30:** The dedicated Purple Feature & Idea Library is optional and reusable, **NOT a mandatory Color-Team-OPS runtime or v0.0.2 release component**. The 36 original ideas are research inputs, not 36 approved implementation/release obligations. Only owner-selected product requirements are release blockers. Read [Purple’s conflict/status audit](https://github.com/vixttha/Color-Team-OPS/blob/feature/v0.0.2-idea-feature-library-purple/docs/IDEA-FEATURE-SYNERGY-CONFLICT-AUDIT-2026-10-30.md) and verify core mission completion with the library absent. If any historical sentence below implies otherwise, this correction governs.
+
 # Color-Team-OPS — complete ONE-VERSION v0.0.2 release pipeline and F01–F36 traceability
 
 **Date:** 2026-10-30 (America/Detroit)  
 **Classification:** source-grounded planning + Yellow/Purple cross-team gap audit; **NOT** the Head's production authorization, implementation proof, CI PASS, plugin update or release acceptance.  
 **Branch:** `planning/v0.0.2-complete-release-pipeline-2026-10-30` forked from **reviewed master snapshot** `984ba437bae41f26b2ade703c704ffcd1c8347ba`. This planning document intentionally does not mutate the active integration branch.  
-**Owner scope:** include **every discussed F01–F36 idea** in the v0.0.2 acceptance ledger and implement the selected functional capabilities within **one v0.0.2**. Some IDs are product laws, operational quality requirements or documentation, not distinct new runtime modules. Nothing may be silently dropped; every item needs a target and verified acceptance or explicit owner decision if unachievable.  
+**Owner scope (corrected 2026-10-30):** keep every discussed F01–F36 idea discoverable in the **optional research library**, but use only explicitly owner-selected *operational product capabilities* as mandatory v0.0.2 release gates. Some IDs are existing product laws, tests, documentation, later experiments or independent library capabilities rather than new runtime modules. No historical idea is silently deleted; an unadopted/unlinked record alone cannot block v0.0.2.  
 **Product invariant:** nine specialist skills + three coordination skills, single Head → one Worker → Validate → logical Internal Auditor → Head; cloud-only, provider-neutral, platform-independent, no required owner PC/self-hosted runner, no fourth coordinator/Gold team, no default auto-merge/publish.
 
 ## Grounded complete branch inventory (10 live heads checked 2026-10-30)
@@ -52,10 +54,10 @@ If a required tool/consent/cloud service does not exist, Head must issue `CAPABI
 
 ### Gate 0 — HEAD: freeze an accepted delivery scope and evidence owners
 - Read current exact SHAs, v0.0.1 Constitution, Creator canonical ID and v0.0.2 master release-gates record. Reconcile historical D1–D5 labels with current M1–M5 labels without rewriting prior acceptance.
-- Set the 36-ID traceability below to **required v0.0.2 coverage**, classify each as runtime feature, test/evaluation, operational policy, release gate or docs, and record owner acceptance criteria. Do not mistake 36 brainstorm records for 36 approved new code modules.
+- Use the optional 36-ID research register to classify each item as owner-selected runtime requirement, test/evaluation, operational policy, release gate, docs or independent-library idea. **Only approved required operational items** enter the binding v0.0.2 acceptance manifest; do not mistake source records for 36 approved product requirements.
 - Specify explicitly whether **production-authenticated hosted mission mode and global cross-session write locking are mandatory for v0.0.2**. If mandatory, require protected deployed host and gateway proof; no silent skills-only downgrade. No provider or billable account may be selected by an agent.
 - Name ONE integration writer, branch and stopping budgets. The new planning branch is not the live writer.
-- Exit: complete 36-ID coverage with no orphan links; versioned work order and Head-owned release criteria.
+- Exit: owner-selected product acceptance and the Head-controlled scope are explicit; preserving unlinked optional ideas is allowed, provided their provenance and disposition are not misrepresented.
 
 ### Gate 1 — M1 YELLOW → ORANGE as needed: integrate mission engine and repair workflow
 - Start from existing master without rebuilding D1–D5. Incorporate reviewed latest Yellow re-entry changes **selectively** (`host_runtime.py`, `tests/test_v002_yellow_host.py` plus source-bound docs) and resolve all code conflicts.
@@ -66,10 +68,10 @@ If a required tool/consent/cloud service does not exist, Head must issue `CAPABI
 
 ### Gate 2 — M2 YELLOW + bounded per-team role review: awareness, idea/feature lifecycle and competency
 - Use `registry/v0.0.2/teams.json` as canonical metadata and preserve exactly nine teams. Extend/refine only necessary stable capability IDs, sub-specialties (backend, frontend, AppSec, CI, SRE, incident response, etc.), conditional triggers, constraints and evidence expectations. All specialists should understand the **compact directory** while only the active specialist loads its full playbook.
-- Convert research F01–F36 traceability into the source-owned Ideas+Features system: Idea identity/status, implementation status, actual tests, immutable provenance, feature associations, dependencies, explicit owner decisions and derived release inclusion. **Link the nine orphan F IDs** (F15, F27–F31, F34–F36) or add scoped feature records as needed; no conflicting mutable release truth.
+- **Consult** the optional Purple Ideas+Features library where available for source/feature planning. Do **not** make it a dependency of team routing or runtime; do **not** force all 36 original idea records into shipped feature associations. The nine unlinked IDs may remain standalone research, policies or future proposals with transparent labels. Release inclusion stays outside library authority.
 - Build real user-accessible idea index, feature list, version planner, and independent preservation tests. Preserve separation: idea adopted ≠ implemented ≠ tested ≠ shipped. Current `NOT_ASSERTED` markers must only change with accepted evidence.
 - Each team gets a **specialized evidence-aware competency/playbook** for its domain, including representative situations and clear escalation/abstention. Check nine released specialist SKILL.md updates if necessary; don't claim nine distinct specialists were upgraded if only three coordinators changed.
-- Exit: nine specialists/three coordinators, no orphan ID, ability for Head to find specialist by capability, actual host-readable directory and role playbook, no invented permissions, real per-role acceptance or labeled development-only.
+- Exit: nine specialists/three coordinators, ability for Head to find a specialist by canonical **core capability directory** with optional library absent, actual host-readable role playbook and no invented permissions.
 
 ### Gate 3 — M3 YELLOW → PURPLE (routing & handoff adversarial review)
 - Wire OPS Director into an in-session routing procedure that the supported host actually uses; no 13th coordination skill. Its optional Python advisory router is not automatically live in ChatGPT.
@@ -97,7 +99,7 @@ If a required tool/consent/cloud service does not exist, Head must issue `CAPABI
 - Run complete `test_v002_*.py` + copied v0.0.1 compatibility/security/package tests at **one exact candidate SHA**, on controlled Linux/Windows dev CI or equivalent authorized cloud CI. Existing master has **0 observed Actions runs** as of review. Rebuild canonical ZIP twice, compare hashes, verify packaging/installable files and same name/version in root and compatibility manifests.
 - Perform real ChatGPT v0.0.2 smoke/mission trials under the SAME canonical plugin ID with evidence for (a) clean role handoff and completion, (b) forged receipt/stale SHA rejected, (c) missing tool/permission blocked, (d) repeat-worker repair and budget, (e) release permission stop. Clearly separate role simulation from hosted authenticated authority.
 - GREEN confirms provider portability, no user-owned runner requirement, backup/restore and rollback; ORANGE checks trust/secret/injection; PURPLE checks cross-team handoff/trace conflicts; RED only with explicit security test authorization. External human review only where independently required by the **applicable** release contract, not just a team label.
-- Exit: test and package receipts from final SHA and supported-host trials, all 36 ideas dispositioned with trusted feature evidence, release-ready rollback artifacts and no unresolved critical security gaps.
+- Exit: exact-SHA package and supported-host trials, all **owner-selected mandatory runtime features** accepted with trusted evidence, release-ready rollback artifacts and no unresolved critical security gaps. Historical ideas may remain unshipped and outside the package.
 
 ### Gate 7 — HEAD / OWNER final release decision
 - Read **live** Creator metadata for canonical ID `plugins_6ae3edf1ea4c819182f275592273e2cc` (v0.0.1 at review) and confirm not to update/duplicate the old `plugins_6ae3ccf13f548191bdcba269f33085d3` draft (old record v0.0.2 and still visible at review). Issue #5 records its owner-authorized pending deletion.
@@ -109,7 +111,7 @@ If a required tool/consent/cloud service does not exist, Head must issue `CAPABI
 - Preserve a source-linked, reproducible feature-to-release matrix; sample observed regressions, update scorecards and handle rollback through owner-granted actions. Background schedules require separately authorized cloud automation and are not inherent to skills.
 - Exit: confirmed deployed artifact/Creator version and regression monitoring instructions; next enhancements only after v0.0.2 genuinely released.
 
-## F01–F36: mandatory disposition mapping for this one release
+## F01–F36: optional research traceability (NOT 36 automatic v0.0.2 release requirements)
 
 Legend: **present** = prototype or source rule exists; **partial** = candidate not installed/host-verified; **planned** = not yet measured/built. Each row must receive a concrete checked acceptance artifact and final scoped verdict. Group names below are planning, not a fabricated implementation/test result.
 
@@ -161,7 +163,7 @@ Legend: **present** = prototype or source rule exists; **partial** = candidate n
 ## Current release red lines (cannot self-certify)
 1. Full exact-master-SHA Python + compatibility/package suites have no CI run recorded on integration branch; older successes are not transfer certificates.
 2. The newer 263-test repeat-worker repair is not in master; current bridge only supports one task.
-3. Nine ideas do not belong to any FEAT record, all five FEAT records remain `not_planned`/`NOT_ASSERTED`, and all 36 idea implementation statuses say `not_planned`.
+3. **Optional library maintenance:** nine ideas do not belong to any umbrella FEAT record; all five FEAT and 36 source IDEA statuses reflect the historical import. This is a stale/live-status reconciliation task for the Purple library, **not an automatic core product release blocker**.
 4. Installed plugin is still canonical **v0.0.1** (live Creator metadata at review); no v0.0.2 host skill mission demonstrated.
 5. No real cloud issuer/tenant ledger / operational exact-consent mission / global write protection; decision on whether v0.0.2 requires these cannot be silently weakened.
 6. No 270 real specialist oracle cases, no paired ablations, no 99% basis.
@@ -170,4 +172,4 @@ Legend: **present** = prototype or source rule exists; **partial** = candidate n
 
 ## Release definition of DONE
 
-`v0.0.2 DONE` requires: (a) all 36 ideas explicitly assigned and disposed at the agreed scope with source-linked acceptance, (b) implemented required capabilities actually executed in host and on source, (c) all nine differentiated team behaviors and Head routing evidenced, (d) completed preregistered real evaluations, (e) production trust guaranteed only when required and genuinely hosted/tested, (f) exact candidate/full suite + two reproducible package builds + installed v0.0.2 trials, (g) no unresolved high/critical security/authority flaws, (h) owner authorization and exact artifact identity/release readback. **No false completion, no six-version split, and no mandatory vendor or personal runner.**
+`v0.0.2 DONE` requires: (a) all **owner-selected mandatory product capabilities** accepted with source-linked evidence; the separate optional library may preserve unlinked ideas, (b) implemented required capabilities actually executed in host and on source, (c) all nine differentiated team behaviors and Head routing evidenced, (d) completed preregistered real evaluations, (e) production trust guaranteed only when required and genuinely hosted/tested, (f) exact candidate/full suite + two reproducible package builds + installed v0.0.2 trials, (g) no unresolved high/critical security/authority flaws, (h) owner authorization and exact artifact identity/release readback. **No false completion, no six-version split, and no mandatory vendor or personal runner.**
