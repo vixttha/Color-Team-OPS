@@ -58,7 +58,27 @@ jobs:
           python3 -c "import jsonschema, yaml; print('jsonschema, PyYAML imports PASS')"
           python3 -B -m unittest discover -s tests -p 'test_*.py' -v
           echo "CTO_V0001_LINUX_PASS $EXPECTED_SHA"
+      - name: Build twice and verify portable v0.0.1 ZIP
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git archive --format=zip --output=color-team-ops-v0.0.1.zip HEAD plugin.json .codex-plugin/plugin.json README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md docs examples schemas skills
+          git archive --format=zip --output=color-team-ops-v0.0.1-check.zip HEAD plugin.json .codex-plugin/plugin.json README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md docs examples schemas skills
+          cmp color-team-ops-v0.0.1.zip color-team-ops-v0.0.1-check.zip
+          python3 -c "import zipfile; z=zipfile.ZipFile('color-team-ops-v0.0.1.zip'); assert z.testzip() is None; p=z.namelist(); assert 'plugin.json' in p; assert sum(x.startswith('skills/') and x.endswith('/SKILL.md') for x in p)==12; assert not any(x.startswith('.github/') or x.startswith('tests/') for x in p)"
+          sha256sum color-team-ops-v0.0.1.zip
+          rm -- color-team-ops-v0.0.1-check.zip
+      - name: Upload verified v0.0.1 package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: color-team-ops-v0.0.1-package
+          path: color-team-ops-v0.0.1.zip
+          retention-days: 7
+          if-no-files-found: error
       - name: Clean Linux test environment
         if: always()
         shell: bash
-        run: rm -rf -- .cto-test-deps
+        run: rm -rf -- .cto-test-deps color-team-ops-v0.0.1.zip
