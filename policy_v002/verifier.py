@@ -55,6 +55,29 @@ class GateAttestation:
     valid: bool
 
 
+@dataclass(frozen=True)
+class TransitionAttestation:
+    mission_id: str
+    transition_id: str
+    from_phase: str
+    to_phase: str
+    actor: str
+    source_sha: str
+    task_id: str
+    team: str
+    valid: bool
+
+
+@dataclass(frozen=True)
+class MissionSnapshot:
+    mission_id: str
+    phase: str
+    active_team: Optional[str]
+    active_task_id: Optional[str]
+    source_sha: str
+    valid: bool
+
+
 class TrustAdapter(Protocol):
     """Implement ONLY inside a trusted host/cloud integration.
 
@@ -68,6 +91,8 @@ class TrustAdapter(Protocol):
     def resolve_observation(self, provider: str, provider_record_id: str) -> Optional[Observation]: ...
     def authenticate_gate(self, record_id: str) -> Optional[GateAttestation]: ...
     def exclusive_write_enforced(self, mission_id: str, repository: str, branch: str) -> bool: ...
+    def authenticate_transition(self, transition_id: str) -> Optional[TransitionAttestation]: ...
+    def mission_snapshot(self, mission_id: str) -> Optional[MissionSnapshot]: ...
 
 
 @dataclass(frozen=True)
@@ -101,6 +126,7 @@ def evaluate_completion(
     worker_events: Sequence[dict],
     evidence_claims: Sequence[dict],
     gate_records: Sequence[dict],
+    transition_events: Sequence[dict],
     head_decision: dict,
     trust: TrustAdapter,
 ) -> Verdict:
@@ -111,11 +137,16 @@ def evaluate_completion(
     Decisions are advisory, not executable capability tokens or release approval.
     """
     sha = mission.get("source_sha", "") if isinstance(mission, dict) else ""
+    if any(not isinstance(seq, (list, tuple)) for seq in (
+        work_orders, worker_events, evidence_claims, gate_records, transition_events
+    )):
+        return _answer("BLOCKED", "INVALID_SHAPE", "Record collections must be arrays.", sha)
     if not _shape("mission", mission) or not all(
         _shape(name, data)
         for name, seq in (
             ("work-order", work_orders), ("worker-event", worker_events),
-            ("evidence-claim", evidence_claims), ("gate-record", gate_records)
+            ("evidence-claim", evidence_claims), ("gate-record", gate_records),
+            ("transition-event", transition_events)
         ) for data in seq
     ) or not _shape("head-decision", head_decision):
         return _answer("BLOCKED", "INVALID_SHAPE", "Contract schema validation failed.", sha)
@@ -138,7 +169,7 @@ def evaluate_completion(
         return _answer("BLOCKED", "DUPLICATE_CRITERION", "Acceptance criteria identifiers must be distinct.", sha)
     if not all((_unique(s, k) for s, k in (
         (work_orders, "task_id"), (worker_events, "event_id"), (evidence_claims, "claim_id"),
-        (gate_records, "record_id")
+        (gate_records, "record_id"), (transition_events, "transition_id")
     ))):
         return _answer("BLOCKED", "DUPLICATE_RECORD", "Duplicate record identifiers not permitted.", sha)
 
@@ -169,6 +200,45 @@ def evaluate_completion(
                 return _answer("CAPABILITY_BLOCKED", "EXCLUSIVE_WRITE_NOT_ENFORCED",
                                "No verified exclusive-write enforcement boundary.", sha)
 
+        # A trusted mission snapshot must place the Head at the decision point.
+        # No active Worker can remain at a successful terminal decision.
+        snapshot = trust.mission_snapshot(mission["mission_id"])
+        if snapshot is None:
+            return _answer("UNVERIFIED", "MISSION_STATE_UNAVAILABLE", "Cannot authenticate live Head/Worker phase.", sha)
+        if (not snapshot.valid or snapshot.mission_id != mission["mission_id"]
+                or snapshot.source_sha != sha or snapshot.phase != "HEAD_DECISION"
+                or snapshot.active_team is not None or snapshot.active_task_id is not None):
+            return _answer("BLOCKED", "MISSION_STATE_MISMATCH", "Head decision is not at an idle verified phase.", sha)
+
+        # Four attested transitions per bounded work assignment. This makes the
+        # worker's identity and sequential stage flow testable; it does not
+        # establish global cross-chat exclusivity.
+        if len(transition_events) != 4 * len(work_orders) or not work_orders:
+            return _answer("BLOCKED", "MISSION_TRACE_INVALID", "Missing or extra stage transitions.", sha)
+        for index, order in enumerate(work_orders):
+            expected = (
+                ("HEAD_READY" if index == 0 else "HEAD_DECISION", "WORKER_ACTIVE", "HEAD"),
+                ("WORKER_ACTIVE", "VALIDATION_PENDING", "WORKER"),
+                ("VALIDATION_PENDING", "INTERNAL_AUDIT_PENDING", "VALIDATOR"),
+                ("INTERNAL_AUDIT_PENDING", "HEAD_DECISION", "INTERNAL_AUDITOR"),
+            )
+            for offset, (prior, after, role) in enumerate(expected):
+                step = transition_events[4 * index + offset]
+                if (step["mission_id"] != mission["mission_id"] or step["source_sha"] != sha
+                        or (step["from_phase"], step["to_phase"], step["actor"]) != (prior, after, role)):
+                    return _answer("BLOCKED", "MISSION_TRACE_INVALID", "Stage chain skips or reorders mission phases.", sha)
+                attested_step = trust.authenticate_transition(step["transition_id"])
+                if attested_step is None:
+                    return _answer("UNVERIFIED", "TRANSITION_UNAUTHENTICATED",
+                                   "Cannot authenticate the sequential worker phase event.", sha)
+                if (not attested_step.valid or attested_step.mission_id != mission["mission_id"]
+                        or attested_step.transition_id != step["transition_id"]
+                        or attested_step.source_sha != sha
+                        or (attested_step.from_phase, attested_step.to_phase, attested_step.actor) != (prior, after, role)
+                        or attested_step.task_id != order["task_id"] or attested_step.team != order["team"]):
+                    return _answer("BLOCKED", "TRANSITION_ATTESTATION_MISMATCH",
+                                   "Trusted transition does not match the assigned active Worker.", sha)
+
         work_map = {}
         for order in work_orders:
             if (order["mission_id"] != mission["mission_id"] or order["source_sha"] != sha
@@ -185,6 +255,13 @@ def evaluate_completion(
         if not work_orders or not worker_events:
             return _answer("BLOCKED", "MISSING_WORK", "At least one scoped task and worker event required.", sha)
         events_by_task = {}
+        # Required specialist work must produce at least one resolvable claim.
+        for order in work_orders:
+            if order["team"] in required:
+                matching = [ev for ev in worker_events if ev["task_id"] == order["task_id"]]
+                if len(matching) != 1 or not matching[0]["evidence_claim_ids"]:
+                    return _answer("BLOCKED", "REQUIRED_WORK_UNVERIFIED",
+                                   "Required team task has no source-bound evidence claim.", sha)
         claim_ids = set()
         for event in worker_events:
             order = work_map.get(event["task_id"])
@@ -268,6 +345,6 @@ def evaluate_completion(
                            "Internal work verified, external release approval remains separately blocked.", sha)
         return _answer("PASS", "INTERNAL_COMPLETION_VERIFIED",
                        "Criteria and both gate records verified through the supplied trusted adapter.", sha)
-    except (OSError, TimeoutError, ConnectionError, ValueError, KeyError, TypeError) as err:
+    except Exception as err:
         return _answer("UNVERIFIED", "TRUST_ADAPTER_ERROR",
                        "Trusted observation failed: " + type(err).__name__, sha)

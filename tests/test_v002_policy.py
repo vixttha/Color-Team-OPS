@@ -8,7 +8,7 @@ from dataclasses import replace
 import unittest
 
 from policy_v002.verifier import (
-    Authorization, GateAttestation, Observation, evaluate_completion
+    Authorization, GateAttestation, Observation, TransitionAttestation, MissionSnapshot, evaluate_completion
 )
 
 SHA = "a" * 40
@@ -39,6 +39,18 @@ class FakeAdapter:
                                  frozenset(("criterion1",)), frozenset(("c1",)), "INTERNAL_AUDITOR", True),
         }
         self.exclusive = False
+        self.snapshot = MissionSnapshot("m1", "HEAD_DECISION", None, None, SHA, True)
+        self.transitions = {
+            ("tr" + str(i)): TransitionAttestation(
+                "m1", "tr" + str(i), before, after, who, SHA, "t1", "yellow-team", True
+            )
+            for i, (before, after, who) in enumerate((
+                ("HEAD_READY", "WORKER_ACTIVE", "HEAD"),
+                ("WORKER_ACTIVE", "VALIDATION_PENDING", "WORKER"),
+                ("VALIDATION_PENDING", "INTERNAL_AUDIT_PENDING", "VALIDATOR"),
+                ("INTERNAL_AUDIT_PENDING", "HEAD_DECISION", "INTERNAL_AUDITOR"),
+            ), 1)
+        }
         self.raise_auth = False
 
     def authorization(self, mission_id, authorization_ref):
@@ -58,6 +70,10 @@ class FakeAdapter:
         return self.gates.get(record_id)
     def exclusive_write_enforced(self, mission_id, repository, branch):
         return self.exclusive
+    def authenticate_transition(self, transition_id):
+        return self.transitions.get(transition_id)
+    def mission_snapshot(self, mission_id):
+        return self.snapshot
 
 
 def fixture():
@@ -90,7 +106,18 @@ def fixture():
     decision = dict(schema_version=V,decision_id="d1",mission_id="m1",actor="HEAD",
          action="COMPLETE",reason="verified",source_sha=SHA,
          validation_record_ref="v1",audit_record_ref="a1")
-    return dict(mission=mission,work_orders=work,worker_events=workers,
+    transitions = [
+        dict(schema_version=V, transition_id="tr" + str(i),
+             mission_id="m1", from_phase=before, to_phase=after,
+             actor=who, source_sha=SHA, reason="bounded stage")
+        for i, (before, after, who) in enumerate((
+            ("HEAD_READY", "WORKER_ACTIVE", "HEAD"),
+            ("WORKER_ACTIVE", "VALIDATION_PENDING", "WORKER"),
+            ("VALIDATION_PENDING", "INTERNAL_AUDIT_PENDING", "VALIDATOR"),
+            ("INTERNAL_AUDIT_PENDING", "HEAD_DECISION", "INTERNAL_AUDITOR"),
+        ), 1)
+    ]
+    return dict(transition_events=transitions,mission=mission,work_orders=work,worker_events=workers,
                 evidence_claims=claims,gate_records=gates,head_decision=decision)
 
 
@@ -108,6 +135,38 @@ class PolicyTests(unittest.TestCase):
         if code:
             self.assertEqual(v.code, code, v)
 
+    def test_live_mission_phase_must_be_head_decision(self):
+        self.trust.snapshot = replace(self.trust.snapshot, phase="WORKER_ACTIVE",
+                                      active_team="yellow-team", active_task_id="t1")
+        self.assert_outcome("BLOCKED", "MISSION_STATE_MISMATCH")
+    def test_snapshot_missing_unverified(self):
+        self.trust.snapshot = None
+        self.assert_outcome("UNVERIFIED", "MISSION_STATE_UNAVAILABLE")
+    def test_stale_active_worker_at_finish_rejected(self):
+        self.trust.snapshot = replace(self.trust.snapshot, active_team="orange-team")
+        self.assert_outcome("BLOCKED", "MISSION_STATE_MISMATCH")
+    def test_missing_transition_rejected(self):
+        self.data["transition_events"].pop()
+        self.assert_outcome("BLOCKED", "MISSION_TRACE_INVALID")
+    def test_worker_skips_validation_rejected(self):
+        self.data["transition_events"][1]["to_phase"] = "HEAD_DECISION"
+        self.assert_outcome("BLOCKED", "INVALID_SHAPE")
+    def test_reordered_transition_rejected(self):
+        a=self.data["transition_events"]
+        a[1],a[2] = a[2],a[1]
+        self.assert_outcome("BLOCKED", "MISSION_TRACE_INVALID")
+    def test_fabricated_transition_unverified(self):
+        self.trust.transitions.pop("tr2")
+        self.assert_outcome("UNVERIFIED", "TRANSITION_UNAUTHENTICATED")
+    def test_attested_worker_team_mismatch(self):
+        self.trust.transitions["tr2"] = replace(self.trust.transitions["tr2"], team="orange-team")
+        self.assert_outcome("BLOCKED", "TRANSITION_ATTESTATION_MISMATCH")
+    def test_attested_actor_role_mismatch(self):
+        self.trust.transitions["tr3"] = replace(self.trust.transitions["tr3"], actor="WORKER")
+        self.assert_outcome("BLOCKED", "TRANSITION_ATTESTATION_MISMATCH")
+    def test_claimless_required_worker_rejected(self):
+        self.data["worker_events"][0]["evidence_claim_ids"] = []
+        self.assert_outcome("BLOCKED", "REQUIRED_WORK_UNVERIFIED")
     def test_clean_internal_completion(self):
         self.assert_outcome("PASS", "INTERNAL_COMPLETION_VERIFIED")
     def test_external_approval_separate_from_internal_completion(self):
@@ -169,7 +228,7 @@ class PolicyTests(unittest.TestCase):
         self.assert_outcome("BLOCKED", "MISSING_WORK")
     def test_false_worker_done_not_enough_without_claim(self):
         self.data["worker_events"][0]["evidence_claim_ids"] = []
-        self.assert_outcome("BLOCKED", "CLAIM_LINKAGE_INVALID")
+        self.assert_outcome("BLOCKED", "REQUIRED_WORK_UNVERIFIED")
     def test_missing_provider_observation(self):
         self.trust.observations = {}
         self.assert_outcome("UNVERIFIED", "EVIDENCE_UNAVAILABLE")
