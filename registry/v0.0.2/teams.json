@@ -1,0 +1,310 @@
+{
+  "registry_version": "cto-v002-registry-1",
+  "schema_version": 1,
+  "source_classification": "development_metadata_not_grants",
+  "teams": [
+    {
+      "id": "yellow-team",
+      "name": "Yellow",
+      "focus": "functional engineering",
+      "playbook_ref": "skills/yellow-team/SKILL.md",
+      "capabilities": [
+        {
+          "id": "yellow.feature-build",
+          "tags": [
+            "feature",
+            "backend",
+            "frontend",
+            "api",
+            "implement"
+          ],
+          "requires_tools": [
+            "repo-read",
+            "repo-write"
+          ],
+          "evidence_expected": "exact-diff-and-functional-tests"
+        },
+        {
+          "id": "yellow.regression-test",
+          "tags": [
+            "unit",
+            "regression",
+            "test",
+            "repair",
+            "qa"
+          ],
+          "requires_tools": [
+            "repo-read"
+          ],
+          "evidence_expected": "exact-sha-test-receipt"
+        }
+      ]
+    },
+    {
+      "id": "orange-team",
+      "name": "Orange",
+      "focus": "application security engineering",
+      "playbook_ref": "skills/orange-team/SKILL.md",
+      "capabilities": [
+        {
+          "id": "orange.auth-review",
+          "tags": [
+            "authentication",
+            "authorization",
+            "oauth",
+            "security",
+            "identity"
+          ],
+          "requires_tools": [
+            "repo-read"
+          ],
+          "evidence_expected": "threat-to-code-negative-tests"
+        },
+        {
+          "id": "orange.secure-code",
+          "tags": [
+            "secure",
+            "remediation",
+            "appsec",
+            "vulnerability"
+          ],
+          "requires_tools": [
+            "repo-read"
+          ],
+          "evidence_expected": "code-bound-risk-review"
+        }
+      ]
+    },
+    {
+      "id": "green-team",
+      "name": "Green",
+      "focus": "cloud reliability and DevSecOps",
+      "playbook_ref": "skills/green-team/SKILL.md",
+      "capabilities": [
+        {
+          "id": "green.cloud-readiness",
+          "tags": [
+            "cloud",
+            "deployment",
+            "secrets",
+            "recovery"
+          ],
+          "requires_tools": [
+            "cloud-inspect"
+          ],
+          "evidence_expected": "provider-health-and-rollback-evidence"
+        },
+        {
+          "id": "green.ci-evidence",
+          "tags": [
+            "ci",
+            "pipeline",
+            "devops",
+            "workflow",
+            "build"
+          ],
+          "requires_tools": [
+            "repo-read"
+          ],
+          "evidence_expected": "run-and-job-bound-source-sha"
+        }
+      ]
+    },
+    {
+      "id": "red-team",
+      "name": "Red",
+      "focus": "authorized adversarial assessment",
+      "playbook_ref": "skills/red-team/SKILL.md",
+      "capabilities": [
+        {
+          "id": "red.scoped-test",
+          "tags": [
+            "pentest",
+            "adversarial",
+            "exploit",
+            "abuse"
+          ],
+          "requires_tools": [
+            "authorized-target"
+          ],
+          "evidence_expected": "authorized-roi-and-reproducer"
+        },
+        {
+          "id": "red.retest",
+          "tags": [
+            "retest",
+            "security",
+            "vulnerability"
+          ],
+          "requires_tools": [
+            "authorized-target"
+          ],
+          "evidence_expected": "scoped-before-after-retest"
+        }
+      ]
+    },
+    {
+      "id": "blue-team",
+      "name": "Blue",
+      "focus": "defensive security operations",
+      "playbook_ref": "skills/blue-team/SKILL.md",
+      "capabilities": [
+        {
+          "id": "blue.detection",
+          "tags": [
+            "soc",
+            "alert",
+            "detection",
+            "logging"
+          ],
+          "requires_tools": [
+            "security-telemetry"
+          ],
+          "evidence_expected": "alert-and-log-correlation"
+        },
+        {
+          "id": "blue.incident",
+          "tags": [
+            "incident",
+            "triage",
+            "containment",
+            "dfir"
+          ],
+          "requires_tools": [
+            "security-telemetry"
+          ],
+          "evidence_expected": "observed-incident-timeline"
+        }
+      ]
+    },
+    {
+      "id": "purple-team",
+      "name": "Purple",
+      "focus": "adversary-defense correlation",
+      "playbook_ref": "skills/purple-team/SKILL.md",
+      "capabilities": [
+        {
+          "id": "purple.correlation",
+          "tags": [
+            "attack",
+            "defense",
+            "alert",
+            "correlation"
+          ],
+          "requires_tools": [
+            "security-telemetry"
+          ],
+          "evidence_expected": "attack-to-detection-map"
+        },
+        {
+          "id": "purple.control-validation",
+          "tags": [
+            "control",
+            "coverage",
+            "validation",
+            "retest"
+          ],
+          "requires_tools": [
+            "security-telemetry"
+          ],
+          "evidence_expected": "measured-control-gap"
+        }
+      ]
+    },
+    {
+      "id": "white-team",
+      "name": "White",
+      "focus": "exercise rules and neutral adjudication",
+      "playbook_ref": "skills/white-team/SKILL.md",
+      "capabilities": [
+        {
+          "id": "white.exercise-rules",
+          "tags": [
+            "rules",
+            "authorization",
+            "exercise",
+            "oversight"
+          ],
+          "requires_tools": [],
+          "evidence_expected": "owner-scoped-rules-of-engagement"
+        },
+        {
+          "id": "white.adjudication",
+          "tags": [
+            "exercise",
+            "dispute",
+            "safety",
+            "judgment"
+          ],
+          "requires_tools": [],
+          "evidence_expected": "neutral-evidence-based-ruling"
+        }
+      ]
+    },
+    {
+      "id": "black-team",
+      "name": "Black",
+      "focus": "source-grounded threat intelligence",
+      "playbook_ref": "skills/black-team/SKILL.md",
+      "capabilities": [
+        {
+          "id": "black.threat-research",
+          "tags": [
+            "threat",
+            "intel",
+            "research",
+            "cve",
+            "osint"
+          ],
+          "requires_tools": [
+            "source-read"
+          ],
+          "evidence_expected": "dated-primary-source-citations"
+        },
+        {
+          "id": "black.tactic-mapping",
+          "tags": [
+            "ttp",
+            "adversary",
+            "tactics",
+            "trend"
+          ],
+          "requires_tools": [
+            "source-read"
+          ],
+          "evidence_expected": "source-linked-threat-applicability"
+        }
+      ]
+    },
+    {
+      "id": "gray-cell",
+      "name": "Gray Cell",
+      "focus": "synthetic human-behavior testing",
+      "playbook_ref": "skills/gray-cell/SKILL.md",
+      "capabilities": [
+        {
+          "id": "gray.user-journey",
+          "tags": [
+            "user",
+            "ux",
+            "accessibility",
+            "onboarding"
+          ],
+          "requires_tools": [],
+          "evidence_expected": "synthetic-user-path-coverage"
+        },
+        {
+          "id": "gray.error-simulation",
+          "tags": [
+            "human",
+            "error",
+            "misuse",
+            "workflow"
+          ],
+          "requires_tools": [],
+          "evidence_expected": "reproducible-human-error-scenario"
+        }
+      ]
+    }
+  ]
+}
