@@ -1,11 +1,11 @@
 # Color Team OPS — Future v0.0.2 Architecture Ideas
 
-**Status: DESIGN IDEAS ONLY — not a v0.0.2 release, implementation, approval, or migration.**
+**Status: ISOLATED FUTURE-v0.0.2 DESIGN, PROTOTYPE CODE AND TESTS — not merged, published, installed or production-accepted.**
 **Branch:** `design/v0.0.2-team-contracts-single-lane`
 **Date:** 2026-10-29
 **Scope:** One conversation, one Head-controlled execution lane, nine distinct specialist teams, three reused coordination skills, evidence-first validation, internal challenge review, team quality evaluations.
 
-This branch intentionally contains a clean documentation-only design tree. It DOES NOT replace `main`, `release/v0.0.1-cloud-only`, the installed plugin, existing skill files, or Issue #4. There are no executable team skills, production state machine, runtime backend, CI workflows, or automatic dispatch here. The current implementation baseline remains v0.0.1; the separate Issue #4 design is a reference, not automatically integrated into this proposal.
+This branch began as documentation-only but now contains D1–D4 prototype code, synthetic tests and limited live GitHub read evidence. It DOES NOT replace `main`, `release/v0.0.1-cloud-only`, the installed plugin, existing skill files, or Issue #4. There are no installed v0.0.2 team skills, production state machine, protected hosted authority, production runtime backend, or automatic dispatch here; owner-runner development CI does exist on this isolated branch. The current implementation baseline remains v0.0.1; the separate Issue #4 design is a reference, not automatically integrated into this proposal.
 
 ## Mission cycle
 
@@ -64,3 +64,6 @@ The [D3 read-only GitHub adapter](policy_v002/github_provider.py) provides bound
 
 ## D4 protected authority reference and real GitHub REST evidence
 The [signed host authority reader](policy_v002/host_authority.py), [live GitHub reader smoke](devtools/live_github_smoke.py), [authority regressions](tests/test_v002_authority.py), [trust-boundary design](docs/21-D4-HOST-AUTHORITY.md), and [three-pass D4 audit](docs/22-D4-HOST-AUTHORITY-AUDIT.md) are included on this isolated v0.0.2 branch. The live Python GitHub REST read succeeded in owner-runner development CI. A protected issuer and real user-approved mission ledger have NOT been deployed; the v0.0.2 plugin is not released.
+
+## Owner-locked cloud/provider neutrality — CTO-LOCK-001 (2026-10-30)
+**Binding decision:** "Keep Color Team OPS cloud-only, provider-neutral, and independent of any specific hosting platform." See [CTO-LOCK-001](docs/23-CTO-LOCK-001-CLOUD-PROVIDER-NEUTRALITY.md). This rule supersedes any suggestion that Vercel, Supabase, GitHub, an owner-owned runner, or a particular cloud database must be used to operate the product. Provider adapters and managed host choices remain **optional and replaceable** subject to mission needs and explicit authorization. Existing Head/Worker/Validate/Internal Auditor/Head design and original no-runner law remain unchanged.

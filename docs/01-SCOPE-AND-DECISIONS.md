@@ -48,3 +48,6 @@ An internally verified mission may conclude inside the same thread. If an extern
 
 ## 2026-10-29 follow-on design-resolution addendum
 The three technical questions have a **selected candidate design** but are not automatically owner-approved product scope or tested functionality. See [lock policy](10-SINGLE-LANE-LOCKING-DECISION.md), [evidence trust](11-AUTHENTICATED-EVIDENCE-DECISION.md), [evaluation](12-SPECIALIST-PERFORMANCE-DECISION.md), and [combined decision and remaining approvals](13-V0.0.2-DECISION-RECORD-AND-ROADMAP.md). Preserve the above open questions that remain unresolved at *implementation* level; do not call them runtime solved.
+
+## LOCKED 2026-10-30 — cloud-only, provider-neutral, host-independent
+Exact owner-approved law: **"Keep Color Team OPS cloud-only, provider-neutral, and independent of any specific hosting platform."** This is binding, not a new candidate proposal. [CTO-LOCK-001](23-CTO-LOCK-001-CLOUD-PROVIDER-NEUTRALITY.md) governs platform selection, provider adapters and run-time dependencies. A provider may be chosen as replaceable implementation for a specific mission without becoming required for the product. No vendor provisioned by this decision.
