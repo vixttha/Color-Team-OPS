@@ -129,7 +129,11 @@ class MultiTaskBridgeTests(unittest.TestCase):
         self.d["work_orders"][2]["task_id"]="t1"
         self.check("BLOCKED","TASK_OR_RECEIPT_MISMATCH")
     def test_replayed_event_id_rejected(self):
-        self.d["journal"].events[9]["event_id"]=self.d["journal"].events[1]["event_id"]
+        # Keep the transition link internally consistent; otherwise a broken
+        # link (correctly) rejects before the duplicate-event guard is reached.
+        replayed=self.d["journal"].events[1]["event_id"]
+        self.d["journal"].events[9]["event_id"]=replayed
+        self.d["event_links"][8]["journal_event_id"]=replayed
         self.check("BLOCKED","JOURNAL_EVENT_REPLAY")
     def test_wrong_second_task_audit_subject(self):
         self.d["journal"].state["gates"][3]["subject"]="impostor"
