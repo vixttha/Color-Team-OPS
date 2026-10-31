@@ -1,0 +1,83 @@
+# Development-only exact-SHA regression. Never a plugin runtime dependency.
+name: Color Team OPS v0.0.2 integrated native regression and ZIP (owner runners)
+on:
+  push:
+    branches:
+      - integration/v0.0.2-master-single-thread
+permissions:
+  contents: read
+concurrency:
+  group: cto-v002-integration-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/integration/v0.0.2-master-single-thread'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pinned integration revision without persistent credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Full native regression and two source-verified builds
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$RUNNER_OS" = Linux
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          python3 -c "import jsonschema; print('jsonschema available')"
+          python3 -B -m unittest discover -s tests -p 'test*.py' -v
+          python3 -B -m devtools.build_v002_candidate --root . --source-sha "$EXPECTED_SHA" --output "$RUNNER_TEMP/cto-v002-a.zip"
+          python3 -B -m devtools.build_v002_candidate --root . --source-sha "$EXPECTED_SHA" --output "$RUNNER_TEMP/cto-v002-b.zip"
+          cmp "$RUNNER_TEMP/cto-v002-a.zip" "$RUNNER_TEMP/cto-v002-b.zip"
+          sha256sum "$RUNNER_TEMP/cto-v002-a.zip" "$RUNNER_TEMP/cto-v002-b.zip"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          echo "CTO_V002_LINUX_NATIVE_AND_ZIP_PASS $EXPECTED_SHA"
+      - name: Remove temporary archives
+        if: always()
+        shell: bash
+        run: rm -f "$RUNNER_TEMP/cto-v002-a.zip" "$RUNNER_TEMP/cto-v002-b.zip"
+  windows:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/integration/v0.0.2-master-single-thread'
+    runs-on: [self-hosted, Windows, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pinned integration revision without persistent credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Full native regression and two source-verified builds
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Unexpected runner' }
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Source SHA mismatch' }
+          if (git status --porcelain --untracked-files=all) { throw 'Dirty checkout' }
+          python -c "import jsonschema; print('jsonschema available')"
+          if ($LASTEXITCODE -ne 0) { throw 'jsonschema unavailable; do not install unpinned dependencies on owner runner' }
+          python -B -m unittest discover -s tests -p 'test*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Native regression failed' }
+          $a = Join-Path $env:RUNNER_TEMP 'cto-v002-a.zip'
+          $b = Join-Path $env:RUNNER_TEMP 'cto-v002-b.zip'
+          python -B -m devtools.build_v002_candidate --root . --source-sha $env:EXPECTED_SHA --output $a
+          if ($LASTEXITCODE -ne 0) { throw 'First package build failed' }
+          python -B -m devtools.build_v002_candidate --root . --source-sha $env:EXPECTED_SHA --output $b
+          if ($LASTEXITCODE -ne 0) { throw 'Second package build failed' }
+          $h1 = (Get-FileHash -LiteralPath $a -Algorithm SHA256).Hash
+          $h2 = (Get-FileHash -LiteralPath $b -Algorithm SHA256).Hash
+          if ($h1 -ne $h2) { throw 'Nondeterministic ZIP output' }
+          Write-Output "CTO_V002_WINDOWS_ZIP_SHA256 $h1"
+          if (git status --porcelain --untracked-files=all) { throw 'Tests changed checkout' }
+          Write-Output "CTO_V002_WINDOWS_NATIVE_AND_ZIP_PASS $env:EXPECTED_SHA"
+      - name: Remove temporary archives
+        if: always()
+        shell: powershell
+        run: |
+          Remove-Item -LiteralPath (Join-Path $env:RUNNER_TEMP 'cto-v002-a.zip') -Force -ErrorAction SilentlyContinue
+          Remove-Item -LiteralPath (Join-Path $env:RUNNER_TEMP 'cto-v002-b.zip') -Force -ErrorAction SilentlyContinue
