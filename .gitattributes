@@ -2,3 +2,5 @@
 # Package builder verifies exact committed bytes for Markdown and JSON.
 *.md text eol=lf
 *.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
