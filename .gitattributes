@@ -1,0 +1,4 @@
+# Preserve Git blob bytes across Linux and Windows checkouts.
+# Package builder verifies exact committed bytes for Markdown and JSON.
+*.md text eol=lf
+*.json text eol=lf
