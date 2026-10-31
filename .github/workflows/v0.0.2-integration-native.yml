@@ -58,38 +58,26 @@ jobs:
           $ErrorActionPreference = 'Stop'
           if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Unexpected runner' }
           if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Source SHA mismatch' }
-          # Scope Git conversion policy to this CI process and subprocesses.
-          # Do not mutate owner-machine or persistent repository config.
+          # An independent disposable clone prevents old CRLF checkout state
+          # on persistent owner runners from affecting raw Git blob tests.
+          # Source comes only from the already-pinned local Git checkout.
           $env:GIT_CONFIG_COUNT = '1'
           $env:GIT_CONFIG_KEY_0 = 'core.autocrlf'
           $env:GIT_CONFIG_VALUE_0 = 'false'
-          # Reused Windows runner worktrees may contain checkout-filtered CRLF
-          # bytes even while Git status reports clean. Materialize ONLY the
-          # known package inputs as exact blob bytes at the immutable SHA.
-          @'
-          import os
-          import pathlib
-          import subprocess
-          from devtools.build_v002_candidate import _paths
-          root = pathlib.Path.cwd()
-          source = os.environ["EXPECTED_SHA"]
-          package_paths = _paths(root)
-          # The workflow YAML itself can remain CRLF on a persistent Windows
-          # checkout even when all 31 package inputs match the Git tree.
-          restore_paths = package_paths + [root / ".github" / "workflows" / "v0.0.2-integration-native.yml"]
-          for path in restore_paths:
-              relative = path.relative_to(root).as_posix()
-              committed = subprocess.check_output(["git", "show", source + ":" + relative])
-              path.write_bytes(committed)
-          print("CTO_V002_SOURCE_PAYLOADS_FROM_GIT", len(package_paths))
-          '@ | python -B -
-          if ($LASTEXITCODE -ne 0) { throw 'Exact Git payload rematerialization failed' }
+          $scratch = Join-Path $env:RUNNER_TEMP ("cto-v002-clean-" + $env:GITHUB_RUN_ID + "-" + $env:GITHUB_RUN_ATTEMPT)
+          if (Test-Path -LiteralPath $scratch) { throw 'Scratch checkout already exists' }
+          git clone --no-hardlinks --no-checkout . $scratch
+          if ($LASTEXITCODE -ne 0) { throw 'Isolated local clone failed' }
+          Set-Location -LiteralPath $scratch
+          git checkout --detach $env:EXPECTED_SHA
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned scratch checkout failed' }
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Scratch revision mismatch' }
           $dirty = @(git status --porcelain --untracked-files=all)
           if ($dirty.Count -gt 0) {
-            Write-Output "CTO_V002_WINDOWS_DIRTY_COUNT $($dirty.Count)"
-            $dirty | Select-Object -First 25 | Write-Output
-            throw 'Dirty checkout after source materialization'
+            $dirty | Select-Object -First 20 | Write-Output
+            throw 'Scratch checkout not clean'
           }
+          Write-Output "CTO_V002_WINDOWS_DISPOSABLE_EXACT_SHA $env:EXPECTED_SHA"
           python -c "import jsonschema; print('jsonschema available')"
           if ($LASTEXITCODE -ne 0) { throw 'jsonschema unavailable; do not install unpinned dependencies on owner runner' }
           python -B -m unittest discover -s tests -p 'test*.py' -v
@@ -112,3 +100,5 @@ jobs:
         run: |
           Remove-Item -LiteralPath (Join-Path $env:RUNNER_TEMP 'cto-v002-a.zip') -Force -ErrorAction SilentlyContinue
           Remove-Item -LiteralPath (Join-Path $env:RUNNER_TEMP 'cto-v002-b.zip') -Force -ErrorAction SilentlyContinue
+          $scratch = Join-Path $env:RUNNER_TEMP ("cto-v002-clean-" + $env:GITHUB_RUN_ID + "-" + $env:GITHUB_RUN_ATTEMPT)
+          if (Test-Path -LiteralPath $scratch) { Remove-Item -LiteralPath $scratch -Recurse -Force }
