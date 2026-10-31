@@ -58,21 +58,25 @@ jobs:
           $ErrorActionPreference = 'Stop'
           if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Unexpected runner' }
           if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Source SHA mismatch' }
-          # Persistent self-hosted worktrees may retain pre-.gitattributes CRLF
-          # materializations. Force tracked files from this exact Git tree.
-          $attr = git check-attr eol -- skills/yellow-team/SKILL.md
-          if ($attr -notmatch 'eol: lf') { throw 'LF policy not active on specialist skill' }
-          Write-Output "CTO_V002_WINDOWS_PRE_MATERIALIZE_STATUS"
-          git status --porcelain --untracked-files=all | Select-Object -First 20 | Write-Output
-          git -c core.autocrlf=false checkout-index --all --force
-          if ($LASTEXITCODE -ne 0) { throw 'Exact-source rematerialization failed' }
-          $dirty = @(git status --porcelain --untracked-files=all)
-          if ($dirty.Count -gt 0) {
-            Write-Output "CTO_V002_WINDOWS_DIRTY_PATHS_COUNT $($dirty.Count)"
-            $dirty | Select-Object -First 25 | Write-Output
-            git diff --numstat | Select-Object -First 12 | Write-Output
-            throw 'Dirty checkout after exact-source rematerialization'
-          }
+          # Reused Windows runner worktrees may contain checkout-filtered CRLF
+          # bytes even while Git status reports clean. Materialize ONLY the
+          # known package inputs as exact blob bytes at the immutable SHA.
+          @'
+          import os
+          import pathlib
+          import subprocess
+          from devtools.build_v002_candidate import _paths
+          root = pathlib.Path.cwd()
+          source = os.environ["EXPECTED_SHA"]
+          package_paths = _paths(root)
+          for path in package_paths:
+              relative = path.relative_to(root).as_posix()
+              committed = subprocess.check_output(["git", "show", source + ":" + relative])
+              path.write_bytes(committed)
+          print("CTO_V002_SOURCE_PAYLOADS_FROM_GIT", len(package_paths))
+          '@ | python -B -
+          if ($LASTEXITCODE -ne 0) { throw 'Exact Git payload rematerialization failed' }
+          if (git status --porcelain --untracked-files=all) { throw 'Dirty checkout after source materialization' }
           python -c "import jsonschema; print('jsonschema available')"
           if ($LASTEXITCODE -ne 0) { throw 'jsonschema unavailable; do not install unpinned dependencies on owner runner' }
           python -B -m unittest discover -s tests -p 'test*.py' -v
