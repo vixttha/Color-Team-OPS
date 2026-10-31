@@ -3,7 +3,7 @@
   "issue": 8,
   "release": "0.0.2",
   "branch": "integration/v0.0.2-master-single-thread",
-  "observed_source_sha": "edd3d107d02ca88fd3552b159a5941f7c980a6f5",
+  "observed_source_sha": "cf224454fe8eab29991877929c71027b946a4bc5",
   "observed_date": "2026-10-30",
   "allowed_automatic_writes": [
     "integration/v0.0.2-master-single-thread"
@@ -49,13 +49,13 @@
       ],
       "team": "GREEN",
       "team_reason": "CI operations and runner isolation",
-      "status": "TESTED_FAILED",
+      "status": "TESTED",
       "required_artifact": "GitHub workflow run and exact source SHA",
       "acceptance_criteria": "Full suite passes both OS at current exact SHA with logs",
       "test_method": "test*.py unittest discovery on both runners",
-      "current_blocker": "Initial run 41150058408 failed Linux 1/500 and Windows replay+nine CRLF; repair commits require new run",
-      "evidence": "workflow commit 531daa4, Yellow repair 3dc5824, Green LF repair edd3d10; run 41150058408",
-      "head_disposition": "REPAIR_AND_RETEST"
+      "current_blocker": null,
+      "evidence": "Run 41151264671, attempt 1, exact SHA cf224454fe8eab29991877929c71027b946a4bc5; 514/514 Linux PASS and 514/514 Windows PASS. Historical initial failure retained in evidence_history.",
+      "head_disposition": "ACCEPT_NATIVE_AT_VERIFIED_SHA"
     },
     {
       "task_id": "V002-M5-02",
@@ -67,13 +67,13 @@
       ],
       "team": "GREEN",
       "team_reason": "Deterministic release artifact engineering",
-      "status": "NOT_RUN",
+      "status": "TESTED",
       "required_artifact": "Two ZIP hashes/logs per platform tied to same exact commit",
       "acceptance_criteria": "byte-for-byte parity, valid SHA manifest, 12 skills and no bundled Python/library",
       "test_method": "devtools.build_v002_candidate invoked twice after native suite",
-      "current_blocker": "ZIP stage skipped on first failed run",
-      "evidence": "run 41150058408; devtools/build_v002_candidate.py",
-      "head_disposition": "BLOCKED_ON_NATIVE_SUITE"
+      "current_blocker": null,
+      "evidence": "Run 41151264671 at cf224454fe8eab29991877929c71027b946a4bc5: 2 Linux and 2 Windows ZIP builds, each 32 files; all four SHA-256 digests 93550f4f2a8dc40e0b855e075214f141072c937ef198ecdff4f806c1170b8b77.",
+      "head_disposition": "ACCEPT_DETERMINISTIC_PORTABLE_BUILD_AT_VERIFIED_SHA"
     },
     {
       "task_id": "V002-M1-01",
@@ -85,13 +85,13 @@
       ],
       "team": "YELLOW",
       "team_reason": "Mission state engine and schema integration",
-      "status": "UNVERIFIED",
+      "status": "INTEGRATED_REFERENCE_PARTIAL",
       "required_artifact": "Versioned repair-event bridge and tests",
       "acceptance_criteria": "Real repair cannot be promoted from count/fixture; old zero-repair flows retain compatibility",
       "test_method": "Positive repair + forged/replayed/overbudget negative tests",
-      "current_blocker": "Current bridge returns REPAIR_EVENT_TRACE_UNAVAILABLE",
-      "evidence": "policy_v002/m1_bridge.py; docs/V002-M1-REPAIR-EXTENSION.md",
-      "head_disposition": "REPAIR_REQUIRED"
+      "current_blocker": "Signed versioned D2 repair transition/provenance attestations incomplete; conservative bridge intentionally UNVERIFIED even with structurally valid repair history.",
+      "evidence": "Yellow repair-history guard policy_v002/m1_bridge.py version 5 at f14d616; 14 new security regression cases, 514/514 each OS at cf224454fe8eab29991877929c71027b946a4bc5, run 41151264671.",
+      "head_disposition": "ACCEPT_NEGATIVE_SECURITY_COVERAGE_CONTINUE_AUTH_BRIDGE"
     },
     {
       "task_id": "V002-M1-02",
@@ -259,6 +259,27 @@
       "current_blocker": "Mandatory tests and host/evaluation gates unresolved; owner merge/publish approval absent",
       "evidence": "Issue #8; CHANGELOG.md; canonical plugin 0.0.1",
       "head_disposition": "RELEASE_BLOCKED"
+    }
+  ],
+  "last_native_verified_sha": "cf224454fe8eab29991877929c71027b946a4bc5",
+  "evidence_history": [
+    {
+      "source_sha": "531daa440ecf45c279f0262804f69944ed214c52",
+      "run_id": 41150058408,
+      "result": "TESTED_FAILED",
+      "notes": "Initial 500-case native regression: Linux 1 failure, Windows additional nine continuity hash failures"
+    },
+    {
+      "source_sha": "0426c92d86a7b20d5ad331fad130e0ebcaecd985",
+      "run_id": 41150953652,
+      "result": "TESTED",
+      "notes": "500 PASS each OS, two ZIP builds each, cross-platform digest equality"
+    },
+    {
+      "source_sha": "cf224454fe8eab29991877929c71027b946a4bc5",
+      "run_id": 41151264671,
+      "result": "TESTED",
+      "notes": "514 PASS each OS, two ZIP builds each, cross-platform SHA 93550f4f2a8dc40e0b855e075214f141072c937ef198ecdff4f806c1170b8b77"
     }
   ]
 }

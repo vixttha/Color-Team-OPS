@@ -12,31 +12,30 @@
   "stages": [
     {
       "checkpoint": "M1",
-      "development": "MULTITASK_REFERENCE_AUTHORED_PENDING_NATIVE_VALIDATION",
+      "development": "MULTITASK_REFERENCE_AND_REPAIR_TRACE_NEGATIVES_NATIVE_TESTED",
       "production": "UNVERIFIED",
-      "basis": "Three-task sequential Yellow→Orange→Yellow bridge and consent-bound bounded repair source authored; source code/static reviews only on current integration candidate",
+      "basis": "Yellow→Orange→Yellow reference bridge and conservative Head repair-history contradiction guard; full 514-test native suites PASSED on Linux/Windows at exact SHA cf224454fe8eab29991877929c71027b946a4bc5. This is not authenticated host repair attestation.",
       "blockers": [
-        "full integrated D1–D5 and current-SHA native suite not run",
-        "signed in-task repair event bridge to versioned D2 transition attestation incomplete",
+        "D2 versioned signed in-task repair transitions and prior-receipt attestations incomplete; safe UNVERIFIED",
         "production-authenticated protected host and durable consent issuer absent"
       ]
     },
     {
       "checkpoint": "M2",
-      "development": "REFERENCE_ACCEPTED",
+      "development": "REFERENCE_TESTED_HOST_UNVERIFIED",
       "production": "UNVERIFIED",
-      "basis": "35/35 focused registry tests; exactly nine teams/18 capability IDs; imported Purple 36 source idea records and 5 feature candidates, all with source status preserved",
+      "basis": "Nine canonical teams/18 capability IDs and optional library absence tested within complete 514-test native suite on Linux/Windows at cf224454fe8eab29991877929c71027b946a4bc5; supported ChatGPT host behavior not verified.",
       "blockers": [
-        "supported-host plugin workflow trial not run",
-        "tool rights not authenticated by registry",
-        "Python library preservation suite authored but not executed as full-source test"
+        "actual supported-host v0.0.2 plugin workflow not run",
+        "capability metadata grants no host tool rights",
+        "skill loading and specialist competence require host trials"
       ]
     },
     {
       "checkpoint": "M3",
-      "development": "REFERENCE_ACCEPTED",
+      "development": "ADVISORY_REFERENCE_NATIVE_TESTED_HOST_UNVERIFIED",
       "production": "UNVERIFIED",
-      "basis": "34/34 focused routing tests; draft-only handoff, no auto-dispatch",
+      "basis": "Advisory conditional Head routing and typed handoff reference tests included in 514 native PASS per OS at cf224454fe8eab29991877929c71027b946a4bc5; no authenticated dispatch claim.",
       "blockers": [
         "host-protected routing and role attestations unrun",
         "real routing quality unmeasured"
@@ -55,20 +54,17 @@
     },
     {
       "checkpoint": "M5",
-      "development": "UNPUBLISHED_PACKAGE_CANDIDATE",
+      "development": "EXACT_SHA_NATIVE_AND_CROSS_PLATFORM_PORTABLE_ZIP_TESTED",
       "production": "BLOCKED",
-      "basis": "12 source skills with 9 v0.0.1 specialists and 3 updated coordinators; source-level candidate package builder strengthened with pinned git-tree payload verification and ancestor symlink refusal; 18 package tests authored, not natively executed",
+      "basis": "514/514 full native tests PASS per OS and two source-bound ZIP builds per OS; each 32-file ZIP SHA-256 is 93550f4f2a8dc40e0b855e075214f141072c937ef198ecdff4f806c1170b8b77 at source cf224454fe8eab29991877929c71027b946a4bc5. Canonical installed plugin remains 0.0.1.",
       "blockers": [
-        "full exact current-source repository-wide Python suite NOT RUN",
-        "tests/test_v002_skill_continuity.py authored but NOT EXECUTED by Python",
-        "actual v0.0.2 installed ChatGPT one-thread skill mission trial NOT RUN",
-        "new Python routing/registry features not shown executable inside ChatGPT installed plugin",
-        "production host user-consent/revocation and global cross-session lock unavailable",
-        "independent M4 specialist quality corpus and paired trials unfinished",
-        "explicit owner approval to merge or publish missing",
-        "M4 independent evaluation and feature-promotion evidence do not automatically follow from imported proposal metadata",
-        "two real independently verified identical ZIP builds with exact source digest NOT RUN",
-        "M5 pinned Git tree/source-integrity patch and 18 package tests not natively executed"
+        "actual v0.0.2 installed ChatGPT one-thread mission trial NOT RUN; no owner update/publish approval",
+        "source Python router/directory references not proven executable inside installed Markdown skills",
+        "M1 D2 attested in-task repair and protected authenticated host authority UNVERIFIED",
+        "M4 270 independent oracle labels and real specialist/model trials NOT RUN",
+        "conditional protected-host grant/durable writing requirement not yet resolved by owner-approved deployment scope",
+        "explicit owner approval for merge or canonical plugin update/publish missing",
+        "any source commit after current verified SHA requires repeat exact-SHA CI to claim that newer revision tested"
       ]
     }
   ],
@@ -86,7 +82,7 @@
   "final_status": "BLOCKED_EXTERNAL_APPROVAL_AND_MISSING_EVIDENCE",
   "release_ready": false,
   "measured_99_percent_claim": false,
-  "latest_reviewed_source_sha": "adc4c85a55f03cfa3175206b9a15ef9eb55efd70",
+  "latest_reviewed_source_sha": "cf224454fe8eab29991877929c71027b946a4bc5",
   "skill_delta": {
     "unchanged_specialists": 9,
     "intentionally_updated_coordinators": 3,
@@ -98,7 +94,7 @@
       "total": 13,
       "source": "GitHub fetched exact candidate skill and manifest files"
     },
-    "python_continuity_suite": "NOT_EXECUTED"
+    "python_continuity_suite": "PASS_IN_FULL_514_TEST_LINUX_AND_WINDOWS_cf224454fe8eab29991877929c71027b946a4bc5"
   },
   "library_integrated": {
     "source_branch": "feature/v0.0.2-idea-feature-library-purple",
@@ -114,7 +110,7 @@
     "source_branch_current_sha": "7ded28574388f4382dd974d981785e4745dd857c",
     "current_source_parity": "NOT_REVALIDATED_AFTER_SOURCE_BRANCH_ADVANCED"
   },
-  "latest_review_type": "GITHUB_SOURCE_AND_METADATA_ONLY_NATIVE_AND_HOST_NOT_RUN",
+  "latest_review_type": "REAL_GITHUB_NATIVE_LINUX_WINDOWS_AND_REPRODUCIBLE_ZIP_TESTED_HOST_UNVERIFIED",
   "package_hardening": {
     "candidate_source_before_gate_update": "adc4c85a55f03cfa3175206b9a15ef9eb55efd70",
     "builder_blob": "2ebed6f4a0e733724d521f32ec404e5f8e5b2623",
@@ -125,7 +121,31 @@
       "symlinked ancestor path rejection"
     ],
     "tests_authored": 18,
-    "tests_executed_at_candidate_sha": 0,
-    "status": "SOURCE_AUTHORED_STATIC_INSPECTED_NATIVE_UNVERIFIED"
+    "tests_executed_at_candidate_sha": 18,
+    "status": "EXACT_SHA_NATIVE_TESTED_WITH_CROSS_PLATFORM_ZIP_PARITY_cf224454fe8eab29991877929c71027b946a4bc5"
+  },
+  "native_ci_evidence": {
+    "status": "TESTED",
+    "source_sha": "cf224454fe8eab29991877929c71027b946a4bc5",
+    "workflow_run_id": 41151264671,
+    "workflow_run_attempt": 1,
+    "linux": {
+      "native_tests_passed": 514,
+      "native_tests_total": 514,
+      "complete_zip_builds": 2,
+      "job_id": 124388199679
+    },
+    "windows": {
+      "native_tests_passed": 514,
+      "native_tests_total": 514,
+      "complete_zip_builds": 2,
+      "job_id": 124388199408
+    },
+    "zip_sha256": "93550f4f2a8dc40e0b855e075214f141072c937ef198ecdff4f806c1170b8b77",
+    "zip_files": 32,
+    "byte_identical_across_platforms": true,
+    "installed_plugin_version": "0.0.1",
+    "host_trials": "NOT_RUN",
+    "meaning": "Source-only developer candidate test evidence, not published v0.0.2 or authenticated execution"
   }
 }
