@@ -62,9 +62,17 @@ jobs:
           # materializations. Force tracked files from this exact Git tree.
           $attr = git check-attr eol -- skills/yellow-team/SKILL.md
           if ($attr -notmatch 'eol: lf') { throw 'LF policy not active on specialist skill' }
+          Write-Output "CTO_V002_WINDOWS_PRE_MATERIALIZE_STATUS"
+          git status --porcelain --untracked-files=all | Select-Object -First 20 | Write-Output
           git -c core.autocrlf=false checkout-index --all --force
           if ($LASTEXITCODE -ne 0) { throw 'Exact-source rematerialization failed' }
-          if (git status --porcelain --untracked-files=all) { throw 'Dirty checkout' }
+          $dirty = @(git status --porcelain --untracked-files=all)
+          if ($dirty.Count -gt 0) {
+            Write-Output "CTO_V002_WINDOWS_DIRTY_PATHS_COUNT $($dirty.Count)"
+            $dirty | Select-Object -First 25 | Write-Output
+            git diff --numstat | Select-Object -First 12 | Write-Output
+            throw 'Dirty checkout after exact-source rematerialization'
+          }
           python -c "import jsonschema; print('jsonschema available')"
           if ($LASTEXITCODE -ne 0) { throw 'jsonschema unavailable; do not install unpinned dependencies on owner runner' }
           python -B -m unittest discover -s tests -p 'test*.py' -v
