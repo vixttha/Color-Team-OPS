@@ -1,0 +1,264 @@
+{
+  "mission_id": "CTO-V002-SINGLE-THREAD",
+  "issue": 8,
+  "release": "0.0.2",
+  "branch": "integration/v0.0.2-master-single-thread",
+  "observed_source_sha": "edd3d107d02ca88fd3552b159a5941f7c980a6f5",
+  "observed_date": "2026-10-30",
+  "allowed_automatic_writes": [
+    "integration/v0.0.2-master-single-thread"
+  ],
+  "prohibited": [
+    "main",
+    "release/v0.0.1-cloud-only",
+    "feature/v0.0.2-idea-feature-library-purple"
+  ],
+  "no_merge_or_publish": true,
+  "one_head_one_worker": true,
+  "owner_runner_for_development_only": true,
+  "idea_000037": "EXCLUDED_NOT_PLANNED",
+  "work_budgets": {
+    "simultaneous_workers": 1,
+    "same_worker_repairs_per_assignment": 2,
+    "paid_provisioning": 0
+  },
+  "tasks": [
+    {
+      "task_id": "V002-G0-01",
+      "gate": "G0",
+      "priority": "P0",
+      "description": "Reconcile live heads, Issue #8, release law, trust scopes and single-writer integration branch",
+      "dependency": [],
+      "team": "HEAD",
+      "team_reason": "Scope/dispatch ownership",
+      "status": "INTEGRATED",
+      "required_artifact": "Live branch and acceptance inventory",
+      "acceptance_criteria": "All constraints/required evidence identified without invented host grants",
+      "test_method": "GitHub branch/tree/issue/plugin metadata live reads",
+      "current_blocker": "No cryptographically authenticated cross-conversation writer lock",
+      "evidence": "GitHub refs at 00260abc; Issue #8; Creator canonical 0.0.1",
+      "head_disposition": "ACCEPT_DEVELOPMENT_PREFLIGHT_NOT_RELEASE"
+    },
+    {
+      "task_id": "V002-M5-01",
+      "gate": "M5",
+      "priority": "P1",
+      "description": "Run exact-revision full repository native suite on authorized Linux/Windows self-hosted development runners",
+      "dependency": [
+        "V002-G0-01"
+      ],
+      "team": "GREEN",
+      "team_reason": "CI operations and runner isolation",
+      "status": "TESTED_FAILED",
+      "required_artifact": "GitHub workflow run and exact source SHA",
+      "acceptance_criteria": "Full suite passes both OS at current exact SHA with logs",
+      "test_method": "test*.py unittest discovery on both runners",
+      "current_blocker": "Initial run 41150058408 failed Linux 1/500 and Windows replay+nine CRLF; repair commits require new run",
+      "evidence": "workflow commit 531daa4, Yellow repair 3dc5824, Green LF repair edd3d10; run 41150058408",
+      "head_disposition": "REPAIR_AND_RETEST"
+    },
+    {
+      "task_id": "V002-M5-02",
+      "gate": "M5",
+      "priority": "P1",
+      "description": "Demonstrate two actual pinned-source ZIP builds and source-to-archive digest parity per platform",
+      "dependency": [
+        "V002-M5-01"
+      ],
+      "team": "GREEN",
+      "team_reason": "Deterministic release artifact engineering",
+      "status": "NOT_RUN",
+      "required_artifact": "Two ZIP hashes/logs per platform tied to same exact commit",
+      "acceptance_criteria": "byte-for-byte parity, valid SHA manifest, 12 skills and no bundled Python/library",
+      "test_method": "devtools.build_v002_candidate invoked twice after native suite",
+      "current_blocker": "ZIP stage skipped on first failed run",
+      "evidence": "run 41150058408; devtools/build_v002_candidate.py",
+      "head_disposition": "BLOCKED_ON_NATIVE_SUITE"
+    },
+    {
+      "task_id": "V002-M1-01",
+      "gate": "M1",
+      "priority": "P2",
+      "description": "Attest bounded same-worker repair events with D2 versioned transition/receipt model",
+      "dependency": [
+        "V002-M5-01"
+      ],
+      "team": "YELLOW",
+      "team_reason": "Mission state engine and schema integration",
+      "status": "UNVERIFIED",
+      "required_artifact": "Versioned repair-event bridge and tests",
+      "acceptance_criteria": "Real repair cannot be promoted from count/fixture; old zero-repair flows retain compatibility",
+      "test_method": "Positive repair + forged/replayed/overbudget negative tests",
+      "current_blocker": "Current bridge returns REPAIR_EVENT_TRACE_UNAVAILABLE",
+      "evidence": "policy_v002/m1_bridge.py; docs/V002-M1-REPAIR-EXTENSION.md",
+      "head_disposition": "REPAIR_REQUIRED"
+    },
+    {
+      "task_id": "V002-M1-02",
+      "gate": "M1",
+      "priority": "P2",
+      "description": "Review consent, identity, expiry, revocation, cross-mission replay and source-bound authorization",
+      "dependency": [
+        "V002-M1-01"
+      ],
+      "team": "ORANGE",
+      "team_reason": "Trust, authz and forged-evidence boundaries",
+      "status": "UNVERIFIED",
+      "required_artifact": "Security-negative cases and review",
+      "acceptance_criteria": "Invalid identity, source, receipt, tenant or consent always fail closed",
+      "test_method": "Exact SHA negative CI with D2 and host fixtures",
+      "current_blocker": "Protected issuer and genuine hosted user grants unavailable",
+      "evidence": "tests/test_v002_m1_orange.py; docs/V002-M1-ORANGE-SECURITY-AUDIT.md",
+      "head_disposition": "REVIEW_AFTER_ENGINE"
+    },
+    {
+      "task_id": "V002-M2-01",
+      "gate": "M2",
+      "priority": "P3",
+      "description": "Verify nine-team 18-capability registry, specialist guidance, lazy playbooks and library absence",
+      "dependency": [
+        "V002-M5-01"
+      ],
+      "team": "YELLOW",
+      "team_reason": "Registry/interface engineering",
+      "status": "IMPLEMENTED",
+      "required_artifact": "Host-accessible skill directory and competence evidence",
+      "acceptance_criteria": "Nine specialists/three coordinators; no metadata tool grant; no library dependency",
+      "test_method": "Registry/skill continuity tests + supported-host trial",
+      "current_blocker": "Reference modules excluded from skills-only package; host trial missing",
+      "evidence": "policy_v002/team_directory.py; registry/v0.0.2/teams.json",
+      "head_disposition": "HOST_VERIFICATION_REQUIRED"
+    },
+    {
+      "task_id": "V002-M3-01",
+      "gate": "M3",
+      "priority": "P3",
+      "description": "Verify adaptive OPS Director Head routing, typed handoffs, stop/abstain and bounded re-entry",
+      "dependency": [
+        "V002-M1-01",
+        "V002-M2-01"
+      ],
+      "team": "YELLOW",
+      "team_reason": "Routing/typed handoff integration",
+      "status": "IMPLEMENTED",
+      "required_artifact": "Route/handoff observations under supported host",
+      "acceptance_criteria": "One prompt conditional specialist selection and evidence gates; no extra coordinator",
+      "test_method": "Routing negatives plus host mission sequence",
+      "current_blocker": "Python advice does not demonstrate host dispatch authority",
+      "evidence": "policy_v002/route_advice.py; skills/ops-director/SKILL.md",
+      "head_disposition": "HOST_VERIFICATION_REQUIRED"
+    },
+    {
+      "task_id": "V002-TRUST-01",
+      "gate": "TRUST",
+      "priority": "P3",
+      "description": "Classify whether protected hosted consent/revocation or cross-session write exclusivity is mandatory release scope",
+      "dependency": [
+        "V002-G0-01"
+      ],
+      "team": "HEAD",
+      "team_reason": "Owner-grant/scope adjudication",
+      "status": "UNVERIFIED",
+      "required_artifact": "Owner-scope decision with mandatory/optional classification",
+      "acceptance_criteria": "Do not introduce infrastructure without approval or waive selected requirement",
+      "test_method": "Cross-check approval record against gates and constitutional laws",
+      "current_blocker": "No protected host provider/issuer established; mandatory status not yet resolved",
+      "evidence": "Issue #8 trust gate; docs/V002-MASTER-RELEASE-GATES.json",
+      "head_disposition": "SCOPE_REQUIRES_PROOF"
+    },
+    {
+      "task_id": "V002-M4-01",
+      "gate": "M4",
+      "priority": "P4",
+      "description": "Create 270 independently labeled specialist scenario oracles, strata, holdouts and thresholds",
+      "dependency": [
+        "V002-M2-01",
+        "V002-M3-01"
+      ],
+      "team": "PURPLE",
+      "team_reason": "Cross-team challenge and independent labeling design",
+      "status": "UNVERIFIED",
+      "required_artifact": "270 distinct preregistered oracle labels with reviewer provenance",
+      "acceptance_criteria": "30 cases per specialist, negatives and refusals, independent outcomes",
+      "test_method": "Provenance verification and inter-rater contradiction audit",
+      "current_blocker": "270 cases are draft model-authored, NOT independent labels",
+      "evidence": "evaluation/v0.0.2/candidate-scenarios.json",
+      "head_disposition": "BLOCKED_INDEPENDENT_ORACLES"
+    },
+    {
+      "task_id": "V002-M4-02",
+      "gate": "M4",
+      "priority": "P4",
+      "description": "Execute and score all authorized specialist trials and baseline/ablation comparisons",
+      "dependency": [
+        "V002-M4-01"
+      ],
+      "team": "YELLOW",
+      "team_reason": "Evaluation execution/scoring infrastructure; Head dispatches specialists sequentially",
+      "status": "NOT_RUN",
+      "required_artifact": "Actual model/host trials, observations, metrics and uncertainty",
+      "acceptance_criteria": "270 traceable executions or explicit individual blockers, no unsupported accuracy claims",
+      "test_method": "Provider/host evidence + blinded scores and authority critical errors",
+      "current_blocker": "No 270 real independent specialist trials",
+      "evidence": "policy_v002/eval_lab.py; docs/V002-M4-EVALUATION-FOUNDATION.md",
+      "head_disposition": "BLOCKED_ON_ORACLES_AND_HOST"
+    },
+    {
+      "task_id": "V002-M5-03",
+      "gate": "M5",
+      "priority": "P5",
+      "description": "Run installed canonical plugin one-prompt mission and negative host acceptance",
+      "dependency": [
+        "V002-M3-01",
+        "V002-M4-02"
+      ],
+      "team": "HEAD",
+      "team_reason": "Requires actual plugin host and selected specialists",
+      "status": "NOT_RUN",
+      "required_artifact": "Version-bound installed-plugin mission traces",
+      "acceptance_criteria": "Single Head, sequential workers, validate/auditor, repair, forged-source, missing-tools, budget and no-library",
+      "test_method": "Live installed host test cases and exact release identity",
+      "current_blocker": "Canonical installed plugin currently 0.0.1, not 0.0.2",
+      "evidence": "Plugin Creator metadata: plugins_6ae3edf1ea4c819182f275592273e2cc",
+      "head_disposition": "BLOCKED_NOT_PUBLISHED_NO_HOST_V002"
+    },
+    {
+      "task_id": "V002-M5-04",
+      "gate": "M5",
+      "priority": "P5",
+      "description": "Independent integration/security/release-gate contradiction review",
+      "dependency": [
+        "V002-M5-02",
+        "V002-M1-02",
+        "V002-M5-03"
+      ],
+      "team": "PURPLE",
+      "team_reason": "Cross-milestone conflicts and source/evidence consistency",
+      "status": "NOT_RUN",
+      "required_artifact": "Distinct logical auditor outcomes and release checklist",
+      "acceptance_criteria": "No incorrect PASS from synthetic tests, mismatched SHA or separate chat authority",
+      "test_method": "Review exact source/test/artifact/host evidence",
+      "current_blocker": "M1 M4 and host gates remain open",
+      "evidence": "docs/V002-MASTER-RELEASE-GATES.json",
+      "head_disposition": "WAIT_DEPENDENCIES"
+    },
+    {
+      "task_id": "V002-FINAL-01",
+      "gate": "FINAL",
+      "priority": "P6",
+      "description": "Prepare owner-gated release candidate and accurate status without unauthorized merge/publish",
+      "dependency": [
+        "V002-M5-04"
+      ],
+      "team": "HEAD",
+      "team_reason": "Only Head decides final release posture",
+      "status": "BLOCKED",
+      "required_artifact": "Release readiness record, rollback, exact SHA/digest",
+      "acceptance_criteria": "Technical gates PASS before requesting separate merge/update approval",
+      "test_method": "Evidence inventory and explicit human approval receipt",
+      "current_blocker": "Mandatory tests and host/evaluation gates unresolved; owner merge/publish approval absent",
+      "evidence": "Issue #8; CHANGELOG.md; canonical plugin 0.0.1",
+      "head_disposition": "RELEASE_BLOCKED"
+    }
+  ]
+}
