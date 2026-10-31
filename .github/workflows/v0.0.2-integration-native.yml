@@ -58,6 +58,11 @@ jobs:
           $ErrorActionPreference = 'Stop'
           if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Unexpected runner' }
           if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Source SHA mismatch' }
+          # Scope Git conversion policy to this CI process and subprocesses.
+          # Do not mutate owner-machine or persistent repository config.
+          $env:GIT_CONFIG_COUNT = '1'
+          $env:GIT_CONFIG_KEY_0 = 'core.autocrlf'
+          $env:GIT_CONFIG_VALUE_0 = 'false'
           # Reused Windows runner worktrees may contain checkout-filtered CRLF
           # bytes even while Git status reports clean. Materialize ONLY the
           # known package inputs as exact blob bytes at the immutable SHA.
@@ -76,7 +81,12 @@ jobs:
           print("CTO_V002_SOURCE_PAYLOADS_FROM_GIT", len(package_paths))
           '@ | python -B -
           if ($LASTEXITCODE -ne 0) { throw 'Exact Git payload rematerialization failed' }
-          if (git status --porcelain --untracked-files=all) { throw 'Dirty checkout after source materialization' }
+          $dirty = @(git status --porcelain --untracked-files=all)
+          if ($dirty.Count -gt 0) {
+            Write-Output "CTO_V002_WINDOWS_DIRTY_COUNT $($dirty.Count)"
+            $dirty | Select-Object -First 25 | Write-Output
+            throw 'Dirty checkout after source materialization'
+          }
           python -c "import jsonschema; print('jsonschema available')"
           if ($LASTEXITCODE -ne 0) { throw 'jsonschema unavailable; do not install unpinned dependencies on owner runner' }
           python -B -m unittest discover -s tests -p 'test*.py' -v
