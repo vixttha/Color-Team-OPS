@@ -12,7 +12,69 @@ from typing import Mapping
 from .host_runtime import HostRejected, digest
 from .verifier import evaluate_completion
 
-VERSION = "cto-v002-m1-bridge-4"
+VERSION = "cto-v002-m1-bridge-5"
+
+def _check_unattested_repair_history(state, history, work_orders, worker_events):
+    """Detect contradictory retry claims BEFORE the D2 reference gate.
+
+    A well-shaped trace is still UNVERIFIED: the development journal is not a
+    protected role/consent issuer and D2 has no repair transition attestations.
+    """
+    records = state.get("repair_history")
+    if not isinstance(records, list) or not records:
+        return "REPAIR_HISTORY_INVALID"
+    if not isinstance(history, list):
+        return "REPAIR_EVENT_JOURNAL_MISMATCH"
+    events = [(i, event) for i, event in enumerate(history)
+              if isinstance(event, dict) and event.get("kind") == "REPAIR_ORDERED"]
+    if len(events) != len(records):
+        return "REPAIR_EVENT_JOURNAL_MISMATCH"
+    if (any(not isinstance(event, dict) for event in history)
+        or len({event.get("event_id") for event in history}) != len(history)):
+        return "REPAIR_EVENT_REPLAY"
+    orders = {order.get("task_id"): order for order in work_orders if isinstance(order, dict)}
+    workers = {worker.get("task_id"): worker for worker in worker_events if isinstance(worker, dict)}
+    if len(orders) != len(work_orders) or len(workers) != len(worker_events):
+        return "REPAIR_TASK_SCOPE_MISMATCH"
+    receipt_history = state.get("used_receipts", [])
+    if not isinstance(receipt_history, list) or len(receipt_history) != len(set(receipt_history)):
+        return "REPAIR_RECEIPT_REPLAY"
+    consumed = set()
+    counts = {}
+    for record, (i, event) in zip(records, events):
+        if (not isinstance(record, dict) or i < 2 or i + 1 >= len(history)
+            or not isinstance(record.get("event_id"), str)
+            or not isinstance(record.get("prior_receipt"), str)
+            or not record["prior_receipt"]):
+            return "REPAIR_EVENT_JOURNAL_MISMATCH"
+        task_id = record.get("task_id")
+        if task_id not in orders or task_id not in workers:
+            return "REPAIR_TASK_SCOPE_MISMATCH"
+        counts[task_id] = counts.get(task_id, 0) + 1
+        if (type(record.get("repair_number")) is not int
+            or record["repair_number"] != counts[task_id]
+            or counts[task_id] > orders[task_id].get("max_local_repairs", -1)
+            or counts[task_id] > state.get("max_local_repairs", 0)):
+            return "REPAIR_BUDGET_EXCEEDED"
+        if (event.get("event_id") != record["event_id"]
+            or event.get("subject") != state.get("head_subject")
+            or record.get("head_subject") != state.get("head_subject")
+            or history[i-1].get("kind") != "WORKER_REPORTED"
+            or history[i+1].get("kind") != "WORKER_REPORTED"
+            or history[i-1].get("subject") != history[i+1].get("subject")):
+            return "REPAIR_EVENT_JOURNAL_MISMATCH"
+        receipt = record["prior_receipt"]
+        if receipt in consumed or receipt not in receipt_history:
+            return "REPAIR_RECEIPT_REPLAY"
+        consumed.add(receipt)
+    if any(type(w.get("local_repairs")) is not int
+           or w["local_repairs"] != counts.get(w["task_id"], 0)
+           for w in workers.values()):
+        return "REPAIR_COUNT_MISMATCH"
+    return None
+
+
+
 PHASES = ("VALIDATE", "INTERNAL_AUDIT")
 EVENTS = ("DISPATCH", "WORKER_REPORTED", "VALIDATION_PASSED", "AUDIT_PASSED")
 TRANSITIONS = (
@@ -114,6 +176,11 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
     if state.get("max_local_repairs",0) > mission.get("max_local_repairs",-1):
         return result("BLOCKED", "REPAIR_CONSENT_SCOPE_MISMATCH")
     if state.get("repair_history"):
+        conflict = _check_unattested_repair_history(state, history, work_orders, worker_events)
+        if conflict is not None:
+            return result("BLOCKED", conflict)
+        # Exact journal linkage is still not D2's authenticated versioned repair
+        # transition protocol; do not promote fixtures to production authority.
         return result("UNVERIFIED", "REPAIR_EVENT_TRACE_UNAVAILABLE")
     # v4 interprets the exact ordered Yellow event journal. Every completed task
     # contributes four transitions and two validation/audit gate observations.
