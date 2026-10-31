@@ -35,6 +35,24 @@ The optional \`policy_v002/route_advice.py\` is a **recommendation-only referenc
 
 The Head may ask the same Worker for a bounded repair only within the original budget and branch scope, then revalidate and reaudit. Stop for genuine external owner authorization, a stale/conflicting source, missing trust, exhausted budget, unsupported action, or completion; report the truthful \`BLOCK\`, \`UNVERIFIED\` or \`CAPABILITY_BLOCKED\` result. Do not invent work to keep the cycle going.
 
+## Built-in compact team capability directory (skills-only fallback)
+
+Use this self-contained routing table when the host cannot retrieve the optional registry or execute Python. These are **role descriptions, not tool grants**. Each capability ID mirrors the canonical v0.0.2 registry and should be used for *Head recommendations*, never unprotected automatic dispatch.
+
+| Eligible team | Stable capabilities | Choose for | Required observable prerequisite |
+| --- | --- | --- | --- |
+| Yellow | `yellow.feature-build`, `yellow.regression-test` | Feature coding, debugging, regression | Repository access and exact-source test evidence; writes need permission |
+| Orange | `orange.auth-review`, `orange.secure-code` | Identity/consent/authorization and AppSec repair review | Relevant code or trusted security observation |
+| Green | `green.cloud-readiness`, `green.ci-evidence` | Cloud health/recovery, CI, reproducibility | Cloud inspection or source-bound run/job receipts |
+| Red | `red.scoped-test`, `red.retest` | Offensive security exercises and bounded exploit retests | Explicit owner-approved target, scope and test authority |
+| Blue | `blue.detection`, `blue.incident` | Detection, monitoring, incident triage/response | Actual security telemetry for claims of observed alerts/incidents |
+| Purple | `purple.correlation`, `purple.control-validation` | Attack–defense evidence correlation, control gap review | Actual relevant attack/defense evidence when asserting coverage |
+| White | `white.exercise-rules`, `white.adjudication` | Exercise rules of engagement and neutral scope rulings | Owner-defined exercise authority and bounded adjudication scope |
+| Black | `black.threat-research`, `black.tactic-mapping` | Dated primary-source threat intelligence and TTP relevance | Source access and verifiable dated threat references |
+| Gray Cell | `gray.user-journey`, `gray.error-simulation` | Usability/accessibility, confusing workflows, synthetic human error | Explicitly label simulated users; do not invent real user research |
+
+**Routing rules:** Head derives the smallest justified next assignment from the actual mission dependency, risk, verified finding and permission state—not a mandatory color queue. Choose one active Worker only; after real validation and a separate logical adversarial audit, Head alone reselects or stops. A task can return to the same team within the budget. If specialist requirements or required tool permissions are absent, record a narrowed advice-only task or `CAPABILITY_BLOCKED`. A named capability is never evidence that a tool exists, a consent is valid, a provider acted, or a host dispatched an agent. Red's offensive actions need explicit scoped authorization. Do not confuse this product's Purple role with any optional owner-side oversight conversation.
+
 ## Lazy specialist competency reference (v0.0.2 candidate)
 
 After Head chooses a single specialist using validated capabilities and scope, load **only that team's** `skills/<selected-team>/references/v002-competencies.md` when the supported host actually exposes bundled references. Do not preload all nine reference packs, invent file access, or treat their role descriptions as permissions. If the host cannot access the reference, fall back to its existing `SKILL.md` and report the missing richer guidance; never fabricate a loaded playbook or dispatch token. This is an addition to the existing three-skill coordination structure, not a new coordinator.
