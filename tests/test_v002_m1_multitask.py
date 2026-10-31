@@ -190,10 +190,10 @@ class MultiTaskBridgeTests(unittest.TestCase):
         self.d["journal"].state["consent_digest"]=digest(
             {k:self.d["journal"].state[k] for k in keys})
         self.check("UNVERIFIED","REFERENCE_ALIGNED_AUTHORITY_UNVERIFIED")
-    def test_repair_history_without_explicit_bridge_mapping_unverified(self):
+    def test_forged_repair_history_without_journal_event_blocked(self):
         self.d["journal"].state["repair_history"]=[dict(task_id="t2",
             prior_receipt="test:pre",repair_number=1)]
-        self.check("UNVERIFIED","REPAIR_EVENT_TRACE_UNAVAILABLE")
+        self.check("BLOCKED","REPAIR_EVENT_JOURNAL_MISMATCH")
     def test_signed_repair_budget_cannot_exceed_d2_scope(self):
         self.d["journal"].state["max_local_repairs"]=3
         keys=("mission_id","repository","branch","source_sha","allowed_teams",
@@ -203,7 +203,7 @@ class MultiTaskBridgeTests(unittest.TestCase):
             {k:self.d["journal"].state[k] for k in keys})
         self.check("BLOCKED","REPAIR_CONSENT_SCOPE_MISMATCH")
     def test_version(self):
-        self.assertEqual(VERSION,"cto-v002-m1-bridge-4")
+        self.assertEqual(VERSION,"cto-v002-m1-bridge-5")
 
 if __name__=="__main__":
     unittest.main()
