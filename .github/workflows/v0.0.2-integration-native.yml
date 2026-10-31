@@ -74,7 +74,10 @@ jobs:
           root = pathlib.Path.cwd()
           source = os.environ["EXPECTED_SHA"]
           package_paths = _paths(root)
-          for path in package_paths:
+          # The workflow YAML itself can remain CRLF on a persistent Windows
+          # checkout even when all 31 package inputs match the Git tree.
+          restore_paths = package_paths + [root / ".github" / "workflows" / "v0.0.2-integration-native.yml"]
+          for path in restore_paths:
               relative = path.relative_to(root).as_posix()
               committed = subprocess.check_output(["git", "show", source + ":" + relative])
               path.write_bytes(committed)
