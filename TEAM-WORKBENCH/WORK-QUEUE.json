@@ -1,0 +1,52 @@
+{
+  "schema_version": "prismcell-queue-0.0.1",
+  "team": "ORANGE",
+  "active_item": null,
+  "legacy_queue": [],
+  "preserve_legacy_queue": false,
+  "description": "Proposed starting queue; all items unexecuted.",
+  "items": [
+    {
+      "id": "ORA-W0001",
+      "title": "Audit consent, role and source-evidence boundaries",
+      "priority": "P1",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Pin exact integration SHA; identify trusted and untrusted proof paths.",
+        "Cite real provider/source evidence at the relevant exact SHA",
+        "Log Validate + logical Internal Auditor + Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null,
+      "notes": "Proposed baseline work, not automatically executed."
+    },
+    {
+      "id": "ORA-W0002",
+      "title": "Reproduce source-level malformed and replayed receipt denials in bounded tests",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Recommend fail-closed corrections with negative regression specification.",
+        "Cite real provider/source evidence at the relevant exact SHA",
+        "Log Validate + logical Internal Auditor + Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null,
+      "notes": "Proposed baseline work, not automatically executed."
+    },
+    {
+      "id": "ORA-W0003",
+      "title": "Review source/package provenance claims and sanitization",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Separate optional exporter defects from core package builder; challenge token/secret leakage.",
+        "Cite real provider/source evidence at the relevant exact SHA",
+        "Log Validate + logical Internal Auditor + Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null,
+      "notes": "Proposed baseline work, not automatically executed."
+    }
+  ]
+}

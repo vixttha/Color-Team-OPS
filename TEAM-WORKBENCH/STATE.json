@@ -1,0 +1,21 @@
+{
+  "schema_version": "prismcell-state-0.0.1",
+  "template": "PrismCell Workbench",
+  "version": "0.0.1",
+  "team": "ORANGE",
+  "domain": "Application security",
+  "home_branch": "agent/ORANGE-TEAM-AGENT",
+  "repository": "vixttha/Color-Team-OPS",
+  "incall_issue": "https://github.com/vixttha/Color-Team-OPS/issues/10",
+  "status": "BOOTSTRAPPED_READY_ON_INVOCATION",
+  "active_work_item": null,
+  "last_verified_product_sha": null,
+  "observed_product_baseline_on_bootstrap": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
+  "last_session": null,
+  "release_authorized": false,
+  "unattended_execution": false,
+  "plugin_runtime_dependency": false,
+  "source_branch": "integration/v0.0.2-master-single-thread",
+  "legacy_material": null,
+  "priority_policy": "Read existing legacy backlog first; Head selects bounded specialist work."
+}

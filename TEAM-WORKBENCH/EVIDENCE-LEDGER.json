@@ -1,0 +1,6 @@
+{
+  "schema_version": "prismcell-evidence-0.0.1",
+  "team": "ORANGE",
+  "entries": [],
+  "rule": "Append only real source/host/tool receipts; distinguish NOT_RUN, SOURCE_OBSERVED, SYNTHETIC and VERIFIED_PROVIDER; bind to exact SHA."
+}

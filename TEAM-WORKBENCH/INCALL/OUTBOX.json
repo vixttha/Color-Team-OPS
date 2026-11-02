@@ -1,0 +1,6 @@
+{
+  "schema_version": "prismcell-outbox-0.0.1",
+  "from_team": "ORANGE",
+  "messages": [],
+  "note": "Messages recorded only after successful issue comment posting and actual URL verification."
+}
