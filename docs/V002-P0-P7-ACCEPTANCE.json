@@ -3,7 +3,7 @@
   "mission_id": "CTO-V002-SINGLE-THREAD",
   "version": "0.0.2",
   "branch": "integration/v0.0.2-master-single-thread",
-  "scope_verified_at_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+  "scope_verified_at_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
   "status": "RELEASE_BLOCKED",
   "release_authorized": false,
   "canonical_plugin_id": "plugins_6ae3edf1ea4c819182f275592273e2cc",
@@ -59,10 +59,11 @@
     },
     {
       "priority": "P6",
-      "status": "IN_PROGRESS",
+      "status": "TECHNICALLY_COMPLETE",
       "team": "green-team",
-      "last_verified_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
-      "blocker": "fresh exact SHA CI required after docs commit"
+      "last_verified_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+      "blocker": "No additional native/build blocker at last verified SHA; new source changes require new exact-SHA run. Production/plugin-host acceptance and branch protection remain distinct unmet gates.",
+      "last_verified_run": 41528729633
     },
     {
       "priority": "P7",
@@ -72,14 +73,14 @@
     }
   ],
   "recent_native": {
-    "verified_source_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
-    "run_id": 41528132175,
-    "tests_per_platform": 550,
+    "verified_source_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+    "run_id": 41528729633,
+    "tests_per_platform": 555,
     "linux": "PASS",
     "windows": "PASS",
     "complete_zip_builds_per_platform": 2,
     "zip_files": 32,
-    "sha256": "6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98"
+    "sha256": "75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1"
   },
   "host_trials": {
     "status": "NOT_RUN",
@@ -99,5 +100,6 @@
     "new-staging-identity",
     "production-deploy",
     "paid-provisioning"
-  ]
+  ],
+  "last_verified_sha": "787fef5aa68f33571437633abe1ae393e40f82f9"
 }

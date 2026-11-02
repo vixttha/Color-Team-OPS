@@ -55,9 +55,9 @@
     },
     {
       "checkpoint": "M5",
-      "development": "EXACT_SHA_NATIVE_AND_CROSS_PLATFORM_PORTABLE_ZIP_TESTED",
+      "development": "FULL_CURRENT_REVISION_555_NATIVE_TESTS_AND_FOUR_ZIP_PARITY_SOURCE_ONLY",
       "production": "BLOCKED",
-      "basis": "550/550 native regression on each OS at 6abc04a8465667ca7ebf0bc02a1d6a1f8123471d and two deterministic source ZIP builds per platform, cross-platform digest 6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98; installed plugin still private v0.0.1. Documentation changes require retest.",
+      "basis": "555/555 Linux and 555/555 Windows at exact source 787fef5aa68f33571437633abe1ae393e40f82f9 (run 41528729633); 2 complete ZIPs per OS identical across platforms SHA256 75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1. No actual v0.0.2 plugin host trial.",
       "blockers": [
         "actual v0.0.2 installed ChatGPT one-thread mission trial NOT RUN; no owner update/publish approval",
         "source Python router/directory references not proven executable inside installed Markdown skills",
@@ -83,7 +83,7 @@
   "final_status": "BLOCKED_EXTERNAL_APPROVAL_AND_MISSING_EVIDENCE",
   "release_ready": false,
   "measured_99_percent_claim": false,
-  "latest_reviewed_source_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+  "latest_reviewed_source_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
   "skill_delta": {
     "unchanged_specialists": 9,
     "intentionally_updated_coordinators": 3,
@@ -111,7 +111,7 @@
     "source_branch_current_sha": "7ded28574388f4382dd974d981785e4745dd857c",
     "current_source_parity": "NOT_REVALIDATED_AFTER_SOURCE_BRANCH_ADVANCED"
   },
-  "latest_review_type": "EXACT_SHA_550_LINUX_WINDOWS_NATIVE_AND_CROSS_PLATFORM_ZIP_SOURCE_ONLY",
+  "latest_review_type": "REAL_NATIVE_555_PER_OS_CROSS_PLATFORM_ZIP_TESTED_HOST_BLOCKED",
   "package_hardening": {
     "candidate_source_before_gate_update": "adc4c85a55f03cfa3175206b9a15ef9eb55efd70",
     "builder_blob": "2ebed6f4a0e733724d521f32ec404e5f8e5b2623",
@@ -127,25 +127,27 @@
   },
   "native_ci_evidence": {
     "status": "TESTED",
-    "source_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
-    "workflow_run_id": 41528132175,
+    "source_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+    "workflow_run_id": 41528729633,
     "workflow_run_attempt": 1,
     "linux": {
-      "native_tests_passed": 550,
-      "native_tests_total": 550,
-      "complete_zip_builds": 2
+      "native_tests_passed": 555,
+      "native_tests_total": 555,
+      "complete_zip_builds": 2,
+      "job_id": 125563128767
     },
     "windows": {
-      "native_tests_passed": 550,
-      "native_tests_total": 550,
-      "complete_zip_builds": 2
+      "native_tests_passed": 555,
+      "native_tests_total": 555,
+      "complete_zip_builds": 2,
+      "job_id": 125563129163
     },
-    "zip_sha256": "6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98",
+    "zip_sha256": "75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1",
     "zip_files": 32,
     "byte_identical_across_platforms": true,
     "installed_plugin_version": "0.0.1",
     "host_trials": "NOT_RUN",
-    "meaning": "source-only regression at the prior source revision; this documentation commit must be retested"
+    "meaning": "Genuine source-only validation at this SHA. Changes after this record require new verification; not installed plugin."
   },
   "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json"
 }

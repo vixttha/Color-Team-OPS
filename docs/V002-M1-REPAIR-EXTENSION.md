@@ -1,3 +1,5 @@
+> **Historical Yellow M1 initial-extension document (October 2026).** Its bridge-4/NOT_RUN statements describe the earlier source only. The v0.0.2 integration has since adopted D2 repair-event reference schema and bridge v6 with guarded journal, Head/Worker and prior/final receipt binding. Actual post-extension source tests passed at `787fef5aa68f33571437633abe1ae393e40f82f9` (555/555 on Linux and Windows, GitHub Actions 41528729633). Production host-issued consent/repair attestation is still UNVERIFIED. See `V002-P6-P7-RELEASE-DOSSIER.md` and `V002-P0-ORANGE-TRUST-SCOPE.md`.
+
 # CTO-V002-SINGLE-THREAD — M1 bounded in-task repair extension
 
 **Worker:** Yellow. **Scope:** isolated master integration branch only.

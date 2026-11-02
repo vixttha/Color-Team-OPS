@@ -3,7 +3,7 @@
   "issue": 8,
   "release": "0.0.2",
   "branch": "integration/v0.0.2-master-single-thread",
-  "observed_source_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+  "observed_source_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
   "observed_date": "2026-11-02",
   "allowed_automatic_writes": [
     "integration/v0.0.2-master-single-thread"
@@ -54,8 +54,8 @@
       "acceptance_criteria": "Full suite passes both OS at current exact SHA with logs",
       "test_method": "test*.py unittest discovery on both runners",
       "current_blocker": null,
-      "evidence": "Exact SHA 6abc04a8465667ca7ebf0bc02a1d6a1f8123471d, run 41528132175, 550/550 per OS, 2 ZIPs/OS; cross-platform sha256 6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98. Docs commit afterward requires fresh run.",
-      "head_disposition": "ACCEPT_TESTED_AT_PRIOR_SHA_ONLY"
+      "evidence": "Run 41528729633, exact SHA 787fef5aa68f33571437633abe1ae393e40f82f9, 555/555 each OS, two ZIP builds per OS, all four sha256 75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1. This later evidence-record commit changes HEAD again; retest it before claiming final HEAD tested.",
+      "head_disposition": "ACCEPT_TESTED_555_AT_SHA_787fef5aa6"
     },
     {
       "task_id": "V002-M5-02",
@@ -72,8 +72,8 @@
       "acceptance_criteria": "byte-for-byte parity, valid SHA manifest, 12 skills and no bundled Python/library",
       "test_method": "devtools.build_v002_candidate invoked twice after native suite",
       "current_blocker": null,
-      "evidence": "Exact SHA 6abc04a8465667ca7ebf0bc02a1d6a1f8123471d, run 41528132175, 550/550 per OS, 2 ZIPs/OS; cross-platform sha256 6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98. Docs commit afterward requires fresh run.",
-      "head_disposition": "ACCEPT_TESTED_AT_PRIOR_SHA_ONLY"
+      "evidence": "Run 41528729633, exact SHA 787fef5aa68f33571437633abe1ae393e40f82f9, 555/555 each OS, two ZIP builds per OS, all four sha256 75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1. This later evidence-record commit changes HEAD again; retest it before claiming final HEAD tested.",
+      "head_disposition": "ACCEPT_TESTED_555_AT_SHA_787fef5aa6"
     },
     {
       "task_id": "V002-M1-01",
@@ -261,7 +261,7 @@
       "head_disposition": "RELEASE_BLOCKED"
     }
   ],
-  "last_native_verified_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+  "last_native_verified_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
   "evidence_history": [
     {
       "source_sha": "531daa440ecf45c279f0262804f69944ed214c52",
@@ -280,6 +280,12 @@
       "run_id": 41151264671,
       "result": "TESTED",
       "notes": "514 PASS each OS, two ZIP builds each, cross-platform SHA 93550f4f2a8dc40e0b855e075214f141072c937ef198ecdff4f806c1170b8b77"
+    },
+    {
+      "source_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+      "run_id": 41528729633,
+      "result": "TESTED",
+      "notes": "P0-P7 dossier and code integration: 555/555 each OS; four 32-file identical ZIPs 75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1"
     }
   ],
   "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json"

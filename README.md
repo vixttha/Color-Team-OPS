@@ -8,6 +8,8 @@ Exactly **nine specialist skills + three coordination skills**. Head owns one ac
 
 **P0–P7:** [owner-readiness dossier](docs/V002-P6-P7-RELEASE-DOSSIER.md), [machine-readable priority acceptance](docs/V002-P0-P7-ACCEPTANCE.json), [Orange trust scope](docs/V002-P0-ORANGE-TRUST-SCOPE.md), [host trial matrix](docs/V002-P2-P5-HOST-TRIALS.json), [evaluation review](docs/V002-P3-P4-EVALUATION-REVIEW.md), [master Issue #8](https://github.com/vixttha/Color-Team-OPS/issues/8).
 
+**Release-gate source verification:** The integrated P0–P7 documentation revision `787fef5aa68f33571437633abe1ae393e40f82f9` passed 555/555 Linux and Windows native tests in run 41528729633. The follow-up evidence reconciliation creates a later SHA that requires its own exact-SHA test; no installed-plugin inference is permitted.
+
 **Hard blockers:** installed v0.0.2 candidate host trials **0**, independently reviewed/frozen oracles **0/270**, executed specialist evaluations **0/270**, no protected host grant issuance, conditional owner decision on protected-host release scope, no separate approval for staging/merge/publication. Do not infer 99% accuracy, real skill dispatch, provider actions or installed version from source test results.
 
 ---
