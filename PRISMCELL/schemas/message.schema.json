@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrismCell in-call message",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "message_id",
+    "from_team",
+    "from_branch",
+    "to_team",
+    "type",
+    "priority",
+    "summary",
+    "source_ref",
+    "source_sha",
+    "evidence_links",
+    "requested_action",
+    "authority_scope",
+    "status"
+  ],
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "minLength": 4
+    },
+    "from_team": {
+      "type": "string",
+      "enum": [
+        "YELLOW",
+        "ORANGE",
+        "GREEN",
+        "RED",
+        "BLUE",
+        "PURPLE",
+        "WHITE",
+        "BLACK",
+        "GRAY"
+      ]
+    },
+    "from_branch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_team": {
+      "type": "string",
+      "enum": [
+        "YELLOW",
+        "ORANGE",
+        "GREEN",
+        "RED",
+        "BLUE",
+        "PURPLE",
+        "WHITE",
+        "BLACK",
+        "GRAY"
+      ]
+    },
+    "type": {
+      "enum": [
+        "REQUEST",
+        "FINDING",
+        "REVIEW",
+        "CHALLENGE",
+        "RESPONSE",
+        "BLOCKER",
+        "FYI"
+      ]
+    },
+    "priority": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_links": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requested_action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "POSTED",
+        "ACKNOWLEDGED",
+        "ACCEPTED",
+        "DEFERRED",
+        "BLOCKED",
+        "REJECTED",
+        "CLOSED"
+      ]
+    },
+    "issue_url": {
+      "type": "string"
+    },
+    "posted_at": {
+      "type": "string"
+    }
+  }
+}

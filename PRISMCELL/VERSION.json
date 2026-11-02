@@ -1,0 +1,14 @@
+{
+  "template": "PrismCell Workbench",
+  "version": "0.0.1",
+  "schema_version": "prismcell-0.0.1",
+  "released_on": "2026-11-02",
+  "distribution": "dedicated GitHub home branches",
+  "product_runtime_dependency": false,
+  "plugin_skill_count_delta": 0,
+  "coordinator_count_delta": 0,
+  "unattended_execution": false,
+  "canonical_product_repo": "vixttha/Color-Team-OPS",
+  "release_authority": "owner only",
+  "status": "WORKSPACE_TEMPLATE_BOOTSTRAPPED_NOT_PRODUCT_RELEASE"
+}

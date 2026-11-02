@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrismCell state",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "template",
+    "version",
+    "team",
+    "home_branch",
+    "status",
+    "active_work_item",
+    "last_verified_product_sha",
+    "last_session",
+    "release_authorized"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "prismcell-state-0.0.1"
+    },
+    "template": {
+      "const": "PrismCell Workbench"
+    },
+    "version": {
+      "const": "0.0.1"
+    },
+    "team": {
+      "type": "string"
+    },
+    "home_branch": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "active_work_item": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_verified_product_sha": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_session": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "release_authorized": {
+      "const": false
+    }
+  }
+}

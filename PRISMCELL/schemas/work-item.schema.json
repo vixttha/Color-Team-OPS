@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrismCell work item",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "priority",
+    "status",
+    "acceptance_criteria",
+    "evidence_status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 4
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "priority": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ]
+    },
+    "status": {
+      "enum": [
+        "QUEUED",
+        "ACTIVE",
+        "IMPLEMENTED_UNVERIFIED",
+        "VALIDATED",
+        "AUDITED",
+        "ACCEPTED",
+        "BLOCKED",
+        "DEFERRED",
+        "REJECTED"
+      ]
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "evidence_status": {
+      "enum": [
+        "NOT_RUN",
+        "OBSERVED_SOURCE",
+        "EXECUTED_AT_SHA",
+        "VERIFIED_PROVIDER",
+        "SYNTHETIC",
+        "RESEARCH_CITED",
+        "UNVERIFIED",
+        "CAPABILITY_BLOCKED"
+      ]
+    },
+    "source_sha": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
