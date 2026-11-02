@@ -16,7 +16,7 @@ def scenario():
     d["worker_events"][0]["local_repairs"] = 1
     record = dict(schema_version="0.0.2-prototype", repair_id="rep-001",
                   mission_id="m1", task_id="t1", team="yellow-team",
-                  source_sha=SHA, repair_number=1, head_transition_id="rep-head",
+                  source_sha=SHA, repair_number=1, journal_event_id="journal-repair-001", head_transition_id="rep-head",
                   worker_transition_id="rep-worker", head_subject="head-fixture",
                   worker_subject="worker-fixture", prior_receipt="test:0",
                   next_receipt="test:1")
@@ -24,7 +24,7 @@ def scenario():
     trust = FakeAdapter()
     trust.repairs = {"rep-001": RepairAttestation(**{
         **{k: record[k] for k in ("mission_id", "repair_id", "task_id", "team",
-            "source_sha", "repair_number", "head_subject", "worker_subject",
+            "source_sha", "repair_number", "journal_event_id", "head_subject", "worker_subject",
             "prior_receipt", "next_receipt")}, "valid": True
     })}
     trust.authenticate_repair = lambda repair_id: trust.repairs.get(repair_id)
@@ -125,6 +125,26 @@ class RepairAttestationTests(unittest.TestCase):
     def test_schema_rejects_missing_head_transition(self):
         del self.d["repair_events"][0]["head_transition_id"]
         self.check("BLOCKED", "REPAIR_EVENT_SCHEMA_INVALID")
+
+
+    def test_wrong_journal_event_is_proof_mismatch(self):
+        self.d["repair_events"][0]["journal_event_id"] = "unlinked-journal"
+        self.check("BLOCKED", "REPAIR_ATTESTATION_MISMATCH")
+
+    def test_two_valid_evidence_claims_allowed_for_one_repair_task(self):
+        from policy_v002.verifier import Observation
+        extra=dict(self.d["evidence_claims"][0],
+                   claim_id="c2",provider_record_id="test:extra")
+        self.d["evidence_claims"].append(extra)
+        self.d["worker_events"][0]["evidence_claim_ids"].append("c2")
+        for gate in self.d["gate_records"]:
+            gate["evidence_refs"].append("c2")
+        self.trust.observations[("github","test:extra")]=Observation(
+            "m1","t1","github","test:extra",SHA,"criterion1","PASS")
+        from dataclasses import replace
+        for key,g in self.trust.gates.items():
+            self.trust.gates[key]=replace(g,evidence_refs=frozenset(("c1","c2")))
+        self.check("PASS", "INTERNAL_COMPLETION_VERIFIED")
 
     def test_legacy_zero_repair_remains_valid(self):
         d = fixture()

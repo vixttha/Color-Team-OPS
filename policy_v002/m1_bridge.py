@@ -180,6 +180,32 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
         conflict = _check_unattested_repair_history(state, history, work_orders, worker_events)
         if conflict is not None:
             return result("BLOCKED", conflict)
+        # Exact authenticated contract must bind to the actual journal event,
+        # not merely a plausibly counted retry detached from the source journal.
+        if repair_events:
+            by_event = {rec.get("event_id"): rec for rec in state["repair_history"]
+                        if isinstance(rec, dict)}
+            if (len(by_event) != len(state["repair_history"])
+                or len(repair_events) != len(by_event)):
+                return result("BLOCKED", "REPAIR_JOURNAL_PROOF_MISMATCH")
+            for claimed in repair_events:
+                if not isinstance(claimed, dict):
+                    return result("BLOCKED", "REPAIR_JOURNAL_PROOF_MISMATCH")
+                recorded = by_event.get(claimed.get("journal_event_id"))
+                if (recorded is None or
+                    (recorded.get("task_id"),recorded.get("repair_number"),
+                     recorded.get("prior_receipt"), recorded.get("head_subject")) !=
+                    (claimed.get("task_id"),claimed.get("repair_number"),
+                     claimed.get("prior_receipt"),claimed.get("head_subject"))):
+                    return result("BLOCKED", "REPAIR_JOURNAL_PROOF_MISMATCH")
+                # The worker who re-reported must be the same as the claimed
+                # retried worker; no model text can substitute this host fact.
+                at = next((i for i,e in enumerate(history) if isinstance(e,dict)
+                           and e.get("event_id")==claimed["journal_event_id"]), -1)
+                if at < 1 or at + 1 >= len(history) or (
+                    history[at-1].get("subject") != claimed.get("worker_subject")
+                    or history[at+1].get("subject") != claimed.get("worker_subject")):
+                    return result("BLOCKED", "REPAIR_WORKER_PROOF_MISMATCH")
         # D2 repair protocol requires separate authenticated repair events and
         # two protected transition attestations per retry. Synthetic fixtures
         # can exercise the contract but can never authenticate production host.

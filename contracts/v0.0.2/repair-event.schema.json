@@ -16,7 +16,8 @@
     "head_subject",
     "worker_subject",
     "prior_receipt",
-    "next_receipt"
+    "next_receipt",
+    "journal_event_id"
   ],
   "properties": {
     "schema_version": {
@@ -77,6 +78,10 @@
       "minLength": 1
     },
     "next_receipt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "journal_event_id": {
       "type": "string",
       "minLength": 1
     }

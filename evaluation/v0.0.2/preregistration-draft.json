@@ -6,7 +6,7 @@
   "source_snapshot_before_prereg": "4d53f5a05e89de8223d6ac483009f199cc37e5f1",
   "cases_total": 270,
   "holdout_total": 54,
-  "holdout_policy": "case index 09 and 10 of each team/band withheld from tuning; hidden from candidate-model prompt development; NOT an independently accepted holdout oracle",
+  "holdout_policy": "Case IDs 09 and 10 per team/band are reserved for holdout testing (54 candidates), but their contents are visible in source and NOT blinded. Independently seal review inputs before executing any holdout trial; do not claim blindness.",
   "holdout_ids": [
     "yellow-team:normal:09",
     "yellow-team:normal:10",

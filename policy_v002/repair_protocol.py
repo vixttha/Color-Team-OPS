@@ -19,6 +19,7 @@ class RepairAttestation:
     team: str
     source_sha: str
     repair_number: int
+    journal_event_id: str
     head_subject: str
     worker_subject: str
     prior_receipt: str
@@ -43,10 +44,13 @@ def verify_repair_chain(*, mission: dict, work_orders: Sequence[dict],
         return "PASS", "ZERO_REPAIR_BACKWARD_COMPATIBLE"
     task_map = {x.get("task_id"): x for x in work_orders}
     event_map = {x.get("task_id"): x for x in worker_events}
-    final_claims = {x.get("task_id"): x for x in evidence_claims}
+    claims_by_task = {task: [] for task in task_map}
+    for claim in evidence_claims:
+        if claim.get("task_id") not in claims_by_task:
+            return "BLOCKED", "REPAIR_TASK_SET_MISMATCH"
+        claims_by_task[claim["task_id"]].append(claim)
     if (len(task_map) != len(work_orders) or len(event_map) != len(worker_events)
-        or len(final_claims) != len(evidence_claims) or set(task_map) != set(event_map)
-        or set(task_map) != set(final_claims)):
+        or set(task_map) != set(event_map)):
         return "BLOCKED", "REPAIR_TASK_SET_MISMATCH"
     counts = {}
     for task, result in event_map.items():
@@ -100,14 +104,17 @@ def verify_repair_chain(*, mission: dict, work_orders: Sequence[dict],
                     return "BLOCKED", "REPAIR_NUMBER_MISMATCH"
                 if i > 1 and x["prior_receipt"] != records[i-2]["next_receipt"]:
                     return "BLOCKED", "REPAIR_RECEIPT_CHAIN_MISMATCH"
-                expected = final_claims[task]
-                if i == len(records) and x["next_receipt"] != expected.get("provider_record_id"):
+                final_matches = [c for c in claims_by_task[task]
+                                 if c.get("provider_record_id") == records[-1]["next_receipt"]
+                                 and c.get("claim_id") in event_map[task].get("evidence_claim_ids", ())]
+                if len(final_matches) != 1:
                     return "BLOCKED", "REPAIR_FINAL_RECEIPT_MISMATCH"
+                expected = final_matches[0]
                 proof = trust.authenticate_repair(x["repair_id"])
                 if proof is None:
                     return "UNVERIFIED", "REPAIR_ATTESTATION_UNAVAILABLE"
                 fields = ("mission_id", "repair_id", "task_id", "team", "source_sha",
-                          "repair_number", "head_subject", "worker_subject",
+                          "repair_number", "journal_event_id", "head_subject", "worker_subject",
                           "prior_receipt", "next_receipt")
                 if not proof.valid or any(getattr(proof, key, None) != x[key] for key in fields):
                     return "BLOCKED", "REPAIR_ATTESTATION_MISMATCH"
