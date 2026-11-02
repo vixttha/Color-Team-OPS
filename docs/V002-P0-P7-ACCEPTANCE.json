@@ -11,10 +11,11 @@
   "priority_status": [
     {
       "priority": "P0",
-      "status": "REQUIRES_OWNER_DECISION",
+      "status": "TECHNICALLY_COMPLETE",
       "team": "orange-team",
       "source": "docs/V002-P0-ORANGE-TRUST-SCOPE.md",
-      "blocker": "initial protected-host mandate unresolved"
+      "owner_scope_decision": "skills-only portable initial 0.0.2, no mandatory protected-host backend",
+      "authority_ref": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030"
     },
     {
       "priority": "P1",
@@ -101,5 +102,12 @@
     "production-deploy",
     "paid-provisioning"
   ],
-  "last_verified_sha": "787fef5aa68f33571437633abe1ae393e40f82f9"
+  "last_verified_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+  "p0_resolution": {
+    "status": "OWNER_SCOPE_CONFIRMED_SKILLS_ONLY",
+    "protected_backend_required": false,
+    "source_ref": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030",
+    "host_trials_still_required": true,
+    "independent_eval_still_required": true
+  }
 }

@@ -38,9 +38,12 @@ class ReleaseBlockerTests(unittest.TestCase):
         self.assertEqual(self.a["version"],"0.0.2")
         self.assertIn("publish-plugin",self.a["authority_not_granted"])
 
-    def test_protected_owner_release_scope_unresolved(self):
+    def test_owner_resolved_initial_skills_only_scope(self):
         statuses={x["priority"]:x["status"] for x in self.a["priority_status"]}
-        self.assertEqual(statuses["P0"],"REQUIRES_OWNER_DECISION")
+        self.assertEqual(statuses["P0"],"TECHNICALLY_COMPLETE")
+        self.assertEqual(self.a["p0_resolution"]["status"],"OWNER_SCOPE_CONFIRMED_SKILLS_ONLY")
+        self.assertFalse(self.a["p0_resolution"]["protected_backend_required"])
+        self.assertTrue(self.a["p0_resolution"]["host_trials_still_required"])
         self.assertEqual(statuses["P2"],"REQUIRES_OWNER_DECISION")
         self.assertEqual(statuses["P7"],"BLOCKED")
 

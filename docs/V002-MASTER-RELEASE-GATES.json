@@ -17,7 +17,7 @@
       "basis": "Bounded Head repair events and D2 schema/attestation/receipt binding tested (including zero-repair compatibility and 4 bridge cases) in 550/550 native suites on both OS at 6abc04a8465667ca7ebf0bc02a1d6a1f8123471d. Test adapter is synthetic.",
       "blockers": [
         "real authenticated protected host repair issuer not available/verified",
-        "owner release scope for protected host unresolved"
+        "real protected issuer not selected; NOT mandatory in initial skills-only release"
       ]
     },
     {
@@ -63,7 +63,6 @@
         "source Python router/directory references not proven executable inside installed Markdown skills",
         "M1 D2 attested in-task repair and protected authenticated host authority UNVERIFIED",
         "M4 270 independent oracle labels and real specialist/model trials NOT RUN",
-        "conditional protected-host grant/durable writing requirement not yet resolved by owner-approved deployment scope",
         "explicit owner approval for merge or canonical plugin update/publish missing",
         "any source commit after current verified SHA requires repeat exact-SHA CI to claim that newer revision tested"
       ]
@@ -149,5 +148,7 @@
     "host_trials": "NOT_RUN",
     "meaning": "Genuine source-only validation at this SHA. Changes after this record require new verification; not installed plugin."
   },
-  "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json"
+  "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json",
+  "p0_scope_decision": "OWNER_APPROVED_INITIAL_PORTABLE_SKILLS_ONLY_NO_PROTECTED_BACKEND_MANDATE",
+  "p0_owner_authority": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030"
 }
