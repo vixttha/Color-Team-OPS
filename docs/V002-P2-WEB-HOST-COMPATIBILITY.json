@@ -1,0 +1,101 @@
+{
+  "mission": "CTO-V002-SINGLE-THREAD",
+  "release": "0.0.2",
+  "classification": "DOCUMENTATION_VERIFIED_NOT_INSTALL_OR_HOST_TRIAL",
+  "reviewed_on": "2026-11-02",
+  "providers": [
+    {
+      "name": "ChatGPT",
+      "website": "https://chatgpt.com",
+      "custom_skill": "SUPPORTED_SUBJECT_TO_ACCOUNT",
+      "custom_plugin": "SUPPORTED_VIA_PLUGIN_CREATOR_SUBJECT_TO_ACCOUNT",
+      "browser_mode": "ChatGPT Plugins and Skills; skills-only plugin",
+      "package": "ChatGPT Plugin Creator manifests and skills/SKILL.md; direct uploaded skills in Plugin Directory",
+      "tools": "Only actually connected permitted tools; skills alone confer no tool rights",
+      "multi_skill_routing": "Host-selected skills; Head's text single-lane handoff must be tested",
+      "reference_files": "Plugin may include support files; availability requires installed-host test",
+      "unpublished_preview": "NO_VERIFIED_UNINSTALLED_CANDIDATE_PREVIEW_IN_AVAILABLE_TOOLS",
+      "host_tried": false,
+      "notes": "Canonical private identity currently installed v0.0.1. No v0.0.2 update or staging authorization.",
+      "sources": [
+        "https://help.openai.com/en/articles/20001256-plugins-in-chatgpt",
+        "https://help.openai.com/en/articles/20001066-skills-in-chatgpt"
+      ]
+    },
+    {
+      "name": "Claude",
+      "website": "https://claude.com",
+      "custom_skill": "SUPPORTED_WEB_ZIP_UPLOAD_CONDITIONAL",
+      "custom_plugin": "SUPPORTED_WEB_ON_PAID_PLANS",
+      "browser_mode": "Claude web chat Customize > Skills and Plugins",
+      "package": "Individual skill folder ZIP with SKILL.md; plugin archive format must conform to Claude plugin tooling",
+      "tools": "Connector availability/authorization host-specific; hooks/subagents do NOT run in web chat",
+      "multi_skill_routing": "Claude selects skills; one active specialist remains instruction-guided, not protected service lock",
+      "reference_files": "Skill-bundled material subject to Claude skill environment and account settings",
+      "unpublished_preview": "PRIVATE_SKILL_UPLOAD_AVAILABLE_ACCOUNT_CONDITIONAL; NO_TRIAL_PERFORMED",
+      "host_tried": false,
+      "notes": "Code execution/file creation must be enabled for skills; plugin support requires paid plan. No upload performed, no user consent to install candidate established.",
+      "sources": [
+        "https://support.claude.com/en/articles/12512180-use-skills-in-claude",
+        "https://support.claude.com/en/articles/13837440-use-plugins-in-claude"
+      ]
+    },
+    {
+      "name": "Grok",
+      "website": "https://grok.com",
+      "custom_skill": "WEB_SKILL_CREATOR_DOCUMENTED",
+      "custom_plugin": "UNVERIFIED_UNIVERSAL_IMPORT",
+      "browser_mode": "Grok web skills, custom skill creator; user account may differ",
+      "package": "Native grok skill creation; no verified byte-identical 12-skill plugin archive import",
+      "tools": "No universal equivalence with ChatGPT plugin tool permissions verified",
+      "multi_skill_routing": "Host-native skill selection untested for 12-skill product",
+      "reference_files": "UNVERIFIED",
+      "unpublished_preview": "UNVERIFIED",
+      "host_tried": false,
+      "notes": "Published Grok skills announcement confirms web skills and customization; not a supported ChatGPT archive import.",
+      "sources": [
+        "https://x.ai/news/grok-skills",
+        "https://docs.x.ai/grok/faq"
+      ]
+    },
+    {
+      "name": "Kimi",
+      "website": "https://www.kimi.com",
+      "custom_skill": "SUPPORTED_IN_AGENT_MODES",
+      "custom_plugin": "MARKETPLACE_WEB_SUPPORT_CONFIRMED_PERSONAL_CREATION_WEB_PATH_UNVERIFIED",
+      "browser_mode": "K3/K3 Swarm, Deep Research, Build, PPT; some conversations/modes unsupported",
+      "package": "Kimi plugin definition includes skills and MCP; personal Plugin Builder creation guidance relies on Kimi Work desktop (not acceptable as mandatory browser runtime)",
+      "tools": "Web plugins currently support MCP and Skills; permissions/credits/region may limit",
+      "multi_skill_routing": "Kimi agent supports automatic or explicit selection; 12-skill routing remains untested",
+      "reference_files": "Skill resources subject to supported web modes; not validated for this product",
+      "unpublished_preview": "NOT_VERIFIED_FOR_BROWSER_ONLY_PRIVATE_CANDIDATE",
+      "host_tried": false,
+      "notes": "Do not require Kimi Work desktop for user runtime. Skills can be generated in supported agent modes, but personal plugin creation documents desktop steps.",
+      "sources": [
+        "https://www.kimi.com/en/help/plugins-and-skills/overview",
+        "https://www.kimi.com/en/help/plugins-and-skills/what-are-skills",
+        "https://www.kimi.com/en/help/plugins-and-skills/create"
+      ]
+    },
+    {
+      "name": "Z.ai",
+      "website": "https://z.ai",
+      "custom_skill": "UNVERIFIED_CHAT_WEB_UPLOAD",
+      "custom_plugin": "UNVERIFIED_CHAT_WEB_IMPORT",
+      "browser_mode": "z.ai chat web; separate ZCode product has plugins",
+      "package": "ZCode plugin manifest and skills documented, but this does not prove z.ai browser chat upload",
+      "tools": "No substantiated host chat skill tool bindings",
+      "multi_skill_routing": "UNVERIFIED",
+      "reference_files": "UNVERIFIED",
+      "unpublished_preview": "UNVERIFIED",
+      "host_tried": false,
+      "notes": "ZCode plugin documentation refers to workspace/plugin management with local machine details: must not be treated as z.ai web browser product evidence or required installation.",
+      "sources": [
+        "https://zcode.z.ai/en/docs/plugin"
+      ]
+    }
+  ],
+  "candidate_host_trials_executed": 0,
+  "source_only_bundle_status": "PORTABLE_MARKDOWN_SKILLS_NOT_INSTALLED_AT_ANY_NEW_HOST",
+  "capability_limits": "Supported documentation paths do NOT prove account-specific access or actual v0.0.2 functionality."
+}
