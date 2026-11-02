@@ -1,6 +1,6 @@
 # CTO-V002 P0 — Orange trust-scope determination (2026-11-02)
 
-**Mission:** CTO-V002-SINGLE-THREAD. **Head disposition:** Scope classified for continuing engineering; one explicit owner decision remains. **Release authorization:** NOT GRANTED. **Baseline source reviewed:** `9b6c0eedf6b577dcce1f516c58c7a1c2ad953315`.
+**Mission:** CTO-V002-SINGLE-THREAD. **Head disposition (2026-11-02):** Owner has resolved P0 initial product scope: portable cloud-only skills-only; no dedicated protected backend is mandatory. **Release authorization:** NOT GRANTED. **Baseline source reviewed:** `9b6c0eedf6b577dcce1f516c58c7a1c2ad953315`.
 
 ## Evidence and controlling authority
 

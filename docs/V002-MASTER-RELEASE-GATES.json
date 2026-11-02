@@ -13,11 +13,11 @@
     {
       "checkpoint": "M1",
       "development": "D2_REPAIR_ATTESTATION_REFERENCE_NATIVE_TESTED_HOST_UNVERIFIED",
-      "production": "UNVERIFIED",
+      "production": "SKILLS_ONLY_PORTABLE_SOURCE_TESTED_HOST_NOT_RUN",
       "basis": "Bounded Head repair events and D2 schema/attestation/receipt binding tested (including zero-repair compatibility and 4 bridge cases) in 550/550 native suites on both OS at 6abc04a8465667ca7ebf0bc02a1d6a1f8123471d. Test adapter is synthetic.",
       "blockers": [
-        "real authenticated protected host repair issuer not available/verified",
-        "real protected issuer not selected; NOT mandatory in initial skills-only release"
+        "Protected-host authentication not supported/claimed; optional for initial owner-approved skills-only mode",
+        "Actual installed v0.0.2 source skills still require host trials"
       ]
     },
     {
@@ -43,28 +43,28 @@
     },
     {
       "checkpoint": "M4",
-      "development": "270_CASE_PREREGISTRATION_DRAFT_54_VISIBLE_RESERVED_HOLDOUTS",
+      "development": "270_CONCRETE_DOMAIN_FIXTURES_270_REFERENCE_ROUTE_TESTS_NATIVE_TESTED",
       "production": "BLOCKED",
-      "basis": "270 original topic drafts plus topic-linked preregistration input, 54 reserved but NOT blinded holdouts. Independent oracle labels 0, actual executed cases 0.",
+      "basis": "270 synthetic domain case IDs and proposed reviewer findings; 54 reserved holdouts visible/not blind. Executed 270 source M3 routing guard unit tests in 864 native tests each OS at 3350430b3a292bb6d0d8fa7e90105d929f564e7c. Genuine model host trials 0; independently approved labels 0.",
       "blockers": [
-        "independent reviewer identities and frozen oracle labels absent (0/270)",
-        "real supported candidate/model trials absent (0/270)",
-        "holdouts visible and not blinded",
-        "case-specific fixtures and measurable competence labels require independent domain review"
+        "Independent domain reviewer/oracles missing (0/270)",
+        "actual hosted candidate/model trials missing (0/270)",
+        "holdout cases visible in source (not blinded)",
+        "source-router reference tests not specialist quality evidence"
       ]
     },
     {
       "checkpoint": "M5",
-      "development": "FULL_CURRENT_REVISION_555_NATIVE_TESTS_AND_FOUR_ZIP_PARITY_SOURCE_ONLY",
+      "development": "LATEST_864_NATIVE_AND_FOUR_ZIP_PARITY_SOURCE_ONLY",
       "production": "BLOCKED",
-      "basis": "555/555 Linux and 555/555 Windows at exact source 787fef5aa68f33571437633abe1ae393e40f82f9 (run 41528729633); 2 complete ZIPs per OS identical across platforms SHA256 75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1. No actual v0.0.2 plugin host trial.",
+      "basis": "Native 864/864 per OS and four matching 32-file ZIPs at 3350430b3a292bb6d0d8fa7e90105d929f564e7c Actions #41535840683; digest 5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420. Final documentation commit requires fresh exact-SHA test.",
       "blockers": [
-        "actual v0.0.2 installed ChatGPT one-thread mission trial NOT RUN; no owner update/publish approval",
-        "source Python router/directory references not proven executable inside installed Markdown skills",
-        "M1 D2 attested in-task repair and protected authenticated host authority UNVERIFIED",
-        "M4 270 independent oracle labels and real specialist/model trials NOT RUN",
-        "explicit owner approval for merge or canonical plugin update/publish missing",
-        "any source commit after current verified SHA requires repeat exact-SHA CI to claim that newer revision tested"
+        "Actual installed v0.0.2 ChatGPT one-thread skill missions H-01 to H-11 NOT RUN; canonical private plugin remains 0.0.1",
+        "Nine specialist competency refs and coordinator behavior not demonstrated in installed host",
+        "M4 independent reviewer labels and real specialist-model baseline/ablations 0/270",
+        "Provider-specific protected-host claims not made and NOT mandatory for initial skills-only mode",
+        "Explicit owner authorization for plugin staging/update, merge or publication missing",
+        "Documentation source changes require fresh exact-SHA regression"
       ]
     }
   ],
@@ -79,10 +79,10 @@
     "auto_merge_or_publish_allowed": false,
     "paid_cloud_provisioning_allowed": false
   },
-  "final_status": "BLOCKED_EXTERNAL_APPROVAL_AND_MISSING_EVIDENCE",
+  "final_status": "BLOCKED_MISSING_HOST_AND_INDEPENDENT_EVALUATION_EVIDENCE_AND_OWNER_RELEASE_LOCK",
   "release_ready": false,
   "measured_99_percent_claim": false,
-  "latest_reviewed_source_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+  "latest_reviewed_source_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
   "skill_delta": {
     "unchanged_specialists": 9,
     "intentionally_updated_coordinators": 3,
@@ -110,7 +110,7 @@
     "source_branch_current_sha": "7ded28574388f4382dd974d981785e4745dd857c",
     "current_source_parity": "NOT_REVALIDATED_AFTER_SOURCE_BRANCH_ADVANCED"
   },
-  "latest_review_type": "REAL_NATIVE_555_PER_OS_CROSS_PLATFORM_ZIP_TESTED_HOST_BLOCKED",
+  "latest_review_type": "REAL_864_NATIVE_PER_OS_270_REFERENCE_CASES_ZIP_PARITY_HOST_TRIALS_NOT_RUN",
   "package_hardening": {
     "candidate_source_before_gate_update": "adc4c85a55f03cfa3175206b9a15ef9eb55efd70",
     "builder_blob": "2ebed6f4a0e733724d521f32ec404e5f8e5b2623",
@@ -126,29 +126,27 @@
   },
   "native_ci_evidence": {
     "status": "TESTED",
-    "source_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
-    "workflow_run_id": 41528729633,
+    "source_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
+    "workflow_run_id": 41535840683,
     "workflow_run_attempt": 1,
     "linux": {
-      "native_tests_passed": 555,
-      "native_tests_total": 555,
-      "complete_zip_builds": 2,
-      "job_id": 125563128767
+      "native_tests_passed": 864,
+      "native_tests_total": 864,
+      "complete_zip_builds": 2
     },
     "windows": {
-      "native_tests_passed": 555,
-      "native_tests_total": 555,
-      "complete_zip_builds": 2,
-      "job_id": 125563129163
+      "native_tests_passed": 864,
+      "native_tests_total": 864,
+      "complete_zip_builds": 2
     },
-    "zip_sha256": "75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1",
+    "zip_sha256": "5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420",
     "zip_files": 32,
     "byte_identical_across_platforms": true,
     "installed_plugin_version": "0.0.1",
     "host_trials": "NOT_RUN",
-    "meaning": "Genuine source-only validation at this SHA. Changes after this record require new verification; not installed plugin."
+    "meaning": "Source-only exact-SHA tests on previous commit; this release dossier commit requires fresh exact-SHA CI; no real model measurements"
   },
   "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json",
-  "p0_scope_decision": "OWNER_APPROVED_INITIAL_PORTABLE_SKILLS_ONLY_NO_PROTECTED_BACKEND_MANDATE",
+  "p0_scope_decision": "OWNER_APPROVED_INITIAL_PORTABLE_CLOUD_ONLY_SKILLS_ONLY_NOT_PROTECTED_BACKEND",
   "p0_owner_authority": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030"
 }

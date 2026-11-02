@@ -1,5 +1,25 @@
 # CTO-V002 P0–P7 — Owner-facing release-readiness dossier
 
+## November 2, 2026 — Development HQ P0–P7 continuation evidence
+
+**Owner's resolved scope:** portable cloud-only skills-only initial v0.0.2, confirmed in Issue #8 comments [6589225030](https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030) and [6589322069](https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589322069). No protected paid backend, global cross-session mutex or unattended execution is required. D2 source boundary and fail-closed privileged claims remain mandatory.
+
+**Last fully verified pre-dossier source:** `3350430b3a292bb6d0d8fa7e90105d929f564e7c`; [GitHub run 41535840683](https://github.com/vixttha/Color-Team-OPS/actions/runs/41535840683) **864/864 on Linux and Windows**, four byte-identical complete 32-file ZIPs, SHA-256 `5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420`. The dossier/ledger update creates another SHA; **that new HEAD must receive its own exact-SHA CI before we claim current-source acceptance**. Host-installed v0.0.2 remains NOT_RUN. Private canonical plugin remains v0.0.1.
+
+**Source engineering completed since previous audit:**
+- P0 current owner law enforced in tests/acceptance. P1 D2 repair-source checks preserved.
+- P2 documented five browser hosts from official sources, with limitations per provider; optional development exporter for twelve individual web skill ZIP candidates; account-specific installation and H-01–H-11 still NOT_RUN.
+- P3 **270 concrete specialist-specific synthetic mini-fixtures**, 90 underlying topics × three distinct difficulty probes; 54 visible/unblinded reserved holdouts and **zero** independent labels. Structured nonexecuted register tracks all 270.
+- P4 hosted trial ingestion and source-bound provisional scoring, security-critical and replay checks, controlled baseline/ablation pairing and Wilson intervals. **270 distinct real Python source reference route tests executed** (each with stale source/active Worker/budget/tool handling); no actual LLM-model routing or specialist quality was measured.
+- P5 all 12 skill source files/nine competency refs audited. Mission Control gained readable progress/missing-tool/stale/budget recovery, retaining v0.0.1 specialist skill parity.
+- P6 native/source package parity advanced; portable plugin still has exactly twelve skills and nine competency refs, no Python/local runtime requirement. No new plugin identity/merge/publish.
+- P7 owner dossier prepared; remains `RELEASE_BLOCKED`.
+
+**Remaining release-blocking evidence:** (A) owner-approved actual unpublished v0.0.2 host installation/testing path (plugin Creator does not expose a verified uninstalled preview); (B) truly independent domain oracles/reviewers and genuinely blinded holdouts, plus real v0.0.2 candidate vs baseline/ablation model observations; (C) actual P5 Orange/Purple/Gray live mission and UX audit evidence. These are NOT remedied by synthetic tests. Formal publication always requires an additional explicit owner instruction.
+
+**Branch governance:** earlier live GitHub branches API showed `protected=false` for integration/main/v0.0.1 release branches. No repository settings changed. Only exact-SHA compare-and-swap development writes, scoped read-only CI and manual release lock are available as compensating controls; these are not GitHub-enforced branch protection.
+
+
 **Mission:** CTO-V002-SINGLE-THREAD. **Version:** v0.0.2. **Status: RELEASE_BLOCKED.** **Integration:** `integration/v0.0.2-master-single-thread`. Owner explicitly permits development/test/audit, **NOT** merge, production deployment or plugin release.
 
 ## Priority disposition and review evidence

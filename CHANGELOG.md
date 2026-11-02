@@ -2,7 +2,10 @@
 
 Newest version first. Every version updates README.md, this changelog, acceptance evidence and relevant architecture documents.
 
-## [0.0.2] — UNRELEASED / integration candidate (updated 2026-11-02)
+## [0.0.2] — UNRELEASED / integration candidate (continued 2026-11-02)
+
+**Latest owner scope / implementation:** P0 resolved as portable cloud-only skills-only with no mandatory protected cloud backend (Issue #8 comments 6589225030/6589322069). P1 protected issuer remains optional, source D2 security negative tests preserved. P2 official five-host compatibility audit and twelve individual optional web skill ZIP export tests. P3 concrete domain-specific fixtures for all 270 original case IDs, **0 independent labels**, 54 reserved holdouts not blind. P4 270 actual source-router negative/positive reference tests **not model trials**, new evidence-ingestion/baseline/ablation/Wilson pipeline, no real model quality figures. P5 all twelve skills and nine competency references source-audited; Gray Cell readability/recovery improvements to existing Mission Control. P6 source evidence at 3350430b3a292bb6d0d8fa7e90105d929f564e7c = **864/864 tests per OS**, four matching ZIPs SHA256 5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420, [run 41535840683](https://github.com/vixttha/Color-Team-OPS/actions/runs/41535840683). This changelog update creates a newer SHA, requiring retest. P7 remains **RELEASE_BLOCKED**: installed v0.0.2, independent quality and owner publication approval missing.
+
 
 **P0–P7 continuity:** Orange trust-scope record P0 committed; Yellow D2 versioned repair-events and a conservative bridge with Head/Worker/journal/receipt binding source-tested; Orange negatives and original zero-repair regression preserved. P2 installed candidate host tests remain NOT_RUN. P3 has a proposed 270-case preregistration with 54 visible reserved (NOT blinded) holdouts, 0 independently labeled or executed cases. P4 and P5 actual host evaluations are BLOCKED. P6/P7 remain owner-facing blocked release gates.
 

@@ -1,0 +1,2711 @@
+{
+  "schema_version": "cto-v002-host-trial-register-1",
+  "mission": "CTO-V002-SINGLE-THREAD",
+  "source_candidate_git_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
+  "classification": "NOT_RUN_NO_HOST_OR_INDEPENDENT_ORACLE",
+  "host_trials_executed": 0,
+  "independent_oracles": 0,
+  "accuracy": null,
+  "cases": [
+    {
+      "case_id": "yellow-team:normal:01",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:01",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:01",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:02",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:02",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:02",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:03",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:03",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:03",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:04",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:04",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:04",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:05",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:05",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:05",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:06",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:06",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:06",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:07",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:07",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:07",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:08",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:08",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:08",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:09",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:09",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:09",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:normal:10",
+      "team_id": "yellow-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:edge:10",
+      "team_id": "yellow-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "yellow-team:adversarial:10",
+      "team_id": "yellow-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:01",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:01",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:01",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:02",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:02",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:02",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:03",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:03",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:03",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:04",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:04",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:04",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:05",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:05",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:05",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:06",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:06",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:06",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:07",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:07",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:07",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:08",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:08",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:08",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:09",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:09",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:09",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:normal:10",
+      "team_id": "orange-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:edge:10",
+      "team_id": "orange-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "orange-team:adversarial:10",
+      "team_id": "orange-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:01",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:01",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:01",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:02",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:02",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:02",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:03",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:03",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:03",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:04",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:04",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:04",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:05",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:05",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:05",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:06",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:06",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:06",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:07",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:07",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:07",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:08",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:08",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:08",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:09",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:09",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:09",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:normal:10",
+      "team_id": "green-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:edge:10",
+      "team_id": "green-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "green-team:adversarial:10",
+      "team_id": "green-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:01",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:01",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:01",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:02",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:02",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:02",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:03",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:03",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:03",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:04",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:04",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:04",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:05",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:05",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:05",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:06",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:06",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:06",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:07",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:07",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:07",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:08",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:08",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:08",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:09",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:09",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:09",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:normal:10",
+      "team_id": "red-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:edge:10",
+      "team_id": "red-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "red-team:adversarial:10",
+      "team_id": "red-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:01",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:01",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:01",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:02",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:02",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:02",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:03",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:03",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:03",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:04",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:04",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:04",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:05",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:05",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:05",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:06",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:06",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:06",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:07",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:07",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:07",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:08",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:08",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:08",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:09",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:09",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:09",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:normal:10",
+      "team_id": "blue-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:edge:10",
+      "team_id": "blue-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "blue-team:adversarial:10",
+      "team_id": "blue-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:01",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:01",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:01",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:02",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:02",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:02",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:03",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:03",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:03",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:04",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:04",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:04",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:05",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:05",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:05",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:06",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:06",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:06",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:07",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:07",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:07",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:08",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:08",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:08",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:09",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:09",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:09",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:normal:10",
+      "team_id": "purple-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:edge:10",
+      "team_id": "purple-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "purple-team:adversarial:10",
+      "team_id": "purple-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:01",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:01",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:01",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:02",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:02",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:02",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:03",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:03",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:03",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:04",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:04",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:04",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:05",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:05",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:05",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:06",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:06",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:06",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:07",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:07",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:07",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:08",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:08",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:08",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:09",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:09",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:09",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:normal:10",
+      "team_id": "white-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:edge:10",
+      "team_id": "white-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "white-team:adversarial:10",
+      "team_id": "white-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:01",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:01",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:01",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:02",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:02",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:02",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:03",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:03",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:03",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:04",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:04",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:04",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:05",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:05",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:05",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:06",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:06",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:06",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:07",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:07",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:07",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:08",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:08",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:08",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:09",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:09",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:09",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:normal:10",
+      "team_id": "black-team",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:edge:10",
+      "team_id": "black-team",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "black-team:adversarial:10",
+      "team_id": "black-team",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:01",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:01",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:01",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:02",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:02",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:02",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:03",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:03",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:03",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:04",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:04",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:04",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:05",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:05",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:05",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:06",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:06",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:06",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:07",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:07",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:07",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:08",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:08",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:08",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:09",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:09",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:09",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:normal:10",
+      "team_id": "gray-cell",
+      "band": "normal",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:edge:10",
+      "team_id": "gray-cell",
+      "band": "edge",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    },
+    {
+      "case_id": "gray-cell:adversarial:10",
+      "team_id": "gray-cell",
+      "band": "adversarial",
+      "status": "NOT_RUN",
+      "host_session_ref": null,
+      "provider_receipt": null,
+      "reviewer_ref": null,
+      "source_sha_at_execution": null
+    }
+  ]
+}

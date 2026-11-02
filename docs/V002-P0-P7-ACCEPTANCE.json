@@ -3,7 +3,7 @@
   "mission_id": "CTO-V002-SINGLE-THREAD",
   "version": "0.0.2",
   "branch": "integration/v0.0.2-master-single-thread",
-  "scope_verified_at_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+  "scope_verified_at_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
   "status": "RELEASE_BLOCKED",
   "release_authorized": false,
   "canonical_plugin_id": "plugins_6ae3edf1ea4c819182f275592273e2cc",
@@ -15,7 +15,13 @@
       "team": "orange-team",
       "source": "docs/V002-P0-ORANGE-TRUST-SCOPE.md",
       "owner_scope_decision": "skills-only portable initial 0.0.2, no mandatory protected-host backend",
-      "authority_ref": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030"
+      "authority_ref": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030",
+      "source_engineering": "SOURCE_COMPLETE",
+      "evidence": "Owner Issue #8 comments 6589225030 and 6589322069; native P0 scope regression in 864 full tests per OS",
+      "validate": "OWNER_SCOPE_READBACK",
+      "internal_auditor": "No production backend claim from skills-only text",
+      "head_disposition": "ACCEPT_CLOUD_ONLY_SKILLS_ONLY_SCOPE",
+      "remaining": "None for scope. Real host and quality acceptance remain P2-P5."
     },
     {
       "priority": "P1",
@@ -24,74 +30,151 @@
       "source": "policy_v002/repair_protocol.py",
       "scope": "reference D2 repair attestation only; no protected issuer",
       "evidence": {
-        "run_id": 41528132175,
-        "source_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
-        "tests_per_os": 550
-      }
+        "source_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
+        "run_id": 41535840683,
+        "tests_per_os": 864
+      },
+      "source_engineering": "SOURCE_COMPLETE_AND_NATIVE_TESTED",
+      "validate": "REAL_D2_REFERENCE_REGRESSION_NATIVE_TESTED",
+      "internal_auditor": "Synthetic TrustAdapter cannot authenticate production issuer; source work remains usable skills-only",
+      "head_disposition": "ACCEPT_REFERENCE_AND_NEGATIVE_SECURITY_TESTS",
+      "remaining": "Privileged host signing optional and unavailable; no false authentication claims"
     },
     {
       "priority": "P2",
-      "status": "REQUIRES_OWNER_DECISION",
+      "status": "REQUIRES_OWNER_AUTHORIZATION",
       "team": "yellow-team",
-      "source": "docs/V002-P2-P5-HOST-TRIALS.json",
-      "blocker": "no authorized installed candidate/staging preview"
+      "source": "docs/V002-P2-WEB-HOST-COMPATIBILITY.json",
+      "blocker": "no authorized installed candidate/staging preview",
+      "source_engineering": "SOURCE_COMPLETE_WEB_COMPATIBILITY_AND_OPTIONAL_12_SKILL_EXPORT",
+      "evidence": "Five official provider doc references, four web-matrix tests, six optional ZIP exporter regressions in native 864 per OS",
+      "implemented_artifacts": [
+        "docs/V002-P2-WEB-HOST-COMPATIBILITY.md",
+        "docs/V002-P2-SKILL-EXPORT.md",
+        "devtools/export_v002_web_skills.py",
+        "docs/V002-P2-P5-HOST-TRIALS.json"
+      ],
+      "validate": "SOURCE_NATIVE_TESTED_DOCUMENTATION_NOT_HOST_INSTALLED",
+      "internal_auditor": "ZCode ≠ z.ai web; no cross-host universal importer; no H-01–H-11 host PASS",
+      "head_disposition": "ACCEPT_OFFLINE_PREPARATION_BLOCK_UNAUTHORIZED_PLUGIN_UPDATE",
+      "remaining": "Owner-approved staging or canonical candidate installation, and real installed candidate host trial receipts; H-01 to H-11 NOT_RUN"
     },
     {
       "priority": "P3",
-      "status": "BLOCKED",
+      "status": "BLOCKED_EXTERNAL_CAPABILITY",
       "team": "purple-team",
-      "source": "evaluation/v0.0.2/preregistration-draft.json",
+      "source": "evaluation/v0.0.2/concrete-domain-fixtures.json",
       "independent_oracles": 0,
-      "holdouts_reserved_not_blinded": 54
+      "holdouts_reserved_not_blinded": 54,
+      "source_engineering": "270_CONCRETE_SYNTHETIC_CASES_SOURCE_COMPLETE",
+      "implemented_artifacts": [
+        "evaluation/v0.0.2/concrete-domain-fixtures.json",
+        "evaluation/v0.0.2/preregistration-draft.json",
+        "tests/test_v002_p3_concrete_fixtures.py",
+        "evaluation/v0.0.2/host-trial-register.json"
+      ],
+      "cases_prepared": 270,
+      "unique_topics": 90,
+      "holdouts_reserved": 54,
+      "holdout_blinded": false,
+      "evidence": "270 distinct fixtures and source regression tests included in 864 native tests/OS; no independent reviewer labels",
+      "validate": "FIXTURE_STRUCTURE_TESTED_SOURCE_ONLY",
+      "internal_auditor": "Proposed findings are model-authored, not independent labels; 54 holdouts visibly included in Git source",
+      "head_disposition": "ACCEPT_FIXTURE_ENGINEERING_RETAIN_INDEPENDENT_REVIEW_GATE",
+      "remaining": "Authentic independent reviewer/oracles; truly blinded holdout method; independent factual/semantic quality review"
     },
     {
       "priority": "P4",
-      "status": "BLOCKED",
+      "status": "BLOCKED_EXTERNAL_CAPABILITY",
       "team": "yellow-team",
       "genuine_trials": 0,
       "total_cases": 270,
-      "blocker": "candidate host and independent labels missing"
+      "blocker": "candidate host and independent labels missing",
+      "source_engineering": "TRIAL_PIPELINE_AND_270_CASE_REFERENCE_ROUTE_TESTS_NATIVE_TESTED",
+      "implemented_artifacts": [
+        "policy_v002/eval_trial_pipeline.py",
+        "evaluation/v0.0.2/trial-observation.schema.json",
+        "tests/test_v002_p4_eval_trial_pipeline.py",
+        "tests/test_v002_p4_270_reference_routes.py"
+      ],
+      "source_reference_cases_executed": 270,
+      "real_candidate_host_trials": 0,
+      "independent_scored_cases": 0,
+      "accuracy": null,
+      "evidence": "270 actual Python unittest reference routing cases under full native 864/864 per OS; no installed plugin/model executed",
+      "validate": "SOURCE_REFERENCE_GUARDS_TESTED_NOT_MODEL_PERFORMANCE",
+      "internal_auditor": "Test seeded required capability; 270/270 source guard passes cannot be called routing accuracy",
+      "head_disposition": "ACCEPT_OFFLINE_HARNESS_RETAIN_0_REAL_SCORE",
+      "remaining": "Actual v0.0.2 provider-host observations, independent labels, baseline+ablation measured outcomes"
     },
     {
       "priority": "P5",
-      "status": "BLOCKED",
+      "status": "BLOCKED_EXTERNAL_CAPABILITY",
       "team": "orange-team/purple-team/gray-cell",
-      "host_trial_count": 0
+      "host_trial_count": 0,
+      "source_engineering": "TWELVE_SKILL_STATIC_AUDIT_AND_UX_RECOVERY_NATIVE_TESTED",
+      "source": "docs/V002-P5-SKILL-LEVEL-AUDIT.json",
+      "implemented_artifacts": [
+        "docs/V002-P5-SKILL-LEVEL-AUDIT.md",
+        "skills/mission-control/SKILL.md",
+        "tests/test_v002_p5_skill_source_audit.py"
+      ],
+      "evidence": "All twelve SKILL.md sources and nine competency references statically audited; source UX status guidance tested in native 864/864 per OS",
+      "validate": "STATIC_SOURCE_ONLY",
+      "internal_auditor": "Logical roles not independent authenticated identities; no observed host mission, no real user usability study",
+      "head_disposition": "ACCEPT_STATIC_AUDIT_BLOCK_HOST_TRIAL",
+      "remaining": "Actual H-01–H-11 and Gray Cell real supported-host usability evidence"
     },
     {
       "priority": "P6",
       "status": "TECHNICALLY_COMPLETE",
       "team": "green-team",
-      "last_verified_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+      "last_verified_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
       "blocker": "No additional native/build blocker at last verified SHA; new source changes require new exact-SHA run. Production/plugin-host acceptance and branch protection remain distinct unmet gates.",
-      "last_verified_run": 41528729633
+      "last_verified_run": 41535840683,
+      "source_engineering": "TESTED_AT_PRE_DOSSIER_SHA_WITH_FINAL_HEAD_RETEST_REQUIRED",
+      "evidence": "864/864 Linux and Windows source tests, two 32-file ZIP builds per OS; all four SHA256 5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420",
+      "validate": "ACTUAL_GITHUB_CI_JOB_LOGS_AND_DIGESTS_READ",
+      "internal_auditor": "Archive reproducibility does not authenticate host, independent evaluator, or branch protection",
+      "head_disposition": "ACCEPT_PRE_DOSSIER_NATIVE_GATE_REQUIRE_NEW_CI_AFTER_THIS_DOC_COMMIT",
+      "remaining": "Reverify docs commit new HEAD; host/eval gates are separate"
     },
     {
       "priority": "P7",
-      "status": "BLOCKED",
+      "status": "BLOCKED_EXTERNAL_CAPABILITY",
       "team": "Head",
-      "blocker": "release acceptance and owner publication authorization absent"
+      "blocker": "release acceptance and owner publication authorization absent",
+      "source_engineering": "RELEASE_DOSSIER_PREPARED",
+      "source": "docs/V002-P6-P7-RELEASE-DOSSIER.md",
+      "evidence": "P0–P6 source records, test receipts, risk register, rollback and exact SHA; no invented trials",
+      "validate": "DOCUMENTS_REAL_EVIDENCE_ONLY",
+      "internal_auditor": "Host trial and independent eval missing; owner release lock absolute",
+      "head_disposition": "RELEASE_BLOCKED_NOT_READY_TO_PUBLISH",
+      "remaining": "Independent reviewer/host trials and eventual separate owner release decision"
     }
   ],
   "recent_native": {
-    "verified_source_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
-    "run_id": 41528729633,
-    "tests_per_platform": 555,
+    "verified_source_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
+    "run_id": 41535840683,
+    "tests_per_platform": 864,
     "linux": "PASS",
     "windows": "PASS",
     "complete_zip_builds_per_platform": 2,
     "zip_files": 32,
-    "sha256": "75eeef9eb55fb4eea0b6680770c939fd3ea4b41f2eebf8d8921efb61fb914ce1"
+    "sha256": "5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420"
   },
   "host_trials": {
     "status": "NOT_RUN",
-    "count": 0
+    "count": 0,
+    "scenarios_total": 11
   },
   "m4": {
     "independent_oracles": 0,
     "real_trials": 0,
     "cases": 270,
-    "accuracy": null
+    "reference_source_tests_executed": 270,
+    "accuracy": null,
+    "holdout_blinded": false
   },
   "final_decision": "RELEASE_BLOCKED",
   "head_approval": "NOT_GRANTED",
@@ -102,12 +185,14 @@
     "production-deploy",
     "paid-provisioning"
   ],
-  "last_verified_sha": "787fef5aa68f33571437633abe1ae393e40f82f9",
+  "last_verified_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
   "p0_resolution": {
     "status": "OWNER_SCOPE_CONFIRMED_SKILLS_ONLY",
     "protected_backend_required": false,
     "source_ref": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030",
     "host_trials_still_required": true,
     "independent_eval_still_required": true
-  }
+  },
+  "versioned_candidate_acceptance_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
+  "document_update_requires_new_exact_sha_ci": true
 }
