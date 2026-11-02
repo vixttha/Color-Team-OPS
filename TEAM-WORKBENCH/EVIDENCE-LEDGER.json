@@ -1,0 +1,6 @@
+{
+  "schema_version": "prismcell-evidence-0.0.1",
+  "team": "PURPLE",
+  "entries": [],
+  "note": "Immutable source/host evidence required; never mark unexecuted scenarios PASS."
+}

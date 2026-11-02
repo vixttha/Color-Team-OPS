@@ -1,0 +1,47 @@
+{
+  "schema_version": "prismcell-queue-0.0.1",
+  "team": "PURPLE",
+  "active_item": null,
+  "items": [
+    {
+      "id": "PUR-W0001",
+      "title": "Map overlapping Red/Blue/Black/Orange findings against exact integration source",
+      "priority": "P1",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Pin real source SHA and relevant capability",
+        "Produce evidence-linked specialist result",
+        "Log Validate / logical Internal Auditor / Head decision"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    },
+    {
+      "id": "PUR-W0002",
+      "title": "Create attack-to-detection coverage matrix without inventing telemetry",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Pin real source SHA and relevant capability",
+        "Produce evidence-linked specialist result",
+        "Log Validate / logical Internal Auditor / Head decision"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    },
+    {
+      "id": "PUR-W0003",
+      "title": "Send scoped cross-team handoffs and remediation challenges",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Pin real source SHA and relevant capability",
+        "Produce evidence-linked specialist result",
+        "Log Validate / logical Internal Auditor / Head decision"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    }
+  ],
+  "policy": "These are proposed, NOT_RUN; Head chooses one on explicit invocation."
+}
