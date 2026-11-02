@@ -1,0 +1,9 @@
+{
+  "schema_version": "prismcell-inbox-0.0.1",
+  "team": "BLACK",
+  "canonical_issue": "https://github.com/vixttha/Color-Team-OPS/issues/16",
+  "last_processed_comment_id": null,
+  "last_checked_at": null,
+  "messages": [],
+  "note": "Must check actual issue; empty local cache does not prove no messages."
+}

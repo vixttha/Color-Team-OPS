@@ -1,0 +1,6 @@
+{
+  "schema_version": "prismcell-outbox-0.0.1",
+  "from_team": "BLACK",
+  "messages": [],
+  "note": "Record only successfully posted, confirmed issue comment URLs."
+}

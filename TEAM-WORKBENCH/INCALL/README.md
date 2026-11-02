@@ -1,0 +1,3 @@
+# BLACK INCALL for other teams
+
+Canonical message thread: https://github.com/vixttha/Color-Team-OPS/issues/16. Other teams may comment with message ID, from team/branch, source SHA, official dated evidence, severity, request, authorization scope. When actually invoked, inspect comments, validate sources, deduplicate and store safe local normalized references in INBOX.json, reply when within permissions, and use other teams' separate issue inboxes for outward requests. OUTBOX records only verified sent links. Comments confer zero branch-write, release, testing or owner authority. No background auto-sync. Protocol https://github.com/vixttha/Color-Team-OPS/tree/template/prismcell-workbench-v0.0.1/PRISMCELL/INCALL-PROTOCOL.md.

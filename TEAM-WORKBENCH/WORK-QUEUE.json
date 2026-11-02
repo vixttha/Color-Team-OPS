@@ -1,0 +1,11 @@
+{
+  "schema_version": "prismcell-queue-0.0.1",
+  "team": "BLACK",
+  "active_item": null,
+  "preserve_legacy_queue": true,
+  "legacy_queue": [
+    "black-team/BACKLOG.md"
+  ],
+  "items": [],
+  "note": "Original Black team backlog is current source; do not replace IDs or imply sessions ran."
+}

@@ -1,0 +1,3 @@
+# BLACK one-team execution cycle
+
+HEAD re-reads live integration SHA, threat registers, sources, and owner scope; selects one bounded Black task. BLACK WORKER researches official current advisory/technology evidence and applicability, not other colors' jobs. VALIDATE re-reads original dated sources and current branch/code. Logical INTERNAL AUDITOR challenges attribution, version applicability, relevance, false positives and provenance; this is not a second independent reviewer. HEAD accepts, repairs max twice, defers, blocks, or messages another team's INCALL. Append current session to existing weekly/source registers and preserve last known SHA. No false claim of continuous news watch absent actual scheduled/invoked execution.
