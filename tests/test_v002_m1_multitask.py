@@ -203,7 +203,7 @@ class MultiTaskBridgeTests(unittest.TestCase):
             {k:self.d["journal"].state[k] for k in keys})
         self.check("BLOCKED","REPAIR_CONSENT_SCOPE_MISMATCH")
     def test_version(self):
-        self.assertEqual(VERSION,"cto-v002-m1-bridge-5")
+        self.assertEqual(VERSION,"cto-v002-m1-bridge-6")
 
 if __name__=="__main__":
     unittest.main()

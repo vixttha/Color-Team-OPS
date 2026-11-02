@@ -7,6 +7,7 @@ actors. No authorization is granted and no mutations are performed here.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from .repair_protocol import verify_repair_chain, RepairAttestation
 from pathlib import Path
 from typing import FrozenSet, Optional, Protocol, Sequence
 import json
@@ -94,6 +95,7 @@ class TrustAdapter(Protocol):
     def exclusive_write_enforced(self, mission_id: str, repository: str, branch: str) -> bool: ...
     def authenticate_transition(self, transition_id: str) -> Optional[TransitionAttestation]: ...
     def mission_snapshot(self, mission_id: str) -> Optional[MissionSnapshot]: ...
+    def authenticate_repair(self, repair_id: str) -> Optional[RepairAttestation]: ...
 
 
 @dataclass(frozen=True)
@@ -130,6 +132,7 @@ def evaluate_completion(
     transition_events: Sequence[dict],
     head_decision: dict,
     trust: TrustAdapter,
+    repair_events: Sequence[dict] = (),
 ) -> Verdict:
     """Evaluate an internal mission closure; READ ONLY.
 
@@ -279,6 +282,13 @@ def evaluate_completion(
             if order["team"] in required and not events_by_task[order["task_id"]]["evidence_claim_ids"]:
                 return _answer("BLOCKED", "REQUIRED_WORK_UNVERIFIED",
                                "Required team task has no source-bound evidence claim.", sha)
+
+        repair_status, repair_code = verify_repair_chain(
+            mission=mission, work_orders=work_orders, worker_events=worker_events,
+            evidence_claims=evidence_claims, repair_events=repair_events, trust=trust)
+        if repair_status != "PASS":
+            return _answer(repair_status, repair_code,
+                           "In-task repair cannot be accepted without scoped trusted transitions and receipts.", sha)
 
         claims = {c["claim_id"]: c for c in evidence_claims}
         if set(claims) != claim_ids:

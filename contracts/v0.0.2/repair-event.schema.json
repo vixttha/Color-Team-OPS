@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "D2 v0.0.2 bounded in-task repair transition and prior/next receipt binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "repair_id",
+    "mission_id",
+    "task_id",
+    "team",
+    "source_sha",
+    "repair_number",
+    "head_transition_id",
+    "worker_transition_id",
+    "head_subject",
+    "worker_subject",
+    "prior_receipt",
+    "next_receipt"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.0.2-prototype"
+    },
+    "repair_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "team": {
+      "enum": [
+        "yellow-team",
+        "orange-team",
+        "green-team",
+        "red-team",
+        "blue-team",
+        "purple-team",
+        "white-team",
+        "black-team",
+        "gray-cell"
+      ]
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "repair_number": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2
+    },
+    "head_transition_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "worker_transition_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "head_subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "worker_subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prior_receipt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "next_receipt": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

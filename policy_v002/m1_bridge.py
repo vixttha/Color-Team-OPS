@@ -11,8 +11,9 @@ from datetime import datetime, timezone
 from typing import Mapping
 from .host_runtime import HostRejected, digest
 from .verifier import evaluate_completion
+from .repair_protocol import verify_repair_chain
 
-VERSION = "cto-v002-m1-bridge-5"
+VERSION = "cto-v002-m1-bridge-6"
 
 def _check_unattested_repair_history(state, history, work_orders, worker_events):
     """Detect contradictory retry claims BEFORE the D2 reference gate.
@@ -108,7 +109,7 @@ def _fail_closed(fn):
 @_fail_closed
 def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
                         gate_records, transition_events, head_decision,
-                        journal=None, event_links=(), trust=None,
+                        journal=None, event_links=(), trust=None, repair_events=(),
                         clock=lambda: datetime.now(timezone.utc).timestamp()):
     sha = mission.get("source_sha", "") if isinstance(mission, dict) else ""
     def result(status, code, policy="NOT_RUN"):
@@ -179,9 +180,17 @@ def reconcile_reference(*, mission, work_orders, worker_events, evidence_claims,
         conflict = _check_unattested_repair_history(state, history, work_orders, worker_events)
         if conflict is not None:
             return result("BLOCKED", conflict)
-        # Exact journal linkage is still not D2's authenticated versioned repair
-        # transition protocol; do not promote fixtures to production authority.
-        return result("UNVERIFIED", "REPAIR_EVENT_TRACE_UNAVAILABLE")
+        # D2 repair protocol requires separate authenticated repair events and
+        # two protected transition attestations per retry. Synthetic fixtures
+        # can exercise the contract but can never authenticate production host.
+        if trust is None or not repair_events:
+            return result("UNVERIFIED", "REPAIR_EVENT_TRACE_UNAVAILABLE")
+        status, code = verify_repair_chain(
+            mission=mission, work_orders=work_orders, worker_events=worker_events,
+            evidence_claims=evidence_claims, repair_events=repair_events, trust=trust)
+        if status != "PASS":
+            return result(status, "D2_" + code)
+        return result("UNVERIFIED", "D2_REPAIR_REFERENCE_NOT_PRODUCTION_AUTH", "PASS")
     # v4 interprets the exact ordered Yellow event journal. Every completed task
     # contributes four transitions and two validation/audit gate observations.
     # There is ONE D2 aggregate Validate and Audit record at Head closure.

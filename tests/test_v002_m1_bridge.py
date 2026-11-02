@@ -159,7 +159,7 @@ class M1BridgeTests(unittest.TestCase):
         self.d["journal"].events[2]["subject"]=""
         self.check("BLOCKED","JOURNAL_ACTOR_MISSING")
     def test_bridge_version_is_pinned(self):
-        self.assertEqual(VERSION,"cto-v002-m1-bridge-5")
+        self.assertEqual(VERSION,"cto-v002-m1-bridge-6")
 
 
 if __name__=="__main__":
