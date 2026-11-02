@@ -52,6 +52,8 @@ def verify_repair_chain(*, mission: dict, work_orders: Sequence[dict],
             return "BLOCKED", "REPAIR_BUDGET_EXCEEDED"
         counts[task] = count
     if sum(counts.values()) != len(repair_events):
+        if sum(counts.values()) < len(repair_events):
+            return "BLOCKED", "REPAIR_ATTESTATIONS_UNEXPECTED"
         return "UNVERIFIED", "REPAIR_ATTESTATIONS_MISSING"
     if not repair_events:
         return "PASS", "ZERO_REPAIR_BACKWARD_COMPATIBLE"
