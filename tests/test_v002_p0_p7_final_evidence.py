@@ -30,5 +30,8 @@ class P0P7FinalEvidenceTests(unittest.TestCase):
     def test_competency_and_law_preserved(self):
         self.assertEqual(len(list((ROOT/"skills").glob("*/SKILL.md"))),12)
         self.assertEqual(len(list((ROOT/"skills").glob("*/references/v002-competencies.md"))),9)
-        self.assertIn("not",str(self.a["status"]).lower() if False else "not released")
+        constitution=(ROOT/"docs"/"CONSTITUTION.md").read_text(encoding="utf8")
+        self.assertIn("Cloud-only",constitution)
+        self.assertIn("runners",constitution)
+        self.assertFalse(self.a["release_authorized"])
 if __name__=="__main__":unittest.main()
