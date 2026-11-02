@@ -1,0 +1,47 @@
+{
+  "schema_version": "prismcell-queue-0.0.1",
+  "team": "GREEN",
+  "active_item": null,
+  "items": [
+    {
+      "id": "GRE-W0001",
+      "title": "Review branch protections, workflow triggers and owner-runner risk without dispatching jobs",
+      "priority": "P1",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Pin real source SHA and relevant capability",
+        "Produce evidence-linked specialist result",
+        "Log Validate / logical Internal Auditor / Head decision"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    },
+    {
+      "id": "GRE-W0002",
+      "title": "Audit reproducible package claims against exact-SHA test evidence",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Pin real source SHA and relevant capability",
+        "Produce evidence-linked specialist result",
+        "Log Validate / logical Internal Auditor / Head decision"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    },
+    {
+      "id": "GRE-W0003",
+      "title": "Review cloud-host readiness and rollback evidence",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Pin real source SHA and relevant capability",
+        "Produce evidence-linked specialist result",
+        "Log Validate / logical Internal Auditor / Head decision"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    }
+  ],
+  "policy": "These are proposed, NOT_RUN; Head chooses one on explicit invocation."
+}

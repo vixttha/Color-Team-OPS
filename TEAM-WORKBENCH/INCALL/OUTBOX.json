@@ -1,0 +1,6 @@
+{
+  "schema_version": "prismcell-outbox-0.0.1",
+  "from_team": "GREEN",
+  "messages": [],
+  "note": "Only record after successful sending and link readback."
+}
