@@ -1,0 +1,46 @@
+{
+  "schema_version": "prismcell-queue-0.0.1",
+  "team": "GRAY",
+  "active_item": null,
+  "legacy_queue": [],
+  "preserve_legacy_queue": false,
+  "items": [
+    {
+      "id": "GRAY-W0001",
+      "title": "Design controlled one-prompt routing and misrouting usability cases",
+      "priority": "P1",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Document actual source revision and specialist output",
+        "Record evidence and logical Verify/Audit/Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    },
+    {
+      "id": "GRAY-W0002",
+      "title": "Audit blocked/error messages for misleading completion claims",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Document actual source revision and specialist output",
+        "Record evidence and logical Verify/Audit/Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    },
+    {
+      "id": "GRAY-W0003",
+      "title": "Prepare privacy-safe installed-host UX trials with observable outcomes",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Document actual source revision and specialist output",
+        "Record evidence and logical Verify/Audit/Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null
+    }
+  ],
+  "notice": "Proposed tasks, not executed."
+}
