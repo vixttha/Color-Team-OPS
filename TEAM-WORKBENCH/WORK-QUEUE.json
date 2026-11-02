@@ -1,0 +1,52 @@
+{
+  "schema_version": "prismcell-queue-0.0.1",
+  "team": "YELLOW",
+  "active_item": null,
+  "legacy_queue": [],
+  "preserve_legacy_queue": false,
+  "description": "Proposed starting queue; all items unexecuted.",
+  "items": [
+    {
+      "id": "YEL-W0001",
+      "title": "Audit v0.0.2 repair priorities and produce exact-SHA engineering patches",
+      "priority": "P1",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Capture reproducible root cause and bounded fix plan for exporter Git-SHA provenance and evaluation receipt validation.",
+        "Cite real provider/source evidence at the relevant exact SHA",
+        "Log Validate + logical Internal Auditor + Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null,
+      "notes": "Proposed baseline work, not automatically executed."
+    },
+    {
+      "id": "YEL-W0002",
+      "title": "Prepare controlled negative and regression tests for open functional failures",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Distinguish authored test cases from runs; include exact provider job IDs for actual execution.",
+        "Cite real provider/source evidence at the relevant exact SHA",
+        "Log Validate + logical Internal Auditor + Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null,
+      "notes": "Proposed baseline work, not automatically executed."
+    },
+    {
+      "id": "YEL-W0003",
+      "title": "Prepare Head-ready, selectively portable implementation handoffs",
+      "priority": "P2",
+      "status": "QUEUED",
+      "acceptance_criteria": [
+        "Supply isolated patch/test references without broad-merge of agent branches into product integration.",
+        "Cite real provider/source evidence at the relevant exact SHA",
+        "Log Validate + logical Internal Auditor + Head disposition"
+      ],
+      "evidence_status": "NOT_RUN",
+      "source_sha": null,
+      "notes": "Proposed baseline work, not automatically executed."
+    }
+  ]
+}
