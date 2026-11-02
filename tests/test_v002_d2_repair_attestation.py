@@ -107,7 +107,12 @@ class RepairAttestationTests(unittest.TestCase):
 
     def test_budget_exhausted(self):
         self.d["work_orders"][0]["max_local_repairs"] = 0
-        self.check("BLOCKED", "REPAIR_BUDGET_EXCEEDED")
+        self.check("BLOCKED", "WORKER_RESULT_INVALID")
+        status, code = verify_repair_chain(
+            mission=self.d["mission"], work_orders=self.d["work_orders"],
+            worker_events=self.d["worker_events"], evidence_claims=self.d["evidence_claims"],
+            repair_events=self.d["repair_events"], trust=self.trust)
+        self.assertEqual((status, code), ("BLOCKED", "REPAIR_BUDGET_EXCEEDED"))
 
     def test_revoked_grant(self):
         self.trust.auth = replace(self.trust.auth, valid=False)

@@ -36,6 +36,11 @@ def verify_repair_chain(*, mission: dict, work_orders: Sequence[dict],
         return "BLOCKED", "REPAIR_SCOPE_INVALID"
     if any(not isinstance(x, dict) for x in list(work_orders)+list(worker_events)+list(evidence_claims)):
         return "BLOCKED", "REPAIR_SCOPE_INVALID"
+    # With no retry claims, let the original D2 verifier retain diagnostic
+    # precedence for malformed ordinary tasks and cross-task evidence.
+    if not repair_events and all(type(w.get("local_repairs")) is int
+                                 and w["local_repairs"] == 0 for w in worker_events):
+        return "PASS", "ZERO_REPAIR_BACKWARD_COMPATIBLE"
     task_map = {x.get("task_id"): x for x in work_orders}
     event_map = {x.get("task_id"): x for x in worker_events}
     final_claims = {x.get("task_id"): x for x in evidence_claims}
