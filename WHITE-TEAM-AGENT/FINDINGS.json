@@ -1,0 +1,169 @@
+{
+  "schema_version": "white-findings-v1",
+  "authoring_branch": "agent/WHITE-TEAM-AGENT",
+  "recorded_date": "2026-11-02",
+  "baseline_integration_sha": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
+  "disclaimer": "White governance triage, not dynamic penetration testing or verified live host behavior. Findings must be revalidated against new source SHAs.",
+  "findings": [
+    {
+      "id": "WT-0001",
+      "severity": "HIGH",
+      "title": "13 observed existing branches report protected:false",
+      "evidence_class": "CONFIRMED_CONFIGURATION",
+      "status": "OPEN",
+      "task_id": "WTQ-001",
+      "impact": "Branch protections not visibly enabled; does not imply attacker write access",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/branches",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0002",
+      "severity": "HIGH",
+      "title": "Branch-triggered self-hosted development runner exposure",
+      "evidence_class": "CONFIRMED_CONFIGURATION",
+      "status": "OPEN",
+      "task_id": "WTQ-001",
+      "impact": "Authorized branch writer or compromised privileged account may submit executed code; no exploit demonstrated",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/db4eb42e2de7abf4ff3d464e747bfc1b22c575c6/.github/workflows/v0.0.2-integration-native.yml",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0003",
+      "severity": "HIGH",
+      "title": "v0.0.2 installed-host defensive acceptance not run",
+      "evidence_class": "CONFIRMED_SOURCE",
+      "status": "BLOCKED_EXTERNAL",
+      "task_id": "WTQ-003",
+      "impact": "H-01 to H-11 NOT_RUN; private canonical plugin remains v0.0.1",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/db4eb42e2de7abf4ff3d464e747bfc1b22c575c6/docs/V002-P2-P5-HOST-TRIALS.json",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0004",
+      "severity": "HIGH",
+      "title": "Independent 270-case specialist quality evidence absent",
+      "evidence_class": "CONFIRMED_SOURCE",
+      "status": "BLOCKED_EXTERNAL",
+      "task_id": "WTQ-004",
+      "impact": "Zero real v0.0.2 model trials/independent oracles; 54 visible reserved holdouts",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/db4eb42e2de7abf4ff3d464e747bfc1b22c575c6/docs/V002-P0-P7-ACCEPTANCE.json",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0005",
+      "severity": "HIGH",
+      "title": "Optional individual web-skill exporter SHA is format-checked but not bound to Git tree",
+      "evidence_class": "CONFIRMED_SOURCE",
+      "status": "OPEN",
+      "task_id": "WTQ-005",
+      "impact": "High for any release provenance claim using this helper; separate main ZIP builder already has stronger controls",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/db4eb42e2de7abf4ff3d464e747bfc1b22c575c6/devtools/export_v002_web_skills.py",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0006",
+      "severity": "MEDIUM",
+      "title": "Evaluation receipt type checked after set construction",
+      "evidence_class": "CONFIRMED_SOURCE",
+      "status": "OPEN",
+      "task_id": "WTQ-005",
+      "impact": "Malformed unhashable receipt can throw TypeError before controlled rejection",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/db4eb42e2de7abf4ff3d464e747bfc1b22c575c6/policy_v002/eval_trial_pipeline.py",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0007",
+      "severity": "MEDIUM",
+      "title": "Evaluation receipts not de-duplicated across case/arm observations",
+      "evidence_class": "CONFIRMED_SOURCE",
+      "status": "OPEN",
+      "task_id": "WTQ-005",
+      "impact": "Per-observation check exists; full-batch case binding is incomplete",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/db4eb42e2de7abf4ff3d464e747bfc1b22c575c6/policy_v002/eval_trial_pipeline.py",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0008",
+      "severity": "MEDIUM",
+      "title": "Blue synthetic denial alert oracle asks for unavailable event IDs",
+      "evidence_class": "CONFIRMED_SOURCE",
+      "status": "OPEN",
+      "task_id": "WTQ-006",
+      "impact": "Fixture reports aggregate activity without event IDs; expected result needs repair",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/db4eb42e2de7abf4ff3d464e747bfc1b22c575c6/evaluation/v0.0.2/concrete-domain-fixtures.json",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0009",
+      "severity": "LOW",
+      "title": "Optional ideas library index writes without symlink-safe output checks",
+      "evidence_class": "CONFIRMED_SOURCE",
+      "status": "OPEN",
+      "task_id": "WTQ-006",
+      "impact": "Standalone and portable library helpers use direct write_text; no exploit shown or tracked symlink established",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/idea-feature-library-v0.0.1/tools/library.py",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0010",
+      "severity": "MEDIUM",
+      "title": "Evidence ledger may lag newer integration SHA",
+      "evidence_class": "CONFIRMED_SOURCE",
+      "status": "OPEN",
+      "task_id": "WTQ-007",
+      "impact": "Historical test counts must not be treated as current. Freeze exact candidate before final release evaluation",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/blob/db4eb42e2de7abf4ff3d464e747bfc1b22c575c6/docs/V002-P0-P7-ACCEPTANCE.json",
+      "reported_sources": [
+        "Red Team 2026-11-02",
+        "Blue Team 2026-11-02",
+        "White source inspection"
+      ],
+      "resolved_at_sha": null
+    }
+  ]
+}
