@@ -7,7 +7,7 @@
     "sha": "a28c2908da47d16dbdf7e55eb29a0c1ce9b6c7d3"
   },
   "as_of": "2026-11-02",
-  "phase": "FOUNDATION_BASELINE_COMMITTED_PENDING_RECHECK",
+  "phase": "INITIAL_BASELINE_VERIFIED_AND_WEEKLY_REVIEW_SCHEDULED",
   "integration_seen_sha": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
   "integration_run": {
     "id": 41536557201,
@@ -36,6 +36,7 @@
     "Do not publish/merge/release/update canonical plugin",
     "Do not invent continuous execution"
   ],
-  "automated_monitoring": "NOT_CONFIGURED_AT_CREATION",
-  "last_write_sha": "TO_BE_READ_FROM_GITHUB_AFTER_COMMIT"
+  "automated_monitoring": "ENABLED_WEEKLY_MONDAY_FLEXIBLE_10AM_AMERICA_DETROIT",
+  "automation_first_planned_review": "2026-11-09",
+  "automation_note": "Separate ChatGPT cloud automation, not a repository workflow or continuous host agent. Each future run must establish its own GitHub access and evidence."
 }
