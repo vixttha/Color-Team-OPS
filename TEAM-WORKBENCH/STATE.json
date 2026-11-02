@@ -1,0 +1,23 @@
+{
+  "schema_version": "prismcell-state-0.0.1",
+  "template": "PrismCell Workbench",
+  "version": "0.0.1",
+  "team": "BLUE",
+  "home_branch": "agents/blue-team-agent",
+  "domain": "Detection engineering, incident response, evidence provenance and defensive controls",
+  "status": "BOOTSTRAPPED_ADDITIVE",
+  "active_work_item": null,
+  "last_verified_product_sha": null,
+  "observed_product_baseline_on_bootstrap": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
+  "last_session": null,
+  "release_authorized": false,
+  "unattended_execution": false,
+  "plugin_runtime_dependency": false,
+  "legacy_material": [
+    "BLUE-TEAM-AGENT/IDENTITY.md",
+    "BLUE-TEAM-AGENT/STATE.json",
+    "BLUE-TEAM-AGENT/BACKLOG.md",
+    "BLUE-TEAM-AGENT/FINDINGS.json"
+  ],
+  "incall_issue": "https://github.com/vixttha/Color-Team-OPS/issues/13"
+}

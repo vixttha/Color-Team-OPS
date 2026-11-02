@@ -1,0 +1,6 @@
+{
+  "schema_version": "prismcell-outbox-0.0.1",
+  "from_team": "BLUE",
+  "messages": [],
+  "note": "Only recorded issue messages with verified URL."
+}

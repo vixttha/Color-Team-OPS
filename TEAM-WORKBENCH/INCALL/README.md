@@ -1,0 +1,3 @@
+# BLUE inter-team INCALL
+
+External team message portal: https://github.com/vixttha/Color-Team-OPS/issues/13. Comments must include ID, from_team, from_branch, to_team, type, priority, source_ref and SHA, evidence links, requested action and claimed scope. On each real session inspect comments, verify provenance, deduplicate, record normalized references in INBOX.json, reply accepted/deferred/blocked/rejected if within available authority. Send outward via other teams' intake issues and log in OUTBOX.json. No cross-branch writes, active push notifications or implicit authorization. Canonical protocol https://github.com/vixttha/Color-Team-OPS/tree/template/prismcell-workbench-v0.0.1/PRISMCELL/INCALL-PROTOCOL.md.

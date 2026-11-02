@@ -1,0 +1,5 @@
+# BLUE TEAM AGENT — PrismCell Workbench v0.0.1
+
+Permanent single-specialist workspace at `agents/blue-team-agent`. Domain: Detection engineering, incident response, evidence provenance and defensive controls. Canonical template https://github.com/vixttha/Color-Team-OPS/tree/template/prismcell-workbench-v0.0.1/PRISMCELL. INCALL https://github.com/vixttha/Color-Team-OPS/issues/13. This is additive to original agent identity, state, queue, findings, evidence and sessions: `BLUE-TEAM-AGENT/IDENTITY.md`, `BLUE-TEAM-AGENT/STATE.json`, `BLUE-TEAM-AGENT/BACKLOG.md`, `BLUE-TEAM-AGENT/FINDINGS.json`. Read originals first; **do not reset their active backlog or disposition**.
+
+On invocation read identity, current exact branch/product SHA, legacy files, PrismCell state/queue, HEAD-HANDOFF and issue comments. Run Head → one BLUE Worker → Validate → logical Internal Auditor → Head; record real evidence and stop conditions. Separate from Development HQ/Purple Review HQ/installed Color-Team-OPS plugin.

@@ -1,0 +1,3 @@
+# One-color loop — BLUE
+
+HEAD refreshes actual source/authority/backlog and dispatches one finite BLUE task with criteria and max two repairs. WORKER performs only BLUE specialty. VALIDATE independently rereads primary provider/code evidence bound to current exact SHA. LOGICAL INTERNAL AUDITOR challenges source freshness, impact, false positive, consent and limitations (not independent external reviewer). HEAD accepts, repairs, blocks, defers or routes to another team's INCALL issue; never switches worker identity mid-task. Append session log, update handoff, stop on absent tools/evidence or concurrent writer. No autonomous endless work or force push.
