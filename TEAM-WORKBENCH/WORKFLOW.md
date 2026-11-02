@@ -1,0 +1,3 @@
+# One-color one-thread loop
+
+HEAD verifies latest home and product source SHAs, owner authority and backlog, then dispatches ONE bounded RED Worker task. WORKER performs same-specialty work, records exact evidence, use at most two bounded repairs. VALIDATE re-reads source and actual tool observations independently; never call unrun tests PASS. Logical INTERNAL AUDITOR challenges false positives, provenance, safety and scope; this is no external independent reviewer and White is not this role. HEAD accepts, repairs, defers, blocks, sends inter-team INCALL or finishes. Persist date/source/ref to worklog and handoff only if actually invoked. Stop on no progress, stale data, missing tools or conflicting writes; expected-SHA lease and no force push.

@@ -1,0 +1,11 @@
+{
+  "schema_version": "prismcell-queue-0.0.1",
+  "team": "RED",
+  "active_item": null,
+  "legacy_queue": [
+    "state/WORK-QUEUE.json"
+  ],
+  "preserve_legacy_queue": true,
+  "items": [],
+  "notice": "Do not supersede existing active queue."
+}

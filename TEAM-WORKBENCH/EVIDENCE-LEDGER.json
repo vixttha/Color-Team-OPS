@@ -1,0 +1,6 @@
+{
+  "schema_version": "prismcell-evidence-0.0.1",
+  "team": "RED",
+  "entries": [],
+  "rule": "No fabricated execution; status observed_source/verified_provider/synthetic/not_run."
+}
