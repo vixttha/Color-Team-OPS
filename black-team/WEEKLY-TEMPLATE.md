@@ -1,4 +1,4 @@
-# Black Team — Weekly Review Template
+# BLACK TEAM AGENT — Weekly Review Template
 
 **ISO week:** YYYY-Www
 **Review date:**

@@ -1,7 +1,7 @@
 {
   "schema_version": "black-team-state-1",
   "mission": "CTO-V002-SINGLE-THREAD",
-  "branch": "team/black-threat-intelligence",
+  "branch": "agent/BLACK-TEAM-AGENT",
   "branch_origin": {
     "name": "main",
     "sha": "a28c2908da47d16dbdf7e55eb29a0c1ce9b6c7d3"
@@ -42,5 +42,10 @@
   "automation_note": "Separate ChatGPT cloud automation, not a repository workflow or continuous host agent. Each future run must establish its own GitHub access and evidence.",
   "latest_branch_count_verified": 16,
   "latest_branch_protected_true": 0,
-  "latest_branch_observation": "2026-11-02"
+  "latest_branch_observation": "2026-11-02",
+  "display_name": "BLACK TEAM AGENT",
+  "canonical_specialist": "Black Team (black-team)",
+  "previous_branch": "team/black-threat-intelligence",
+  "identity_rename_date": "2026-11-02",
+  "branch_migration": "new active home created from old at 026deb7d6c64969be1da20236fb3bf54ce1c506b; previous branch retained as historical"
 }

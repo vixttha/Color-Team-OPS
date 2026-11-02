@@ -1,4 +1,4 @@
-# Black Team priority backlog — opened 2026-11-02
+# BLACK TEAM AGENT priority backlog — opened 2026-11-02
 
 This is an intelligence queue, NOT a command to other specialists and NOT proof that fixes are accepted.
 

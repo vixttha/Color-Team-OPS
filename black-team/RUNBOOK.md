@@ -1,4 +1,4 @@
-# Black Team continuous-research runbook
+# BLACK TEAM AGENT continuous-research runbook
 
 ## At each future session
 1. Confirm owner scope and authenticated GitHub access. Read branch HEAD and issue #8 before updates. Fail closed if GitHub is missing or branch HEAD moved unexpectedly.
