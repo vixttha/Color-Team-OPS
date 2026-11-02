@@ -1,0 +1,62 @@
+{
+  "schema_version": "blue-team-agent-state-1",
+  "identity": "BLUE TEAM AGENT",
+  "repository": "vixttha/Color-Team-OPS",
+  "branch": "agents/blue-team-agent",
+  "home": "BLUE-TEAM-AGENT/",
+  "initialized_on": "2026-11-02",
+  "mission_mode": "ONGOING_DEFENSIVE_WORKSPACE_ON_DEMAND",
+  "mission_contract": "Head -> one Blue Worker -> Validate -> logical Internal Auditor -> Head",
+  "persistent_background_execution": false,
+  "independent_authenticated_agent": false,
+  "product_skill_count_change": 0,
+  "runtime": "cloud-only provider-neutral skills; no required owner runners",
+  "read_only_external_branches": true,
+  "allowed_write_branch": "agents/blue-team-agent",
+  "release_authorized": false,
+  "release_target": "v0.0.2",
+  "product_release_status": "RELEASE_BLOCKED",
+  "initial_base": {
+    "source_branch": "integration/v0.0.2-master-single-thread",
+    "source_sha": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
+    "note": "snapshot at branch creation; upstream continues independently"
+  },
+  "exact_source_evidence": {
+    "observed_integration_sha": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
+    "last_ci_verified_sha": "908235bdd5fdd929db791518a414467816fb6b79",
+    "run_id": 41534746888,
+    "tests_per_os": 583,
+    "linux": "PASS",
+    "windows": "PASS",
+    "source_zip_sha256": "79466fbef60218c9d4aa92b90080eb7ec95d7153c6d08b1a0e4e4b8a723e33e8",
+    "warning": "historical PASS applies only to pinned SHA, not any newer integration tip"
+  },
+  "canonical_plugin": {
+    "id": "plugins_6ae3edf1ea4c819182f275592273e2cc",
+    "verified_version": "0.0.1",
+    "status": "PRIVATE",
+    "v002_installed": false
+  },
+  "host_trials_v002": 0,
+  "independent_specialist_oracles": 0,
+  "real_specialist_trials": 0,
+  "current_phase": "FOUNDATION_CREATED",
+  "active_task_id": null,
+  "next_task_ids": [
+    "BT-001",
+    "BT-002",
+    "BT-003"
+  ],
+  "blockers": [
+    "Real v0.0.2 installed host evidence absent",
+    "Independent specialist quality evidence absent",
+    "Owner v0.0.2 release approval withheld"
+  ],
+  "source_refs": {
+    "mission_issue": "https://github.com/vixttha/Color-Team-OPS/issues/8",
+    "ci": "https://github.com/vixttha/Color-Team-OPS/actions/runs/41534746888"
+  },
+  "latest_session_log": "logs/2026-11-02-foundation.md",
+  "last_checkpoint_date": "2026-11-02",
+  "note": "This file is a durable resume hint, NOT an authorization or a live view of GitHub."
+}
