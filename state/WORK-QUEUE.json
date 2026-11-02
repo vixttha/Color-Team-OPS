@@ -135,6 +135,17 @@
       "owner": "RED TEAM AGENT",
       "last_tested_source_sha": null,
       "completed_at": null
+    },
+    {
+      "id": "RED-W013",
+      "title": "Re-audit PrismCell v0.0.1 after fixing message/state/work-item trust controls",
+      "priority": "P1",
+      "status": "QUEUED",
+      "prerequisites": "Authorized new exact template SHA, pinned home mappings, schema-negative tests and issue round-trip evidence",
+      "deliverable": "Three-pass source-bound retest and updated PC-RED finding dispositions",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
     }
   ]
 }

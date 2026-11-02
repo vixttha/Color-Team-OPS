@@ -1,0 +1,99 @@
+{
+  "schema_version": "red-prismcell-findings-0.0.1",
+  "audit_date": "2026-11-02",
+  "target_repo": "vixttha/Color-Team-OPS",
+  "target_branch": "template/prismcell-workbench-v0.0.1",
+  "target_sha": "62d43ef51d362cf064c367158a8d7fce207abd68",
+  "review_status": "TRIPLE_PASS_COMPLETED_SOURCE_AND_SCOPED_SCHEMA_CHECKS_ONLY",
+  "exploit_count": 0,
+  "high": 2,
+  "medium": 5,
+  "low": 1,
+  "acceptance_blocker": 1,
+  "findings": [
+    {
+      "finding_id": "PC-RED-001",
+      "severity": "HIGH",
+      "classification": "SCHEMA_CONSTRAINT_GAP",
+      "title": "Forged sender, branch, recipient and authority claims pass message schema",
+      "test_id": "RT-PC-01",
+      "result": "SYNTHETIC_ACCEPTED",
+      "exploit_observed": false,
+      "fix_priority": "P1"
+    },
+    {
+      "finding_id": "PC-RED-002",
+      "severity": "HIGH",
+      "classification": "SCHEMA_CONSTRAINT_GAP",
+      "title": "ACCEPTED work item passes with NOT_RUN evidence and malformed source",
+      "test_id": "RT-PC-03",
+      "result": "SYNTHETIC_ACCEPTED",
+      "exploit_observed": false,
+      "fix_priority": "P1"
+    },
+    {
+      "finding_id": "PC-RED-003",
+      "severity": "MEDIUM",
+      "classification": "SCHEMA_CONSTRAINT_GAP",
+      "title": "State schema permits fictional teams, unsafe home path and unrestricted extras",
+      "test_id": "RT-PC-02",
+      "result": "SYNTHETIC_ACCEPTED",
+      "exploit_observed": false,
+      "fix_priority": "P1"
+    },
+    {
+      "finding_id": "PC-RED-004",
+      "severity": "MEDIUM",
+      "classification": "ENFORCEMENT_NOT_VERIFIED",
+      "title": "No native schema/transition validator or template CI observed",
+      "result": "SOURCE_OBSERVED",
+      "exploit_observed": false,
+      "fix_priority": "P1"
+    },
+    {
+      "finding_id": "PC-RED-005",
+      "severity": "MEDIUM",
+      "classification": "CONFIGURATION_HARDENING",
+      "title": "Template and nine homes unprotected; template refs not immutable-pinned",
+      "result": "GITHUB_METADATA_OBSERVED",
+      "exploit_observed": false,
+      "fix_priority": "P1"
+    },
+    {
+      "finding_id": "PC-RED-006",
+      "severity": "MEDIUM",
+      "classification": "SOURCE_PROVENANCE_RISK",
+      "title": "Blue workcell home retains older product/workflow source tree",
+      "result": "GITHUB_TREE_OBSERVED",
+      "exploit_observed": false,
+      "fix_priority": "P2"
+    },
+    {
+      "finding_id": "PC-RED-007",
+      "severity": "MEDIUM",
+      "classification": "CONTROL_GAP",
+      "title": "INCALL replay/edit/ack integrity relies on manual untested process",
+      "result": "SOURCE_OBSERVED_NOT_EXPLOITED",
+      "exploit_observed": false,
+      "fix_priority": "P1"
+    },
+    {
+      "finding_id": "PC-RED-008",
+      "severity": "LOW",
+      "classification": "PORTABILITY_LIMITATION",
+      "title": "Template hardcodes home repository, issue IDs and product source",
+      "result": "SOURCE_OBSERVED",
+      "exploit_observed": false,
+      "fix_priority": "P2"
+    },
+    {
+      "finding_id": "PC-RED-009",
+      "severity": "ACCEPTANCE_BLOCKER",
+      "classification": "NOT_RUN",
+      "title": "No real nine-agent message roundtrip, long-term continuity or runtime pen test",
+      "result": "NOT_RUN",
+      "exploit_observed": false,
+      "fix_priority": "P1"
+    }
+  ]
+}
