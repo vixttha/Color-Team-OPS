@@ -1,0 +1,36 @@
+{
+  "schema_version": "red-hq-state-1",
+  "display_name": "RED TEAM AGENT",
+  "mission_id": "RED-HQ-001",
+  "repo": "vixttha/Color-Team-OPS",
+  "home_branch": "team/red-team-agent",
+  "created_on": "2026-11-02",
+  "state": "READY_FOR_NEXT_INVOCATION",
+  "active_work_item": null,
+  "product_mission": "CTO-V002-SINGLE-THREAD",
+  "source_branch": "integration/v0.0.2-master-single-thread",
+  "last_observed_source_sha": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
+  "source_sha_policy": "historical observation; re-query before any claim or test",
+  "source_writer": "Development HQ only",
+  "release_status": "RELEASE_BLOCKED",
+  "home_writes_owner_approved": true,
+  "permissions": {
+    "home_branch_docs": true,
+    "other_branch_writes": false,
+    "release": false,
+    "merge": false,
+    "active_external_testing": false,
+    "runner_dispatch": false,
+    "paid_provisioning": false
+  },
+  "memory_contract": "Persistence is GitHub records read at session start; no autonomous continuous runtime.",
+  "next_work_item": "RED-W001",
+  "last_session": "worklog/2026-11-02-bootstrap.md",
+  "constraints": [
+    "cloud-only product",
+    "provider-neutral",
+    "nine existing specialists and three coordinators",
+    "no meta-prompts without explicit user request",
+    "actual evidence only"
+  ]
+}

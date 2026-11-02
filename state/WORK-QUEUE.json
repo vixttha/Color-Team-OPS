@@ -1,0 +1,140 @@
+{
+  "schema_version": "red-hq-queue-1",
+  "mission_id": "RED-HQ-001",
+  "policy": "one active item; queued work executes only in invoked/authorized sessions",
+  "last_updated": "2026-11-02",
+  "items": [
+    {
+      "id": "RED-W001",
+      "title": "All-branch inventory, SHA drift and branch-protection baseline",
+      "priority": "P1",
+      "status": "QUEUED",
+      "prerequisites": "read-only GitHub branch/tree data",
+      "deliverable": "Current inventory, exact-SHA matrix, trust limits",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W002",
+      "title": "Owner-runner workflow threat model and safe hardening review",
+      "priority": "P1",
+      "status": "QUEUED",
+      "prerequisites": "read-only workflow source/CI logs; no runner dispatch",
+      "deliverable": "Attacker preconditions, mitigation and safe negative cases",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W003",
+      "title": "Host authority, scoped consent, role and grant boundary review",
+      "priority": "P1",
+      "status": "QUEUED",
+      "prerequisites": "repo source and fixtures; no production privileged attack",
+      "deliverable": "Security claims separated from synthetic adapters",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W004",
+      "title": "Evidence forgery, replay, stale SHA and repair-chain negative case audit",
+      "priority": "P1",
+      "status": "QUEUED",
+      "prerequisites": "read-only code and available existing regression outputs",
+      "deliverable": "Source-linked adversarial coverage and gaps",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W005",
+      "title": "Prompt-injection and untrusted tool-output abuse-case design",
+      "priority": "P2",
+      "status": "QUEUED",
+      "prerequisites": "inert test prompts; real hosted tests only if authorized",
+      "deliverable": "Permission-safe cases and expected fail-closed results",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W006",
+      "title": "Optional library path/symlink/copy atomicity review",
+      "priority": "P2",
+      "status": "QUEUED",
+      "prerequisites": "read-only library source, controlled nonproduction fixtures",
+      "deliverable": "Verified impact and a bounded fix recommendation",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W007",
+      "title": "Release-package source/digest and historical v0.0.1 compatibility audit",
+      "priority": "P2",
+      "status": "QUEUED",
+      "prerequisites": "read-only artifacts and exact-SHA job evidence",
+      "deliverable": "Source/package parity and explicit provenance limitations",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W008",
+      "title": "Cloud-host portability/least-authority source review",
+      "priority": "P2",
+      "status": "QUEUED",
+      "prerequisites": "official host documentation and current plugin metadata",
+      "deliverable": "Host claims matrix without fictitious installation",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W009",
+      "title": "Red Team portion of independent specialist evaluations",
+      "priority": "P2",
+      "status": "BLOCKED_DEPENDENCIES",
+      "prerequisites": "independent oracle/test host must be established",
+      "deliverable": "Source-bound genuine results, if test prerequisites arise",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W010",
+      "title": "Live v0.0.2 installed-host adversarial retest",
+      "priority": "P1",
+      "status": "BLOCKED_AUTHORIZATION",
+      "prerequisites": "real authorized v0.0.2 host candidate/preview required",
+      "deliverable": "Observed H-01–H-11 outcomes, not reference-only",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W011",
+      "title": "Final security release-readiness contradiction audit",
+      "priority": "P1",
+      "status": "BLOCKED_DEPENDENCIES",
+      "prerequisites": "P2–P5 host/eval gates and owner release controls",
+      "deliverable": "Independent qualification to Head; NEVER self-release",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W012",
+      "title": "Cross-team remediation re-verification after integration commits",
+      "priority": "P1",
+      "status": "QUEUED",
+      "prerequisites": "live integration and logged fix references",
+      "deliverable": "Exact-SHA retest delta for any resolved findings",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    }
+  ]
+}

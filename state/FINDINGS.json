@@ -1,0 +1,76 @@
+{
+  "schema_version": "red-hq-findings-1",
+  "mission_id": "RED-HQ-001",
+  "last_updated": "2026-11-02",
+  "notice": "Bootstrap of findings from 2026-11-02 read-only assessment; statuses are not freshly demonstrated exploits.",
+  "findings": [
+    {
+      "id": "RED-01",
+      "severity": "HIGH",
+      "classification": "CONFIRMED_CONFIG",
+      "status": "OPEN_REVIEW",
+      "title": "Unprotected tracked branches and execution on authorized personal development runners",
+      "evidence": [
+        "https://api.github.com/repos/vixttha/Color-Team-OPS/branches?per_page=100",
+        "https://github.com/vixttha/Color-Team-OPS/blob/integration/v0.0.2-master-single-thread/.github/workflows/v0.0.2-integration-native.yml"
+      ],
+      "limitations": "No malicious push or runner compromise demonstrated; current ref/protection must be rechecked."
+    },
+    {
+      "id": "RED-02",
+      "severity": "HIGH_ACCEPTANCE",
+      "classification": "ACCEPTANCE_BLOCKER",
+      "status": "OPEN",
+      "title": "Installed-v0.0.2 adversarial host trials absent",
+      "evidence": [
+        "https://github.com/vixttha/Color-Team-OPS/blob/integration/v0.0.2-master-single-thread/docs/V002-P2-P5-HOST-TRIALS.json"
+      ],
+      "limitations": "Real installed v0.0.2 may require separate owner authorization; no fabricated trial counts."
+    },
+    {
+      "id": "RED-03",
+      "severity": "MEDIUM_CONDITIONAL",
+      "classification": "UNVERIFIED",
+      "status": "TRACK_OPTIONAL_HOST_MODE",
+      "title": "Protected issuer/grants/revocation are not part of skills-only runtime",
+      "evidence": [
+        "https://github.com/vixttha/Color-Team-OPS/blob/integration/v0.0.2-master-single-thread/policy_v002/host_runtime.py"
+      ],
+      "limitations": "Skills-only v0.0.2 does not require the protected backend; do not present this as its mandatory release defect."
+    },
+    {
+      "id": "RED-04",
+      "severity": "MEDIUM_ACCEPTANCE",
+      "classification": "ACCEPTANCE_BLOCKER",
+      "status": "OPEN",
+      "title": "Independent 270-case oracle and real specialist scoring missing",
+      "evidence": [
+        "https://github.com/vixttha/Color-Team-OPS/blob/integration/v0.0.2-master-single-thread/docs/V002-P3-P4-EVALUATION-REVIEW.md"
+      ],
+      "limitations": "Historical snapshot; refresh latest cases and labels."
+    },
+    {
+      "id": "RED-05",
+      "severity": "MEDIUM",
+      "classification": "CONFIRMED_CONFIG",
+      "status": "OPEN_REVIEW",
+      "title": "Divergent product sources and draft-vs-installed provenance could be confused",
+      "evidence": [
+        "https://github.com/vixttha/Color-Team-OPS/pull/1",
+        "https://github.com/vixttha/Color-Team-OPS/issues/8"
+      ],
+      "limitations": "No unauthorized release observed; branch divergence may be intentionally governed."
+    },
+    {
+      "id": "RED-06",
+      "severity": "LOW_MEDIUM",
+      "classification": "RISK_HYPOTHESIS",
+      "status": "RETEST_NEEDED",
+      "title": "Optional library INDEX.md output may follow symlink in untrusted workspace",
+      "evidence": [
+        "https://github.com/vixttha/Color-Team-OPS/blob/feature/v0.0.2-idea-feature-library-purple/portable/v0.0.1/tools/library.py"
+      ],
+      "limitations": "No exploit demonstrated; code path is optional and not installed plugin runtime."
+    }
+  ]
+}
