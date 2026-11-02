@@ -1,0 +1,66 @@
+{
+  "schema_version": "black-team-advisories-1",
+  "created_at": "2026-11-02",
+  "last_reviewed_at": "2026-11-02",
+  "policy": "Advisory relevance is not a claim the repository uses a vulnerable version. CVE ranges require exact dependency/product version matching.",
+  "advisories": [
+    {
+      "id": "ADV-2026-001",
+      "classification": "TECHNIQUE_NOT_CVE",
+      "identifier": "MITRE ATT&CK T1698",
+      "title": "Indirect Prompt Injection",
+      "source": "https://attack.mitre.org/techniques/T1698/",
+      "source_created": "2026-09-18",
+      "source_updated": "2026-10-12",
+      "first_checked": "2026-11-02",
+      "applicability": "POTENTIALLY_APPLICABLE",
+      "required_conditions": "LLM consumes adversarial issue, code, document or tool response and treats it as authorization",
+      "observed": "Repository/host workflows read external content; source rules treat data as untrusted",
+      "not_verified": "Installed v0.0.2 behavior; whether content can cause unauthorized actions",
+      "linked_threats": [
+        "BTI-02",
+        "BTI-03"
+      ],
+      "decision": "Carry as attack-path intelligence, not CVE",
+      "confidence": "HIGH_TECHNIQUE_MEDIUM_RUNTIME"
+    },
+    {
+      "id": "ADV-2026-002",
+      "classification": "TECHNIQUE_NOT_CVE",
+      "identifier": "MITRE ATT&CK T1700",
+      "title": "AI-Enabled Exfiltration",
+      "source": "https://attack.mitre.org/techniques/T1700/",
+      "source_created": "2026-09-22",
+      "source_updated": "2026-10-09",
+      "first_checked": "2026-11-02",
+      "applicability": "CONDITIONAL",
+      "required_conditions": "Connected AI host with access to protected data and an exfiltration-capable tool",
+      "observed": "Host-dependent tool use is part of product design, not an assured runtime capability",
+      "not_verified": "Real host permissions or any exfiltration attempts",
+      "linked_threats": [
+        "BTI-05"
+      ],
+      "decision": "Monitor tool grants and defend data flows; not a product-specific CVE",
+      "confidence": "HIGH_TECHNIQUE_UNKNOWN_EXPOSURE"
+    },
+    {
+      "id": "ADV-2026-003",
+      "classification": "PLATFORM_SECURITY_NOTICE",
+      "identifier": "GitHub Actions self-hosted runner minimum version enforcement 2026",
+      "title": "Runner update/deprecation enforcement",
+      "source": "https://github.blog/changelog/2026-09-28-self-hosted-runner-version-enforcement-date-has-moved/",
+      "source_created": "2026-09-28",
+      "source_updated": "2026-09-28",
+      "first_checked": "2026-11-02",
+      "applicability": "CONDITIONAL_DEVELOPMENT_ONLY",
+      "required_conditions": "Owner-managed self-hosted runner with outdated agent binary/version",
+      "observed": "Current repository integrates self-hosted runner-based development CI; binary versions not retrieved",
+      "not_verified": "Actual runner software versions or whether enforcement affects this installation",
+      "linked_threats": [
+        "BTI-01"
+      ],
+      "decision": "Green can check runner versions via approved official read-only surfaces; never runtime dependency",
+      "confidence": "HIGH_POLICY_UNKNOWN_VERSION"
+    }
+  ]
+}
