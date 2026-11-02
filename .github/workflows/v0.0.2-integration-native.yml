@@ -37,19 +37,22 @@ jobs:
           sha256sum "$RUNNER_TEMP/cto-v002-a.zip" "$RUNNER_TEMP/cto-v002-b.zip"
           test -z "$(git status --porcelain --untracked-files=all)"
           echo "CTO_V002_LINUX_NATIVE_AND_ZIP_PASS $EXPECTED_SHA"
+          python3 -B -m devtools.build_v002_staging --source-zip "$RUNNER_TEMP/cto-v002-a.zip" --source-sha "$EXPECTED_SHA" --output "$RUNNER_TEMP/cto-v002-staging.zip"
       - name: Retain approved one-day private staging source archive
         if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: cto-v002-staging-source-${{ github.sha }}
-          path: ${{ runner.temp }}/cto-v002-a.zip
+          path: |
+            ${{ runner.temp }}/cto-v002-a.zip
+            ${{ runner.temp }}/cto-v002-staging.zip
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
       - name: Remove temporary archives
         if: always()
         shell: bash
-        run: rm -f "$RUNNER_TEMP/cto-v002-a.zip" "$RUNNER_TEMP/cto-v002-b.zip"
+        run: rm -f "$RUNNER_TEMP/cto-v002-a.zip" "$RUNNER_TEMP/cto-v002-b.zip" "$RUNNER_TEMP/cto-v002-staging.zip"
   windows:
     if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/integration/v0.0.2-master-single-thread'
     runs-on: [self-hosted, Windows, X64, color-team-ops]
