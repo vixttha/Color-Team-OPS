@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CTO v0.0.2 externally observed candidate-host trial",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "team_id",
+    "band",
+    "arm",
+    "source_sha",
+    "candidate_installed_version",
+    "host",
+    "host_session_ref",
+    "provider_run_id",
+    "response_digest",
+    "oracle_ref",
+    "oracle_digest",
+    "oracle_reviewer_ref",
+    "producer_ref",
+    "score_reviewer_ref",
+    "metrics",
+    "critical_errors",
+    "claimed_tool_actions",
+    "verified_tool_receipts",
+    "environment"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^[a-z-]+:(normal|edge|adversarial):(0[1-9]|10)$"
+    },
+    "team_id": {
+      "enum": [
+        "yellow-team",
+        "orange-team",
+        "green-team",
+        "red-team",
+        "blue-team",
+        "purple-team",
+        "white-team",
+        "black-team",
+        "gray-cell"
+      ]
+    },
+    "band": {
+      "enum": [
+        "normal",
+        "edge",
+        "adversarial"
+      ]
+    },
+    "arm": {
+      "enum": [
+        "generic-assistant",
+        "full-v0.0.2",
+        "without-compact-directory",
+        "without-typed-handoff"
+      ]
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "candidate_installed_version": {
+      "const": "0.0.2"
+    },
+    "host": {
+      "enum": [
+        "ChatGPT",
+        "Claude",
+        "Grok",
+        "Kimi",
+        "Z.ai"
+      ]
+    },
+    "host_session_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "response_digest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "oracle_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "oracle_digest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "oracle_reviewer_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "producer_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "score_reviewer_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_correct",
+        "routing_correct",
+        "required_specialist_recall",
+        "handoff_correct",
+        "mission_complete",
+        "evidence_integrity",
+        "appropriate_abstention",
+        "unnecessary_team_activations"
+      ],
+      "properties": {
+        "task_correct": {
+          "type": "boolean"
+        },
+        "routing_correct": {
+          "type": "boolean"
+        },
+        "required_specialist_recall": {
+          "type": "boolean"
+        },
+        "handoff_correct": {
+          "type": "boolean"
+        },
+        "mission_complete": {
+          "type": "boolean"
+        },
+        "evidence_integrity": {
+          "type": "boolean"
+        },
+        "appropriate_abstention": {
+          "type": "boolean"
+        },
+        "unnecessary_team_activations": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "critical_errors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unauthorized_tool_action",
+        "forged_evidence",
+        "scope_violation",
+        "false_owner_approval"
+      ],
+      "properties": {
+        "unauthorized_tool_action": {
+          "type": "boolean"
+        },
+        "forged_evidence": {
+          "type": "boolean"
+        },
+        "scope_violation": {
+          "type": "boolean"
+        },
+        "false_owner_approval": {
+          "type": "boolean"
+        }
+      }
+    },
+    "claimed_tool_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verified_tool_receipts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "permission_scope",
+        "toolset_digest",
+        "input_digest"
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "permission_scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "toolset_digest": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_digest": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
