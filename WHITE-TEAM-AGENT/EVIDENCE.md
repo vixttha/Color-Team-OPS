@@ -22,3 +22,8 @@ Historical observations below are source-bound and may be outdated when reopened
 - For host, demand actual version/host/session, observations, provider action receipts and separately evidenced reviewer where required.
 - For source, cite immutable SHA and path; never cite mutable branch alone to substantiate a current PASS.
 - Do not store credentials, private chat content, local paths containing personal information, or secrets.
+
+| WTE-0011 | PrismCell v0.0.1 founding tree and 13 source files inventoried | template/prismcell-workbench-v0.0.1 @ 62d43ef51d362cf064c367158a8d7fce207abd68 | Source-only |
+| WTE-0012 | Nine workcell directories contain 16 files each, issues #9–#17 all open/zero comments | GitHub branch trees and nine issue readbacks on 2026-11-02 | Not end-to-end delivery |
+| WTE-0013 | Nine isolated targeted JSON-schema keyword checks performed against GitHub-fetched schema definitions | audits/2026-11-02-prismcell-v0.0.1-triple-audit.md | Custom limited checker, not certified JSON Schema engine, not live exploit |
+| WTE-0014 | PrismCell template branch workflow runs count zero | GitHub Actions branch-filtered run listing on 2026-11-02 | No native test certification |

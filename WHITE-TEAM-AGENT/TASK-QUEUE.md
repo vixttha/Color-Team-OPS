@@ -20,3 +20,5 @@ Select a task on owner direction, check relevant permission scope and exact sour
 ## Next suggested action
 
 On the next user-directed White session, refresh integration SHA and inspect implementation fixes for WTQ-002/005. No product merge, issue mutation or plugin release is part of that work.
+
+| WTQ-009 | HIGH | READY | PrismCell Workbench v0.0.1 source-bound triple audit follow-up: verify PC/PWC-001 to PWC-010 fixes on exact template SHA, reconcile nine homes, require real safe INCALL evidence before claiming secured delivery; keep source changes on authorized template lane only |

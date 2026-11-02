@@ -164,6 +164,156 @@
         "White source inspection"
       ],
       "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0011",
+      "external_id": "PWC-001",
+      "severity": "HIGH",
+      "title": "Conditional authority-laundering through accepted INCALL envelope",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "OPEN",
+      "task_id": "WTQ-009",
+      "impact": "Schema admits forged owner-grant string, spoofed sender branch and status ACCEPTED; no observed action or live exploit",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0012",
+      "external_id": "PWC-002",
+      "severity": "MEDIUM",
+      "title": "INCALL sender and source branch identity not constrained to canonical mapping",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "OPEN",
+      "task_id": "WTQ-009",
+      "impact": "Message schema does not bind from_team to from_branch or GitHub authenticated actor; textual role claims are untrusted",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0013",
+      "external_id": "PWC-003",
+      "severity": "MEDIUM",
+      "title": "State schema permits team GOLD, home branch main, arbitrary product SHA and unknown fields",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "OPEN",
+      "task_id": "WTQ-009",
+      "impact": "Targeted exact-schema keyword test accepted invalid team/branch pair with release_authorized=false",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0014",
+      "external_id": "PWC-004",
+      "severity": "MEDIUM",
+      "title": "Work-item schema omits contract-required risk, role, budgets, tools, source and Head decision",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "OPEN",
+      "task_id": "WTQ-009",
+      "impact": "Acceptance/proof can be self-asserted as VERIFIED_PROVIDER without evidence receipt in schema",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0015",
+      "external_id": "PWC-005",
+      "severity": "MEDIUM",
+      "title": "No verified replay/ack/idempotency implementation for INCALL",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "BLOCKED_TEST",
+      "task_id": "WTQ-009",
+      "impact": "Protocol describes deduplication but nine INCALL issues have zero observed comments, no end-to-end delivery test",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0016",
+      "external_id": "PWC-006",
+      "severity": "MEDIUM",
+      "title": "Nine workcells and template have no executed native schema regression or CI",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "OPEN",
+      "task_id": "WTQ-009",
+      "impact": "PrismCell template tree contains Markdown/JSON, no validator/test implementation; GitHub Actions run count zero on template branch",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0017",
+      "external_id": "PWC-007",
+      "severity": "MEDIUM",
+      "title": "GitHub branch protection absent for the 23 branches observed",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "OPEN",
+      "task_id": "WTQ-009",
+      "impact": "All fetched branches protected:false; do not infer attacker has push access",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0018",
+      "external_id": "PWC-008",
+      "severity": "MEDIUM",
+      "title": "Legacy queues and workbench queues differ; no machine reconciliation",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "OPEN",
+      "task_id": "WTQ-009",
+      "impact": "Red/Blue/White/Black intentionally retain separate old queue as authoritative; future reconciliation needs source-bound checks",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0019",
+      "external_id": "PWC-009",
+      "severity": "LOW",
+      "title": "INCALL evidence_links and issue_url accept arbitrary strings",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "OPEN",
+      "task_id": "WTQ-009",
+      "impact": "Potential misleading URI/ref in untrusted issue comments; no frontend execution or malicious redirect demonstrated",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
+    },
+    {
+      "id": "WT-0020",
+      "external_id": "PWC-010",
+      "severity": "INFO",
+      "title": "No runtime code or permanently running workcell found",
+      "evidence_class": "SOURCE_AND_ISOLATED_SCHEMA_CASES",
+      "status": "ACCEPTED_DESIGN",
+      "task_id": "WTQ-009",
+      "impact": "Design intentionally uses GitHub docs and invoked cloud sessions, not independent persistent agent processes",
+      "evidence_url": "https://github.com/vixttha/Color-Team-OPS/tree/62d43ef51d362cf064c367158a8d7fce207abd68/PRISMCELL",
+      "reported_sources": [
+        "White PrismCell three-pass review 2026-11-02"
+      ],
+      "resolved_at_sha": null
     }
   ]
 }
