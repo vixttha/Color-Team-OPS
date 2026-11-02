@@ -1,0 +1,103 @@
+{
+  "schema_version": "cto-v002-p0-p7-acceptance-1",
+  "mission_id": "CTO-V002-SINGLE-THREAD",
+  "version": "0.0.2",
+  "branch": "integration/v0.0.2-master-single-thread",
+  "scope_verified_at_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+  "status": "RELEASE_BLOCKED",
+  "release_authorized": false,
+  "canonical_plugin_id": "plugins_6ae3edf1ea4c819182f275592273e2cc",
+  "canonical_installed_version": "0.0.1",
+  "priority_status": [
+    {
+      "priority": "P0",
+      "status": "REQUIRES_OWNER_DECISION",
+      "team": "orange-team",
+      "source": "docs/V002-P0-ORANGE-TRUST-SCOPE.md",
+      "blocker": "initial protected-host mandate unresolved"
+    },
+    {
+      "priority": "P1",
+      "status": "TECHNICALLY_COMPLETE",
+      "team": "yellow-team",
+      "source": "policy_v002/repair_protocol.py",
+      "scope": "reference D2 repair attestation only; no protected issuer",
+      "evidence": {
+        "run_id": 41528132175,
+        "source_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+        "tests_per_os": 550
+      }
+    },
+    {
+      "priority": "P2",
+      "status": "REQUIRES_OWNER_DECISION",
+      "team": "yellow-team",
+      "source": "docs/V002-P2-P5-HOST-TRIALS.json",
+      "blocker": "no authorized installed candidate/staging preview"
+    },
+    {
+      "priority": "P3",
+      "status": "BLOCKED",
+      "team": "purple-team",
+      "source": "evaluation/v0.0.2/preregistration-draft.json",
+      "independent_oracles": 0,
+      "holdouts_reserved_not_blinded": 54
+    },
+    {
+      "priority": "P4",
+      "status": "BLOCKED",
+      "team": "yellow-team",
+      "genuine_trials": 0,
+      "total_cases": 270,
+      "blocker": "candidate host and independent labels missing"
+    },
+    {
+      "priority": "P5",
+      "status": "BLOCKED",
+      "team": "orange-team/purple-team/gray-cell",
+      "host_trial_count": 0
+    },
+    {
+      "priority": "P6",
+      "status": "IN_PROGRESS",
+      "team": "green-team",
+      "last_verified_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+      "blocker": "fresh exact SHA CI required after docs commit"
+    },
+    {
+      "priority": "P7",
+      "status": "BLOCKED",
+      "team": "Head",
+      "blocker": "release acceptance and owner publication authorization absent"
+    }
+  ],
+  "recent_native": {
+    "verified_source_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+    "run_id": 41528132175,
+    "tests_per_platform": 550,
+    "linux": "PASS",
+    "windows": "PASS",
+    "complete_zip_builds_per_platform": 2,
+    "zip_files": 32,
+    "sha256": "6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98"
+  },
+  "host_trials": {
+    "status": "NOT_RUN",
+    "count": 0
+  },
+  "m4": {
+    "independent_oracles": 0,
+    "real_trials": 0,
+    "cases": 270,
+    "accuracy": null
+  },
+  "final_decision": "RELEASE_BLOCKED",
+  "head_approval": "NOT_GRANTED",
+  "authority_not_granted": [
+    "merge-main",
+    "publish-plugin",
+    "new-staging-identity",
+    "production-deploy",
+    "paid-provisioning"
+  ]
+}

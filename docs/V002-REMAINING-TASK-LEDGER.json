@@ -3,8 +3,8 @@
   "issue": 8,
   "release": "0.0.2",
   "branch": "integration/v0.0.2-master-single-thread",
-  "observed_source_sha": "cf224454fe8eab29991877929c71027b946a4bc5",
-  "observed_date": "2026-10-30",
+  "observed_source_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
+  "observed_date": "2026-11-02",
   "allowed_automatic_writes": [
     "integration/v0.0.2-master-single-thread"
   ],
@@ -54,8 +54,8 @@
       "acceptance_criteria": "Full suite passes both OS at current exact SHA with logs",
       "test_method": "test*.py unittest discovery on both runners",
       "current_blocker": null,
-      "evidence": "Run 41151264671, attempt 1, exact SHA cf224454fe8eab29991877929c71027b946a4bc5; 514/514 Linux PASS and 514/514 Windows PASS. Historical initial failure retained in evidence_history.",
-      "head_disposition": "ACCEPT_NATIVE_AT_VERIFIED_SHA"
+      "evidence": "Exact SHA 6abc04a8465667ca7ebf0bc02a1d6a1f8123471d, run 41528132175, 550/550 per OS, 2 ZIPs/OS; cross-platform sha256 6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98. Docs commit afterward requires fresh run.",
+      "head_disposition": "ACCEPT_TESTED_AT_PRIOR_SHA_ONLY"
     },
     {
       "task_id": "V002-M5-02",
@@ -72,8 +72,8 @@
       "acceptance_criteria": "byte-for-byte parity, valid SHA manifest, 12 skills and no bundled Python/library",
       "test_method": "devtools.build_v002_candidate invoked twice after native suite",
       "current_blocker": null,
-      "evidence": "Run 41151264671 at cf224454fe8eab29991877929c71027b946a4bc5: 2 Linux and 2 Windows ZIP builds, each 32 files; all four SHA-256 digests 93550f4f2a8dc40e0b855e075214f141072c937ef198ecdff4f806c1170b8b77.",
-      "head_disposition": "ACCEPT_DETERMINISTIC_PORTABLE_BUILD_AT_VERIFIED_SHA"
+      "evidence": "Exact SHA 6abc04a8465667ca7ebf0bc02a1d6a1f8123471d, run 41528132175, 550/550 per OS, 2 ZIPs/OS; cross-platform sha256 6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98. Docs commit afterward requires fresh run.",
+      "head_disposition": "ACCEPT_TESTED_AT_PRIOR_SHA_ONLY"
     },
     {
       "task_id": "V002-M1-01",
@@ -85,13 +85,13 @@
       ],
       "team": "YELLOW",
       "team_reason": "Mission state engine and schema integration",
-      "status": "INTEGRATED_REFERENCE_PARTIAL",
+      "status": "TESTED_REFERENCE_ONLY",
       "required_artifact": "Versioned repair-event bridge and tests",
       "acceptance_criteria": "Real repair cannot be promoted from count/fixture; old zero-repair flows retain compatibility",
       "test_method": "Positive repair + forged/replayed/overbudget negative tests",
-      "current_blocker": "Signed versioned D2 repair transition/provenance attestations incomplete; conservative bridge intentionally UNVERIFIED even with structurally valid repair history.",
-      "evidence": "Yellow repair-history guard policy_v002/m1_bridge.py version 5 at f14d616; 14 new security regression cases, 514/514 each OS at cf224454fe8eab29991877929c71027b946a4bc5, run 41151264671.",
-      "head_disposition": "ACCEPT_NEGATIVE_SECURITY_COVERAGE_CONTINUE_AUTH_BRIDGE"
+      "current_blocker": "Real authenticated protected host grants and repair-event issuer not available.",
+      "evidence": "P1 D2 repair protocol with journal IDs, prior/next receipts, Head/Worker identities, zero-repair compatibility; exact SHA 6abc04a8465667ca7ebf0bc02a1d6a1f8123471d CI 41528132175 550 tests/OS. Protected issuer absent.",
+      "head_disposition": "ACCEPT_REFERENCE_RETAIN_HOST_BLOCKER"
     },
     {
       "task_id": "V002-M1-02",
@@ -177,12 +177,12 @@
       ],
       "team": "PURPLE",
       "team_reason": "Cross-team challenge and independent labeling design",
-      "status": "UNVERIFIED",
+      "status": "IN_PROGRESS",
       "required_artifact": "270 distinct preregistered oracle labels with reviewer provenance",
       "acceptance_criteria": "30 cases per specialist, negatives and refusals, independent outcomes",
       "test_method": "Provenance verification and inter-rater contradiction audit",
-      "current_blocker": "270 cases are draft model-authored, NOT independent labels",
-      "evidence": "evaluation/v0.0.2/candidate-scenarios.json",
+      "current_blocker": "Independent case labels 0/270; holdouts 54 reserved not blinded; preregistration drafts exist.",
+      "evidence": "evaluation/v0.0.2/preregistration-draft.json; 270 candidate cases; P3 structural tests.",
       "head_disposition": "BLOCKED_INDEPENDENT_ORACLES"
     },
     {
@@ -199,7 +199,7 @@
       "required_artifact": "Actual model/host trials, observations, metrics and uncertainty",
       "acceptance_criteria": "270 traceable executions or explicit individual blockers, no unsupported accuracy claims",
       "test_method": "Provider/host evidence + blinded scores and authority critical errors",
-      "current_blocker": "No 270 real independent specialist trials",
+      "current_blocker": "No installed v0.0.2 host, 0 independently approved labels, 0 genuine trials.",
       "evidence": "policy_v002/eval_lab.py; docs/V002-M4-EVALUATION-FOUNDATION.md",
       "head_disposition": "BLOCKED_ON_ORACLES_AND_HOST"
     },
@@ -218,7 +218,7 @@
       "required_artifact": "Version-bound installed-plugin mission traces",
       "acceptance_criteria": "Single Head, sequential workers, validate/auditor, repair, forged-source, missing-tools, budget and no-library",
       "test_method": "Live installed host test cases and exact release identity",
-      "current_blocker": "Canonical installed plugin currently 0.0.1, not 0.0.2",
+      "current_blocker": "Canonical private plugin v0.0.1; staging/preview needs owner approval; all 11 host scenarios NOT_RUN.",
       "evidence": "Plugin Creator metadata: plugins_6ae3edf1ea4c819182f275592273e2cc",
       "head_disposition": "BLOCKED_NOT_PUBLISHED_NO_HOST_V002"
     },
@@ -261,7 +261,7 @@
       "head_disposition": "RELEASE_BLOCKED"
     }
   ],
-  "last_native_verified_sha": "cf224454fe8eab29991877929c71027b946a4bc5",
+  "last_native_verified_sha": "6abc04a8465667ca7ebf0bc02a1d6a1f8123471d",
   "evidence_history": [
     {
       "source_sha": "531daa440ecf45c279f0262804f69944ed214c52",
@@ -281,5 +281,6 @@
       "result": "TESTED",
       "notes": "514 PASS each OS, two ZIP builds each, cross-platform SHA 93550f4f2a8dc40e0b855e075214f141072c937ef198ecdff4f806c1170b8b77"
     }
-  ]
+  ],
+  "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json"
 }

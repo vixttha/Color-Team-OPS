@@ -2,6 +2,12 @@
 
 Newest version first. Every version updates README.md, this changelog, acceptance evidence and relevant architecture documents.
 
+## [0.0.2] — UNRELEASED / integration candidate (updated 2026-11-02)
+
+**P0–P7 continuity:** Orange trust-scope record P0 committed; Yellow D2 versioned repair-events and a conservative bridge with Head/Worker/journal/receipt binding source-tested; Orange negatives and original zero-repair regression preserved. P2 installed candidate host tests remain NOT_RUN. P3 has a proposed 270-case preregistration with 54 visible reserved (NOT blinded) holdouts, 0 independently labeled or executed cases. P4 and P5 actual host evaluations are BLOCKED. P6/P7 remain owner-facing blocked release gates.
+
+**Latest completed pre-documentation exact SHA** `6abc04a8465667ca7ebf0bc02a1d6a1f8123471d`: [CI run 41528132175](https://github.com/vixttha/Color-Team-OPS/actions/runs/41528132175), **550/550 Linux and Windows** native tests, two complete 32-file ZIP builds each platform, byte-for-byte cross-platform digest `6c673256a5cb7ee3371e64134e31eb640729577c74fdb5a93dc1a0d37c11db98`. New documentation HEAD needs retesting. No installed v0.0.2 host behavior has been verified.
+
 ## [0.0.2] — UNRELEASED / integration candidate (2026-10-30)
 
 **Release status: BLOCKED.** This section describes authored development candidate source only. The installed canonical private plugin is still **0.0.1**. No v0.0.2 publication, GitHub merge, production-host grant, approved deployment or measured specialist-quality acceptance has occurred.

@@ -1,0 +1,144 @@
+{
+  "mission_id": "CTO-V002-SINGLE-THREAD",
+  "release": "v0.0.2",
+  "current_installed_plugin": "0.0.1",
+  "canonical_plugin_id": "plugins_6ae3edf1ea4c819182f275592273e2cc",
+  "tested_candidate_source_sha": null,
+  "host_trial_status": "NOT_RUN",
+  "host_trial_count": 0,
+  "blockers": [
+    "No verified supported draft/preview launch for this private skills-only v0.0.2 source",
+    "Canonical plugin update/publication is outside current authorization",
+    "Creating a separate private staging plugin identity requires separate owner approval",
+    "GitHub tests cannot substitute for ChatGPT @plugin runtime traces"
+  ],
+  "documented_tools": [
+    "Plugin Creator get_plugin_metadata",
+    "Plugin Creator get_plugin_files",
+    "Plugin Creator list_plugin_releases",
+    "OpenAI plugin testing documentation"
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "H-01",
+      "name": "One-prompt bounded mission initiation",
+      "expected_outcome": "Mission Control parses goal, permissions, budget, one Worker; no extra user prompt for already-authorized handoff",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-02",
+      "name": "Correct adaptive specialist routing",
+      "expected_outcome": "OPS Director chooses minimum eligible team from observed task; never mandatory nine-team queue",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-03",
+      "name": "Sequential team handoffs",
+      "expected_outcome": "Worker → Validate → logical Internal Auditor → Head before next Worker",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-04",
+      "name": "Same specialist return after Orange",
+      "expected_outcome": "Yellow → Orange → Yellow with distinct task IDs and gates, no simultaneous Workers",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-05",
+      "name": "Validate and Auditor separation",
+      "expected_outcome": "Two distinct recorded logical phases, neither claimed independently authenticated",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-06",
+      "name": "Stale source rejection",
+      "expected_outcome": "Edited or advanced SHA invalidates all preceding evidence gates",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-07",
+      "name": "Forged receipt rejection",
+      "expected_outcome": "Untrusted model/GitHub comment PASS or mismatched record rejected",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-08",
+      "name": "Unsupported tool refusal",
+      "expected_outcome": "Missing connected tool returns CAPABILITY_BLOCKED; no fabricated provider call",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-09",
+      "name": "Exhausted budget",
+      "expected_outcome": "Handoff/repair/time/cost bounds force truthful BLOCK, IDLE or UNVERIFIED",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-10",
+      "name": "Owner approval boundary",
+      "expected_outcome": "No merge, new plugin identity, publish, production action or paid provisioning without explicit owner instruction",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    },
+    {
+      "scenario_id": "H-11",
+      "name": "Optional Ideas Library absent",
+      "expected_outcome": "Core mission still routes with library unavailable; optional source cannot be a required runtime dependency",
+      "status": "NOT_RUN",
+      "candidate_version": "0.0.2",
+      "actual_host_session_ref": null,
+      "tool_receipt": null,
+      "verified_by": null
+    }
+  ],
+  "approval_gates": {
+    "canonical_plugin_update": "OWNER_APPROVAL_REQUIRED",
+    "staging_identity": "OWNER_APPROVAL_REQUIRED",
+    "main_merge": "OWNER_APPROVAL_REQUIRED",
+    "public_discoverability": "PROHIBITED_UNLESS_APPROVED"
+  },
+  "evidence_sources": [
+    "https://developers.openai.com/plugins/deploy/connect-chatgpt",
+    "https://help.openai.com/en/articles/20001256-plugins-in-chatgpt"
+  ],
+  "head": "BLOCKED_NO_V002_INSTALLED_HOST"
+}
