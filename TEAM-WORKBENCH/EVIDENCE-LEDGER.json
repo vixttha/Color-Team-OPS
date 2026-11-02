@@ -1,6 +1,20 @@
 {
   "schema_version": "prismcell-evidence-0.0.1",
   "team": "BLACK",
-  "entries": [],
+  "entries": [
+    {
+      "id": "BLACK-PRISMCELL-20261102-001",
+      "date": "2026-11-02",
+      "kind": "SOURCE_AUDIT",
+      "target_branch": "template/prismcell-workbench-v0.0.1",
+      "target_sha": "62d43ef51d362cf064c367158a8d7fce207abd68",
+      "source_report": "black-team/reports/2026-11-02-prismcell-three-pass.md",
+      "findings": "black-team/reports/PRISMCELL-FINDINGS.json",
+      "evidence_status": "OBSERVED_SOURCE_AND_SYNTHETIC_SCHEMA",
+      "test_summary": "18 targeted harmless schema checks; no live exploitation",
+      "head_decision": "PENDING_OWNER_REVIEW",
+      "limits": "No full real-host penetration test; no CI at template SHA"
+    }
+  ],
   "note": "Legacy BTI/ADV registers preserved; cite real current source, date, known version and applicable source SHA."
 }
