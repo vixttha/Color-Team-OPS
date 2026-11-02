@@ -3,7 +3,7 @@
 **Date:** 2026-11-02. **Scope:** user-authorized White Team assessment of dedicated workcell template, nine team homes and their INCALL endpoints. **No external attack/exploit, message posting, owner runner dispatch, source remediation or product release.**
 
 **Immutable template baseline:** `template/prismcell-workbench-v0.0.1` @ `62d43ef51d362cf064c367158a8d7fce207abd68`
-**Relevant source:** `PRISMCELL/` (13 text files: eight top-level documents including VERSION.json, three schemas, three templates; note count by actual full tree). **Product relation:** separate from the v0.0.2 integration branch, Development HQ, Purple Review HQ and installed Color-Team-OPS plugin. Distinct SPECIALIST workcells remain nine in number, not new runtime agents.
+**Relevant source:** `PRISMCELL/` (14 text files: eight top-level documents including VERSION.json, three schemas and three templates). **Product relation:** separate from the v0.0.2 integration branch, Development HQ, Purple Review HQ and installed Color-Team-OPS plugin. Distinct SPECIALIST workcells remain nine in number, not new runtime agents.
 
 ## Executive verdict
 
