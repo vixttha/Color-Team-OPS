@@ -26,3 +26,7 @@ See CONTRACT.md, INCALL-PROTOCOL.md, LONG-RUNNING-OPERATIONS.md, PROMOTION.md, T
 ## Production use of the *workcell* (not a continuously running agent)
 
 PrismCell v0.0.1 is ready for **on-demand, user-invoked nine-team work**. Start from [AGENT-LAUNCHPAD.md](AGENT-LAUNCHPAD.md), follow [STARTUP.md](STARTUP.md) and inspect [OPERATIONAL-ACCEPTANCE.md](OPERATIONAL-ACCEPTANCE.md). The connected account is an administrator, so there is **no independently proven per-agent branch ACL**. Each invocation must reread current GitHub evidence before acting. This does not authorize installed Color-Team-OPS plugin release or autonomous work.
+
+## New-project bootstrap (v0.0.1)
+
+The clean, history-free **TEAM-WORKBENCH document generator** is in [core/starter.mjs](core/starter.mjs), with optional offline [initialize-project.mjs](tools/initialize-project.mjs) and [fresh-project installation instructions](REUSE-AND-INTEGRATION.md). It supports different named teams and GitHub repositories while requiring live Head verification before activation. The optional self-hosted Windows/Linux development tests do not become product runtime dependencies. The Color-Team-OPS-specific legacy guard and schema directory remain for compatibility; use `core/schemas/` for new projects.

@@ -2,7 +2,7 @@
    Pure functions, NO network, credentials, filesystem, permissions or autonomous dispatch.
    Host must fetch trusted provider receipts and enforce identity, ACL and compare-and-swap itself. */
 const SHA = /^[a-fA-F0-9]{40}$/;
-const ID = /^IN-[A-Z]+-[0-9]{8}-[0-9]{3,6}$/;
+const ID = /^IN-[A-Z][A-Z0-9_]{1,39}-[0-9]{8}-[0-9]{3,6}$/;
 const TEAM = /^[A-Z][A-Z0-9_]{1,39}$/;
 const REPO = /^[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/;
 const BRANCH = /^(?!\/)(?!.*(?:\.\.|\/\/|@\{|\\|[\x00-\x1f]))[A-Za-z0-9._\/-]+$/;

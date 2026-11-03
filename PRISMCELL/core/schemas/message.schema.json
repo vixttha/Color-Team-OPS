@@ -21,7 +21,7 @@
   "properties": {
     "message_id": {
       "type": "string",
-      "pattern": "^IN-[A-Z]+-[0-9]{8}-[0-9]{3,6}$",
+      "pattern": "^IN-[A-Z][A-Z0-9_]{1,39}-[0-9]{8}-[0-9]{3,6}$",
       "maxLength": 64
     },
     "from_team": {
