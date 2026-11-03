@@ -1,0 +1,49 @@
+{
+  "schema_version": "prismcell-purple-exact-native-acceptance-0.0.1",
+  "date": "2026-11-03",
+  "candidate_sha": "45ecbdc2460c22a79fff54557012f62b33c38a10",
+  "canonical_sha": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "pull_request": 18,
+  "pull_request_draft": true,
+  "run_id": 41715667469,
+  "run_url": "https://github.com/vixttha/Color-Team-OPS/actions/runs/41715667469",
+  "comment_id": 6615033925,
+  "workflow_type": "ONE_SHOT_TRUSTED_OWNER_COMMENT_EXACT_SHA",
+  "workflow_main_install_commit": "449bcd75488f473dbf6de03a52b4d9fc63f6aaf2",
+  "workflow_main_removal_commit": "8232c300027513a980f679e256d2b8bfe059a57c",
+  "main_tree_pre_and_post": "3083fa2c3acbc8dc4c63e4c82f88e2f69dc3f3c8",
+  "main_tree_restored": true,
+  "os_jobs": {
+    "linux": {
+      "id": 126194865909,
+      "runner": "color-team-ops-linux-01",
+      "node_tests": 110,
+      "node_pass": 110,
+      "node_fail": 0,
+      "python_tests": 25,
+      "manifest_files": 52,
+      "conclusion": "success",
+      "sha_marked": true
+    },
+    "windows": {
+      "id": 126194866447,
+      "runner": "color-team-ops-windows-01",
+      "node_tests": 110,
+      "node_pass": 110,
+      "node_fail": 0,
+      "python_tests": 25,
+      "manifest_files": 52,
+      "conclusion": "success",
+      "sha_marked": true
+    }
+  },
+  "purple_source_adversarial_checks": 12,
+  "passed_adversarial_checks": 12,
+  "schema_aliases_identical": 4,
+  "previous_nine_activated": true,
+  "previous_nine_original_pin_unchanged": true,
+  "second_real_repo_install": "NOT_RUN",
+  "owner_head_merge_authorized": false,
+  "verdict": "PURPLE_NATIVE_VERIFIED_SOURCE_ACCEPTED_HEAD_PROMOTION_PENDING",
+  "test_source_is_default_branch_run_head": false
+}

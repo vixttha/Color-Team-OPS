@@ -8,7 +8,7 @@
   "status": "READY_ON_INVOCATION",
   "active_work_item": null,
   "last_verified_product_sha": null,
-  "last_session": "PURPLE-20261102-002",
+  "last_session": "PURPLE-20261103-V001-NATIVE-ACCEPT",
   "release_authorized": false,
   "unattended_execution": false,
   "source_branch": "integration/v0.0.2-master-single-thread",
@@ -48,17 +48,13 @@
     "active_worker": false
   },
   "latest_audit": {
-    "id": "PURPLE-20261102-002",
-    "kind": "PRISMCELL_V001_REUSE_AND_READINESS",
-    "report_path": "TEAM-WORKBENCH/trials/PRISMCELL-V001-PURPLE-REUSABILITY-ACCEPTANCE-AUDIT-2026-11-02.md",
-    "verdict_existing_nine": "ACCEPTED_FOR_ON_DEMAND_USE",
-    "verdict_general_reuse": "HOLD_FOR_REPAIR",
-    "findings": [
-      "INHERITED_RECIPIENT_TEAM_LOOKUP",
-      "MISSING_CLEAN_WORKBENCH_SCAFFOLD",
-      "SCHEMA_ENGINE_PARITY",
-      "GITHUB_TRANSPORT_LIMITATION"
-    ],
-    "new_template_release_authorized": false
+    "session": "PURPLE-20261103-V001-NATIVE-ACCEPT",
+    "category": "PRISMCELL_V001_NATIVE_AND_CROSS_TEAM_ACCEPTANCE",
+    "report_path": "TEAM-WORKBENCH/trials/PRISMCELL-V001-PURPLE-EXACT-SHA-NATIVE-ACCEPTANCE-2026-11-03.md",
+    "candidate_sha": "45ecbdc2460c22a79fff54557012f62b33c38a10",
+    "run_id": 41715667469,
+    "technical_verdict": "PASS",
+    "head_promotion": "PENDING_EXPLICIT_OWNER_APPROVAL",
+    "release_authorized": false
   }
 }

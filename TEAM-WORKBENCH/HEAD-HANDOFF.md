@@ -1,3 +1,13 @@
+# Purple Head — PrismCell v0.0.1 exact-SHA native acceptance, November 3, 2026
+
+**PURPLE PASS** for code fixes and exact-SHA native validation on `45ecbdc2460c22a79fff54557012f62b33c38a10`. Owner's Linux and Windows self-hosted runners each PASSED 110 Node + 25 Python cases, clean-room 52-file manifest, [run #41715667469](https://github.com/vixttha/Color-Team-OPS/actions/runs/41715667469).
+
+Read [Purple audited findings](trials/PRISMCELL-V001-PURPLE-EXACT-SHA-NATIVE-ACCEPTANCE-2026-11-03.md) and [evidence JSON](trials/PRISMCELL-V001-PURPLE-EXACT-SHA-EVIDENCE.json). The temporary one-shot main workflow was deleted; **original main tree restored**. 9/9 current workcells remain on canonical `25d59530210949792b3ce47ac0a804442997a9b1` and READY_ON_INVOCATION; PR #18 is DRAFT and UNMERGED.
+
+**Head promotion gate remains distinct**: Purple is not the release owner and cannot self-sign owner approval. Request a separate explicit Head authorization to merge PR #18 into canonical template and then migrate nine home pins sequentially under provider CAS with actual source readback. No general “any provider” claim or installed plugin update. No Vercel, no auto-runner push execution, no further owner runner test scheduled. Purple idle.
+
+## Previous Purple historical Head handoff — preserved verbatim
+
 # PURPLE HEAD — PrismCell v0.0.1 reuse/readiness audit PURPLE-20261102-002
 
 **Result:** Nine live GitHub specialist homes are READY_ON_INVOCATION; **general reusable v0.0.1 release HOLD FOR REPAIR**. The core has a synthetic inherited-property recipient validation defect, the template lacks a clean workbench starter, runtime/schema validation differs, and GitHub/manual transport does not mean any project. Exact inspected template: `25d59530210949792b3ce47ac0a804442997a9b1`.
