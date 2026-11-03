@@ -75,7 +75,8 @@ class P3CompiledVariants(unittest.TestCase):
         orange_probe = orange["fixture"]["variant_probe"].lower()
         self.assertIn("baseline", orange_probe)
         self.assertIn("new request", orange_probe)
-        self.assertIn("missing", orange_probe)
+        self.assertTrue(any(word in orange_probe for word in ("missing", "absent")),
+                        "new request must have no trusted tenant selector")
         self.assertIn("tenant", orange_probe)
         self.assertTrue(any(term in str(orange["measurement"]["variant_must_address"]).lower() for term in ("deny", "refus", "reject")), "Orange edge case must explicitly require denial/refusal of the new tenantless request")
         yellow_probe = yellow["fixture"]["variant_probe"].lower()
