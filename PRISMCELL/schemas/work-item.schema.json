@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "PrismCell work item",
+  "title": "PrismCell work item v0.0.1 hardened",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,11 +14,13 @@
   "properties": {
     "id": {
       "type": "string",
-      "minLength": 4
+      "minLength": 4,
+      "maxLength": 70
     },
     "title": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "maxLength": 240
     },
     "priority": {
       "enum": [
@@ -43,10 +45,13 @@
     },
     "acceptance_criteria": {
       "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
       "items": {
-        "type": "string"
-      },
-      "minItems": 1
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 800
+      }
     },
     "evidence_status": {
       "enum": [
@@ -61,13 +66,226 @@
       ]
     },
     "source_sha": {
-      "type": [
-        "string",
-        "null"
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{40}$"
+        }
       ]
     },
+    "assigned_team": {
+      "enum": [
+        "YELLOW",
+        "ORANGE",
+        "GREEN",
+        "RED",
+        "BLUE",
+        "PURPLE",
+        "WHITE",
+        "BLACK",
+        "GRAY"
+      ]
+    },
+    "assigned_role": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1800
+    },
+    "risk": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    "prerequisites": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_repairs"
+      ],
+      "properties": {
+        "max_repairs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "task_limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        }
+      }
+    },
+    "repair_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "string",
+        "pattern": "^https://",
+        "maxLength": 2048
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result",
+        "evidence_ref"
+      ],
+      "properties": {
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNVERIFIED"
+          ]
+        },
+        "evidence_ref": {
+          "type": "string",
+          "pattern": "^https://",
+          "maxLength": 2048
+        }
+      }
+    },
+    "internal_audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result",
+        "evidence_ref"
+      ],
+      "properties": {
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNVERIFIED"
+          ]
+        },
+        "evidence_ref": {
+          "type": "string",
+          "pattern": "^https://",
+          "maxLength": 2048
+        }
+      }
+    },
+    "head_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result",
+        "decision_ref"
+      ],
+      "properties": {
+        "result": {
+          "enum": [
+            "ACCEPT",
+            "REPAIR",
+            "DEFER",
+            "BLOCK",
+            "REJECT"
+          ]
+        },
+        "decision_ref": {
+          "type": "string",
+          "pattern": "^https://",
+          "maxLength": 2048
+        }
+      }
+    },
     "notes": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 3000
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ACCEPTED"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "source_sha",
+          "assigned_team",
+          "assigned_role",
+          "scope",
+          "risk",
+          "prerequisites",
+          "budget",
+          "repair_count",
+          "evidence_refs",
+          "validation",
+          "internal_audit",
+          "head_decision"
+        ],
+        "properties": {
+          "source_sha": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{40}$"
+          },
+          "evidence_status": {
+            "enum": [
+              "OBSERVED_SOURCE",
+              "EXECUTED_AT_SHA",
+              "VERIFIED_PROVIDER",
+              "RESEARCH_CITED"
+            ]
+          },
+          "validation": {
+            "properties": {
+              "result": {
+                "const": "PASS"
+              }
+            }
+          },
+          "internal_audit": {
+            "properties": {
+              "result": {
+                "const": "PASS"
+              }
+            }
+          },
+          "head_decision": {
+            "properties": {
+              "result": {
+                "const": "ACCEPT"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
