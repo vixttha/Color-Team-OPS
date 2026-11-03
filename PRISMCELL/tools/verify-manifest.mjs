@@ -25,6 +25,8 @@ export async function verify(dir,sha,countRaw,expectedManifestDigest){
   if(expectedCount!==null&&(!Number.isSafeInteger(expectedCount)||expectedCount<1||expectedCount>50))fail('INVALID_TEAM_COUNT');
   if(!dir||typeof sha!=='string'||!(/^[0-9a-fA-F]{40}$/).test(sha))fail('MANIFEST_VALIDATION_ARGS');
   const root=await lstat(dir);if(!root.isDirectory()||root.isSymbolicLink())fail('INVALID_ROOT_FOLDER');
+  // Reject untrusted symlinks/special nodes before dereferencing any generated file.
+  const actual=await enumerate(dir);
   const manifestBytes=await readFile(join(dir,'MANIFEST.json'));
   if(expectedManifestDigest!==undefined && (!/^[0-9a-f]{64}$/.test(expectedManifestDigest)||hash(manifestBytes)!==expectedManifestDigest))fail('TRUSTED_MANIFEST_DIGEST_MISMATCH');
   const m=JSON.parse(manifestBytes.toString('utf8'));
@@ -65,7 +67,6 @@ export async function verify(dir,sha,countRaw,expectedManifestDigest){
        !Array.isArray(outbox.messages)||outbox.messages.length!==0||
        !Array.isArray(evidence.entries)||evidence.entries.length!==0)fail('WORKCELL_PRE_ACTIVATION_STATE_INVALID');
   }
-  const actual=await enumerate(dir);
   if(!same(actual.sort(),[...expected].sort()))fail('MISSING_OR_UNEXPECTED_FILES');
   return {ok:true,teams:names.size,files:expected.size,source_sha:sha,manifest_digest:hash(manifestBytes),
     provider_verified:false,authority_granted:false};
