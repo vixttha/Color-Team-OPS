@@ -1,5 +1,6 @@
 {
   "trial": "PRISMCELL-E-CAS-001",
-  "seq": 0,
-  "authority_granted": false
+  "seq": 1,
+  "authority_granted": false,
+  "decision": "CLEAN_WRITE"
 }
