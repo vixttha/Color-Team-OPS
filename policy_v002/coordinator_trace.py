@@ -80,6 +80,7 @@ def validate_logical_chain(mission, events, observed_sha):
     if len(events) % len(PHASES):
         return GateResult("BLOCKED", "MISSING_WORKER_VALIDATE_AUDIT_OR_HEAD_PHASE")
     seen_ids = set()
+    completed_task_ids = set()
     evidence_task = {}
     previous = None
     prev_review = None
@@ -143,7 +144,7 @@ def validate_logical_chain(mission, events, observed_sha):
                 if attempt > mission["max_retries"]:
                     return GateResult("BLOCKED", "RETRY_BUDGET_EXCEEDED")
             elif prev_review == "ACCEPT":
-                if task_id == prev_task or attempt != 0:
+                if task_id in completed_task_ids or attempt != 0:
                     return GateResult("BLOCKED", "INVALID_NEXT_TASK_OR_REPLAY")
                 distinct_handoffs += 1
                 if distinct_handoffs > mission["max_handoffs"]:
@@ -160,6 +161,8 @@ def validate_logical_chain(mission, events, observed_sha):
                 if w.get("review_disposition") not in ("ACCEPT", "REPAIR"):
                     return GateResult("BLOCKED", "HEAD_REVIEW_NOT_ACCEPTED")
                 prev_review = w["review_disposition"]
+                if prev_review == "ACCEPT":
+                    completed_task_ids.add(task_id)
                 prev_task, prev_team, prev_retry = task_id, team, attempt
         if phase_index == 0:
             current_task, current_team, current_retry = task_id, team, attempt
