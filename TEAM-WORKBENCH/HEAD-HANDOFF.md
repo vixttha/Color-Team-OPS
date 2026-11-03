@@ -1,3 +1,9 @@
+# ORANGE — Operational checkpoint OPS-20261102-ORANGE-001
+
+**READY ON INVOCATION**, not a running background bot. Home at cb69b725e33201b52f4cebababaa0d41d78da97a; integration observed 11f685121776744e28534d35bef9b16611e33897 (refresh next time); template 25d59530210949792b3ce47ac0a804442997a9b1. INCALL #10 read 6 comments, latest 6592115421. Preserved inbox 3, outbox 1, queue 3; no active worker. Next: reread provider metadata, current sources and legacy work; Head → Worker → Validate → logical Internal Auditor → Head. No cross-branch rights or product release from a message.
+
+## Earlier handoff (retained)
+
 # ORANGE Head handoff — bootstrap 2026-11-02
 
 - Workspace: `agent/ORANGE-TEAM-AGENT` (PrismCell v0.0.1)
