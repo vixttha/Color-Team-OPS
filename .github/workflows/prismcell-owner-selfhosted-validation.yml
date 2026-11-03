@@ -1,0 +1,71 @@
+# PrismCell Yellow development tests ONLY. Pinned source; two owner self-hosted runners.
+# Never use GitHub-hosted compute, publish a plugin, or grant runtime authority.
+name: PrismCell native checks (owner self-hosted Windows and Linux)
+on:
+  push:
+    branches:
+      - agent/YELLOW-TEAM-AGENT
+    paths:
+      - .github/workflows/prismcell-owner-selfhosted-validation.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: prismcell-yellow-owner-tests-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  linux:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/agent/YELLOW-TEAM-AGENT'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 15
+    steps:
+      - name: Check out audited PrismCell revision without persistent credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 25d59530210949792b3ce47ac0a804442997a9b1
+          path: prismcell-src
+          persist-credentials: false
+      - name: Native Node and Python schema regressions
+        shell: bash
+        env:
+          PINNED_SOURCE: 25d59530210949792b3ce47ac0a804442997a9b1
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = "color-team-ops-linux-01"
+          test "$RUNNER_OS" = Linux
+          test "$(git -C prismcell-src rev-parse HEAD)" = "$PINNED_SOURCE"
+          cd prismcell-src
+          node --version
+          python3 -c 'import jsonschema; print("jsonschema available")'
+          node --test PRISMCELL/tests/guard.test.mjs PRISMCELL/tests/engine.test.mjs PRISMCELL/tests/integrity.test.mjs
+          python3 -B -m unittest discover -s PRISMCELL/tests -p test_schemas.py -v
+          echo "PRISMCELL_OWNER_LINUX_PASS $PINNED_SOURCE"
+  windows:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/agent/YELLOW-TEAM-AGENT'
+    runs-on: [self-hosted, Windows, X64, color-team-ops]
+    timeout-minutes: 15
+    steps:
+      - name: Check out audited PrismCell revision without persistent credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 25d59530210949792b3ce47ac0a804442997a9b1
+          path: prismcell-src
+          persist-credentials: false
+      - name: Native Node and Python schema regressions
+        shell: powershell
+        env:
+          PINNED_SOURCE: 25d59530210949792b3ce47ac0a804442997a9b1
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Unexpected runner' }
+          if ((git -C prismcell-src rev-parse HEAD) -ne $env:PINNED_SOURCE) { throw 'Pinned source mismatch' }
+          Set-Location prismcell-src
+          node --version
+          if ($LASTEXITCODE -ne 0) { throw 'Node not available on Windows owner runner' }
+          python -c "import jsonschema; print('jsonschema available')"
+          if ($LASTEXITCODE -ne 0) { throw 'jsonschema not available on Windows owner runner' }
+          node --test PRISMCELL/tests/guard.test.mjs PRISMCELL/tests/engine.test.mjs PRISMCELL/tests/integrity.test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Native Node regression failed' }
+          python -B -m unittest discover -s PRISMCELL/tests -p test_schemas.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Native Python schema regression failed' }
+          Write-Output "PRISMCELL_OWNER_WINDOWS_PASS $env:PINNED_SOURCE"
