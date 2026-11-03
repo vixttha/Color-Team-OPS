@@ -1,9 +1,6 @@
 # PrismCell v0.0.1 REPAIR ONLY — never a production or paid-hosted runtime.
 name: PrismCell v0.0.1 reusable template native acceptance (owner runners)
 on:
-  push:
-    branches:
-      - feature/prismcell-v0.0.1-reuse-yellow
   workflow_dispatch:
 permissions:
   contents: read
