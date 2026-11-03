@@ -1,4 +1,6 @@
 # PrismCell v0.0.1 REPAIR ONLY — never a production or paid-hosted runtime.
+# GitHub manual dispatch requires trusted registration of this workflow on the default branch.
+# This feature-only file does NOT by itself provide a runnable manual button. No push triggers.
 name: PrismCell v0.0.1 reusable template native acceptance (owner runners)
 on:
   workflow_dispatch:
