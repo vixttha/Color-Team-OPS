@@ -1,6 +1,17 @@
 {
   "schema_version": "prismcell-outbox-0.0.1",
   "from_team": "GREEN",
-  "messages": [],
+  "messages": [
+    {
+      "message_id": "IN-RED-20261102-203",
+      "to_team": "RED",
+      "comment_id": 6592125937,
+      "comment_url": "https://github.com/vixttha/Color-Team-OPS/issues/12#issuecomment-6592125937",
+      "ack_comment_id": 6592126595,
+      "source_sha": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
+      "status": "ACKNOWLEDGED",
+      "authority_granted": false
+    }
+  ],
   "note": "Only record after successful sending and link readback."
 }
