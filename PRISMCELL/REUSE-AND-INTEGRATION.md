@@ -1,0 +1,15 @@
+# PrismCell universal workcell — reusable core and project adapter
+PrismCell remains an independent, cloud-only, invoked specialist-workbench template. This folder is NOT the installed Color-Team-OPS plugin, Development HQ or Purple Review HQ. A long-lived branch stores history but runs no background agent.
+## Copy into another project
+1. Copy `PRISMCELL/core/`, `PRISMCELL/tests/`, `PRISMCELL/templates/` and the base workbench directory. Do not copy active team histories blindly.
+2. Copy `config/example.json` to a project-local config, replacing repository, HTTPS URL, team names, home branches and GitHub issue numbers with real values. `config/color-team-ops.json` is an **adapter example**, not a dependency of the core.
+3. Validate configuration and read actual GitHub issue/provider metadata. The `intake()` function only returns `RECEIVE_FOR_REVIEW` (never branch permission, job dispatch or Head approval). The host must verify role principals separately; the original one-account trial **does not** prove multiple agent identities.
+4. Persist the new inbox ledger with the provider's atomic compare-and-swap (GitHub Contents API file-blob SHA). `revision` is a logical optimistic-lock hint; the real GitHub write precondition is mandatory. On 409/422 conflict: refresh, check duplicates/history, then explicitly retry; do not overwrite unseen records.
+5. Store a SHA-256 receipt snapshot using `core/integrity.mjs` only in a supported cloud Node host. A digest detects edits when compared to fresh provider readback but **is not a signature or immutable evidence**. No local runtime is required for installed workcells.
+6. Pin the exact PrismCell template commit in each home STATE.json. Never wholesale-merge the Blue legacy product tree; migrate only workbench records and preserve prior work.
+## Concurrency and resume
+Treat GitHub issue comments as canonical incoming transport. No cron, realtime scheduler, repository-wide lock, authenticated actor/role mapping or universal permissions is provided by the template. To resume, compare checkpoint comment IDs and monotonically advancing ledger revision; refuse missing old records. Recipient ACK, DEFER, BLOCK, REJECT are review actions only and cannot issue foreign-branch writes.
+## Tests and current release claims
+`node --test PRISMCELL/tests/*.test.mjs` exercises the portable engine and optional Node integrity adapter. Optional Python/jsonschema tests are separate. Cloud CI is not enabled by default. No paid GitHub-hosted execution or owner PC runtime dependency.
+## Honest limitations
+The current transport adapter supports manual GitHub Issues. The reusable validation core uses a supplied project config; other backends would need a separate trusted receipt adapter. Issue comments are mutable by authorized actors. A single GitHub admin account cannot demonstrate per-color access isolation. Schema validity, claimed role labels or self-reported acceptance are never permission grants. All nine agents remain logically switched in one conversation for this user's mission.

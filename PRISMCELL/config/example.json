@@ -1,0 +1,19 @@
+{
+  "schema_version": "prismcell-project-config-0.0.1",
+  "project_id": "MY_NEW_PROJECT",
+  "repository": "example/my-repo",
+  "repository_url": "https://github.com/example/my-repo",
+  "transport": "github-issues-manual",
+  "teams": {
+    "ENGINEERING": {
+      "branch": "agent/engineering",
+      "issue_number": 101,
+      "issue_url": "https://github.com/example/my-repo/issues/101"
+    },
+    "REVIEW": {
+      "branch": "agent/review",
+      "issue_number": 102,
+      "issue_url": "https://github.com/example/my-repo/issues/102"
+    }
+  }
+}

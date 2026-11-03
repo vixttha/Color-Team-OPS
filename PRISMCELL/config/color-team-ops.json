@@ -1,0 +1,54 @@
+{
+  "schema_version": "prismcell-project-config-0.0.1",
+  "project_id": "COLOR_TEAM_OPS_WORKCELL",
+  "repository": "vixttha/Color-Team-OPS",
+  "repository_url": "https://github.com/vixttha/Color-Team-OPS",
+  "transport": "github-issues-manual",
+  "teams": {
+    "YELLOW": {
+      "branch": "agent/YELLOW-TEAM-AGENT",
+      "issue_number": 9,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/9"
+    },
+    "ORANGE": {
+      "branch": "agent/ORANGE-TEAM-AGENT",
+      "issue_number": 10,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/10"
+    },
+    "GREEN": {
+      "branch": "agent/GREEN-TEAM-AGENT",
+      "issue_number": 11,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/11"
+    },
+    "RED": {
+      "branch": "team/red-team-agent",
+      "issue_number": 12,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/12"
+    },
+    "BLUE": {
+      "branch": "agents/blue-team-agent",
+      "issue_number": 13,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/13"
+    },
+    "PURPLE": {
+      "branch": "agent/PURPLE-TEAM-AGENT",
+      "issue_number": 14,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/14"
+    },
+    "WHITE": {
+      "branch": "agent/WHITE-TEAM-AGENT",
+      "issue_number": 15,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/15"
+    },
+    "BLACK": {
+      "branch": "agent/BLACK-TEAM-AGENT",
+      "issue_number": 16,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/16"
+    },
+    "GRAY": {
+      "branch": "agent/GRAY-CELL-AGENT",
+      "issue_number": 17,
+      "issue_url": "https://github.com/vixttha/Color-Team-OPS/issues/17"
+    }
+  }
+}
