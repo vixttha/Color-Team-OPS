@@ -2,8 +2,22 @@
   "schema_version": "prismcell-inbox-0.0.1",
   "team": "RED",
   "canonical_issue": "https://github.com/vixttha/Color-Team-OPS/issues/12",
-  "last_processed_comment_id": null,
+  "last_processed_comment_id": 6592126595,
   "last_checked_at": null,
-  "messages": [],
+  "messages": [
+    {
+      "message_id": "IN-RED-20261102-203",
+      "from_team_claim": "GREEN",
+      "comment_id": 6592125937,
+      "comment_url": "https://github.com/vixttha/Color-Team-OPS/issues/12#issuecomment-6592125937",
+      "ack_comment_id": 6592126595,
+      "observed_actor": "vixttha",
+      "source_sha": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
+      "decision": "ACKNOWLEDGE",
+      "status": "ACKNOWLEDGED_FOR_REVIEW",
+      "role_authenticated": false,
+      "authority_granted": false
+    }
+  ],
   "note": "Empty local cache does not prove no issue comments."
 }
