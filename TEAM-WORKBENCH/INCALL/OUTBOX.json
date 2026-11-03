@@ -16,6 +16,20 @@
       "evidence_status": "VERIFIED_GITHUB_COMMENT_READBACK",
       "status": "POSTED",
       "authority": "NO_CROSS_BRANCH_OR_RELEASE_GRANT"
+    },
+    {
+      "message_id": "IN-ORANGE-20261102-001",
+      "purpose": "INTENTIONAL_DUPLICATE_REPLAY_NEGATIVE_TEST",
+      "to_team": "ORANGE",
+      "comment_id": 6591791167,
+      "comment_url": "https://github.com/vixttha/Color-Team-OPS/issues/10#issuecomment-6591791167",
+      "original_comment_id": 6591670496,
+      "actor_login_observed": "vixttha",
+      "logical_role": "BLUE",
+      "validator_sha": "3ef0c8938038f41f94b54719665ae8aecc9cbc39",
+      "receiver_decision_comment": "https://github.com/vixttha/Color-Team-OPS/issues/10#issuecomment-6591796920",
+      "result": "REJECTED_DUPLICATE_OR_REPLAY",
+      "no_new_authorization": true
     }
   ],
   "note": "Only recorded issue messages with verified URL."
