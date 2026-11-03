@@ -20,12 +20,20 @@
     "BLUE-TEAM-AGENT/FINDINGS.json"
   ],
   "incall_issue": "https://github.com/vixttha/Color-Team-OPS/issues/13",
-  "template_revision": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
+  "template_revision": "50839b1c95e7390fbcd15366584e5592f7572d3e",
   "core_policy_revision": "prismcell-core-0.0.1",
   "migration": {
     "status": "PINNED_WITH_HISTORY_PRESERVED",
     "from_version": "0.0.1",
     "source": "PRISMCELL_WORKBENCH_OPTION_D"
   },
-  "project_config_ref": "PRISMCELL/config/color-team-ops.json@dee7dfd4efd9e87fcb84252eef76c51c96384f43"
+  "project_config_ref": "PRISMCELL/config/color-team-ops.json@50839b1c95e7390fbcd15366584e5592f7572d3e",
+  "template_upgrade_history": [
+    {
+      "from": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
+      "to": "50839b1c95e7390fbcd15366584e5592f7572d3e",
+      "reason": "A-E hardening plus native Node/Python schema source verified; all existing history preserved",
+      "host_exec": "NATIVE_CLOUD_TESTS_63_PASS"
+    }
+  ]
 }
