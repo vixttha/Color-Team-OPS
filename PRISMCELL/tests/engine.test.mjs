@@ -49,3 +49,18 @@ test('invalid pin migration denied',()=>assert.equal(migrateState({team:'BETA',h
 test('invalid config duplicate issue rejected',()=>assert.ok(validateConfig({...config,teams:{...config.teams,GAMMA:{...config.teams.GAMMA,issue_number:2,issue_url:repo+'/issues/2'}}}).includes('DUPLICATE_LOCATOR')));
 test('repo replacement works without source changes',()=>{const newRepo='https://github.com/another-org/another-project';const c={...config,repository:'another-org/another-project',repository_url:newRepo,teams:Object.fromEntries(Object.entries(config.teams).map(([n,t])=>[n,{...t,issue_url:newRepo+'/issues/'+t.issue_number}]))};assert.deepEqual(validateConfig(c),[]);});
 test('stale source SHA is rejected when pinned source is supplied',()=>assert.ok(intake(config,ledger(),receipt(),{expected_source_sha:'b'.repeat(40)}).errors.includes('STALE_SOURCE_SHA')));
+
+// Purple negative-case regressions: reject inherited object members, never fake provider success.
+test('constructor and toString recipients cannot impersonate configured teams',()=>{
+ for(const target of ['constructor','toString','__proto__','hasOwnProperty']){
+  const bad={...msg,to_team:target};
+  assert.ok(validateMessage(config,bad).includes('UNKNOWN_RECIPIENT'));
+  const r=intake(config,ledger(),{...receipt(bad),issue_url:undefined,comment_url:'undefined#issuecomment-11'});
+  assert.equal(r.decision,'REJECT');
+  assert.equal(r.authorityGranted,false);
+ }
+});
+test('a schema-invalid custom message ID is rejected',()=>assert.ok(validateMessage(config,{...msg,message_id:'CUSTOM-ABC1234'}).includes('BAD_MESSAGE_ID')));
+test('unsupported posted_at field is denied until standardized',()=>assert.ok(validateMessage(config,{...msg,posted_at:'2026-11-02T12:00:00Z'}).includes('EXTRA_FIELDS')));
+test('a malformed project config is rejected',()=>assert.ok(validateConfig({...config,repository:'wrong/repo'}).includes('BAD_PROJECT')));
+test('a one-team project is supported by core',()=>assert.deepEqual(validateConfig({...config,teams:{ALPHA:config.teams.ALPHA}}),[]));
