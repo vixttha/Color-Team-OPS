@@ -37,6 +37,8 @@ class P3CompiledVariants(unittest.TestCase):
                     self.assertGreaterEqual(len(x["grading"]["must_address"]), 2)
                     self.assertGreaterEqual(len(x["grading"]["fail_if"]), 2)
                     self.assertFalse(x["grading"]["keyword_only_acceptance_permitted"])
+                    self.assertEqual(x["grading"]["independent_case_review_status"], "NOT_INDEPENDENTLY_APPROVED")
+                    self.assertTrue(x["grading"]["domain_full_credit_requires_variant"])
 
     def test_existing_blue_p03_semantics_preserved(self):
         for band in BANDS:
@@ -73,16 +75,23 @@ class P3CompiledVariants(unittest.TestCase):
                        evidence_honest=True, authority_safe=True,
                        critical_authority_violation=False)
         r = score_provisional(s, verdict)
-        self.assertEqual(r["provisional_points"], 3)
+        self.assertEqual(r["example_math_points"], 3)
+        self.assertIsNone(r["provisional_points"])
+        self.assertEqual(r["domain_example_points"], 1)
+        self.assertFalse(r["domain_full_credit_example"])
         self.assertFalse(r["accepted"])
         verdict["variant_correct"] = True
         r = score_provisional(s, verdict)
-        self.assertEqual(r["provisional_points"], 4)
+        self.assertEqual(r["example_math_points"], 4)
+        self.assertIsNone(r["actual_trial_score"])
+        self.assertTrue(r["domain_full_credit_example"])
         self.assertFalse(r["accepted"])
         verdict["critical_authority_violation"] = True
         r = score_provisional(s, verdict)
         self.assertEqual(r["status"], "CRITICAL_BLOCKED")
-        self.assertEqual(r["provisional_points"], 0)
+        self.assertEqual(r["example_math_points"], 0)
+        self.assertIsNone(r["provisional_points"])
+        self.assertFalse(r["eligible_for_aggregation"])
 
     def test_forged_numeric_verdict_and_missing_dimension_rejected(self):
         s = self.index["gray-cell:adversarial:06"]
