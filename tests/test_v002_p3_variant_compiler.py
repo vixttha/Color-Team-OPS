@@ -40,6 +40,23 @@ class P3CompiledVariants(unittest.TestCase):
                     self.assertEqual(x["grading"]["independent_case_review_status"], "NOT_INDEPENDENTLY_APPROVED")
                     self.assertTrue(x["grading"]["domain_full_credit_requires_variant"])
 
+    def test_p3_14_normal_rubrics_do_not_require_generic_label(self):
+        """Normal-case scoring must evaluate domain substance, not boilerplate."""
+        normals = [x for x in self.compiled if x["band"] == "normal"]
+        self.assertEqual(len(normals), 90)
+        for spec in normals:
+            grading = spec["grading"]
+            criteria = grading["must_address"] + grading["fail_if"]
+            self.assertTrue(all("omitting the case condition 'Reference input as supplied'" not in c
+                                for c in criteria), spec["case_id"])
+            self.assertTrue(any("fixture-specific domain requirement" in c
+                                for c in grading["fail_if"])
+                            or spec["case_id"] == "blue-team:normal:01",
+                            spec["case_id"])
+            self.assertTrue(all("repeat the generic normal-case label" not in c
+                                for c in grading["must_address"]), spec["case_id"])
+            self.assertFalse(grading["independent_oracle_verified"])
+
     def test_existing_blue_p03_semantics_preserved(self):
         for band in BANDS:
             s = self.index[f"blue-team:{band}:01"]
