@@ -1,0 +1,12 @@
+# PrismCell v0.0.1 A–E — exact-file native regression evidence
+2026-11-02 America/Detroit · owner-authorized PrismCell template scope only.
+## Native cloud execution
+Node v22.16.0; executed in ephemeral cloud build sandbox: `node --test PRISMCELL/tests/*.test.mjs`. Result: **48 tests passed, 0 failed**. Includes cross-project fixture, forged approval, claimed identity, stale source pin, duplicate/replay, edited metadata, concurrent update, interrupted-session checkpoint model, migration history, and SHA-256 evidence snapshot. Separate GitHub-head fetch verified Node source/blob identities match the locally executed bytes.
+Python 3.13.5 and jsonschema 4.26.0; executed: `python -m unittest discover -s PRISMCELL/tests -p 'test_schemas.py'`. Result: **15 tests passed, 0 failed**. Four universal schemas `core/schemas/{message,state,work-item,project}.schema.json` were reconstituted locally from the connected private GitHub source and each local Git blob SHA was checked against the corresponding pinned GitHub blob SHA. Thus the schema artifacts used in the native test were byte-identical to source.
+TOTAL: **63 native test cases passed** in available temporary cloud sandbox. The test code and schemas are committed to the isolated PrismCell template branch only. Neither the installed ChatGPT plugin nor Color-Team-OPS v0.0.2 integration has been changed.
+## Additional real GitHub operational evidence
+Nine team INCALL roundtrips via actual issue comments, one BLOCK, a Red/Blue synthetic contradiction arbitrated against live branch flags, a rejected stale-source comment, and one checkpoint persistence + later-readback recovery simulation. These are provider/API readback facts, not native unit-test case counts; no genuine separate ChatGPT session or independently authenticated agent role was used.
+## Important limitations
+**Not a GitHub Actions run** and not independently attested pipeline output; no paid GitHub-hosted execution, personal runner dispatch, plugin publish, credentials, branch rulesets, integration merge or owner release action.
+The universal engine never grants foreign-branch authority; enforcing actual role identity and GitHub branch ACL must occur outside the module. Source-valid messages are untrusted until provider-authenticated, and the single connected GitHub actor `vixttha` cannot prove independent specialist credentials.
+Optional Python `jsonschema` and Node development tests are not dependencies for reading/using GitHub workcell Markdown.
