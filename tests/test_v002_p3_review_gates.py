@@ -29,7 +29,9 @@ class P3ReviewGateRegression(unittest.TestCase):
         self.assertEqual(set(self.compiled), set(self.raw))
         self.assertEqual(
             sum(x["source_basis"] == "DEVELOPMENT_DERIVED_CASE_BOUND_UNREVIEWED"
-                for x in record["cases"].values()), 267)
+                for x in record["cases"].values()), 266)
+        self.assertEqual(sum(x["source_basis"] == "DEVELOPMENT_EXPLICIT_P3_18_TWO_REQUEST_PAGINATION_DRAFT"
+                             for x in record["cases"].values()), 1)
         self.assertEqual(
             sum(x["source_basis"] == "PURPLE_DIRECT_BLUE_P03_PRESERVED"
                 for x in record["cases"].values()), 3)
