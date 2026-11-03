@@ -94,6 +94,86 @@
     "observed_by": {
       "type": "string",
       "minLength": 1
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "task_id",
+        "phase",
+        "actor_role",
+        "predecessor_event_id",
+        "review_disposition",
+        "repair_attempt",
+        "provenance_kind",
+        "actor_provenance_ref",
+        "authority_effect"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "cto-v002-logical-chain-1"
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phase": {
+          "enum": [
+            "HEAD_ASSIGN",
+            "WORKER_RESULT",
+            "VALIDATE",
+            "INTERNAL_AUDIT",
+            "HEAD_REVIEW"
+          ]
+        },
+        "actor_role": {
+          "enum": [
+            "HEAD",
+            "WORKER",
+            "VALIDATOR",
+            "INTERNAL_AUDITOR"
+          ]
+        },
+        "predecessor_event_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "review_disposition": {
+          "enum": [
+            "ASSIGN",
+            "DONE",
+            "PASS",
+            "FAIL",
+            "UNVERIFIED",
+            "REPAIR",
+            "ACCEPT",
+            "BLOCK"
+          ]
+        },
+        "repair_attempt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "provenance_kind": {
+          "enum": [
+            "MODEL_LOGICAL",
+            "CONNECTED_TOOL_CLAIM",
+            "USER_SUPPLIED"
+          ]
+        },
+        "actor_provenance_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority_effect": {
+          "const": "NO_EXTERNAL_PERMISSION"
+        }
+      }
     }
   },
   "allOf": [
@@ -115,6 +195,31 @@
           "observed_by"
         ]
       }
+    },
+    {
+      "if": {
+        "required": [
+          "workflow"
+        ]
+      },
+      "then": {
+        "required": [
+          "source_sha",
+          "evidence_refs"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
     }
-  ]
+  ],
+  "description": "Legacy Worker completion envelope or opt-in cto-v002-logical-chain-1 event. All actor/receipt/permission claims remain unauthenticated until checked by a real host."
 }
