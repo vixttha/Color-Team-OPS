@@ -52,4 +52,4 @@ test('installer dry-run creates fresh project with manifest, and refuses overwri
   assert.notEqual(retry.status,0);assert.match(retry.stderr,/BOOTSTRAP_DENIED/);
  }finally{await rm(dir,{recursive:true,force:true});}
 });
-test('team names with underscore are valid for message IDs',()=>{const c={...cfg,teams:{...cfg.teams,GRAY_CELL:{branch:'workcells/gray-cell',issue_number:84,issue_url:cfg.repository_url+'/issues/84'}};const m={...msg,to_team:'GRAY_CELL',message_id:'IN-GRAY_CELL-20261102-123'};assert.deepEqual(validateConfig(c),[]);assert.deepEqual(validateMessage(c,m),[]);});
+test('team names with underscore are valid for message IDs',()=>{const c={...cfg,teams:{...cfg.teams,GRAY_CELL:{branch:'workcells/gray-cell',issue_number:84,issue_url:cfg.repository_url+'/issues/84'}}};const m={...msg,to_team:'GRAY_CELL',message_id:'IN-GRAY_CELL-20261102-123'};assert.deepEqual(validateConfig(c),[]);assert.deepEqual(validateMessage(c,m),[]);});

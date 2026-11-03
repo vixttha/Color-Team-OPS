@@ -35,7 +35,7 @@ jobs:
           output="$RUNNER_TEMP/prismcell-v001-${{ github.run_id }}-${{ github.run_attempt }}-linux"
           trap 'rm -rf "$output"' EXIT
           node PRISMCELL/tools/initialize-project.mjs --config PRISMCELL/tests/fixtures/nebula-project.json --out "$output" --source-sha "$EXPECTED_SHA"
-          node PRISMCELL/tools/verify-manifest.mjs "$output" "$EXPECTED_SHA"
+          node PRISMCELL/tools/verify-manifest.mjs "$output" "$EXPECTED_SHA" 3
           echo "PRISMCELL_V001_REUSE_LINUX_PASS $EXPECTED_SHA"
   windows:
     if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/prismcell-v0.0.1-reuse-yellow'
@@ -65,7 +65,7 @@ jobs:
           try {
             node PRISMCELL/tools/initialize-project.mjs --config PRISMCELL/tests/fixtures/nebula-project.json --out $output --source-sha $env:EXPECTED_SHA
             if ($LASTEXITCODE -ne 0) { throw 'Offline bootstrap failed' }
-            node PRISMCELL/tools/verify-manifest.mjs $output $env:EXPECTED_SHA
+            node PRISMCELL/tools/verify-manifest.mjs $output $env:EXPECTED_SHA 3
             if ($LASTEXITCODE -ne 0) { throw 'Bootstrapped manifest invalid' }
             Write-Output "PRISMCELL_V001_REUSE_WINDOWS_PASS $env:EXPECTED_SHA"
           } finally {

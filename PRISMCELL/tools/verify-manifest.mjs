@@ -1,10 +1,12 @@
 /* Pure offline file-level check of a rendered workcell manifest, no provider calls. */
 import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
-async function main([dir,sha]){
+async function main([dir,sha,countRaw]){
+  const expectedCount=countRaw?Number(countRaw):null;
+  if(expectedCount!==null&&(!Number.isSafeInteger(expectedCount)||expectedCount<1||expectedCount>50))throw new Error('INVALID_TEAM_COUNT');
   if(!dir||!sha||!(/^[0-9a-fA-F]{40}$/).test(sha))throw new Error('MANIFEST_VALIDATION_ARGS');
   const m=JSON.parse(await readFile(join(dir,'MANIFEST.json'),'utf8'));
-  if(m.schema_version!=='prismcell-bootstrap-manifest-0.0.1'||m.installed!==false||m.provider_verified!==false||m.source_sha!==sha||!Array.isArray(m.teams)||m.teams.length!==3)throw Error('MANIFEST_CONTRACT_MISMATCH');
+  if(m.schema_version!=='prismcell-bootstrap-manifest-0.0.1'||m.installed!==false||m.provider_verified!==false||m.source_sha!==sha||!Array.isArray(m.teams)||m.teams.length<1||m.teams.length>50||(expectedCount!==null&&m.teams.length!==expectedCount))throw Error('MANIFEST_CONTRACT_MISMATCH');
   const names=new Set();
   for(const team of m.teams){
     if(names.has(team.team)||!Array.isArray(team.files)||team.files.length<17)throw Error('MANIFEST_TEAM_OR_FILES');
