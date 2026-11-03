@@ -28,6 +28,9 @@ class RouteIntent:
     dispatch_count: int
     max_handoffs: int
     forbidden_capabilities: tuple[str,...] = ()
+    advisory_only: bool = False
+    supplied_context_ref: Optional[str] = None
+    synthetic_only: bool = False
 
 @dataclass(frozen=True)
 class RouteAdvice:
@@ -99,12 +102,22 @@ def recommend_one(intent: RouteIntent, directory: Optional[TeamDirectory] = None
         not isinstance(intent.task_text,str) or
         any(not isinstance(c,str) for c in intent.required_capabilities) or
         any(not isinstance(c,str) for c in intent.forbidden_capabilities) or
-        any(not isinstance(t,str) for t in intent.available_tools)):
+        any(not isinstance(t,str) for t in intent.available_tools)
+        or type(intent.advisory_only) is not bool
+        or type(intent.synthetic_only) is not bool
+        or (intent.supplied_context_ref is not None
+            and not isinstance(intent.supplied_context_ref,str))):
         return out("BLOCKED","INVALID_ROUTING_METADATA")
     if not intent.permitted_teams or not intent.required_capabilities:
         return out("ABSTAIN","NO_REQUIRED_CAPABILITY_OR_PERMITTED_TEAM")
     if set(intent.required_capabilities)&set(intent.forbidden_capabilities):
         return out("BLOCKED","FORBIDDEN_REQUIRED_CAPABILITY")
+    if intent.advisory_only and not intent.supplied_context_ref:
+        return out("UNVERIFIED","USER_SUPPLIED_CONTEXT_MISSING")
+    if (intent.advisory_only and
+        any(x.startswith("red.") for x in intent.required_capabilities)
+        and not intent.synthetic_only):
+        return out("CAPABILITY_BLOCKED","RED_ADVISORY_REQUIRES_SYNTHETIC_ONLY_SCOPE")
     if directory is None:
         try:
             directory=TeamDirectory()
@@ -114,14 +127,17 @@ def recommend_one(intent: RouteIntent, directory: Optional[TeamDirectory] = None
         result=directory.search(query=intent.task_text,
             permitted_teams=intent.permitted_teams,
             required_capabilities=intent.required_capabilities,
-            available_tools=intent.available_tools,limit=18)
+            available_tools=intent.available_tools,limit=18,
+            advisory_only=intent.advisory_only,
+            supplied_context_ref=intent.supplied_context_ref)
     except (RegistryRejected,OSError,ValueError,TypeError,KeyError):
         return out("BLOCKED","REGISTRY_SCOPE_INVALID")
     if result.status=="ABSTAIN":
         return out("ABSTAIN","REQUIRED_CAPABILITIES_UNSATISFIED")
     if not result.matches:
         return out("ABSTAIN","NO_ELIGIBLE_CAPABILITY")
-    eligible=[c for c in result.matches if not c.missing_tools
+    eligible=[c for c in result.matches
+              if (intent.advisory_only or not c.missing_tools)
               and c.capability_id not in intent.forbidden_capabilities]
     if not eligible:
         return out("CAPABILITY_BLOCKED","DECLARED_TOOLS_OR_CAPABILITY_NOT_AVAILABLE")
@@ -136,6 +152,11 @@ def recommend_one(intent: RouteIntent, directory: Optional[TeamDirectory] = None
     winner=sorted(teams)[0]
     candidates=sorted(by_team[winner],key=lambda c:c.capability_id)
     candidate=candidates[0]
+    if intent.advisory_only:
+        return out("SUGGEST_ONLY","ADVISORY_WITH_SUPPLIED_CONTEXT",
+                   "User-supplied text only: no live test, provider operation, tool grant, "
+                   "authenticated review or actual external observation.",
+                   winner,candidate.capability_id,candidate.playbook_ref)
     return out("SUGGEST_ONLY","CANDIDATE_NOT_AUTHORIZED",
                "Metadata match only. Head and protected host must authorize the actual Worker.",
                winner,candidate.capability_id,candidate.playbook_ref)

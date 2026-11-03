@@ -35,11 +35,11 @@ class Candidate:
     required_tools: tuple[str, ...]
     missing_tools: tuple[str, ...]
     playbook_ref: str
-    status: str  # CANDIDATE_ONLY or TOOL_ACCESS_UNVERIFIED
+    status: str  # CANDIDATE_ONLY, TOOL_ACCESS_UNVERIFIED or ADVISORY_ONLY
 
 @dataclass(frozen=True)
 class SearchResult:
-    status: str  # CANDIDATES, ABSTAIN, CAPABILITY_BLOCKED
+    status: str  # CANDIDATES, CANDIDATES_ADVISORY_ONLY, ABSTAIN, CAPABILITY_BLOCKED
     registry_version: str
     matches: tuple[Candidate, ...]
     reason: str
@@ -117,17 +117,26 @@ class TeamDirectory:
     def search(self, *, query: str, permitted_teams: tuple[str,...],
                available_tools: Optional[tuple[str,...]] = None,
                required_capabilities: tuple[str,...] = (),
-               limit: int = 5) -> SearchResult:
+               limit: int = 5, advisory_only: bool = False,
+               supplied_context_ref: Optional[str] = None) -> SearchResult:
         if (not isinstance(query,str) or not isinstance(permitted_teams,tuple)
             or any(t not in EXPECTED_TEAMS for t in permitted_teams)
             or len(permitted_teams) != len(set(permitted_teams))
             or not isinstance(required_capabilities,tuple)
             or any(not isinstance(x,str) or not _CAP.fullmatch(x) for x in required_capabilities)
             or type(limit) is not int or limit < 1 or limit > 18
+            or type(advisory_only) is not bool
+            or (supplied_context_ref is not None and
+                (not isinstance(supplied_context_ref, str)
+                 or not _TAG.fullmatch(supplied_context_ref)
+                 or len(supplied_context_ref) > 128))
             or (available_tools is not None and
                 (not isinstance(available_tools,tuple)
                  or any(not isinstance(t,str) or not _TAG.fullmatch(t) for t in available_tools)))):
             raise RegistryRejected("INVALID_SEARCH_SCOPE")
+        # User context allows a logical advice-only candidate, never a tool grant.
+        if advisory_only and not supplied_context_ref:
+            return SearchResult("ABSTAIN", VERSION, (), "ADVISORY_CONTEXT_REQUIRED")
         words = set(re.findall(r"[a-z0-9-]+", query.lower()))
         provided = frozenset(available_tools or ())
         matches = []
@@ -145,7 +154,8 @@ class TeamDirectory:
                                  evidence_expected=cap["evidence_expected"],
                                  required_tools=tuple(cap["requires_tools"]),
                                  missing_tools=missing,playbook_ref=team["playbook_ref"],
-                                 status="TOOL_ACCESS_UNVERIFIED" if missing else "CANDIDATE_ONLY")
+                                 status=("ADVISORY_ONLY" if advisory_only else
+                                         "TOOL_ACCESS_UNVERIFIED" if missing else "CANDIDATE_ONLY"))
                 matches.append((-score, team["id"], cap["id"], item))
         matches.sort(key=lambda x: x[:3])
         selected = tuple(x[3] for x in matches[:limit])
@@ -154,6 +164,9 @@ class TeamDirectory:
         if required_capabilities and not set(required_capabilities).issubset(
                 {item.capability_id for item in selected}):
             return SearchResult("ABSTAIN",VERSION,selected,"REQUIRED_CAPABILITIES_UNMET")
+        if advisory_only:
+            return SearchResult("CANDIDATES_ADVISORY_ONLY", VERSION, selected,
+                                "USER_CONTEXT_ONLY_NO_LIVE_TOOL_OR_HOST_GRANT")
         if all(x.missing_tools for x in selected):
             return SearchResult("CAPABILITY_BLOCKED",VERSION,selected,"MISSING_DECLARED_TOOLS")
         return SearchResult("CANDIDATES",VERSION,selected,
