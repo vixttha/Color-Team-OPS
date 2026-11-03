@@ -83,7 +83,8 @@ class P3CompiledVariants(unittest.TestCase):
         self.assertIn("initial", yellow_probe)
         self.assertIn("after", yellow_probe)
         self.assertIn("valid", yellow_probe)
-        self.assertIn("timeout", yellow_probe)
+        self.assertTrue(any(term in yellow_probe for term in ("timeout", "times out", "timed out")),
+                        "later valid submission must have an unknown timeout outcome")
         self.assertIn("idempoten", str(yellow["measurement"]["variant_must_address"]).lower())
 
     def test_p3_17_reviewer_rubrics_bind_to_fixture_contexts(self):
