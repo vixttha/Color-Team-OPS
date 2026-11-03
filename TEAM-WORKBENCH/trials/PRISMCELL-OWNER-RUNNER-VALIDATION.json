@@ -1,0 +1,31 @@
+{
+  "schema_version": "prismcell-yellow-evidence-2026-11-02",
+  "template_sha": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "workflow_sha": "32d5c84ee8b08aeab24c14de9c1188a6936c866a",
+  "workflow_run_id": 41561505642,
+  "workflow_run_url": "https://github.com/vixttha/Color-Team-OPS/actions/runs/41561505642",
+  "windows": {
+    "runner": "color-team-ops-windows-01",
+    "job_id": 125672952981,
+    "conclusion": "success",
+    "python_tests": 15,
+    "node_suite_exit": "success",
+    "node_count_from_log": null
+  },
+  "linux": {
+    "runner": "color-team-ops-linux-01",
+    "job_id": 125672952992,
+    "conclusion": "success",
+    "node_pass": 60,
+    "node_fail": 0,
+    "python_tests": 15
+  },
+  "staging_branch": "feature/prismcell-cloud-control-gated",
+  "staging_sha": "4b12ba88bcac505d5430dcd008f4f2ff7436f25e",
+  "staging_added_paths": 9,
+  "disposition": "FROZEN_NOT_MERGED",
+  "vercel_actions_in_mission": 0,
+  "team_workcell_readback": 9,
+  "host_production_acceptance": "NOT_GRANTED",
+  "product_release_authorized": false
+}
