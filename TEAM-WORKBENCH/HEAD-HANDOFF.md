@@ -1,3 +1,11 @@
+# YELLOW — Operational launch checkpoint OPS-20261102-YELLOW-001
+
+**READY ON INVOCATION**; NOT continuously executing. Home c47f278643ba901d324a741bcd81918d45ec955c; observed integration 11f685121776744e28534d35bef9b16611e33897 (recheck); template 25d59530210949792b3ce47ac0a804442997a9b1. INCALL https://github.com/vixttha/Color-Team-OPS/issues/9 had 2 comments (latest 6592156640). Inbox 1, outbox 1, queue 3 records preserved; no worker active.
+
+**Next Head:** refresh GitHub source/issues and old identity/queue, reconcile incoming messages, choose one authorized YELLOW task, and run Head → Worker → Validate → logical Internal Auditor → Head. No auto-running agent, permission grant or product release.
+
+## Preserved historical handoff
+
 # YELLOW Head handoff — bootstrap 2026-11-02
 
 - Workspace: `agent/YELLOW-TEAM-AGENT` (PrismCell v0.0.1)
