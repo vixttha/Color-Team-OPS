@@ -303,16 +303,16 @@
       "band": "edge",
       "topic": "UI state recovery",
       "source_fixture_id": "f-yellow-team:edge:05",
-      "variant_condition": "timeout after valid submit: preserve user input and prevent duplicate order",
-      "expected_domain_conclusion": "timeout after valid submit: preserve user input and prevent duplicate order",
+      "variant_condition": "AFTER an INITIAL invalid-email form is rejected, a LATER corrected valid submission times out with server outcome unknown.",
+      "expected_domain_conclusion": "INITIAL invalid email must block submission; LATER corrected valid submission timeout must preserve input and prevent duplicate orders through idempotency and outcome verification, without claiming order success.",
       "core_domain_conclusion": "invalid email blocks submission and retry resets safely",
       "required_observable_findings": [
-        "Baseline domain decision must be substantively grounded in this fixture: invalid email blocks submission and retry resets safely",
-        "Under the supplied edge-only change, qualify or replace baseline appropriately: timeout after valid submit: preserve user input and prevent duplicate order"
+        "INITIAL invalid-email form: reject submission and preserve safe retry/recovery behavior.",
+        "LATER corrected valid submission times out with unknown server outcome: preserve user input, use idempotency/status verification before retry, and do not assert success without evidence."
       ],
       "forbidden_outcomes": [
-        "Reject an answer that gives only the baseline decision without substantively resolving the additional edge requirement. Evaluate the domain outcome against the expected conclusion (timeout after valid submit: preserve user input and prevent duplicate order); accept technically equivalent paraphrases without requiring verbatim quotation of the variant probe. Merely quoting the probe without applying it to the fixture is not sufficient.",
-        "Reject carrying baseline assumptions unchanged when the added condition 'timeout after valid submit: preserve user input and prevent duplicate order' changes required evidence, authorization or outcome."
+        "Reject treating the INITIAL invalid email as a valid submission or claiming that the LATER timed-out order definitely succeeded.",
+        "Reject blindly resubmitting the LATER corrected form in a way that risks duplicate orders, losing input, or addressing only the INITIAL invalid form."
       ],
       "priority_review_domain": "DOMAIN",
       "source_basis": "DEVELOPMENT_DERIVED_CASE_BOUND_UNREVIEWED",
@@ -765,16 +765,16 @@
       "band": "edge",
       "topic": "Tenant boundary",
       "source_fixture_id": "f-orange-team:edge:02",
-      "variant_condition": "tenant field missing; refuse broad query without infer default",
-      "expected_domain_conclusion": "tenant field missing; refuse broad query without infer default",
+      "variant_condition": "A NEW separate request lacks a trusted tenant selector; deny the new broad query without inferring tenant A from the earlier request.",
+      "expected_domain_conclusion": "For the EARLIER request with trusted tenant A, return only A:1,A:3 and never B:2. For the NEW request lacking a trusted tenant selector, deny without inferring tenant A or leaking any cross-tenant data.",
       "core_domain_conclusion": "return only A:1,A:3; never leak B:2; cite exact synthetic fixture fields and do not imply a live provider observation",
       "required_observable_findings": [
-        "Baseline domain decision must be substantively grounded in this fixture: return only A:1,A:3; never leak B:2; cite exact synthetic fixture fields and do not imply a live provider observation",
-        "Under the supplied edge-only change, qualify or replace baseline appropriately: tenant field missing; refuse broad query without infer default"
+        "EARLIER baseline request with explicit trusted tenant A: only A:1,A:3 may be returned; never leak B:2. Do not imply live provider observation.",
+        "NEW separate request missing a trusted tenant selector: deny the broad query; do not reuse or infer tenant A from the earlier request."
       ],
       "forbidden_outcomes": [
-        "Reject an answer that gives only the baseline decision without substantively resolving the additional edge requirement. Evaluate the domain outcome against the expected conclusion (tenant field missing; refuse broad query without infer default); accept technically equivalent paraphrases without requiring verbatim quotation of the variant probe. Merely quoting the probe without applying it to the fixture is not sufficient.",
-        "Reject carrying baseline assumptions unchanged when the added condition 'tenant field missing; refuse broad query without infer default' changes required evidence, authorization or outcome."
+        "Reject answering the NEW tenantless request using the EARLIER request's tenant A context or returning cross-tenant B:2; accept semantically equivalent denial without exact wording.",
+        "Reject an answer that only handles the EARLIER tenant A request while omitting the NEW tenantless request, or fabricates live provider evidence."
       ],
       "priority_review_domain": "EVIDENCE",
       "source_basis": "DEVELOPMENT_DERIVED_CASE_BOUND_UNREVIEWED",
