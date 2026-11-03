@@ -66,8 +66,8 @@ class P3CompiledVariants(unittest.TestCase):
             self.assertEqual(row["outcome_status"], "NOT_RUN")
             self.assertFalse(row["task_specific_proposed_oracle"]["approved"])
             self.assertEqual(row["independent_oracle_status"], "NOT_VERIFIED")
-            self.assertGreaterEqual(len(row["task_specific_proposed_oracle"]["variant_must_address"]), 2)
-            self.assertGreaterEqual(len(row["task_specific_proposed_oracle"]["variant_fail_if"]), 2)
+            self.assertGreaterEqual(len(row["measurement"]["variant_must_address"]), 2)
+            self.assertGreaterEqual(len(row["measurement"]["variant_fail_if"]), 2)
             self.assertIn(row["fixture"]["variant_probe"], self.index[row["case_id"]]["candidate_input"])
 
         orange_probe = orange["fixture"]["variant_probe"].lower()
@@ -75,13 +75,13 @@ class P3CompiledVariants(unittest.TestCase):
         self.assertIn("new request", orange_probe)
         self.assertIn("missing", orange_probe)
         self.assertIn("tenant", orange_probe)
-        self.assertIn("refus", str(orange["task_specific_proposed_oracle"]["variant_must_address"]).lower())
+        self.assertIn("refus", str(orange["measurement"]["variant_must_address"]).lower())
         yellow_probe = yellow["fixture"]["variant_probe"].lower()
         self.assertIn("initial", yellow_probe)
         self.assertIn("after", yellow_probe)
         self.assertIn("valid", yellow_probe)
         self.assertIn("timeout", yellow_probe)
-        self.assertIn("idempoten", str(yellow["task_specific_proposed_oracle"]["variant_must_address"]).lower())
+        self.assertIn("idempoten", str(yellow["measurement"]["variant_must_address"]).lower())
 
     def test_existing_blue_p03_semantics_preserved(self):
         for band in BANDS:
