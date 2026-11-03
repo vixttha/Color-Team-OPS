@@ -228,6 +228,12 @@ class R03LogicalEventTests(unittest.TestCase):
         self.assertEqual(self.check(self.steps+second).status,"BLOCKED")
     def test_observed_source_revision_must_match(self):
         self.assertEqual(validate_logical_chain(self.doc,self.steps,OTHER_SHA).code,"STALE_SOURCE")
+    def test_failed_worker_status_cannot_be_promoted_by_later_pass(self):
+        rows=deepcopy(self.steps);rows[1]["status"]="FAILED"
+        self.assertEqual(self.check(rows).code,"FAILED_OR_BLOCKED_PHASE")
+    def test_missing_evidence_cannot_be_promoted_by_pass_label(self):
+        rows=deepcopy(self.steps);rows[2]["evidence_state"]="MISSING"
+        self.assertEqual(self.check(rows).code,"MISSING_EVIDENCE_CANNOT_PASS")
     def test_schema_events_never_authorize_external_operation(self):
         self.assertTrue(all(x["workflow"]["authority_effect"]=="NO_EXTERNAL_PERMISSION" for x in self.steps))
         self.assertEqual(self.check().status,"LOGICAL_VALID_UNVERIFIED")

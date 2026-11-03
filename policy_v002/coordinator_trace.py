@@ -114,6 +114,12 @@ def validate_logical_chain(mission, events, observed_sha):
         if (event.get("mission_id") != mission["mission_id"]
             or event.get("source_sha") != observed_sha):
             return GateResult("BLOCKED", "CROSS_MISSION_OR_STALE_EVENT")
+        # A FAILED/BLOCKED Worker or a missing-evidence gate cannot be
+        # promoted to logical completion by writing a PASS label later.
+        if event.get("status") != "DONE":
+            return GateResult("BLOCKED", "FAILED_OR_BLOCKED_PHASE")
+        if event.get("evidence_state") == "MISSING":
+            return GateResult("BLOCKED", "MISSING_EVIDENCE_CANNOT_PASS")
         if (w.get("phase") != phase or w.get("actor_role") != ROLES[phase_index]):
             return GateResult("BLOCKED", "OUT_OF_ORDER_OR_FORGED_ROLE_PHASE")
         if (w.get("predecessor_event_id") != previous):
