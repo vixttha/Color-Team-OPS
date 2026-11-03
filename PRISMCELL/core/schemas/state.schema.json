@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrismCell universal state v0.0.1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "template",
+    "version",
+    "team",
+    "home_branch",
+    "status",
+    "active_work_item",
+    "last_verified_product_sha",
+    "last_session",
+    "release_authorized"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "prismcell-state-0.0.1"
+    },
+    "template": {
+      "const": "PrismCell Workbench"
+    },
+    "version": {
+      "const": "0.0.1"
+    },
+    "team": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,39}$"
+    },
+    "home_branch": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "active_work_item": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_verified_product_sha": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{40}$"
+        }
+      ]
+    },
+    "last_session": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "release_authorized": {
+      "const": false
+    },
+    "template_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{40}$"
+    },
+    "incall_issue": {
+      "type": "string",
+      "pattern": "^https://[^/]+/[^/]+/[^/]+/issues/[0-9]+$"
+    }
+  }
+}

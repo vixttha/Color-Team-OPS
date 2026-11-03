@@ -59,6 +59,7 @@ export function intake(config, ledger, receipt, opts={}) {
   errors.push(...parsed.errors);
   const m=parsed.message;
   if(m)errors.push(...validateMessage(config,m));
+  if(m && opts.expected_source_sha && m.source_sha!==opts.expected_source_sha)errors.push('STALE_SOURCE_SHA');
   const team=m && config.teams[m.to_team];
   if(!receipt || receipt.provider!=='github' || !team || receipt.issue_url!==team.issue_url || !Number.isSafeInteger(receipt.comment_id) || receipt.comment_id<1 || receipt.comment_url!==(team.issue_url+'#issuecomment-'+receipt.comment_id) || !text(receipt.actor_login,100) || !text(receipt.created_at,60) || !text(receipt.updated_at,60))errors.push('UNVERIFIED_PROVIDER_METADATA');
   if(receipt?.created_at!==receipt?.updated_at)errors.push('EDITED_COMMENT_REVIEW');
