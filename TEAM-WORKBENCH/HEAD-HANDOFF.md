@@ -1,3 +1,13 @@
+# YELLOW Head — Completed PrismCell v0.0.1 reuse repair (Nov 3, 2026)
+
+Candidate source `e4de4b037e61e2893a5a8e4178b51bb298c70ab4` passed **89 Node + 21 Python/schema** native tests on **each** owner self-hosted Linux and Windows runner, including a fresh history-free synthetic project install. Evidence: [GitHub run #41700021272](https://github.com/vixttha/Color-Team-OPS/actions/runs/41700021272), [Yellow audit](trials/PRISMCELL-V001-YELLOW-REUSE-REPAIR-2026-11-03.md), [exact-source evidence](trials/PRISMCELL-V001-REUSE-EXACT-SHA-EVIDENCE.json).
+
+**PR #18** targets canonical PrismCell v0.0.1 template and remains **DRAFT** pending separate Purple and Head acceptance. The canonical template and all nine team pins retain source `25d59530210949792b3ce47ac0a804442997a9b1`, avoiding unapproved drift. Do NOT call this independently deployed in another real GitHub project, automatically dispatched, or role/ACL certified. No Vercel work.
+
+Next HEAD: perform Purple contradiction audit on exact source and run, then promote via reviewed PR if accepted. After any template promotion, migrate nine state pins and checkpoints with actual provider readback, source-bound history, sequential specialist scope and no deletions. Yellow's work lane ends with **no active worker**.
+
+## Previous HEAD handoff retained
+
 # YELLOW HEAD — completed PrismCell Vercel-exit audit (YELLOW-20261102-002)
 
 **HEAD decision:** PASS on nine-workcell preservation and owner-only Windows/Linux development-test validation; Vercel-specific cloud-control feature branch **FROZEN, NOT MERGED**; independent hosted-identity/production autonomy **NOT ACCEPTED**.
