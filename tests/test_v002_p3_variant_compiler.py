@@ -123,6 +123,35 @@ class P3CompiledVariants(unittest.TestCase):
         self.assertIn("initial", yellow_negative)
         self.assertIn("later", yellow_negative)
 
+    def test_p3_18_separate_cursor_requests_bound_in_candidate_and_reviewer(self):
+        """Two pagination requests may have different answers; they are not one page."""
+        from pathlib import Path
+        doc = json.loads((Path(__file__).resolve().parents[1] /
+                          "evaluation/v0.0.2/reviewer-case-criteria.json").read_text())
+        fixtures = {x["case_id"]: x for x in self.rows}
+        case_id = "yellow-team:edge:02"
+        case = fixtures[case_id]
+        oracle = doc["cases"][case_id]
+        spec = self.index[case_id]
+        prompt = spec["candidate_input"]
+        self.assertIn("BASELINE request", prompt)
+        self.assertIn("NEW EDGE request", prompt)
+        self.assertIn("cursor=(2,b)", prompt)
+        self.assertIn("cursor=(4,d)", prompt)
+        self.assertIn("next_cursor=null", prompt)
+        self.assertEqual(oracle["variant_condition"], case["fixture"]["variant_probe"])
+        self.assertEqual(oracle["expected_domain_conclusion"],
+                         case["task_specific_proposed_oracle"]["variant_proposed_disposition"])
+        self.assertEqual(spec["grading"]["must_address"],
+                         oracle["required_observable_findings"])
+        self.assertEqual(spec["grading"]["fail_if"], oracle["forbidden_outcomes"])
+        self.assertIn("BASELINE cursor=(2,b) returns [c,d]", " ".join(oracle["required_observable_findings"]))
+        self.assertIn("NEW EDGE cursor=(4,d) returns an empty page", " ".join(oracle["required_observable_findings"]))
+        self.assertIn("SAME request", " ".join(oracle["forbidden_outcomes"]))
+        self.assertFalse(case["task_specific_proposed_oracle"]["approved"])
+        self.assertEqual(case["outcome_status"], "NOT_RUN")
+        self.assertEqual(oracle["review_status"], "NOT_INDEPENDENTLY_APPROVED")
+
     def test_existing_blue_p03_semantics_preserved(self):
         for band in BANDS:
             s = self.index[f"blue-team:{band}:01"]

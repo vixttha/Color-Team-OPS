@@ -105,19 +105,21 @@
       "band": "edge",
       "topic": "Pagination repair",
       "source_fixture_id": "f-yellow-team:edge:02",
-      "variant_condition": "empty page after cursor=(4,d) must return no next cursor",
-      "expected_domain_conclusion": "empty page after cursor=(4,d) must return no next cursor",
+      "variant_condition": "TWO INDEPENDENT READ-ONLY PAGINATION REQUESTS: BASELINE request has cursor=(2,b), page size=2, stable sort=(score,id), and returns [c,d] with no duplicate b. NEW EDGE request starts AFTER cursor=(4,d), the final item; it returns [] and next_cursor=null. Report the results separately; do not combine them into one page or demand [c,d] for the NEW cursor.",
+      "expected_domain_conclusion": "For BASELINE cursor=(2,b), sorted results are [c,d] (b must not repeat). For separate NEW EDGE cursor=(4,d), there are no remaining items: page=[] and next_cursor=null. A single response page must not simultaneously be [c,d] and [].",
       "core_domain_conclusion": "return c,d without duplicating b and preserve stable ordering",
       "required_observable_findings": [
-        "Baseline domain decision must be substantively grounded in this fixture: return c,d without duplicating b and preserve stable ordering",
-        "Under the supplied edge-only change, qualify or replace baseline appropriately: empty page after cursor=(4,d) must return no next cursor"
+        "Distinguish the BASELINE pagination request cursor=(2,b) from the NEW EDGE request cursor=(4,d); do not treat them as one cursor.",
+        "BASELINE cursor=(2,b) returns [c,d] in stable (score,id) order without repeating b.",
+        "NEW EDGE cursor=(4,d) returns an empty page [] and next_cursor=null (no further page)."
       ],
       "forbidden_outcomes": [
-        "Reject an answer that gives only the baseline decision without substantively resolving the additional edge requirement. Evaluate the domain outcome against the expected conclusion (empty page after cursor=(4,d) must return no next cursor); accept technically equivalent paraphrases without requiring verbatim quotation of the variant probe. Merely quoting the probe without applying it to the fixture is not sufficient.",
-        "Reject carrying baseline assumptions unchanged when the added condition 'empty page after cursor=(4,d) must return no next cursor' changes required evidence, authorization or outcome."
+        "Return [c,d] as the NEW EDGE cursor=(4,d) page or issue a next cursor after final item d.",
+        "Claim the SAME request must both return [c,d] and []; do not treat the baseline page as an extra edge requirement.",
+        "Drop the original stable sort/tie-breaker or duplicate b in the BASELINE request."
       ],
       "priority_review_domain": "DOMAIN",
-      "source_basis": "DEVELOPMENT_DERIVED_CASE_BOUND_UNREVIEWED",
+      "source_basis": "DEVELOPMENT_EXPLICIT_P3_18_TWO_REQUEST_PAGINATION_DRAFT",
       "review_status": "NOT_INDEPENDENTLY_APPROVED",
       "evidence_policy": "Only supplied synthetic facts may be evaluated; no external receipt or event ID can be required unless explicitly in fixture.",
       "safe_refusal_is_not_domain_pass": true
