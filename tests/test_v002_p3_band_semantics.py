@@ -50,7 +50,8 @@ class P3VariantSemantics(unittest.TestCase):
             text=" ".join(row["measurement"]["variant_must_address"]+
                           row["measurement"]["variant_fail_if"]).lower()
             self.assertIn("event",text)
-            self.assertIn("fabricat",text)
+            self.assertTrue(any(term in text for term in ("fabricat", "invent")),
+                            "rubric must prohibit invented or fabricated evidence")
             self.assertIn("no individual event ids",make_candidate_input(row).lower())
             self.assertFalse(row["task_specific_proposed_oracle"]["approved"])
         edge=self.by_id["blue-team:edge:01"]
