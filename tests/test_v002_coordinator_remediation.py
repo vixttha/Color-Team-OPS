@@ -226,6 +226,19 @@ class R03LogicalEventTests(unittest.TestCase):
     def test_new_task_must_not_reuse_old_task_id(self):
         second=cycle("task-1","orange-team",6,self.steps[-1]["event_id"])
         self.assertEqual(self.check(self.steps+second).status,"BLOCKED")
+    def test_nonadjacent_completed_task_id_replay_rejected(self):
+        first = self.steps
+        second = cycle("task-2", "orange-team", 6, first[-1]["event_id"])
+        third = cycle("task-1", "yellow-team", 11, second[-1]["event_id"])
+        result = self.check(first + second + third)
+        self.assertEqual((result.status, result.code),
+                         ("BLOCKED", "INVALID_NEXT_TASK_OR_REPLAY"))
+    def test_three_distinct_completed_tasks_remain_allowed(self):
+        first = self.steps
+        second = cycle("task-2", "orange-team", 6, first[-1]["event_id"])
+        third = cycle("task-3", "yellow-team", 11, second[-1]["event_id"])
+        self.assertEqual(self.check(first + second + third).status,
+                         "LOGICAL_VALID_UNVERIFIED")
     def test_observed_source_revision_must_match(self):
         self.assertEqual(validate_logical_chain(self.doc,self.steps,OTHER_SHA).code,"STALE_SOURCE")
     def test_failed_worker_status_cannot_be_promoted_by_later_pass(self):
