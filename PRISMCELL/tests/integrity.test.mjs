@@ -1,0 +1,12 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {digestReceipt,verifyReceiptSnapshot} from '../core/integrity.mjs';
+const record={provider:'github',issue_url:'https://github.com/example/project/issues/2',comment_url:'https://github.com/example/project/issues/2#issuecomment-7',comment_id:7,actor_login:'owner',created_at:'2026-11-03T00:00:00Z',updated_at:'2026-11-03T00:00:00Z',body:'{"message_id":"TST-0001"}'};
+const stored={digest:digestReceipt(record),comment_url:record.comment_url};
+test('sha256 receipt digest stable',()=>assert.match(stored.digest,/^sha256:[0-9a-f]{64}$/));
+test('identical provider snapshot verifies',()=>assert.equal(verifyReceiptSnapshot(stored,record).matches,true));
+test('edited body is detected',()=>assert.equal(verifyReceiptSnapshot(stored,{...record,body:'edited'}).reason,'PROVIDER_RECEIPT_CHANGED'));
+test('edited timestamp is detected',()=>assert.equal(verifyReceiptSnapshot(stored,{...record,updated_at:'2026-11-03T01:00:00Z'}).matches,false));
+test('wrong author is detected',()=>assert.equal(verifyReceiptSnapshot(stored,{...record,actor_login:'another'}).matches,false));
+test('changed comment URL rejected',()=>assert.equal(verifyReceiptSnapshot(stored,{...record,comment_url:'https://another.com'}).matches,false));
+test('digest cannot prove actor role',()=>assert.equal(verifyReceiptSnapshot(stored,record).reason,'SAME_PROVIDER_READBACK_SNAPSHOT'));
