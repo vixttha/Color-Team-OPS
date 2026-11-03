@@ -1,0 +1,15 @@
+{
+  "trial": "PRISMCELL-E-INTERRUPTION-001",
+  "owner_branch": "agent/PURPLE-TEAM-AGENT",
+  "source_pin": "c1cec00a044dafad9094154fc16d15fecf712a76",
+  "revision": 4,
+  "processed_comment_ids": [
+    6592135814,
+    6592178441,
+    6592180992,
+    6592214787
+  ],
+  "last_processed_comment_id": 6592215497,
+  "simulation": "SAVED BEFORE NEW PENDING EVENT; NEXT TOOL INVOCATION MUST REFRESH PROVIDER BEFORE ACK",
+  "authority_granted": false
+}
