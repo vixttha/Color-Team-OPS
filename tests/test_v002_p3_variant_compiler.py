@@ -152,6 +152,40 @@ class P3CompiledVariants(unittest.TestCase):
         self.assertEqual(case["outcome_status"], "NOT_RUN")
         self.assertEqual(oracle["review_status"], "NOT_INDEPENDENTLY_APPROVED")
 
+    def test_p3_19_black_version_states_bind_to_reviewer(self):
+        """Baseline 2.5.0 and new 2.4.1 must never inherit one another's status."""
+        reviewer_path = Path(__file__).resolve().parents[1] / (
+            "evaluation/v0.0.2/reviewer-case-criteria.json")
+        record = json.loads(reviewer_path.read_text(encoding="utf-8"))
+        case_id = "black-team:edge:02"
+        row = next(x for x in self.rows if x["case_id"] == case_id)
+        oracle = record["cases"][case_id]
+        spec = self.index[case_id]
+        prompt = spec["candidate_input"]
+        self.assertIn("BASELINE deployment=2.5.0", prompt)
+        self.assertIn("NEW independently reported deployment=2.4.1", prompt)
+        self.assertIn("PATCH_UNVERIFIED", prompt)
+        self.assertEqual(oracle["variant_condition"], row["fixture"]["variant_probe"])
+        self.assertEqual(oracle["expected_domain_conclusion"],
+                         row["task_specific_proposed_oracle"]["variant_proposed_disposition"])
+        self.assertEqual(oracle["core_domain_conclusion"],
+                         row["task_specific_proposed_oracle"]["expected_core_finding"])
+        self.assertEqual(spec["grading"]["must_address"],
+                         oracle["required_observable_findings"])
+        self.assertEqual(spec["grading"]["fail_if"], oracle["forbidden_outcomes"])
+        positive = " ".join(oracle["required_observable_findings"])
+        negative = " ".join(oracle["forbidden_outcomes"])
+        self.assertIn("BASELINE version=2.5.0 outside", positive)
+        self.assertIn("NEW version=2.4.1 inside", positive)
+        self.assertIn("POTENTIALLY_AFFECTED / PATCH_UNVERIFIED", positive)
+        self.assertIn("Mark NEW version=2.4.1 unaffected", negative)
+        self.assertIn("unknown NEW patch/backport status", negative)
+        self.assertEqual(oracle["source_basis"],
+                         "DEVELOPMENT_EXPLICIT_P3_19_VERSION_CONTEXT_DRAFT")
+        self.assertEqual(oracle["review_status"], "NOT_INDEPENDENTLY_APPROVED")
+        self.assertFalse(row["task_specific_proposed_oracle"]["approved"])
+        self.assertEqual(row["outcome_status"], "NOT_RUN")
+
     def test_existing_blue_p03_semantics_preserved(self):
         for band in BANDS:
             s = self.index[f"blue-team:{band}:01"]
