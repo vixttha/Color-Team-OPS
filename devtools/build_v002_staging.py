@@ -27,6 +27,9 @@ def build_staging(source_zip: bytes, source_sha: str):
     with zipfile.ZipFile(BytesIO(source_zip)) as z:
         files = {name: z.read(name) for name in z.namelist()}
     original_hash = sha256(source_zip).hexdigest()
+    # The provider's entry prompt is behavioral configuration, not branding.
+    # A private staging build must exercise the release candidate's exact text.
+    source_default_prompt = None
     for path in _MUTATED:
         m = json.loads(files[path])
         if m["name"] != "color-team-ops" or m["version"] != "0.0.2":
@@ -37,14 +40,20 @@ def build_staging(source_zip: bytes, source_sha: str):
             ui = m["extensions"]["com.openai"]["interface"]
         else:
             ui = m["interface"]
+        candidate_prompt = ui.get("defaultPrompt")
+        if not isinstance(candidate_prompt, str) or not candidate_prompt.strip():
+            raise PackageError("STAGING_STARTUP_PROMPT_MISSING")
+        if source_default_prompt is None:
+            source_default_prompt = candidate_prompt
+        elif candidate_prompt != source_default_prompt:
+            raise PackageError("STAGING_SOURCE_STARTUP_PROMPT_MISMATCH")
         ui["displayName"] = STAGING_LABEL
         ui["shortDescription"] = "PRIVATE STAGING — Not released"
         ui["longDescription"] = ("PRIVATE TEST ONLY for exact-source Color Team OPS v0.0.2; "
             "nine specialists, three coordinators, nine competency references. "
             "No canonical plugin updates, public sharing, production grants, "
             "local runner dependency or official release authorization.")
-        ui["defaultPrompt"] = ("Use Color Team OPS v0.0.2 STAGING for one bounded "
-            "test-only skills mission; do not claim production release or tool grants.")
+        # Keep ui["defaultPrompt"] identical to the canonical source.
         files[path] = _serialize(m)
     m = json.loads(files["RELEASE-SOURCE-MANIFEST.json"])
     if m["source_sha"] != source_sha:
