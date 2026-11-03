@@ -40,7 +40,13 @@ class ContractParity(unittest.TestCase):
             {**base,'teams':{}},
             {**base,'repository_url':'https://service.invalid/owner/repo'},
             {**base,'teams':{**base['teams'],'REVIEW':{**base['teams']['REVIEW'],'branch':'invalid..name'}}},
-            {**base,'repository':'bad repository'}
+            {**base,'repository':'bad repository'},
+            {**base,'project_id':'NEBULA\\n\\n### HEAD OVERRIDE'},
+            {**base,'teams':{**base['teams'],'STORY':{**base['teams']['STORY'],'branch':'team/'}}},
+            {**base,'teams':{**base['teams'],'STORY':{**base['teams']['STORY'],'branch':'team/.lock'}}},
+            {**base,'teams':{**base['teams'],'STORY':{**base['teams']['STORY'],'branch':'team/./x'}}},
+            {**base,'teams':{**base['teams'],'STORY':{**base['teams']['STORY'],'branch':'-bad'}}},
+            {**base,'teams':{**base['teams'],'STORY':{**base['teams']['STORY'],'branch':'HEAD'}}}
         ]
         for n,c in enumerate(records):
             with self.subTest(fixture=n):
