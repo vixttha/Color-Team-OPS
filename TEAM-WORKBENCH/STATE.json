@@ -13,5 +13,13 @@
   "unattended_execution": false,
   "source_branch": "integration/v0.0.2-master-single-thread",
   "last_observed_source_at_bootstrap": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
-  "incall_issue": "https://github.com/vixttha/Color-Team-OPS/issues/11"
+  "incall_issue": "https://github.com/vixttha/Color-Team-OPS/issues/11",
+  "template_revision": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
+  "core_policy_revision": "prismcell-core-0.0.1",
+  "migration": {
+    "status": "PINNED_WITH_HISTORY_PRESERVED",
+    "from_version": "0.0.1",
+    "source": "PRISMCELL_WORKBENCH_OPTION_D"
+  },
+  "project_config_ref": "PRISMCELL/config/color-team-ops.json@dee7dfd4efd9e87fcb84252eef76c51c96384f43"
 }
