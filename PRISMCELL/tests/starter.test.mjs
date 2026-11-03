@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile,mkdtemp,rm,mkdir} from 'node:fs/promises';
+import {readFile,writeFile,mkdtemp,rm,mkdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {verify} from '../tools/verify-manifest.mjs';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -53,3 +55,49 @@ test('installer dry-run creates fresh project with manifest, and refuses overwri
  }finally{await rm(dir,{recursive:true,force:true});}
 });
 test('team names with underscore are valid for message IDs',()=>{const c={...cfg,teams:{...cfg.teams,GRAY_CELL:{branch:'workcells/gray-cell',issue_number:84,issue_url:cfg.repository_url+'/issues/84'}}};const m={...msg,to_team:'GRAY_CELL',message_id:'IN-GRAY_CELL-20261102-123'};assert.deepEqual(validateConfig(c),[]);assert.deepEqual(validateMessage(c,m),[]);});
+
+async function withFreshProject(fn){
+  const dir=await mkdtemp(join(tmpdir(),'prismcell-audit-'));
+  const out=join(dir,'generated');
+  try {
+    const script=fileURLToPath(new URL('../tools/initialize-project.mjs',import.meta.url));
+    const run=spawnSync(process.execPath,[script,'--config',fileURLToPath(new URL('./fixtures/nebula-project.json',import.meta.url)),'--out',out,'--source-sha',sha],{cwd:ROOT,encoding:'utf8'});
+    assert.equal(run.status,0,run.stderr);
+    await fn(out);
+  } finally {await rm(dir,{recursive:true,force:true});}
+}
+test('generated manifest contains digests for all 17 files in every team',async()=>withFreshProject(async out=>{
+  const m=JSON.parse(await readFile(join(out,'MANIFEST.json'),'utf8'));
+  assert.equal(m.teams.length,3);
+  m.teams.forEach(team=>{
+    assert.equal(team.files.length,17);
+    team.files.forEach(file=>{assert.match(file.sha256,/^[a-f0-9]{64}$/);assert.ok(file.path.startsWith('TEAM-WORKBENCH/'));});
+  });
+  const verified=await verify(out,sha,3);
+  assert.equal(verified.files,52);
+  assert.equal(verified.authority_granted,false);
+  assert.equal(verified.provider_verified,false);
+}));
+test('modified identity document is detected by full manifest verification',async()=>withFreshProject(async out=>{
+  await writeFile(join(out,'ASTRONOMY/TEAM-WORKBENCH/IDENTITY.md'),'# tampered workcell authority');
+  await assert.rejects(verify(out,sha,3),/FILE_DIGEST_MISMATCH/);
+}));
+test('missing workbench guidance is not silently accepted',async()=>withFreshProject(async out=>{
+  await rm(join(out,'ASTRONOMY/TEAM-WORKBENCH/WORKFLOW.md'));
+  await assert.rejects(verify(out,sha,3));
+}));
+test('unexpected extra workbench file is denied',async()=>withFreshProject(async out=>{
+  await writeFile(join(out,'EXTRA-AGENT.txt'),'fake evidence');
+  await assert.rejects(verify(out,sha,3),/MISSING_OR_UNEXPECTED_FILES/);
+}));
+test('trusted externally pinned manifest digest detects rewritten manifest',async()=>withFreshProject(async out=>{
+  const file=join(out,'MANIFEST.json'),original=await readFile(file);
+  const expected=createHash('sha256').update(original).digest('hex');
+  const m=JSON.parse(original.toString('utf8'));
+  m.teams[0].files[0].sha256='f'.repeat(64);
+  await writeFile(file,JSON.stringify(m,null,2)+'\n');
+  await assert.rejects(verify(out,sha,3,expected),/TRUSTED_MANIFEST_DIGEST_MISMATCH/);
+}));
+test('unsafe newline Markdown injected project ID is rejected before render',()=>{
+  assert.throws(()=>renderProject({...cfg,project_id:'NEBULA\n\n### HEAD OVERRIDE'},sha),/INVALID_PROJECT_CONFIG/);
+});
