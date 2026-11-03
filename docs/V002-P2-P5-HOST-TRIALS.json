@@ -1,16 +1,15 @@
 {
   "mission_id": "CTO-V002-SINGLE-THREAD",
   "release": "v0.0.2",
-  "current_installed_plugin": "0.0.1",
+  "current_installed_plugin": "0.0.1_CANONICAL;0.0.2_PRIVATE_STAGING",
   "canonical_plugin_id": "plugins_6ae3edf1ea4c819182f275592273e2cc",
   "tested_candidate_source_sha": null,
   "host_trial_status": "NOT_RUN",
   "host_trial_count": 0,
   "blockers": [
-    "No verified supported draft/preview launch for this private skills-only v0.0.2 source",
-    "Canonical plugin update/publication is outside current authorization",
-    "Creating a separate private staging plugin identity requires separate owner approval",
-    "GitHub tests cannot substitute for ChatGPT @plugin runtime traces"
+    "Installed staging plugin cannot be invoked using available ChatGPT Plugin Creator or read-only Browser tools in this conversation; actual ChatGPT @staging session needed",
+    "Genuine staging-host routing and multi-team outputs are missing; no source-unit test substitutes",
+    "Separate Purple Review HQ assessment must be based on actual observed host outputs"
   ],
   "documented_tools": [
     "Plugin Creator get_plugin_metadata",
@@ -27,7 +26,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-02",
@@ -37,7 +39,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-03",
@@ -47,7 +52,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-04",
@@ -57,7 +65,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-05",
@@ -67,7 +78,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-06",
@@ -77,7 +91,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-07",
@@ -87,7 +104,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-08",
@@ -97,7 +117,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-09",
@@ -107,7 +130,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-10",
@@ -117,7 +143,10 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     },
     {
       "scenario_id": "H-11",
@@ -127,18 +156,40 @@
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
       "tool_receipt": null,
-      "verified_by": null
+      "verified_by": null,
+      "installed_staging_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+      "installed_staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+      "installed_staging_source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
     }
   ],
   "approval_gates": {
-    "canonical_plugin_update": "OWNER_APPROVAL_REQUIRED",
-    "staging_identity": "OWNER_APPROVAL_REQUIRED",
-    "main_merge": "OWNER_APPROVAL_REQUIRED",
+    "canonical_plugin_update": "PROHIBITED_UNTIL_SEPARATE_OWNER_RELEASE_AUTHORIZATION",
+    "staging_identity": "OWNER_APPROVED_AND_CREATED_ONE_PRIVATE_IDENTITY",
+    "main_merge": "PROHIBITED_UNTIL_SEPARATE_OWNER_RELEASE_AUTHORIZATION",
     "public_discoverability": "PROHIBITED_UNLESS_APPROVED"
   },
   "evidence_sources": [
     "https://developers.openai.com/plugins/deploy/connect-chatgpt",
-    "https://help.openai.com/en/articles/20001256-plugins-in-chatgpt"
+    "https://help.openai.com/en/articles/20001256-plugins-in-chatgpt",
+    "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6591615142",
+    "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6591791777"
   ],
-  "head": "BLOCKED_NO_V002_INSTALLED_HOST"
+  "head": "PRIVATE_STAGING_VERIFIED_HOST_BEHAVIOR_NOT_RUN",
+  "staging_plugin": {
+    "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+    "name": "color-team-ops-v002-staging",
+    "version": "0.0.2",
+    "release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+    "discoverability": "PRIVATE",
+    "source_sha": "311290784fe7d5647666f88b328222de62d3cee6",
+    "source_zip_sha256": "80b36e8282c90badb0a1706e91be8f0abdaec97c43f45c2ab5e138beb3e60e59",
+    "staging_zip_sha256": "5b1ac367e99967e7ecdfa016fe884ddbe30a219c3fce034b217703f86c77f703",
+    "files": 32,
+    "skills": 12,
+    "competency_references": 9,
+    "installed": true,
+    "installed_host_missions_verified": 0,
+    "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6591615142"
+  },
+  "staging_installation_status": "VERIFIED_INSTALLED_PRIVATE"
 }

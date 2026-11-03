@@ -44,8 +44,11 @@ class ReleaseBlockerTests(unittest.TestCase):
         self.assertEqual(self.a["p0_resolution"]["status"],"OWNER_SCOPE_CONFIRMED_SKILLS_ONLY")
         self.assertFalse(self.a["p0_resolution"]["protected_backend_required"])
         self.assertTrue(self.a["p0_resolution"]["host_trials_still_required"])
-        self.assertEqual(statuses["P2"],"REQUIRES_OWNER_AUTHORIZATION")
+        self.assertEqual(statuses["P2"],"BLOCKED_EXTERNAL_CAPABILITY")
         self.assertEqual(statuses["P7"],"BLOCKED_EXTERNAL_CAPABILITY")
+        self.assertTrue(self.a["staging_plugin"]["installed"])
+        self.assertEqual(self.h["staging_plugin"]["discoverability"],"PRIVATE")
+        self.assertEqual(self.h["approval_gates"]["staging_identity"],"OWNER_APPROVED_AND_CREATED_ONE_PRIVATE_IDENTITY")
 
 
 if __name__=="__main__":
