@@ -57,6 +57,32 @@ class P3CompiledVariants(unittest.TestCase):
                                 for c in grading["must_address"]), spec["case_id"])
             self.assertFalse(grading["independent_oracle_verified"])
 
+    def test_p3_16_edge_contexts_are_separate_and_not_approved(self):
+        """Guard the two distinct synthetic transitions; not an oracle PASS."""
+        cases = {row["case_id"]: row for row in self.rows}
+        orange = cases["orange-team:edge:02"]
+        yellow = cases["yellow-team:edge:05"]
+        for row in (orange, yellow):
+            self.assertEqual(row["outcome_status"], "NOT_RUN")
+            self.assertFalse(row["task_specific_proposed_oracle"]["approved"])
+            self.assertEqual(row["independent_oracle_status"], "NOT_VERIFIED")
+            self.assertGreaterEqual(len(row["variant_must_address"]), 2)
+            self.assertGreaterEqual(len(row["variant_fail_if"]), 2)
+            self.assertIn(row["fixture"]["variant_probe"], self.index[row["case_id"]]["candidate_input"])
+
+        orange_probe = orange["fixture"]["variant_probe"].lower()
+        self.assertIn("baseline", orange_probe)
+        self.assertIn("new request", orange_probe)
+        self.assertIn("missing", orange_probe)
+        self.assertIn("tenant", orange_probe)
+        self.assertIn("refus", str(orange["variant_must_address"]).lower())
+        yellow_probe = yellow["fixture"]["variant_probe"].lower()
+        self.assertIn("initial", yellow_probe)
+        self.assertIn("later", yellow_probe)
+        self.assertIn("valid", yellow_probe)
+        self.assertIn("timeout", yellow_probe)
+        self.assertIn("idempoten", str(yellow["variant_must_address"]).lower())
+
     def test_existing_blue_p03_semantics_preserved(self):
         for band in BANDS:
             s = self.index[f"blue-team:{band}:01"]
