@@ -3,7 +3,7 @@
   "issue": 8,
   "release": "0.0.2",
   "branch": "integration/v0.0.2-master-single-thread",
-  "observed_source_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
+  "observed_source_sha": "d8202ff2c426b1a455f36e381aec91fb4e1fbe50",
   "observed_date": "2026-11-02",
   "allowed_automatic_writes": [
     "integration/v0.0.2-master-single-thread"
@@ -49,12 +49,12 @@
       ],
       "team": "GREEN",
       "team_reason": "CI operations and runner isolation",
-      "status": "TESTED_AT_PRE_DOCUMENTATION_SHA",
+      "status": "EXACT_SHA_NATIVE_VERIFIED_PRE_DOCUMENTATION_COMMIT",
       "required_artifact": "GitHub workflow run and exact source SHA",
       "acceptance_criteria": "Full suite passes both OS at current exact SHA with logs",
       "test_method": "test*.py unittest discovery on both runners",
       "current_blocker": null,
-      "evidence": "864 tests each OS, 4 x 32-file ZIPs sha256 5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420 at 3350430b3a292bb6d0d8fa7e90105d929f564e7c run 41535840683; subsequent docs commit needs fresh CI.",
+      "evidence": "886/886 tests per OS; 4 deterministic 32-file ZIPs SHA256 ded09ed34d05fe0a2ea2b064fadb4cd327ad097a9ac29398078fc9fbd8340502, source d8202ff2c426b1a455f36e381aec91fb4e1fbe50, run 41558433270.",
       "head_disposition": "ACCEPT_TESTED_555_AT_SHA_787fef5aa6"
     },
     {
@@ -67,12 +67,12 @@
       ],
       "team": "GREEN",
       "team_reason": "Deterministic release artifact engineering",
-      "status": "TESTED_AT_PRE_DOCUMENTATION_SHA",
+      "status": "EXACT_SHA_NATIVE_VERIFIED_PRE_DOCUMENTATION_COMMIT",
       "required_artifact": "Two ZIP hashes/logs per platform tied to same exact commit",
       "acceptance_criteria": "byte-for-byte parity, valid SHA manifest, 12 skills and no bundled Python/library",
       "test_method": "devtools.build_v002_candidate invoked twice after native suite",
       "current_blocker": null,
-      "evidence": "864 tests each OS, 4 x 32-file ZIPs sha256 5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420 at 3350430b3a292bb6d0d8fa7e90105d929f564e7c run 41535840683; subsequent docs commit needs fresh CI.",
+      "evidence": "886/886 tests per OS; 4 deterministic 32-file ZIPs SHA256 ded09ed34d05fe0a2ea2b064fadb4cd327ad097a9ac29398078fc9fbd8340502, source d8202ff2c426b1a455f36e381aec91fb4e1fbe50, run 41558433270.",
       "head_disposition": "ACCEPT_TESTED_555_AT_SHA_787fef5aa6"
     },
     {
@@ -177,12 +177,12 @@
       ],
       "team": "PURPLE",
       "team_reason": "Cross-team challenge and independent labeling design",
-      "status": "SOURCE_COMPLETE_EXTERNAL_ORACLES_MISSING",
+      "status": "VARIANT_COMPILER_SOURCE_VERIFIED_PURPLE_REVIEW_PENDING",
       "required_artifact": "270 distinct preregistered oracle labels with reviewer provenance",
       "acceptance_criteria": "30 cases per specialist, negatives and refusals, independent outcomes",
       "test_method": "Provenance verification and inter-rater contradiction audit",
-      "current_blocker": "270 concrete synthetic fixture cases completed; 0 independent oracle labels, 54 reserved holdouts not blinded",
-      "evidence": "evaluation/v0.0.2/concrete-domain-fixtures.json / P3 native tests",
+      "current_blocker": "All 270 draft variant prompts and proposed grading compile; 0 independent labels; 54 reserved source-visible holdouts NOT blind",
+      "evidence": "policy_v002/p3_variant_compiler.py tests/test_v002_p3_variant_compiler.py run 41558433270; separate Purple HQ source audit pending",
       "head_disposition": "BLOCKED_INDEPENDENT_ORACLES"
     },
     {
@@ -195,12 +195,12 @@
       ],
       "team": "YELLOW",
       "team_reason": "Evaluation execution/scoring infrastructure; Head dispatches specialists sequentially",
-      "status": "REFERENCE_ONLY_270_CASES_TESTED_HOST_NOT_RUN",
+      "status": "SOURCE_COMPILER_AND_REFERENCE_TESTS_VERIFIED_HOST_NOT_RUN",
       "required_artifact": "Actual model/host trials, observations, metrics and uncertainty",
       "acceptance_criteria": "270 traceable executions or explicit individual blockers, no unsupported accuracy claims",
       "test_method": "Provider/host evidence + blinded scores and authority critical errors",
-      "current_blocker": "270 M3 reference-route source case tests completed, 0/270 model/host trials, independent scoring unavailable",
-      "evidence": "tests/test_v002_p4_270_reference_routes.py Actions 41535840683",
+      "current_blocker": "Real ChatGPT staged model trials 0/270; no baseline/ablation independent measurements",
+      "evidence": "tests/test_v002_p4_270_reference_routes.py and p3_variant_compiler.py at d8202ff2c426b1a455f36e381aec91fb4e1fbe50; not genuine model routing.",
       "head_disposition": "BLOCKED_ON_ORACLES_AND_HOST"
     },
     {
@@ -214,12 +214,12 @@
       ],
       "team": "HEAD",
       "team_reason": "Requires actual plugin host and selected specialists",
-      "status": "NOT_RUN_REQUIRES_OWNER_AUTHORIZATION",
+      "status": "PRIVATE_STAGING_INSTALLED_HOST_MISSIONS_NOT_RUN",
       "required_artifact": "Version-bound installed-plugin mission traces",
       "acceptance_criteria": "Single Head, sequential workers, validate/auditor, repair, forged-source, missing-tools, budget and no-library",
       "test_method": "Live installed host test cases and exact release identity",
-      "current_blocker": "Canonical v0.0.1 remains installed; owner has not authorized new staging identity or candidate update; all host H-01–H-11 NOT_RUN",
-      "evidence": "Plugin Creator metadata: plugins_6ae3edf1ea4c819182f275592273e2cc",
+      "current_blocker": "Existing PRIVATE v0.0.2 staging is created, but no genuinely invoked ChatGPT staged conversation/host receipts; H-01..H-11 NOT_RUN",
+      "evidence": "Plugin Creator plugins_6ae9238966508191b3402640e65217bf release pluginrel_6ae9238a80008191945e990f8fa87308; Issue #8 comment 6591615142.",
       "head_disposition": "BLOCKED_NOT_PUBLISHED_NO_HOST_V002"
     },
     {
@@ -234,11 +234,11 @@
       ],
       "team": "PURPLE",
       "team_reason": "Cross-milestone conflicts and source/evidence consistency",
-      "status": "SOURCE_AUDIT_COMPLETE_HOST_BLOCKED",
+      "status": "SOURCE_AUDIT_VERIFIED_HOST_AUDIT_PENDING",
       "required_artifact": "Distinct logical auditor outcomes and release checklist",
       "acceptance_criteria": "No incorrect PASS from synthetic tests, mismatched SHA or separate chat authority",
       "test_method": "Review exact source/test/artifact/host evidence",
-      "current_blocker": "12-skill audit and Gray Cell source UX done; actual installed host and independent quality acceptance still missing",
+      "current_blocker": "Orange/Purple/Gray host behavior and separate Purple Review HQ evaluation await genuine staged outputs",
       "evidence": "docs/V002-MASTER-RELEASE-GATES.json",
       "head_disposition": "WAIT_DEPENDENCIES"
     },
@@ -261,7 +261,7 @@
       "head_disposition": "RELEASE_BLOCKED"
     }
   ],
-  "last_native_verified_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
+  "last_native_verified_sha": "d8202ff2c426b1a455f36e381aec91fb4e1fbe50",
   "evidence_history": [
     {
       "source_sha": "531daa440ecf45c279f0262804f69944ed214c52",
@@ -292,8 +292,27 @@
       "run_id": 41535840683,
       "result": "NATIVE_TESTED",
       "notes": "864/864 each OS; 270 source-route case tests, 12 skill audits, web compatibility/exporter tests; 4 32-file ZIPs sha256 5014bc9833c2c3ad7042cb74cefc0c78025a176a58f3b7160213746fae40e420"
+    },
+    {
+      "source_sha": "d8202ff2c426b1a455f36e381aec91fb4e1fbe50",
+      "run_id": 41558433270,
+      "result": "LINUX_WINDOWS_SUCCESS",
+      "native_tests_per_platform": 886,
+      "source_zip_sha256": "ded09ed34d05fe0a2ea2b064fadb4cd327ad097a9ac29398078fc9fbd8340502",
+      "archive_files": 32,
+      "complete_zip_builds_per_platform": 2,
+      "notes": "Verified previous exact SHA. Current documentation commit must be retested; staging-installed source distinct."
     }
   ],
   "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json",
-  "p0_p7_scope": "initial skills-only approved; protected backend optional, no user hardware"
+  "p0_p7_scope": "initial skills-only approved; protected backend optional, no user hardware",
+  "staging_plugin": {
+    "id": "plugins_6ae9238966508191b3402640e65217bf",
+    "release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
+    "version": "0.0.2",
+    "visibility": "PRIVATE",
+    "installed": true,
+    "source_sha": "311290784fe7d5647666f88b328222de62d3cee6",
+    "host_scenarios_executed": 0
+  }
 }

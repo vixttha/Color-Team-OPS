@@ -1,10 +1,23 @@
-# Color Team OPS v0.0.2 — current integration candidate (2026-11-02)
+# Color Team OPS v0.0.2 — UNRELEASED integration candidate (2026-11-02)
+
+## Superseding current engineering + private staging checkpoint (Nov 2, 2026)
+
+**Mission `CTO-V002-SINGLE-THREAD` remains RELEASE_BLOCKED, not released.** The owner authorized exactly one private v0.0.2 staging identity, now installed: [Color Team OPS v0.0.2 STAGING](https://chatgpt.com/plugins/plugins_6ae9238966508191b3402640e65217bf), ID `plugins_6ae9238966508191b3402640e65217bf`, release `pluginrel_6ae9238a80008191945e990f8fa87308`, PRIVATE. Plugin Creator reports 32 files: nine specialist skills, three coordinator skills and nine competency references. The canonical private plugin `plugins_6ae3edf1ea4c819182f275592273e2cc` remains v0.0.1 and MUST NOT be modified.
+
+**Last exact-source native verification before this README/document commit:** `d8202ff2c426b1a455f36e381aec91fb4e1fbe50`, [GitHub CI 41558433270](https://github.com/vixttha/Color-Team-OPS/actions/runs/41558433270), **886/886 native tests per OS**, four matching 32-file source packages, SHA-256 `ded09ed34d05fe0a2ea2b064fadb4cd327ad097a9ac29398078fc9fbd8340502`. This source-build is NOT the installed staging artifact: the existing staging release is bound to **`311290784fe7d5647666f88b328222de62d3cee6`**, package SHA-256 **`5b1ac367e99967e7ecdfa016fe884ddbe30a219c3fce034b217703f86c77f703`**. Development-only case compilation/assessment docs do not require a staging update; a change to skill/manifest bytes would.
+
+**P3 repaired source evaluation interface:** `policy_v002/p3_variant_compiler.py` constructs all 270 candidate-facing examples using the case's true normal/edge/adversarial fixture condition and supplies separate provisional baseline/variant/evidence/authority criteria. It preserves Purple's three Blue denial-alert fixes and marks the 54 repository-visible reserved cases as NOT BLIND. This is **development source**, not 270 real ChatGPT model outcomes or independent oracle approvals. Full G1 still requires separate Purple Review HQ source evaluation; current source tests alone do not certify specialist performance.
+
+**Two real staged-host smoke missions are next:** unannotated automatic routing and a bounded sequential engineering/security repair. Neither has actually been invoked in the staging plugin; **Smoke A/B, H-01–H-11 and genuine 270 specialist evaluations all remain NOT_RUN**. Plugin Creator's source readback and this conversation's read-only Browser interface are not actual staged ChatGPT model execution. No invented session references or independent Purple verdict. Provider-neutral cloud-only skills-only product, no owner/local runtime dependency, no main merge, official publication or additional staging identity.
+
+**Historical sections below document earlier source snapshots. Where an earlier paragraph says staging did not exist or owner approval was missing, that statement is superseded by the verified private installation above.**
+
 
 **Most recent owner-authorized Development HQ scope:** cloud-only **skills-only** initial v0.0.2, no mandatory protected hosting provider, personal computer, local runner, paid service or global cross-session lock. [P0 decision](docs/V002-P0-ORANGE-TRUST-SCOPE.md) is RESOLVED; real installed host and independent evaluation requirements are NOT waived.
 
 **Current P0–P7 source progress (at tested SHA `3350430b3a292bb6d0d8fa7e90105d929f564e7c`):** 864/864 native tests on Linux and Windows; 4 matching 32-file packages; 270 concrete specialist synthetic fixtures and 270 executed **source-only reference router** case tests; 12 skills/nine references audited; five official-source browser-provider compatibility study; optional individual web-skill export tooling. Independent labels **0**, actual model/installed-host trials **0**. See [latest dossier](docs/V002-P6-P7-RELEASE-DOSSIER.md) and [machine status](docs/V002-P0-P7-ACCEPTANCE.json). This README update itself changes the commit SHA, requiring subsequent exact-SHA validation.
 
-**Single master mission:** CTO-V002-SINGLE-THREAD. **Integration:** `integration/v0.0.2-master-single-thread`. **Status:** UNPUBLISHED / **RELEASE_BLOCKED**. Owner has approved continued development, testing and auditing, **not** merging or publishing. Canonical private plugin `plugins_6ae3edf1ea4c819182f275592273e2cc` still runs **v0.0.1**; no alternate plugin identity or staging instance was created.
+**Single master mission:** CTO-V002-SINGLE-THREAD. **Integration:** `integration/v0.0.2-master-single-thread`. **Status:** UNPUBLISHED / **RELEASE_BLOCKED**. Owner has approved continued development, testing and auditing, **not** merging or publishing. Canonical private plugin `plugins_6ae3edf1ea4c819182f275592273e2cc` still runs **v0.0.1**; the one separate approved PRIVATE staging test plugin is installed, not released.
 
 Exactly **nine specialist skills + three coordination skills**. Head owns one active Worker, adaptive capability routing and bounded same-team repairs, with separate logical Validate → Internal Auditor stages. The nine specialist SKILL.md sources remain byte-identical to accepted v0.0.1; three existing coordinators have v0.0.2 changes. Cloud-only, provider-neutral, browser-first. No production runner dependency, global cross-session lock or unattended execution is claimed. The ideas/features library and IDEA-000037 are optional/unshipped and are not dependencies.
 
@@ -14,7 +27,7 @@ Exactly **nine specialist skills + three coordination skills**. Head owns one ac
 
 **Release-gate source verification:** The integrated P0–P7 documentation revision `787fef5aa68f33571437633abe1ae393e40f82f9` passed 555/555 Linux and Windows native tests in run 41528729633. The follow-up evidence reconciliation creates a later SHA that requires its own exact-SHA test; no installed-plugin inference is permitted.
 
-**Hard blockers:** installed v0.0.2 candidate host trials **0**, independently reviewed/frozen oracles **0/270**, executed specialist evaluations **0/270**, no protected host grant issuance, conditional owner decision on protected-host release scope, no separate approval for staging/merge/publication. Do not infer 99% accuracy, real skill dispatch, provider actions or installed version from source test results.
+**Hard blockers:** installed v0.0.2 candidate host trials **0**, independently reviewed/frozen oracles **0/270**, executed specialist evaluations **0/270**, no protected host grant issuance, owner-approved initial skills-only scope (protected host backend optional), no separate approval for staging/merge/publication. Do not infer 99% accuracy, real skill dispatch, provider actions or installed version from source test results.
 
 ---
 
