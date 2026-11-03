@@ -1,5 +1,7 @@
 """P3 regression gate: every case's actual input and semantic rubric, not model IQ."""
 import copy
+import json
+from pathlib import Path
 import unittest
 
 from policy_v002.p3_variant_compiler import (
@@ -82,6 +84,44 @@ class P3CompiledVariants(unittest.TestCase):
         self.assertIn("valid", yellow_probe)
         self.assertIn("timeout", yellow_probe)
         self.assertIn("idempoten", str(yellow["measurement"]["variant_must_address"]).lower())
+
+    def test_p3_17_reviewer_rubrics_bind_to_fixture_contexts(self):
+        """Cross-file source contract, not independent semantic oracle approval."""
+        reviewer_path = Path(__file__).resolve().parents[1] / "evaluation" / "v0.0.2" / "reviewer-case-criteria.json"
+        reviewer = json.loads(reviewer_path.read_text(encoding="utf-8"))
+        self.assertEqual(reviewer["case_count"], 270)
+        self.assertEqual(len(reviewer["cases"]), 270)
+        self.assertEqual(reviewer["independently_approved"], 0)
+        fixtures = {row["case_id"]: row for row in self.rows}
+        for case_id in ("orange-team:edge:02", "yellow-team:edge:05"):
+            row = fixtures[case_id]
+            rubric = reviewer["cases"][case_id]
+            self.assertEqual(rubric["source_fixture_id"], "f-" + case_id)
+            self.assertEqual(rubric["review_status"], "NOT_INDEPENDENTLY_APPROVED")
+            self.assertEqual(row["outcome_status"], "NOT_RUN")
+            self.assertFalse(row["task_specific_proposed_oracle"]["approved"])
+            self.assertIn(row["fixture"]["variant_probe"], self.index[case_id]["candidate_input"])
+            self.assertGreaterEqual(len(rubric["required_observable_findings"]), 2)
+            self.assertGreaterEqual(len(rubric["forbidden_outcomes"]), 2)
+        orange = reviewer["cases"]["orange-team:edge:02"]
+        orange_positive = " ".join(orange["required_observable_findings"]).lower()
+        orange_negative = " ".join(orange["forbidden_outcomes"]).lower()
+        self.assertIn("earlier", orange_positive)
+        self.assertIn("new", orange_positive)
+        self.assertIn("tenant a", orange_positive)
+        self.assertIn("deny", orange_positive)
+        self.assertIn("new", orange_negative)
+        self.assertIn("earlier", orange_negative)
+        yellow = reviewer["cases"]["yellow-team:edge:05"]
+        yellow_positive = " ".join(yellow["required_observable_findings"]).lower()
+        yellow_negative = " ".join(yellow["forbidden_outcomes"]).lower()
+        self.assertIn("initial", yellow_positive)
+        self.assertIn("later", yellow_positive)
+        self.assertIn("invalid", yellow_positive)
+        self.assertIn("idempoten", yellow_positive)
+        self.assertIn("unknown", yellow_positive)
+        self.assertIn("initial", yellow_negative)
+        self.assertIn("later", yellow_negative)
 
     def test_existing_blue_p03_semantics_preserved(self):
         for band in BANDS:
