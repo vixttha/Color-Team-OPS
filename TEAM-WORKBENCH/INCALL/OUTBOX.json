@@ -30,6 +30,16 @@
       "receiver_decision_comment": "https://github.com/vixttha/Color-Team-OPS/issues/10#issuecomment-6591796920",
       "result": "REJECTED_DUPLICATE_OR_REPLAY",
       "no_new_authorization": true
+    },
+    {
+      "message_id": "IN-PURPLE-20261102-205",
+      "to_team": "PURPLE",
+      "comment_id": 6592135814,
+      "comment_url": "https://github.com/vixttha/Color-Team-OPS/issues/14#issuecomment-6592135814",
+      "ack_comment_id": 6592136432,
+      "decision": "ACKNOWLEDGE",
+      "source_sha": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
+      "authority_granted": false
     }
   ],
   "note": "Only recorded issue messages with verified URL."
