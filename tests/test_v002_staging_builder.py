@@ -28,6 +28,68 @@ class StagingVariantTests(unittest.TestCase):
             m=json.loads(z.read("RELEASE-SOURCE-MANIFEST.json"))
             self.assertEqual(m["source_sha"],SHA)
             self.assertEqual(m["variant"],"PRIVATE_STAGING_NOT_RELEASED")
+    def test_staging_startup_prompt_exactly_matches_candidate(self):
+        # Launch-time instructions must be release-equivalent, unlike staging labels.
+        with zipfile.ZipFile(BytesIO(self.src)) as source, zipfile.ZipFile(BytesIO(self.staged)) as staged:
+            prompts = []
+            for path in ("plugin.json", ".codex-plugin/plugin.json"):
+                candidate = json.loads(source.read(path))
+                preview = json.loads(staged.read(path))
+                if path == "plugin.json":
+                    c_ui = candidate["extensions"]["com.openai"]["interface"]
+                    s_ui = preview["extensions"]["com.openai"]["interface"]
+                else:
+                    c_ui = candidate["interface"]
+                    s_ui = preview["interface"]
+                self.assertIsInstance(c_ui["defaultPrompt"], str)
+                self.assertTrue(c_ui["defaultPrompt"].strip())
+                self.assertEqual(s_ui["defaultPrompt"], c_ui["defaultPrompt"], path)
+                prompts.append(s_ui["defaultPrompt"])
+            self.assertEqual(prompts[0], prompts[1])
+
+    def test_staging_descriptors_only_change_identity_and_branding(self):
+        allowed = ("name", "description")
+        allowed_ui = ("displayName", "shortDescription", "longDescription")
+        with zipfile.ZipFile(BytesIO(self.src)) as source, zipfile.ZipFile(BytesIO(self.staged)) as staged:
+            for path in ("plugin.json", ".codex-plugin/plugin.json"):
+                original = json.loads(source.read(path))
+                preview = json.loads(staged.read(path))
+                for key in allowed:
+                    preview[key] = original[key]
+                if path == "plugin.json":
+                    a = original["extensions"]["com.openai"]["interface"]
+                    b = preview["extensions"]["com.openai"]["interface"]
+                else:
+                    a = original["interface"]
+                    b = preview["interface"]
+                for key in allowed_ui:
+                    b[key] = a[key]
+                self.assertEqual(preview, original, path)
+
+    def test_mismatched_source_entry_prompts_fail_closed(self):
+        # Construct a source archive with valid content digests but divergent
+        # canonical manifest prompts; never allow arbitrary staging behavior.
+        from hashlib import sha256
+        with zipfile.ZipFile(BytesIO(self.src)) as src:
+            files = {name: src.read(name) for name in src.namelist()}
+        descriptor = json.loads(files[".codex-plugin/plugin.json"])
+        descriptor["interface"]["defaultPrompt"] = "A different startup instruction"
+        changed = (json.dumps(descriptor, sort_keys=True, indent=2, ensure_ascii=True) + "\n").encode("utf8")
+        files[".codex-plugin/plugin.json"] = changed
+        manifest = json.loads(files["RELEASE-SOURCE-MANIFEST.json"])
+        for row in manifest["files"]:
+            if row["path"] == ".codex-plugin/plugin.json":
+                row["sha256"] = sha256(changed).hexdigest()
+                row["bytes"] = len(changed)
+        files["RELEASE-SOURCE-MANIFEST.json"] = (
+            json.dumps(manifest, sort_keys=True, indent=2, ensure_ascii=True) + "\n").encode("utf8")
+        buff = BytesIO()
+        with zipfile.ZipFile(buff, "w", compression=zipfile.ZIP_STORED) as z:
+            for name, data in sorted(files.items()):
+                z.writestr(name, data)
+        with self.assertRaisesRegex(PackageError, "STAGING_SOURCE_STARTUP_PROMPT_MISMATCH"):
+            build_staging(buff.getvalue(), SHA)
+
     def test_original_canonical_archive_unmodified(self):
         with zipfile.ZipFile(BytesIO(self.src)) as z:
             a=json.loads(z.read("plugin.json"))
