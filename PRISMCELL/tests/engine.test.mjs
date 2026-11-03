@@ -136,3 +136,11 @@ test('completed reviewed message is no longer pending after resume',()=>{
   const d=decide(config,l,{action:'BLOCK',reason:'not approved',message_id:msg.message_id},1);
   assert.equal(resume({revision:2,processed_comment_ids:[11]},d.ledger).pending.length,0);
 });
+
+test('future-dated decision-history revision cannot be replayed into older ledger',()=>{
+  const l=intake(config,ledger(),receipt()).ledger;
+  const d=decide(config,l,{action:'ACKNOWLEDGE',reason:'reviewed',message_id:msg.message_id},1);
+  const forged={...d.ledger,entries:[{...d.ledger.entries[0],decision_history:[{...d.ledger.entries[0].decision_history[0],revision:999}]}]};
+  assert.equal(resume({revision:2,processed_comment_ids:[11]},forged).reason,'INVALID_CHECKPOINT');
+  assert.equal(decide(config,forged,{action:'DEFER',reason:'no',message_id:msg.message_id},2).ok,false);
+});
