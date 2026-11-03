@@ -22,3 +22,7 @@ Reusable single-specialist, single-thread, GitHub-persistent workcell template f
 6. Commit only home-branch records in current scope; re-read and use expected-head update lease; publish source-linked in-call messages only through authorized GitHub issue comments.
 
 See CONTRACT.md, INCALL-PROTOCOL.md, LONG-RUNNING-OPERATIONS.md, PROMOTION.md, TEAM-MATRIX.md, schemas and audit.
+
+## Production use of the *workcell* (not a continuously running agent)
+
+PrismCell v0.0.1 is ready for **on-demand, user-invoked nine-team work**. Start from [AGENT-LAUNCHPAD.md](AGENT-LAUNCHPAD.md), follow [STARTUP.md](STARTUP.md) and inspect [OPERATIONAL-ACCEPTANCE.md](OPERATIONAL-ACCEPTANCE.md). The connected account is an administrator, so there is **no independently proven per-agent branch ACL**. Each invocation must reread current GitHub evidence before acting. This does not authorize installed Color-Team-OPS plugin release or autonomous work.

@@ -10,5 +10,10 @@
   "unattended_execution": false,
   "canonical_product_repo": "vixttha/Color-Team-OPS",
   "release_authority": "owner only",
-  "status": "WORKSPACE_TEMPLATE_BOOTSTRAPPED_NOT_PRODUCT_RELEASE"
+  "status": "ON_DEMAND_WORKCELL_READY_NOT_AUTONOMOUS",
+  "last_operational_review": "2026-11-02",
+  "readiness_scope": "NINE_GITHUB_WORKCELLS_ON_INVOCATION",
+  "security_acceptance": "CONDITIONAL_NOT_CROSS_PRINCIPAL_CERTIFIED",
+  "release_authorized_for_color_team_ops_plugin": false,
+  "native_test_baseline_sha": "50839b1c95e7390fbcd15366584e5592f7572d3e"
 }
