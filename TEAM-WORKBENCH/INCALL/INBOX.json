@@ -2,8 +2,22 @@
   "schema_version": "prismcell-inbox-0.0.1",
   "team": "BLUE",
   "canonical_issue": "https://github.com/vixttha/Color-Team-OPS/issues/13",
-  "last_processed_comment_id": null,
+  "last_processed_comment_id": 6592129043,
   "last_checked_at": null,
-  "messages": [],
+  "messages": [
+    {
+      "message_id": "IN-BLUE-20261102-204",
+      "from_team_claim": "RED",
+      "comment_id": 6592128368,
+      "comment_url": "https://github.com/vixttha/Color-Team-OPS/issues/13#issuecomment-6592128368",
+      "ack_comment_id": 6592129043,
+      "observed_actor": "vixttha",
+      "source_sha": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
+      "decision": "ACKNOWLEDGE",
+      "status": "ACKNOWLEDGED_FOR_REVIEW",
+      "role_authenticated": false,
+      "authority_granted": false
+    }
+  ],
   "note": "Empty snapshot does not mean GitHub issue is empty."
 }
