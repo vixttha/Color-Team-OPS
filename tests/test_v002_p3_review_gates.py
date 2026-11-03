@@ -101,6 +101,29 @@ class P3ReviewGateRegression(unittest.TestCase):
         self.assertIn("read-only inventory", prompt)
         self.assertNotIn("assume full write permission", prompt)
 
+    def test_ten_edge_context_overrides_are_exposed_only_to_correct_cases(self):
+        context = json.loads((ROOT / "evaluation" / "v0.0.2" /
+                              "context-overrides.json").read_text(encoding="utf-8"))
+        self.assertEqual(context["independent_approvals"], 0)
+        self.assertEqual(context["host_executions"], 0)
+        self.assertEqual(len(context["cases"]), 10)
+        for cid, note in context["cases"].items():
+            item = self.compiled[cid]
+            self.assertIn(note, item["candidate_input"])
+            self.assertEqual(item["grading"]["trusted_synthetic_context_note"], note)
+            self.assertEqual(item["band"], "edge")
+        for cid, item in self.compiled.items():
+            if cid not in context["cases"]:
+                self.assertIsNone(item["grading"]["trusted_synthetic_context_note"])
+        self.assertIn("provider is unavailable", self.compiled[
+            "orange-team:edge:03"]["candidate_input"].lower())
+        self.assertIn("e3's 09:59 lacks a timezone", self.compiled[
+            "blue-team:edge:03"]["candidate_input"].lower())
+        self.assertIn("no order/receipt", self.compiled[
+            "yellow-team:edge:05"]["candidate_input"].lower())
+        self.assertNotIn("trusted synthetic edge-context", self.compiled[
+            "gray-cell:adversarial:01"]["candidate_input"].lower())
+
     def test_oracle_does_not_demand_missing_event_ids(self):
         for cid in ("blue-team:normal:01", "blue-team:edge:01",
                     "blue-team:adversarial:01"):
