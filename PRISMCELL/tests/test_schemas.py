@@ -30,7 +30,9 @@ class UniversalSchemas(unittest.TestCase):
     accepted={**WORK,'status':'ACCEPTED','evidence_status':'EXECUTED_AT_SHA','source_sha':SHA,'assigned_team':'ALPHA','assigned_role':'Developer','scope':'Source review','risk':'LOW','prerequisites':[],'budget':{'max_repairs':2},'repair_count':0,'evidence_refs':['https://github.com/example/repo/commit/123'],'validation':{'result':'PASS','evidence_ref':'https://github.com/example/repo/issues/1'},'internal_audit':{'result':'PASS','evidence_ref':'https://github.com/example/repo/issues/1'},'head_decision':{'result':'ACCEPT','decision_ref':'https://github.com/example/repo/issues/1'}}
     self.assertTrue(valid('work-item',accepted))
   def test_13_project_config_valid(self):self.assertTrue(valid('project',PROJECT))
-  def test_14_project_missing_team_rejected(self):self.assertFalse(valid('project',{**PROJECT,'teams':{'ALPHA':PROJECT['teams']['ALPHA']}}))
+  def test_14_project_one_team_supported(self):self.assertTrue(valid('project',{**PROJECT,'teams':{'ALPHA':PROJECT['teams']['ALPHA']}}))
+  def test_16_project_without_teams_rejected(self):self.assertFalse(valid('project',{**PROJECT,'teams':{}}))
+  def test_17_project_whitespace_id_rejected(self):self.assertFalse(valid('project',{**PROJECT,'project_id':' '}))
   def test_15_project_wrong_issue_scheme_rejected(self):
     bad=json.loads(json.dumps(PROJECT));bad['teams']['ALPHA']['issue_url']='http://example.com'
     self.assertFalse(valid('project',bad))
