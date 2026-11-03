@@ -2,7 +2,7 @@
   "schema_version": "prismcell-inbox-0.0.1",
   "team": "PURPLE",
   "canonical_issue": "https://github.com/vixttha/Color-Team-OPS/issues/14",
-  "last_processed_comment_id": 6592181792,
+  "last_processed_comment_id": 6592215497,
   "last_checked_at": null,
   "messages": [
     {
@@ -37,6 +37,18 @@
       "decision": "DEFER",
       "source_sha": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
       "synthetic_claim": false,
+      "authority_granted": false
+    },
+    {
+      "message_id": "IN-PURPLE-20261102-303",
+      "from_team_claim": "BLACK",
+      "comment_id": 6592214787,
+      "comment_url": "https://github.com/vixttha/Color-Team-OPS/issues/14#issuecomment-6592214787",
+      "ack_comment_id": 6592215497,
+      "decision": "REJECT",
+      "reason": "STALE_SOURCE_SHA",
+      "source_sha": "62d43ef51d362cf064c367158a8d7fce207abd68",
+      "expected_source_sha": "c1cec00a044dafad9094154fc16d15fecf712a76",
       "authority_granted": false
     }
   ],
