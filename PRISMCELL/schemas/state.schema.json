@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "PrismCell team state v0.0.1 hardened",
+  "title": "PrismCell universal state v0.0.1",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -26,21 +26,13 @@
       "const": "0.0.1"
     },
     "team": {
-      "enum": [
-        "YELLOW",
-        "ORANGE",
-        "GREEN",
-        "RED",
-        "BLUE",
-        "PURPLE",
-        "WHITE",
-        "BLACK",
-        "GRAY"
-      ]
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,39}$"
     },
     "home_branch": {
       "type": "string",
-      "maxLength": 120
+      "maxLength": 120,
+      "minLength": 1
     },
     "status": {
       "type": "string",
@@ -79,180 +71,7 @@
     },
     "incall_issue": {
       "type": "string",
-      "pattern": "^https://github[.]com/[^/]+/[^/]+/issues/[0-9]+$"
+      "pattern": "^https://[^/]+/[^/]+/[^/]+/issues/[0-9]+$"
     }
-  },
-  "allOf": [
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "YELLOW"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "agent/YELLOW-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "ORANGE"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "agent/ORANGE-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "GREEN"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "agent/GREEN-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "RED"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "team/red-team-agent"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "BLUE"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "agents/blue-team-agent"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "PURPLE"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "agent/PURPLE-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "WHITE"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "agent/WHITE-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "BLACK"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "agent/BLACK-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "team": {
-            "const": "GRAY"
-          }
-        },
-        "required": [
-          "team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "home_branch": {
-            "const": "agent/GRAY-CELL-AGENT"
-          }
-        }
-      }
-    }
-  ]
+  }
 }

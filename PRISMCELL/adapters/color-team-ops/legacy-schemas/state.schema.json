@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrismCell team state v0.0.1 hardened",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "template",
+    "version",
+    "team",
+    "home_branch",
+    "status",
+    "active_work_item",
+    "last_verified_product_sha",
+    "last_session",
+    "release_authorized"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "prismcell-state-0.0.1"
+    },
+    "template": {
+      "const": "PrismCell Workbench"
+    },
+    "version": {
+      "const": "0.0.1"
+    },
+    "team": {
+      "enum": [
+        "YELLOW",
+        "ORANGE",
+        "GREEN",
+        "RED",
+        "BLUE",
+        "PURPLE",
+        "WHITE",
+        "BLACK",
+        "GRAY"
+      ]
+    },
+    "home_branch": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "active_work_item": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_verified_product_sha": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{40}$"
+        }
+      ]
+    },
+    "last_session": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "release_authorized": {
+      "const": false
+    },
+    "template_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{40}$"
+    },
+    "incall_issue": {
+      "type": "string",
+      "pattern": "^https://github[.]com/[^/]+/[^/]+/issues/[0-9]+$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "YELLOW"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "agent/YELLOW-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "ORANGE"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "agent/ORANGE-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "GREEN"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "agent/GREEN-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "RED"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "team/red-team-agent"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "BLUE"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "agents/blue-team-agent"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "PURPLE"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "agent/PURPLE-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "WHITE"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "agent/WHITE-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "BLACK"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "agent/BLACK-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "team": {
+            "const": "GRAY"
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "home_branch": {
+            "const": "agent/GRAY-CELL-AGENT"
+          }
+        }
+      }
+    }
+  ]
+}

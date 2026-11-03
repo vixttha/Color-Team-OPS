@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrismCell sender-proposed in-call message v0.0.1 hardened",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "message_id",
+    "from_team",
+    "from_branch",
+    "to_team",
+    "type",
+    "priority",
+    "summary",
+    "source_ref",
+    "source_sha",
+    "evidence_links",
+    "requested_action",
+    "authority_scope",
+    "status"
+  ],
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "pattern": "^IN-[A-Z]+-[0-9]{8}-[0-9]{3,6}$",
+      "maxLength": 64
+    },
+    "from_team": {
+      "enum": [
+        "YELLOW",
+        "ORANGE",
+        "GREEN",
+        "RED",
+        "BLUE",
+        "PURPLE",
+        "WHITE",
+        "BLACK",
+        "GRAY"
+      ]
+    },
+    "from_branch": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "to_team": {
+      "enum": [
+        "YELLOW",
+        "ORANGE",
+        "GREEN",
+        "RED",
+        "BLUE",
+        "PURPLE",
+        "WHITE",
+        "BLACK",
+        "GRAY"
+      ]
+    },
+    "type": {
+      "enum": [
+        "REQUEST",
+        "FINDING",
+        "REVIEW",
+        "CHALLENGE",
+        "RESPONSE",
+        "BLOCKER",
+        "FYI"
+      ]
+    },
+    "priority": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "source_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 180
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^(?:[0-9a-fA-F]{40}|unknown)$"
+    },
+    "evidence_links": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "maxLength": 2048,
+        "pattern": "^https://"
+      }
+    },
+    "requested_action": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "authority_scope": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "status": {
+      "const": "POSTED"
+    },
+    "issue_url": {
+      "type": "string",
+      "maxLength": 300,
+      "pattern": "^https://github[.]com/[^/]+/[^/]+/issues/[0-9]+$"
+    },
+    "posted_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "YELLOW"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "agent/YELLOW-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "ORANGE"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "agent/ORANGE-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "GREEN"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "agent/GREEN-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "RED"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "team/red-team-agent"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "BLUE"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "agents/blue-team-agent"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "PURPLE"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "agent/PURPLE-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "WHITE"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "agent/WHITE-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "BLACK"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "agent/BLACK-TEAM-AGENT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "from_team": {
+            "const": "GRAY"
+          }
+        },
+        "required": [
+          "from_team"
+        ]
+      },
+      "then": {
+        "properties": {
+          "from_branch": {
+            "const": "agent/GRAY-CELL-AGENT"
+          }
+        }
+      }
+    }
+  ]
+}
