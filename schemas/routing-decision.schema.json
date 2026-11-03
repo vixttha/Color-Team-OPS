@@ -10,13 +10,15 @@
   "properties": {
     "action": {
       "enum": [
+        "SUGGEST_ONLY",
         "DISPATCH",
         "COMPLETE",
         "IDLE",
         "BLOCK",
         "ESCALATE",
         "CAPABILITY_BLOCKED"
-      ]
+      ],
+      "description": "SUGGEST_ONLY=advice; DISPATCH=Head logical assignment only, never a host-granted execution right."
     },
     "reason": {
       "type": "string",
@@ -44,7 +46,8 @@
         "PASS",
         "FAIL",
         "UNVERIFIED"
-      ]
+      ],
+      "description": "Self-declared logical gate state; PASS alone cannot authenticate an external observation."
     },
     "source_sha": {
       "type": "string",
@@ -67,6 +70,49 @@
       "type": "string",
       "format": "date-time",
       "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "head_decision_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assignment_stage": {
+      "enum": [
+        "INITIAL",
+        "AFTER_REVIEW"
+      ]
+    },
+    "authorization_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Declared only, not trusted permission"
+    },
+    "authority_claim_status": {
+      "const": "UNVERIFIED_HOST_AUTHORITY"
+    },
+    "authorization_effect": {
+      "const": "LOGICAL_ONLY_NO_HOST_GRANT"
+    },
+    "execution_authorized": {
+      "const": false
+    },
+    "active_worker_count": {
+      "const": 0
+    },
+    "remaining_handoffs": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "prior_validation_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prior_audit_ref": {
+      "type": "string",
+      "minLength": 1
     }
   },
   "allOf": [
@@ -74,7 +120,10 @@
       "if": {
         "properties": {
           "action": {
-            "const": "DISPATCH"
+            "enum": [
+              "DISPATCH",
+              "SUGGEST_ONLY"
+            ]
           }
         },
         "required": [
@@ -113,6 +162,95 @@
           "verification_time"
         ]
       }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "const": "DISPATCH"
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "then": {
+        "required": [
+          "next_team",
+          "task_id",
+          "source_sha",
+          "head_decision_ref",
+          "assignment_stage",
+          "authorization_ref",
+          "authority_claim_status",
+          "authorization_effect",
+          "execution_authorized",
+          "active_worker_count",
+          "remaining_handoffs",
+          "evidence_refs"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "const": "DISPATCH"
+          },
+          "assignment_stage": {
+            "const": "AFTER_REVIEW"
+          }
+        },
+        "required": [
+          "action",
+          "assignment_stage"
+        ]
+      },
+      "then": {
+        "required": [
+          "prior_validation_ref",
+          "prior_audit_ref",
+          "verification"
+        ],
+        "properties": {
+          "verification": {
+            "const": "PASS"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "const": "DISPATCH"
+          },
+          "assignment_stage": {
+            "const": "INITIAL"
+          }
+        },
+        "required": [
+          "action",
+          "assignment_stage"
+        ]
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "prior_validation_ref"
+              ]
+            },
+            {
+              "required": [
+                "prior_audit_ref"
+              ]
+            }
+          ]
+        }
+      }
     }
-  ]
+  ],
+  "description": "Portable logical Head routing, not a permission issuer. Neither SUGGEST_ONLY nor DISPATCH can authorize an external operation."
 }

@@ -65,7 +65,8 @@
           "open_draft_pr"
         ]
       },
-      "minItems": 1
+      "minItems": 1,
+      "description": "Declared scope only; real external tool actions require fresh owner/host permission and matching mission/task/revision/branch."
     },
     "max_handoffs": {
       "type": "integer",
@@ -91,7 +92,8 @@
         "IDLE",
         "BLOCKED",
         "CANCELLED"
-      ]
+      ],
+      "description": "Declared internal mission state, not an authenticated authorization grant."
     },
     "budget_usd": {
       "type": "number",
@@ -102,11 +104,17 @@
     },
     "authorization_ref": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Untrusted authorization reference claim, not owner consent or a verified tool capability."
     },
     "authorized_branch": {
       "type": "string",
-      "pattern": "^(?!main$|master$)[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$"
+      "pattern": "^(?!main$|master$)[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$",
+      "description": "Declared target; independently check current exact branch before a real write."
+    },
+    "authority_claim_classification": {
+      "const": "DECLARED_ONLY",
+      "description": "Optional non-breaking annotation; does not convey permission."
     }
   },
   "allOf": [
@@ -152,5 +160,6 @@
         ]
       }
     }
-  ]
+  ],
+  "description": "Portable mission declaration; state AUTHORIZED, authorization_ref, and a schema-valid JSON document NEVER establish trusted owner/host permission."
 }
