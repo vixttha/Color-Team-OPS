@@ -19,7 +19,7 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 100,
-      "pattern": "\\S"
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$"
     },
     "repository": {
       "type": "string",
@@ -54,7 +54,7 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 120,
-            "pattern": "^(?!/)(?!.*(?:\\.\\.|//|@\\{|\\\\|[\\x00-\\x1f]))[A-Za-z0-9._/-]+$"
+            "pattern": "^(?!-)(?!HEAD$)(?!.*(?:^|/)\\.)(?!.*\\/$)(?!.*\\.(?:/|$))(?!.*\\.lock(?:/|$))(?!.*(?:\\.\\.|//|@\\{|\\\\|[\\x00-\\x1f]))[A-Za-z0-9._/-]+$"
           },
           "issue_number": {
             "type": "integer",
