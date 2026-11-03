@@ -1,6 +1,22 @@
 {
   "schema_version": "prismcell-outbox-0.0.1",
   "from_team": "BLUE",
-  "messages": [],
+  "messages": [
+    {
+      "message_id": "IN-ORANGE-20261102-001",
+      "to_team": "ORANGE",
+      "to_issue": "https://github.com/vixttha/Color-Team-OPS/issues/10",
+      "comment_id": 6591670496,
+      "comment_url": "https://github.com/vixttha/Color-Team-OPS/issues/10#issuecomment-6591670496",
+      "transport": "GITHUB_ISSUE_COMMENT",
+      "actor_login_observed": "vixttha",
+      "logical_role": "BLUE",
+      "source_branch": "template/prismcell-workbench-v0.0.1",
+      "source_sha": "62d43ef51d362cf064c367158a8d7fce207abd68",
+      "evidence_status": "VERIFIED_GITHUB_COMMENT_READBACK",
+      "status": "POSTED",
+      "authority": "NO_CROSS_BRANCH_OR_RELEASE_GRANT"
+    }
+  ],
   "note": "Only recorded issue messages with verified URL."
 }
