@@ -2,6 +2,7 @@
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {resolve,dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 import {renderProject} from '../core/starter.mjs';
 async function main(args){
   const flags={};
@@ -25,7 +26,7 @@ async function main(args){
   await writeFile(join(output,'MANIFEST.json'),JSON.stringify({
     schema_version:'prismcell-bootstrap-manifest-0.0.1',
     project_id:config.project_id,repository:config.repository,source_sha:flags['--source-sha'],
-    installed:false,provider_verified:false,teams:project.map(({team,branch,issue_url,files})=>({team,branch,issue_url,files:Object.keys(files).sort()}))
+    installed:false,provider_verified:false,integrity:'sha256-file-digests-not-provider-authentication',teams:project.map(({team,branch,issue_url,files})=>({team,branch,issue_url,files:Object.keys(files).sort().map(path=>({path,sha256:createHash('sha256').update(files[path],'utf8').digest('hex')}))}))
   },null,2)+'\n',{flag:'wx'});
   process.stdout.write('PRISMCELL_OFFLINE_CLEANROOM_BOOTSTRAP_READY '+output+'\n');
 }

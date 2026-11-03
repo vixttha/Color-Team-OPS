@@ -2,6 +2,25 @@
    No network, no GitHub write, no background runtime. Never copies existing team histories. */
 import {validateConfig} from './engine.mjs';
 const SHA=/^[0-9a-fA-F]{40}$/;
+export const REQUIRED_WORKCELL_FILES = Object.freeze([
+  "TEAM-WORKBENCH/BOOTSTRAP-AUDIT.md",
+  "TEAM-WORKBENCH/EVIDENCE-LEDGER.json",
+  "TEAM-WORKBENCH/HEAD-HANDOFF.md",
+  "TEAM-WORKBENCH/IDENTITY.md",
+  "TEAM-WORKBENCH/INCALL/INBOX.json",
+  "TEAM-WORKBENCH/INCALL/MESSAGE.md",
+  "TEAM-WORKBENCH/INCALL/OUTBOX.json",
+  "TEAM-WORKBENCH/INCALL/README.md",
+  "TEAM-WORKBENCH/OPERATIONS-CHECKPOINT.json",
+  "TEAM-WORKBENCH/PROMOTION.md",
+  "TEAM-WORKBENCH/README.md",
+  "TEAM-WORKBENCH/ROADMAP.md",
+  "TEAM-WORKBENCH/SCOPE.md",
+  "TEAM-WORKBENCH/STATE.json",
+  "TEAM-WORKBENCH/WORK-QUEUE.json",
+  "TEAM-WORKBENCH/WORKFLOW.md",
+  "TEAM-WORKBENCH/WORKLOG.md"
+]);
 const json=v=>JSON.stringify(v,null,2)+'\n';
 const heading=(title,content)=>'# '+title+'\n\n'+content+'\n';
 export function renderWorkcell(config,team,pinnedSha){
@@ -57,6 +76,7 @@ export function renderWorkcell(config,team,pinnedSha){
       'Generated deterministically from project '+config.project_id+' for '+team+', pinned PrismCell source '+pinnedSha+
       '. The generated files have **not** been installed on GitHub or verified against provider state. Release authorization remains false.')
   };
+  if(JSON.stringify(Object.keys(files).sort())!==JSON.stringify(REQUIRED_WORKCELL_FILES))throw new Error('STARTER_FILES_DRIFT');
   return {team,branch:home.branch,issue_url:issue,files};
 }
 export function renderProject(config,pinnedSha){
