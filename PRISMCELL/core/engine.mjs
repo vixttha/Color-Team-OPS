@@ -28,7 +28,8 @@ const validLedgerEntry = e => !!e && typeof e==='object' && !Array.isArray(e) &&
 const validLedger = l => !!l && typeof l==='object' && !Array.isArray(l) && Number.isSafeInteger(l.revision) && l.revision>=0 &&
   Array.isArray(l.entries) && l.entries.every(validLedgerEntry) &&
   new Set(l.entries.map(x=>x.comment_id)).size===l.entries.length &&
-  new Set(l.entries.map(x=>x.message_id)).size===l.entries.length;
+  new Set(l.entries.map(x=>x.message_id)).size===l.entries.length &&
+  l.entries.every(x=>x.decision_history===undefined || x.decision_history.every(d=>d.revision<=l.revision));
 
 export function validateConfig(config) {
   const e=[];
