@@ -1,0 +1,45 @@
+{
+  "schema_version": "prismcell-yellow-six-repair-v0.0.1",
+  "date": "2026-11-03",
+  "candidate_sha": "45ecbdc2460c22a79fff54557012f62b33c38a10",
+  "base_sha": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "pull_request": 18,
+  "pull_request_state": "DRAFT_NOT_MERGED",
+  "version": "0.0.1",
+  "fixes": [
+    "ledger-immutable-decision-history",
+    "malformed-ledger-deny",
+    "message-namespace-bound",
+    "git-ref-validation",
+    "safe-project-id",
+    "canonical-schema-identical-alias",
+    "full-17-file-digests",
+    "manual-reviewed-sha-owner-runners"
+  ],
+  "source_checks": {
+    "engine_v8_pass": 61,
+    "starter_v8_sync_pass": 24,
+    "preflight_synthetic_pass": 16,
+    "mocked_manifest_positive": true,
+    "mocked_manifest_negative_pass": 5,
+    "canonical_alias_pairs_equal": 4
+  },
+  "historical_native": {
+    "run_id": 41700021272,
+    "sha": "e4de4b037e61e2893a5a8e4178b51bb298c70ab4",
+    "linux_node_pass": 89,
+    "windows_node_pass": 89,
+    "linux_python_pass": 21,
+    "windows_python_pass": 21,
+    "applies_to_current_sha": false
+  },
+  "current_native_windows_linux": "NOT_RUN",
+  "current_python_schema_suite": "NOT_RUN",
+  "reason": "owner manual-only workflow needs default-branch trusted registration and no workflow dispatch capability connected",
+  "existing_nine_pins": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "existing_nine_modified": false,
+  "main_modified": false,
+  "vercel_used": false,
+  "release_authorized": false,
+  "head_verdict": "YELLOW_PATCHES_COMPLETE_CODE_AUDIT_PASS_RELEASE_HOLD"
+}

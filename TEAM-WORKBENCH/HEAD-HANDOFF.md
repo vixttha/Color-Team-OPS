@@ -1,3 +1,13 @@
+# Yellow Head — PrismCell v0.0.1 six repairs (Nov 3, 2026)
+
+P1 (immutable decisions and robust ledgers; team-ID/Git ref; metadata safety) plus P2 (canonical schemas and historical archive; full-file hashed manifests; safe manual owner-runner gating) **implemented on** `45ecbdc2460c22a79fff54557012f62b33c38a10` at [draft PR #18](https://github.com/vixttha/Color-Team-OPS/pull/18).
+
+[Yellow exact-source audit](trials/PRISMCELL-V001-YELLOW-SIX-REPAIR-IMPLEMENTATION-AUDIT-2026-11-03.md) and [machine evidence](trials/PRISMCELL-V001-SIX-REPAIR-EVIDENCE.json) disclose 61 V8 engine, 24 V8 synchronous starter, mocked manifest test, four schema-source Git blob checks **and explicitly no new native owner runner execution**.
+
+**Head: HOLD MERGE / HOLD GENERAL RELEASE** until exact-HEAD owner self-hosted Windows/Linux native tests can run safely through a trusted manually authorized default-branch registration, then obtain independent logical Purple review. Do not turn push triggers back on to force runner activity. No changes to canonical template or nine installed homes; all remain pinned to `25d59530210949792b3ce47ac0a804442997a9b1`. No Vercel, no autonomous host, no cross-branch writes or new credentials. Yellow idle.
+
+## Previous Head handoff retained verbatim
+
 # YELLOW Head — Completed PrismCell v0.0.1 reuse repair (Nov 3, 2026)
 
 Candidate source `e4de4b037e61e2893a5a8e4178b51bb298c70ab4` passed **89 Node + 21 Python/schema** native tests on **each** owner self-hosted Linux and Windows runner, including a fresh history-free synthetic project install. Evidence: [GitHub run #41700021272](https://github.com/vixttha/Color-Team-OPS/actions/runs/41700021272), [Yellow audit](trials/PRISMCELL-V001-YELLOW-REUSE-REPAIR-2026-11-03.md), [exact-source evidence](trials/PRISMCELL-V001-REUSE-EXACT-SHA-EVIDENCE.json).
