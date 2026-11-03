@@ -59,12 +59,14 @@
     "summary": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 2048
+      "maxLength": 2048,
+      "pattern": "\\S"
     },
     "source_ref": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 180
+      "maxLength": 180,
+      "pattern": "\\S"
     },
     "source_sha": {
       "type": "string",
@@ -77,18 +79,20 @@
       "items": {
         "type": "string",
         "maxLength": 2048,
-        "pattern": "^https://"
+        "pattern": "^https://[^\\s/?#@]+(?:/[^\\s]*)?$"
       }
     },
     "requested_action": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 2048
+      "maxLength": 2048,
+      "pattern": "\\S"
     },
     "authority_scope": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 1024
+      "maxLength": 1024,
+      "pattern": "\\S"
     },
     "status": {
       "const": "POSTED"
@@ -96,11 +100,7 @@
     "issue_url": {
       "type": "string",
       "maxLength": 300,
-      "pattern": "^https://[^/]+/[^/]+/[^/]+/issues/[0-9]+$"
-    },
-    "posted_at": {
-      "type": "string",
-      "format": "date-time"
+      "pattern": "^https://github[.]com/[^/\\s]+/[^/\\s]+/issues/[0-9]+$"
     }
   }
 }

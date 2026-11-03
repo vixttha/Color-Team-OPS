@@ -2,7 +2,10 @@
    Pure functions, NO network, credentials, filesystem, permissions or autonomous dispatch.
    Host must fetch trusted provider receipts and enforce identity, ACL and compare-and-swap itself. */
 const SHA = /^[a-fA-F0-9]{40}$/;
-const ID = /^[A-Z][A-Z0-9_-]{7,79}$/;
+const ID = /^IN-[A-Z]+-[0-9]{8}-[0-9]{3,6}$/;
+const TEAM = /^[A-Z][A-Z0-9_]{1,39}$/;
+const REPO = /^[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/;
+const BRANCH = /^(?!\/)(?!.*(?:\.\.|\/\/|@\{|\\|[\x00-\x1f]))[A-Za-z0-9._\/-]+$/;
 const allowedTypes = new Set(['REQUEST','FINDING','REVIEW','CHALLENGE','RESPONSE','BLOCKER','FYI']);
 const priorities = new Set(['P0','P1','P2','P3']);
 const text = (v,max=2048) => typeof v === 'string' && v.trim().length>0 && v.length<=max;
@@ -11,18 +14,23 @@ const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
 export function validateConfig(config) {
   const e=[];
   if(!config || typeof config!=='object' || Array.isArray(config))return ['INVALID_CONFIG'];
-  if(!text(config.project_id,100) || !text(config.repository,200) || !url(config.repository_url))e.push('BAD_PROJECT');
+  const fields=['schema_version','project_id','repository','repository_url','transport','teams'];
+  if(fields.some(k=>!Object.hasOwn(config,k)) || Object.keys(config).some(k=>!fields.includes(k)))e.push('PROJECT_FIELDS');
+  if(config.schema_version!=='prismcell-project-config-0.0.1' || config.transport!=='github-issues-manual')e.push('PROJECT_VERSION_OR_TRANSPORT');
+  if(!text(config.project_id,100) || !REPO.test(config.repository||'') || config.repository_url!=='https://github.com/'+config.repository)e.push('BAD_PROJECT');
   if(!config.teams || typeof config.teams!=='object' || Array.isArray(config.teams))return [...e,'MISSING_TEAMS'];
   const names=Object.keys(config.teams);
-  if(names.length<2 || names.length>50 || new Set(names).size!==names.length)e.push('TEAM_COUNT');
+  if(names.length<1 || names.length>50)e.push('TEAM_COUNT');
+  const branchNames=[],issueNumbers=[];
   for(const [team,home] of Object.entries(config.teams)) {
-    if(!/^[A-Z][A-Z0-9_]{1,39}$/.test(team) || !home || !text(home.branch,200) || !url(home.issue_url) || !Number.isSafeInteger(home.issue_number) || home.issue_number<1)e.push('BAD_TEAM_'+team);
-    if(home && url(home.issue_url) && !home.issue_url.startsWith(config.repository_url+'/issues/'))e.push('ISSUE_REPO_MISMATCH_'+team);
-    if(home && home.issue_url!==(config.repository_url+'/issues/'+home.issue_number))e.push('ISSUE_NUMBER_MISMATCH_'+team);
+    if(!TEAM.test(team) || !home || typeof home!=='object' || Array.isArray(home)) {e.push('BAD_TEAM_'+team);continue;}
+    const keys=['branch','issue_number','issue_url'];
+    if(keys.some(k=>!Object.hasOwn(home,k)) || Object.keys(home).some(k=>!keys.includes(k)))e.push('BAD_TEAM_FIELDS_'+team);
+    if(!text(home.branch,120) || !BRANCH.test(home.branch||'') || !Number.isSafeInteger(home.issue_number) || home.issue_number<1 || home.issue_url!==config.repository_url+'/issues/'+home.issue_number)e.push('BAD_TEAM_'+team);
+    branchNames.push(home.branch);issueNumbers.push(home.issue_number);
   }
-  const branches=Object.values(config.teams).map(v=>v?.branch), issues=Object.values(config.teams).map(v=>v?.issue_number);
-  if(new Set(branches).size!==branches.length || new Set(issues).size!==issues.length)e.push('DUPLICATE_LOCATOR');
-  return e;
+  if(new Set(branchNames).size!==branchNames.length || new Set(issueNumbers).size!==issueNumbers.length)e.push('DUPLICATE_LOCATOR');
+  return [...new Set(e)];
 }
 export function parseEnvelope(body) {
   if(!text(body,12000))return {message:null,errors:['INVALID_BODY']};
@@ -40,17 +48,19 @@ export function validateMessage(config,message) {
   if(!m || typeof m!=='object' || Array.isArray(m))return ['BAD_MESSAGE'];
   const keys=['message_id','from_team','from_branch','to_team','type','priority','summary','source_ref','source_sha','evidence_links','requested_action','authority_scope','status'];
   if(keys.some(k=>!Object.hasOwn(m,k)))e.push('MISSING_FIELDS');
-  if(!ID.test(m.message_id||''))e.push('BAD_MESSAGE_ID');
-  if(!config.teams[m.from_team] || m.from_branch!==config.teams[m.from_team]?.branch)e.push('CLAIMED_SENDER_BRANCH_MISMATCH');
-  if(!config.teams[m.to_team])e.push('UNKNOWN_RECIPIENT');
+  if(!text(m.message_id,64) || !ID.test(m.message_id))e.push('BAD_MESSAGE_ID');
+  const from=TEAM.test(m.from_team||'') && Object.hasOwn(config.teams,m.from_team)?config.teams[m.from_team]:null;
+  const to=TEAM.test(m.to_team||'') && Object.hasOwn(config.teams,m.to_team)?config.teams[m.to_team]:null;
+  if(!from || m.from_branch!==from.branch || !text(m.from_branch,120))e.push('CLAIMED_SENDER_BRANCH_MISMATCH');
+  if(!to)e.push('UNKNOWN_RECIPIENT');
   if(!allowedTypes.has(m.type) || !priorities.has(m.priority))e.push('BAD_CLASSIFICATION');
   if(m.status!=='POSTED')e.push('SENDER_DECISION_FORBIDDEN');
-  if(!text(m.summary) || !text(m.requested_action) || !text(m.authority_scope,1024) || !text(m.source_ref,200))e.push('BAD_TEXT');
+  if(!text(m.summary,2048) || !text(m.requested_action,2048) || !text(m.authority_scope,1024) || !text(m.source_ref,180))e.push('BAD_TEXT');
   if(m.source_sha!=='unknown' && !SHA.test(m.source_sha||''))e.push('BAD_SOURCE_SHA');
   if(!Array.isArray(m.evidence_links) || m.evidence_links.length>16 || new Set(m.evidence_links).size!==m.evidence_links.length || m.evidence_links.some(x=>!url(x)))e.push('BAD_LINKS');
   if(Object.keys(m).some(k=>![...keys,'issue_url'].includes(k)))e.push('EXTRA_FIELDS');
-  if(m.issue_url!==undefined && m.issue_url!==config.teams[m.to_team]?.issue_url)e.push('WRONG_TARGET_URL');
-  return e;
+  if(m.issue_url!==undefined && (!text(m.issue_url,300) || !url(m.issue_url) || m.issue_url!==to?.issue_url))e.push('WRONG_TARGET_URL');
+  return [...new Set(e)];
 }
 export function intake(config, ledger, receipt, opts={}) {
   const errors=validateConfig(config);
@@ -60,8 +70,8 @@ export function intake(config, ledger, receipt, opts={}) {
   const m=parsed.message;
   if(m)errors.push(...validateMessage(config,m));
   if(m && opts.expected_source_sha && m.source_sha!==opts.expected_source_sha)errors.push('STALE_SOURCE_SHA');
-  const team=m && config.teams[m.to_team];
-  if(!receipt || receipt.provider!=='github' || !team || receipt.issue_url!==team.issue_url || !Number.isSafeInteger(receipt.comment_id) || receipt.comment_id<1 || receipt.comment_url!==(team.issue_url+'#issuecomment-'+receipt.comment_id) || !text(receipt.actor_login,100) || !text(receipt.created_at,60) || !text(receipt.updated_at,60))errors.push('UNVERIFIED_PROVIDER_METADATA');
+  const team=m && TEAM.test(m.to_team||'') && Object.hasOwn(config.teams,m.to_team) ? config.teams[m.to_team] : null;
+  if(!receipt || receipt.provider!=='github' || !team || !text(receipt.issue_url,300) || receipt.issue_url!==team.issue_url || !Number.isSafeInteger(receipt.comment_id) || receipt.comment_id<1 || receipt.comment_url!==(team.issue_url+'#issuecomment-'+receipt.comment_id) || !text(receipt.actor_login,100) || !text(receipt.created_at,60) || !text(receipt.updated_at,60))errors.push('UNVERIFIED_PROVIDER_METADATA');
   if(receipt?.created_at!==receipt?.updated_at)errors.push('EDITED_COMMENT_REVIEW');
   if(!ledger || !Number.isSafeInteger(ledger.revision) || ledger.revision<0 || !Array.isArray(ledger.entries))errors.push('BAD_LEDGER');
   if(ledger && opts.expected_revision!==undefined && ledger.revision!==opts.expected_revision)errors.push('STALE_CONCURRENT_WRITE');
@@ -91,7 +101,7 @@ export function resume(checkpoint, latest) {
 }
 export function migrateState(state,config,pinnedSha) {
   const e=validateConfig(config);
-  if(e.length || !state || !config.teams[state.team] || state.home_branch!==config.teams[state.team].branch || state.release_authorized!==false || !SHA.test(pinnedSha||''))return {ok:false,errors:e.length?e:['INVALID_LEGACY_STATE']};
+  if(e.length || !state || !TEAM.test(state.team||'') || !Object.hasOwn(config.teams,state.team) || state.home_branch!==config.teams[state.team].branch || state.release_authorized!==false || !SHA.test(pinnedSha||''))return {ok:false,errors:e.length?e:['INVALID_LEGACY_STATE']};
   const migrated={...state,template_revision:pinnedSha,core_policy_revision:'prismcell-core-0.0.1',migration:{status:'PINNED_WITH_HISTORY_PRESERVED',from_version:state.version,source:'PRISMCELL_WORKBENCH_OPTION_D'}};
   return {ok:true,state:migrated};
 }

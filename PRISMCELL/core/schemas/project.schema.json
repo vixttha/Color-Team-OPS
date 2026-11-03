@@ -23,18 +23,19 @@
     "repository": {
       "type": "string",
       "minLength": 3,
-      "maxLength": 200
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$"
     },
     "repository_url": {
       "type": "string",
-      "pattern": "^https://github[.]com/[^/]+/[^/]+$"
+      "pattern": "^https://github[.]com/[A-Za-z0-9-]+/[A-Za-z0-9._-]+$"
     },
     "transport": {
       "const": "github-issues-manual"
     },
     "teams": {
       "type": "object",
-      "minProperties": 2,
+      "minProperties": 1,
       "maxProperties": 50,
       "propertyNames": {
         "pattern": "^[A-Z][A-Z0-9_]{1,39}$"
@@ -51,7 +52,8 @@
           "branch": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 200
+            "maxLength": 120,
+            "pattern": "^(?!/)(?!.*(?:\\.\\.|//|@\\{|\\\\|[\\x00-\\x1f]))[A-Za-z0-9._/-]+$"
           },
           "issue_number": {
             "type": "integer",
@@ -59,7 +61,7 @@
           },
           "issue_url": {
             "type": "string",
-            "pattern": "^https://github[.]com/[^/]+/[^/]+/issues/[0-9]+$"
+            "pattern": "^https://github[.]com/[A-Za-z0-9-]+/[A-Za-z0-9._-]+/issues/[0-9]+$"
           }
         }
       }

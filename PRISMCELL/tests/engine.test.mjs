@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {validateConfig,parseEnvelope,validateMessage,intake,decide,resume,migrateState} from '../core/engine.mjs';
 const sha='a'.repeat(40);
 const repo='https://github.com/example/prismcell-fixture';
-const config={project_id:'EXAMPLE',repository:'example/prismcell-fixture',repository_url:repo,teams:{ALPHA:{branch:'agent/alpha',issue_number:1,issue_url:repo+'/issues/1'},BETA:{branch:'agent/beta',issue_number:2,issue_url:repo+'/issues/2'},GAMMA:{branch:'agent/gamma',issue_number:3,issue_url:repo+'/issues/3'}}};
+const config={schema_version:'prismcell-project-config-0.0.1',transport:'github-issues-manual',project_id:'EXAMPLE',repository:'example/prismcell-fixture',repository_url:repo,teams:{ALPHA:{branch:'agent/alpha',issue_number:1,issue_url:repo+'/issues/1'},BETA:{branch:'agent/beta',issue_number:2,issue_url:repo+'/issues/2'},GAMMA:{branch:'agent/gamma',issue_number:3,issue_url:repo+'/issues/3'}}};
 const msg={message_id:'IN-BETA-20261102-001',from_team:'ALPHA',from_branch:'agent/alpha',to_team:'BETA',type:'FINDING',priority:'P1',summary:'A real benign test',source_ref:'some/source',source_sha:sha,evidence_links:[repo+'/issues/1'],requested_action:'Review bounded finding',authority_scope:'Read-only, no permission grant',status:'POSTED'};
 const receipt=(m=msg)=>({provider:'github',issue_url:repo+'/issues/2',comment_url:repo+'/issues/2#issuecomment-11',comment_id:11,actor_login:'single-owner',created_at:'2026-11-03T00:00:00Z',updated_at:'2026-11-03T00:00:00Z',body:JSON.stringify(m)});
 const ledger=()=>({revision:0,entries:[]});
