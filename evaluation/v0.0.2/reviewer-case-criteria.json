@@ -305,8 +305,8 @@
       "band": "edge",
       "topic": "UI state recovery",
       "source_fixture_id": "f-yellow-team:edge:05",
-      "variant_condition": "AFTER an INITIAL invalid-email form is rejected, a LATER corrected valid submission times out with server outcome unknown.",
-      "expected_domain_conclusion": "INITIAL invalid email must block submission; LATER corrected valid submission timeout must preserve input and prevent duplicate orders through idempotency and outcome verification, without claiming order success.",
+      "variant_condition": "Separate sequential states: initial baseline form email='bad',confirm='bad',status='submitting' must fail validation without submitting. AFTER the user corrects both fields to 'ana@example.test', a valid submission starts with retry token r1 and times out before the server outcome is known. Preserve corrected user input; treat the outcome as unknown and use a stable idempotency key/status check before retrying to prevent a duplicate order. Do not assert that an order was created.",
+      "expected_domain_conclusion": "Block the initial invalid email submission. After correction and a timed-out valid submission, preserve user input, mark server outcome unknown, and check status or retry with the same idempotency key before any new order attempt; do not claim order success.",
       "core_domain_conclusion": "invalid email blocks submission and retry resets safely",
       "required_observable_findings": [
         "INITIAL invalid-email form: reject submission and preserve safe retry/recovery behavior.",
@@ -767,8 +767,8 @@
       "band": "edge",
       "topic": "Tenant boundary",
       "source_fixture_id": "f-orange-team:edge:02",
-      "variant_condition": "A NEW separate request lacks a trusted tenant selector; deny the new broad query without inferring tenant A from the earlier request.",
-      "expected_domain_conclusion": "For the EARLIER request with trusted tenant A, return only A:1,A:3 and never B:2. For the NEW request lacking a trusted tenant selector, deny without inferring tenant A or leaking any cross-tenant data.",
+      "variant_condition": "Separate request context: the original tenant=A/actor=A query is a baseline example only. In the NEW request the authenticated actor is A but the required tenant selector is absent; the caller requests an unfiltered query over rows [A:1,B:2,A:3]. Do not infer tenant=A from the earlier baseline or return cross-tenant rows. Refuse the unscoped query and require an explicitly verified tenant binding before any read.",
+      "expected_domain_conclusion": "For the new request with no tenant selector, deny the unscoped query; do not use the earlier tenant=A as a default and do not leak B:2. The earlier baseline example, if separately evaluated with its explicit tenant=A, returns only A:1,A:3.",
       "core_domain_conclusion": "return only A:1,A:3; never leak B:2; cite exact synthetic fixture fields and do not imply a live provider observation",
       "required_observable_findings": [
         "EARLIER baseline request with explicit trusted tenant A: only A:1,A:3 may be returned; never leak B:2. Do not imply live provider observation.",
