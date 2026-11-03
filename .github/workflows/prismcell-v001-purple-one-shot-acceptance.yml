@@ -1,0 +1,77 @@
+# Temporary, exactly pinned, owner-comment-triggered test gate — no feature push triggers.
+# Delete this file after collecting exact-SHA evidence; no production runtime.
+name: PrismCell v0.0.1 Purple exact-commit native acceptance
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  contents: read
+concurrency:
+  group: prismcell-v001-purple-gate
+  cancel-in-progress: false
+jobs:
+  linux:
+    if: ${{ github.repository == 'vixttha/Color-Team-OPS' && github.event.issue.number == 18 && github.event.issue.pull_request != null && github.actor == 'vixttha' && github.event.comment.user.login == 'vixttha' && github.event.comment.author_association == 'OWNER' && github.event.comment.body == 'PRISMCELL-V001-PURPLE-NATIVE-ACCEPT 45ecbdc2460c22a79fff54557012f62b33c38a10' }}
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Check out the reviewed PrismCell SHA without credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 45ecbdc2460c22a79fff54557012f62b33c38a10
+          persist-credentials: false
+      - name: Exact-SHA native regression and clean-room manifest verification
+        shell: bash
+        env:
+          EXPECTED_SHA: 45ecbdc2460c22a79fff54557012f62b33c38a10
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = "color-team-ops-linux-01"
+          test "$RUNNER_OS" = Linux
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          node --version
+          python3 -c "import jsonschema; print('jsonschema present')"
+          node --test PRISMCELL/tests/guard.test.mjs PRISMCELL/tests/engine.test.mjs PRISMCELL/tests/integrity.test.mjs PRISMCELL/tests/starter.test.mjs
+          python3 -B -m unittest discover -s PRISMCELL/tests -p 'test*.py' -v
+          output="$RUNNER_TEMP/prismcell-purple-${{ github.run_id }}-${{ github.run_attempt }}-linux"
+          trap 'rm -rf "$output"' EXIT
+          node PRISMCELL/tools/initialize-project.mjs --config PRISMCELL/tests/fixtures/nebula-project.json --out "$output" --source-sha "$EXPECTED_SHA"
+          node PRISMCELL/tools/verify-manifest.mjs "$output" "$EXPECTED_SHA" 3
+          echo "PRISMCELL_V001_PURPLE_LINUX_PASS $EXPECTED_SHA"
+  windows:
+    if: ${{ github.repository == 'vixttha/Color-Team-OPS' && github.event.issue.number == 18 && github.event.issue.pull_request != null && github.actor == 'vixttha' && github.event.comment.user.login == 'vixttha' && github.event.comment.author_association == 'OWNER' && github.event.comment.body == 'PRISMCELL-V001-PURPLE-NATIVE-ACCEPT 45ecbdc2460c22a79fff54557012f62b33c38a10' }}
+    runs-on: [self-hosted, Windows, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Check out the reviewed PrismCell SHA without credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 45ecbdc2460c22a79fff54557012f62b33c38a10
+          persist-credentials: false
+      - name: Exact-SHA native regression and clean-room manifest verification
+        shell: powershell
+        env:
+          EXPECTED_SHA: 45ecbdc2460c22a79fff54557012f62b33c38a10
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Unexpected runner' }
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Exact source SHA mismatch' }
+          node --version
+          if ($LASTEXITCODE -ne 0) { throw 'Node not installed' }
+          python -c "import jsonschema; print('jsonschema present')"
+          if ($LASTEXITCODE -ne 0) { throw 'jsonschema unavailable' }
+          node --test PRISMCELL/tests/guard.test.mjs PRISMCELL/tests/engine.test.mjs PRISMCELL/tests/integrity.test.mjs PRISMCELL/tests/starter.test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Node regressions failed' }
+          python -B -m unittest discover -s PRISMCELL/tests -p 'test*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Python regressions failed' }
+          $output = Join-Path $env:RUNNER_TEMP ("prismcell-purple-" + $env:GITHUB_RUN_ID + "-" + $env:GITHUB_RUN_ATTEMPT + "-windows")
+          if (Test-Path -LiteralPath $output) { throw 'Existing scratch folder' }
+          try {
+            node PRISMCELL/tools/initialize-project.mjs --config PRISMCELL/tests/fixtures/nebula-project.json --out $output --source-sha $env:EXPECTED_SHA
+            if ($LASTEXITCODE -ne 0) { throw 'Offline generation failed' }
+            node PRISMCELL/tools/verify-manifest.mjs $output $env:EXPECTED_SHA 3
+            if ($LASTEXITCODE -ne 0) { throw 'Manifest verification failed' }
+            Write-Output "PRISMCELL_V001_PURPLE_WINDOWS_PASS $env:EXPECTED_SHA"
+          } finally {
+            if (Test-Path -LiteralPath $output) { Remove-Item -LiteralPath $output -Recurse -Force }
+          }
