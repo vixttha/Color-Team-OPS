@@ -11,6 +11,16 @@
       "source_sha": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
       "status": "ACKNOWLEDGED",
       "authority_granted": false
+    },
+    {
+      "message_id": "IN-PURPLE-20261102-301",
+      "to_team": "PURPLE",
+      "comment_id": 6592178441,
+      "comment_url": "https://github.com/vixttha/Color-Team-OPS/issues/14#issuecomment-6592178441",
+      "ack_comment_id": 6592179172,
+      "source_sha": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
+      "status": "DEFERRED_CONFLICT_REVIEW",
+      "authority_granted": false
     }
   ],
   "note": "Record only actually posted and verified issue comment links."
