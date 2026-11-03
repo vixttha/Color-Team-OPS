@@ -1,0 +1,41 @@
+{
+  "schema_version": "prismcell-v001-yellow-reuse-evidence",
+  "previous_template_sha": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "candidate_sha": "e4de4b037e61e2893a5a8e4178b51bb298c70ab4",
+  "version": "0.0.1",
+  "branch": "feature/prismcell-v0.0.1-reuse-yellow",
+  "pull_request": 18,
+  "workflow_run": 41700021272,
+  "workflow_url": "https://github.com/vixttha/Color-Team-OPS/actions/runs/41700021272",
+  "windows": {
+    "job_id": 126140538226,
+    "runner": "color-team-ops-windows-01",
+    "node_pass": 89,
+    "node_fail": 0,
+    "python_pass": 21,
+    "cleanroom": "PASS",
+    "manifest": "PASS"
+  },
+  "linux": {
+    "job_id": 126140537813,
+    "runner": "color-team-ops-linux-01",
+    "node_pass": 89,
+    "node_fail": 0,
+    "python_pass": 21,
+    "cleanroom": "PASS",
+    "manifest": "PASS"
+  },
+  "fixture": {
+    "repository": "example/nebula-universe",
+    "real_github_repo": false,
+    "teams": [
+      "ASTRONOMY",
+      "STORY",
+      "REVIEW"
+    ],
+    "installed_in_real_repository": false
+  },
+  "acceptance": "YELLOW_CANDIDATE_PASS_PURPLE_AND_HEAD_PENDING",
+  "existing_nine_states_updated": false,
+  "vercel_used": false
+}
