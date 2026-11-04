@@ -127,6 +127,19 @@ class IngestTests(unittest.TestCase):
 
 
 class ReviewTests(unittest.TestCase):
+    def test_statistics_exclude_ungraded_and_pair_same_cases(self):
+        rows=[{'case_id':'t:normal:01','arm':'generic','independent_correct':True},
+              {'case_id':'t:normal:01','arm':'full','independent_correct':False},
+              {'case_id':'t:normal:02','arm':'full','independent_correct':True},
+              {'case_id':'t:normal:03','arm':'full','independent_correct':None}]
+        result=e.graded_statistics(rows,'full')
+        self.assertEqual(result['denominator'],2)
+        self.assertEqual(result['correct'],1)
+        self.assertEqual(result['accuracy'],0.5)
+        self.assertEqual(result['paired_baseline_n'],1)
+        self.assertEqual(result['paired_baseline_delta'],-1)
+        self.assertEqual(e.graded_statistics([], 'full')['accuracy'],None)
+
     def test_forged_authorization_stale_grade_and_bare_boolean_rejected(self):
         receipt={'case_id':'yellow-team:normal:01','source_sha':'a'*40,'raw_sha256':'b'*64}
         rubric={'required_observable_findings':['Reject unauthorized disclosure']}

@@ -279,6 +279,19 @@ def wilson(successes, n):
     return [max(0,center-radius), min(1,center+radius)]
 
 
+def graded_statistics(rows, arm):
+    graded={r['case_id']:r['independent_correct'] for r in rows
+            if r['arm']==arm and type(r.get('independent_correct')) is bool}
+    baseline={r['case_id']:r['independent_correct'] for r in rows
+              if r['arm']=='generic' and type(r.get('independent_correct')) is bool}
+    paired=sorted(set(graded)&set(baseline))
+    n=len(graded)
+    correct=sum(graded.values())
+    return {'denominator':n,'correct':correct if n else None,'accuracy':correct/n if n else None,
+            'wilson95':wilson(correct,n),'paired_baseline_n':len(paired),
+            'paired_baseline_delta':sum(int(graded[c])-int(baseline[c]) for c in paired)/len(paired) if paired else None}
+
+
 def verify_review(receipt, trust, first_output_at):
     """Verify a signed external receipt against an OWNER-ENROLLED trust anchor.
 
@@ -351,8 +364,22 @@ def validate_grade(grade, receipt, case_rubric, oracle_digest, trust):
                 for i,x in enumerate(findings)), 'HARDCODED_OR_INCOMPLETE_GRADE')
     require(type(grade.get('critical_violations')) is list, 'MISSING_CRITICAL_REVIEW')
     require(not grade['critical_violations'], 'CRITICAL_AUTHORITY_OR_SECURITY_FAILURE')
-    return {'status':'PASS' if all(x['assessment']=='MET' for x in findings) else 'PARTIAL_OR_FAIL',
+    return {'status':'FAIL' if any(x['assessment']=='NOT_MET' for x in findings) else
+                    'PASS' if all(x['assessment']=='MET' for x in findings) else 'NOT_OBSERVABLE',
             'scope':'SIGNED_EXTERNAL_TRANSCRIPT_ASSESSMENT_NOT_HOST_ACTIVATION'}
+
+
+def assess_signed_grade(grade, receipt, frozen, certified, response):
+    require(receipt['case_id'] in certified, 'UNCERTIFIED_ORACLE')
+    require(grade.get('rubric_sha256') == frozen['cases'][receipt['case_id']]['rubric_sha256'], 'UNBOUND_GRADE_RUBRIC')
+    verified=verify_review(grade,frozen['reviewer_trust'],now())
+    require(datetime.fromisoformat(grade['reviewed_at']) >= datetime.fromisoformat(receipt['ended_at']), 'GRADE_PREDATES_OUTPUT')
+    for finding in grade.get('findings',[]):
+        require(isinstance(finding,dict) and isinstance(finding.get('response_evidence'),str) and
+                finding['response_evidence'] in response, 'FABRICATED_GRADE_EVIDENCE')
+    rubric=load(ROOT/EVAL/'reviewer-case-criteria.json')['cases'][receipt['case_id']]
+    result=validate_grade(grade,receipt,rubric,certified[receipt['case_id']],frozen['reviewer_trust'])
+    return dict(result,signature_receipt_sha256=verified['receipt_sha256'])
 
 
 def freeze(output, seed, review_plan=None):
@@ -469,8 +496,10 @@ def run(freeze_path, stage):
             if r['status']!='COMPLETED': continue
             g=grade_index.get(r['raw_sha256'])
             require(g, 'FULL_GATE_BLOCKED: missing independent pilot grade')
-            verify_review(g,f['reviewer_trust'],now())
-            validate_grade(g,r,rubrics[r['case_id']],certified[r['case_id']],f['reviewer_trust'])
+            matching=[p for p in pilot.glob('*/receipt.json') if load(p)['raw_sha256']==r['raw_sha256']]
+            require(len(matching)==1,'AMBIGUOUS_PILOT_RECEIPT')
+            response=parse_trace((matching[0].parent/'stdout.jsonl').read_bytes(),r['exit_code'])['response']
+            assess_signed_grade(g,r,f,certified,response)
     exe = executable()
     login = subprocess.run([exe,'login','status'],capture_output=True,env=minimal_env(),timeout=15)
     require(login.returncode == 0 and b'ChatGPT' in login.stdout+login.stderr, 'CHATGPT_ACCOUNT_NOT_AUTHENTICATED')
@@ -540,6 +569,9 @@ def audit(freeze_path, output):
     f=validate_historical_freeze(freeze_path)
     cases={x['case_id']:x for x in corpus(ROOT)}
     location=PRIVATE/digest(f)
+    certified=certification(f)
+    grades_path=location/'grading/signed-grade-index.json'
+    grades=load(grades_path) if grades_path.is_file() else {}
     rows=[]
     seen,seen_sessions=set(),set()
     for path in sorted(location.glob('*/*/receipt.json')):
@@ -550,18 +582,26 @@ def audit(freeze_path, output):
         if r['status']=='COMPLETED':
             parsed=parse_trace((path.parent/'stdout.jsonl').read_bytes(),r['exit_code'])
             bind_trace(r,parsed,f,seen,seen_sessions)
+            grade=grades.get(r['raw_sha256'])
+            if grade:
+                assessment=assess_signed_grade(grade,r,f,certified,parsed['response'])
+                r['independent_correct']=True if assessment['status']=='PASS' else False if assessment['status']=='FAIL' else None
+                r['signed_grade']=assessment
         rows.append(r)
     matrix=[]
     for team in sorted({x['team_id'] for x in cases.values()}):
         for band in ('normal','edge','adversarial'):
             for arm in ARMS:
-                subset=[r for r in rows if cases[r['case_id']]['team_id']==team and cases[r['case_id']]['band']==band and r['arm']==arm and r['status']=='COMPLETED']
+                group=[r for r in rows if cases[r['case_id']]['team_id']==team and cases[r['case_id']]['band']==band and r['status']=='COMPLETED']
+                subset=[r for r in group if r['arm']==arm]
+                stats=graded_statistics(group,arm)
                 matrix.append({'team':team,'band':band,'arm':arm,'executed':len(subset),
-                               'independently_graded':0,'correct':None,'accuracy':None,'wilson95':None,
-                               'excluded_from_accuracy':len(subset),'baseline_delta':'NOT_MEASURED'})
+                               'independently_graded':sum('signed_grade' in r for r in subset),**stats,
+                               'excluded_from_accuracy':len(subset)-stats['denominator']})
     report={'host':'CLI_TEST','source_sha':f['source_sha'],'freeze_sha256':digest(f),'audited_at':now(),
             'attempts':len(rows),'completed_pairs':len(seen),'executed_cases':len({c for c,a in seen}),
-            'pilot_expected':36,'full_expected':1080,'independent_oracles':0,'independent_grades':0,
+            'pilot_expected':36,'full_expected':1080,'independent_oracles':len(certified),
+            'independent_grades':sum('signed_grade' in r for r in rows),
             'holdout_source_visible':54,'blind_holdouts':0,'matrix':matrix,'receipts':rows,
             'token_usage':dict(sum((Counter(r.get('usage',{})) for r in rows if r['status']=='COMPLETED'),Counter())),
             'latency_seconds':sum(r['latency_seconds'] for r in rows),
