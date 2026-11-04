@@ -1,3 +1,11 @@
+# Yellow HEAD — post-promotion recheck complete (Nov 3, 2026)
+
+**Result:** Existing PrismCell v0.0.1 nine-workcell on-demand setup **PASS**, 9/9 `STATE.json` and `OPERATIONS-CHECKPOINT.json` pins synchronized to `2cdc66f37537c077db68eeb9fa190e24d071039f`. [PR #18](https://github.com/vixttha/Color-Team-OPS/pull/18) merged; that merge has zero file changes versus separately native-tested `45ecbdc2460c22a79fff54557012f62b33c38a10`. Windows/Linux [run #41715667469](https://github.com/vixttha/Color-Team-OPS/actions/runs/41715667469) full job logs rechecked. No live second-repository project install, autonomous execution, independent agent credentials, or separate GitHub ACL acceptance is claimed.
+
+**Durable evidence:** [Yellow post-promotion readback](trials/PRISMCELL-V001-POST-PROMOTION-READBACK-2026-11-03.md). **Next scoped task:** Select an expressly authorized real *separate* test repository for a clean installation with its own branch/issue, document actual provider receipts, then request Purple acceptance. Do not assume that test is complete, claim universal provider compatibility, modify other team's homes, run owner self-hosted runners without specific authorization, reintroduce Vercel, or promote plugin release. No active Yellow worker.
+
+## Earlier Head handoffs retained verbatim
+
 # PrismCell v0.0.1 — Yellow canonical template migration completed
 
 Owner approved PR #18; canonical `template/prismcell-workbench-v0.0.1` is `2cdc66f37537c077db68eeb9fa190e24d071039f`, identical tree to Purple-tested `45ecbdc2460c22a79fff54557012f62b33c38a10`. Windows/Linux [native run #41715667469](https://github.com/vixttha/Color-Team-OPS/actions/runs/41715667469): each 110 Node + 25 Python tests pass. Yellow's STATE and checkpoint pins updated; existing audits, queues, messages and history retained. This remains on-demand only, no new authentication or release flags. Read live issue #9 before next bounded task.
