@@ -27,6 +27,31 @@ class PretestReadinessTests(unittest.TestCase):
                                  self.freeze["prompts"][section])
                 self.assertNotIn("yellow-team",self.freeze["prompts"][section])
                 self.assertNotIn("orange-team",self.freeze["prompts"][section])
+    def test_candidate_input_exact_is_unwrapped_and_byte_stable(self):
+        # Static source assertion only: never a real host invocation.
+        self.assertEqual(set(self.freeze["candidate_input_exact"]), {"SMOKE_A", "SMOKE_B"})
+        self.assertIn("Submit candidate_input_exact", self.freeze["candidate_input_contract"])
+        for case in ("SMOKE_A", "SMOKE_B"):
+            with self.subTest(case=case):
+                wrapped=self.freeze["prompts"][case]
+                lines=wrapped.splitlines()
+                quoted=[line[2:] if line.startswith("> ") else ""
+                        for line in lines if line.startswith(">")]
+                self.assertTrue(quoted)
+                # Strip only the operator wrapper, not candidate code fences.
+                extracted="\\n".join(quoted)
+                candidate=self.freeze["candidate_input_exact"][case]
+                self.assertEqual(candidate,extracted)
+                self.assertEqual(candidate.encode("utf-8"),extracted.encode("utf-8"))
+                self.assertNotIn("Give the staging-enabled",candidate)
+                self.assertNotIn("Give the actual staging-enabled",candidate)
+                self.assertNotIn("literal candidate-facing input",candidate)
+                self.assertFalse(candidate.startswith(">"))
+                for forbidden in ("yellow-team","orange-team","reviewer observations",
+                                  "expected coordination route","answer key"):
+                    self.assertNotIn(forbidden,candidate.lower())
+        self.assertIn("```python\\n",self.freeze["candidate_input_exact"]["SMOKE_B"])
+
     def test_correct_installed_release_binding_not_old_staging(self):
         self.assertIn(RELEASE,self.smoke)
         self.assertIn(SOURCE,self.smoke)
