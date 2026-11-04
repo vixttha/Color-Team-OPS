@@ -499,19 +499,23 @@ def minimal_env():
     return {k:v for k,v in os.environ.items() if k.upper() in allowed}
 
 
-def invoke(exe, prompt, material, timeout):
+def invoke(exe, prompt, material, timeout, response_schema=None):
     with tempfile.TemporaryDirectory(prefix='cto-cli-subject-') as tmp:
         scratch = Path(tmp)
         # An empty isolated Git worktree; no oracle, repository or credentials copied.
         subprocess.run(['git','init','-q',str(scratch)], check=True, capture_output=True)
         instructions = scratch/'instructions.txt'
         instructions.write_text(BOUNDARY+'\n\n'+material, encoding='utf-8')
+        if response_schema is not None:
+            (scratch/'response.schema.json').write_bytes(encode(response_schema))
         def snapshot():
             return {p.relative_to(scratch).as_posix():digest(p.read_bytes()) if p.is_file() else 'DIRECTORY'
                     for p in scratch.rglob('*') if '.git' not in p.relative_to(scratch).parts}
         before = snapshot()
         start, tick = now(), time.monotonic()
         args = command(exe,scratch,instructions)
+        if response_schema is not None:
+            args[-1:-1]=['--output-schema',str(scratch/'response.schema.json')]
         code = None
         try:
             proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
