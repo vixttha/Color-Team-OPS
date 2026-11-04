@@ -7,6 +7,7 @@
 - [5 feature candidates](features/INDEX.md) — broad capability bundles, **not the count of implemented product functionality**
 - [2026-11-04 current v0.0.2 evidence reconciliation (all 37 ideas + five features)](docs/V002-FEATURE-IDEA-CURRENT-STATUS-2026-11-04.md) — latest source/test/host and actual remaining release gates
 - [Four optional future-capability decisions (2026-11-04)](docs/V002-FOUR-OPTIONAL-CAPABILITIES-SCOPE-DECISION-2026-11-04.md) — One-action planner, optional library, protected-host infrastructure, and autonomous specialists are **not** v0.0.2 release prerequisites
+- [Six-team × five-pass source audit of current private v0.0.2 staging](docs/V002-STAGING-SIX-TEAM-FIVE-PASS-AUDIT-2026-11-04.md) — 30 sequential logical reviews, 29/29 current functional file parity, unresolved real-host acceptance
 - [Current dated evidence / 36-idea synergy and conflict audit](docs/IDEA-FEATURE-SYNERGY-CONFLICT-AUDIT-2026-10-30.md) — do not confuse the older proposal status with live engineering
 - [LLM + human reading guide](LIBRARY-AGENT-GUIDE.md)
 - [Standalone reusable starter](portable/README.md) — use the empty catalog and generic schemas; **do not copy these 36 example records into an unrelated project**
