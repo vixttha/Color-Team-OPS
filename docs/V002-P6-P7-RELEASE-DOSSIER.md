@@ -1,5 +1,17 @@
 # CTO-V002 P0–P7 — Owner-facing release-readiness dossier
 
+## Superseding ACTIVE pretest checkpoint — 2026-11-03
+
+**All older staging versions, SHA snapshots, native test counts, and owner-authorization statements in the historical sections below are NON-OPERATIVE.** Private stage `plugins_6ae9238966508191b3402640e65217bf`, iteration `0.0.5`, release `pluginrel_6aea9f63eee88191ba42a906ae04049d`, manifest source `0e9561fd06034674eca4fcf07ceef9381f8249a2`, 32 files, functional file parity and matching startup prompts independently reviewed in [Issue #19](https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918). Canonical private v0.0.1 unchanged. The latest accepted SOURCE baseline ran [CI #41762883010](https://github.com/vixttha/Color-Team-OPS/actions/runs/41762883010) **968/968 on each owner self-hosted OS**, four matching 32-file ZIP builds SHA256 `8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2`. A later documentation-only Git SHA is not the installed manifest source and needs its own CI tracked in Issue #8.
+
+PF-01: operative A/B prompts untouched, current stage identity pinned. PF-02: H-01..H-11 now have reproducible prompts, synthetic fixtures and four reviewer checks each. PF-03: host selection/evidence-capture checklist and blank receipt prepared, **fresh staging chat NOT_RUN**. PF-04: 270 criteria **0 independently approved**, 54 reserved holdouts source-visible **NOT BLINDED**; formal evaluation remains blocked. PF-05: active fields supersede historical snapshots. See `docs/V002-HOST-TEST-OPERATOR-PREFLIGHT.md`, `docs/V002-P2-P5-HOST-TRIALS.json`, `evaluation/v0.0.2/INDEPENDENT-EVALUATION-PREREGISTRATION.md`.
+
+**No actual hosted outcomes:** Smoke A/B `0/2`; H-01..H-11 `0/11`; specialist quality `0/270`; independent oracles `0/270`. Formal test-readiness pending separate Purple signoff and genuinely verified ChatGPT host activation. No plugin update, production deployment, main merge or public release. **Official v0.0.2 RELEASE_BLOCKED.**
+
+---
+
+## Historical dossier — superseded snapshots; retain for provenance
+
 ## Current superseding staging and P3 engineering status (2026-11-02)
 
 **This section supersedes older historical statements below that staging authorization remains missing.** Owner authorized exactly one private staging identity; Plugin Creator readback verifies `plugins_6ae9238966508191b3402640e65217bf`, version 0.0.2, PRIVATE, release `pluginrel_6ae9238a80008191945e990f8fa87308`, **32 installed package files, 12 skills, nine competency references**. Initial installed instructions are bound to source `311290784fe7d5647666f88b328222de62d3cee6`, original source ZIP SHA-256 `80b36e8282c90badb0a1706e91be8f0abdaec97c43f45c2ab5e138beb3e60e59`, staging-specific ZIP SHA-256 `5b1ac367e99967e7ecdfa016fe884ddbe30a219c3fce034b217703f86c77f703`. Canonical `plugins_6ae3edf1ea4c819182f275592273e2cc` remains private v0.0.1 and unchanged.

@@ -156,22 +156,22 @@
     }
   ],
   "recent_native": {
-    "verified_source_sha": "11f685121776744e28534d35bef9b16611e33897",
-    "run_id": 41557437874,
-    "tests_per_platform": 879,
+    "verified_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "run_id": 41762883010,
+    "tests_per_platform": 968,
     "linux": "PASS",
     "windows": "PASS",
     "complete_zip_builds_per_platform": 2,
     "zip_files": 32,
-    "sha256": "696fc828a14d668f9b82905361f272682edab5dde446b8ad8ebabbe050487f93",
-    "evidence_scope": "HISTORICAL EXACT SHA ONLY; docs and P3 compiler commits after this SHA require fresh CI"
+    "sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
+    "evidence_scope": "BASELINE SOURCE SHA ONLY. New docs-only Git SHA must use own CI run in Issue #8; installed manifest SHA remains 0e9561."
   },
   "host_trials": {
     "status": "NOT_RUN",
     "count": 0,
     "scenarios_total": 11,
     "staging_installed": true,
-    "staging_release_id": "pluginrel_6ae9238a80008191945e990f8fa87308"
+    "staging_release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d"
   },
   "m4": {
     "independent_oracles": 0,
@@ -190,7 +190,7 @@
     "production-deploy",
     "paid-provisioning"
   ],
-  "last_verified_sha": "11f685121776744e28534d35bef9b16611e33897",
+  "last_verified_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
   "p0_resolution": {
     "status": "OWNER_SCOPE_CONFIRMED_SKILLS_ONLY",
     "protected_backend_required": false,
@@ -198,9 +198,27 @@
     "host_trials_still_required": true,
     "independent_eval_still_required": true
   },
-  "versioned_candidate_acceptance_sha": "3350430b3a292bb6d0d8fa7e90105d929f564e7c",
+  "versioned_candidate_acceptance_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
   "document_update_requires_new_exact_sha_ci": true,
   "staging_plugin": {
+    "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+    "name": "color-team-ops-v002-staging",
+    "version": "0.0.5",
+    "release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "discoverability": "PRIVATE",
+    "installed": true,
+    "files": 32,
+    "skills": 12,
+    "competency_references": 9,
+    "source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "source_zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
+    "staging_zip_sha256": null,
+    "staging_post_version_update_zip_sha_status": "NOT_ASSERTED",
+    "installed_host_missions_verified": 0,
+    "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918"
+  },
+  "native_ci_current_source_state": "EXACT_CURRENT_DOC_SHA_RUN_RECORDED_EXTERNALLY_IN_ISSUE8_NOT_THIS_SELF_REFERENTIAL_JSON",
+  "historical_staging_snapshot_before_pretest": {
     "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
     "name": "color-team-ops-v002-staging",
     "version": "0.0.2",
@@ -216,5 +234,27 @@
     "installed_host_missions_verified": 0,
     "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6591615142"
   },
-  "native_ci_current_source_state": "PENDING_NEW_SHA_NATIVE_RESULTS"
+  "current_pretest_readiness": {
+    "verified_installed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "installed_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+    "installed_release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "installed_iteration": "0.0.5",
+    "source_native_CI_run_id": 41762883010,
+    "baseline_tests_per_os": 968,
+    "source_candidate_zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
+    "source_reference_is_not_docs_git_sha": true,
+    "formal_smoke_rubric": "DEVELOPMENT_DRAFT_SEPARATE_PURPLE_SIGNOFF_PENDING",
+    "fresh_host_selected_plugin_verified": false,
+    "smoke_traces_observed": 0,
+    "H_scenarios_observed": 0,
+    "independent_270_case_oracles_approved": 0,
+    "holdouts_genuinely_blind": false,
+    "release": "RELEASE_BLOCKED",
+    "ci_for_later_docs_only_sha": "SEE_GITHUB_ISSUE8_FOR_EXACT_NEW_SHA_CI_LOGS",
+    "PF01": "OPERATIVE_SMOKE_RUNBOOK_CORRECTED",
+    "PF02": "H01_H11_FIXED_PROMPTS_DRAFTED",
+    "PF03": "REAL_HOST_ACTIVATION_NOT_RUN",
+    "PF04": "0_OF_270_INDEPENDENT_APPROVAL_HOLDOUT_NOT_BLIND",
+    "PF05": "ACTIVE_SNAPSHOT_SUPERSEDES_HISTORICAL_STATE"
+  }
 }

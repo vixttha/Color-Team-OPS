@@ -83,19 +83,20 @@
   "final_status": "RELEASE_BLOCKED_MISSING_ACTUAL_STAGING_HOST_BEHAVIOR_AND_SEPARATE_PURPLE_EVALUATION",
   "release_ready": false,
   "measured_99_percent_claim": false,
-  "latest_reviewed_source_sha": "11f685121776744e28534d35bef9b16611e33897",
+  "latest_reviewed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
   "skill_delta": {
     "unchanged_specialists": 9,
     "intentionally_updated_coordinators": 3,
     "unchanged_coordinator_files": 0,
     "source_skill_count": 12,
-    "actual_installed_plugin_update": false,
+    "actual_installed_plugin_update": true,
     "static_checks": {
       "passed": 13,
       "total": 13,
       "source": "GitHub fetched exact candidate skill and manifest files"
     },
-    "python_continuity_suite": "PASS_IN_FULL_514_TEST_LINUX_AND_WINDOWS_cf224454fe8eab29991877929c71027b946a4bc5"
+    "python_continuity_suite": "PASS_IN_FULL_514_TEST_LINUX_AND_WINDOWS_cf224454fe8eab29991877929c71027b946a4bc5",
+    "actual_installed_plugin_update_scope": "PRIVATE_STAGING_ONLY_CANONICAL_0.0.1_UNCHANGED"
   },
   "library_integrated": {
     "source_branch": "feature/v0.0.2-idea-feature-library-purple",
@@ -111,7 +112,7 @@
     "source_branch_current_sha": "7ded28574388f4382dd974d981785e4745dd857c",
     "current_source_parity": "NOT_REVALIDATED_AFTER_SOURCE_BRANCH_ADVANCED"
   },
-  "latest_review_type": "PRIVATE_STAGING_INSTALLED_SOURCE_ONLY_P3_COMPILER_PENDING_NEW_SHA_TEST",
+  "latest_review_type": "INDEPENDENT_PURPLE_SOURCE_ACCEPTED_PRIVATE_STAGING_0.0.5_MATCHED_HOST_NOT_RUN",
   "package_hardening": {
     "candidate_source_before_gate_update": "adc4c85a55f03cfa3175206b9a15ef9eb55efd70",
     "builder_blob": "2ebed6f4a0e733724d521f32ec404e5f8e5b2623",
@@ -126,31 +127,47 @@
     "status": "EXACT_SHA_NATIVE_TESTED_WITH_CROSS_PLATFORM_ZIP_PARITY_cf224454fe8eab29991877929c71027b946a4bc5"
   },
   "native_ci_evidence": {
-    "status": "TESTED_HISTORICAL_SHA_CURRENT_DOC_UPDATE_REQUIRES_RETEST",
-    "source_sha": "11f685121776744e28534d35bef9b16611e33897",
-    "workflow_run_id": 41557437874,
-    "workflow_run_attempt": 1,
+    "status": "EXACT_ACCEPTED_INSTALLED_SOURCE_BASELINE;DOC_REVISION_SEPARATE_CI",
+    "source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "workflow_run_id": 41762883010,
     "linux": {
-      "native_tests_passed": 879,
-      "native_tests_total": 879,
+      "native_tests_passed": 968,
+      "native_tests_total": 968,
       "complete_zip_builds": 2
     },
     "windows": {
-      "native_tests_passed": 879,
-      "native_tests_total": 879,
+      "native_tests_passed": 968,
+      "native_tests_total": 968,
       "complete_zip_builds": 2
     },
-    "zip_sha256": "696fc828a14d668f9b82905361f272682edab5dde446b8ad8ebabbe050487f93",
     "zip_files": 32,
+    "zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
     "byte_identical_across_platforms": true,
-    "installed_plugin_version": "0.0.2_STAGING_AT_SOURCE_311290",
+    "installed_staging_iteration": "0.0.5",
     "host_trials": "NOT_RUN",
-    "meaning": "Latest fully completed old exact-SHA source CI; this doc/compiler revision awaits its own run. The installed staged source differs from development HEAD."
+    "meaning": "Source/installed functional parity bound to 0e9561, not the later docs-only Git commit. Consult Issue #8 for exact-doc SHA CI."
   },
   "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json",
   "p0_scope_decision": "OWNER_APPROVED_INITIAL_PORTABLE_CLOUD_ONLY_SKILLS_ONLY_NOT_PROTECTED_BACKEND",
   "p0_owner_authority": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6589225030",
   "staging_plugin": {
+    "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+    "name": "color-team-ops-v002-staging",
+    "version": "0.0.5",
+    "release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "discoverability": "PRIVATE",
+    "installed": true,
+    "files": 32,
+    "skills": 12,
+    "competency_references": 9,
+    "source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "source_zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
+    "staging_zip_sha256": null,
+    "staging_post_version_update_zip_sha_status": "NOT_ASSERTED",
+    "installed_host_missions_verified": 0,
+    "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918"
+  },
+  "historical_staging_snapshot_before_pretest": {
     "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
     "name": "color-team-ops-v002-staging",
     "version": "0.0.2",
@@ -165,5 +182,28 @@
     "installed": true,
     "installed_host_missions_verified": 0,
     "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/8#issuecomment-6591615142"
+  },
+  "current_pretest_readiness": {
+    "verified_installed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "installed_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+    "installed_release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "installed_iteration": "0.0.5",
+    "source_native_CI_run_id": 41762883010,
+    "baseline_tests_per_os": 968,
+    "source_candidate_zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
+    "source_reference_is_not_docs_git_sha": true,
+    "formal_smoke_rubric": "DEVELOPMENT_DRAFT_SEPARATE_PURPLE_SIGNOFF_PENDING",
+    "fresh_host_selected_plugin_verified": false,
+    "smoke_traces_observed": 0,
+    "H_scenarios_observed": 0,
+    "independent_270_case_oracles_approved": 0,
+    "holdouts_genuinely_blind": false,
+    "release": "RELEASE_BLOCKED",
+    "ci_for_later_docs_only_sha": "SEE_GITHUB_ISSUE8_FOR_EXACT_NEW_SHA_CI_LOGS",
+    "PF01": "OPERATIVE_SMOKE_RUNBOOK_CORRECTED",
+    "PF02": "H01_H11_FIXED_PROMPTS_DRAFTED",
+    "PF03": "REAL_HOST_ACTIVATION_NOT_RUN",
+    "PF04": "0_OF_270_INDEPENDENT_APPROVAL_HOLDOUT_NOT_BLIND",
+    "PF05": "ACTIVE_SNAPSHOT_SUPERSEDES_HISTORICAL_STATE"
   }
 }

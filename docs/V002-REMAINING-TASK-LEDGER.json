@@ -3,8 +3,8 @@
   "issue": 8,
   "release": "0.0.2",
   "branch": "integration/v0.0.2-master-single-thread",
-  "observed_source_sha": "d8202ff2c426b1a455f36e381aec91fb4e1fbe50",
-  "observed_date": "2026-11-02",
+  "observed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+  "observed_date": "2026-11-03",
   "allowed_automatic_writes": [
     "integration/v0.0.2-master-single-thread"
   ],
@@ -261,7 +261,7 @@
       "head_disposition": "RELEASE_BLOCKED"
     }
   ],
-  "last_native_verified_sha": "d8202ff2c426b1a455f36e381aec91fb4e1fbe50",
+  "last_native_verified_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
   "evidence_history": [
     {
       "source_sha": "531daa440ecf45c279f0262804f69944ed214c52",
@@ -307,6 +307,23 @@
   "p0_p7_record": "docs/V002-P0-P7-ACCEPTANCE.json",
   "p0_p7_scope": "initial skills-only approved; protected backend optional, no user hardware",
   "staging_plugin": {
+    "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+    "name": "color-team-ops-v002-staging",
+    "version": "0.0.5",
+    "release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "discoverability": "PRIVATE",
+    "installed": true,
+    "files": 32,
+    "skills": 12,
+    "competency_references": 9,
+    "source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "source_zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
+    "staging_zip_sha256": null,
+    "staging_post_version_update_zip_sha_status": "NOT_ASSERTED",
+    "installed_host_missions_verified": 0,
+    "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918"
+  },
+  "historical_staging_snapshot_before_pretest": {
     "id": "plugins_6ae9238966508191b3402640e65217bf",
     "release_id": "pluginrel_6ae9238a80008191945e990f8fa87308",
     "version": "0.0.2",
@@ -314,5 +331,37 @@
     "installed": true,
     "source_sha": "311290784fe7d5647666f88b328222de62d3cee6",
     "host_scenarios_executed": 0
+  },
+  "current_pretest_readiness": {
+    "verified_installed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "installed_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+    "installed_release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "installed_iteration": "0.0.5",
+    "source_native_CI_run_id": 41762883010,
+    "baseline_tests_per_os": 968,
+    "source_candidate_zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
+    "source_reference_is_not_docs_git_sha": true,
+    "formal_smoke_rubric": "DEVELOPMENT_DRAFT_SEPARATE_PURPLE_SIGNOFF_PENDING",
+    "fresh_host_selected_plugin_verified": false,
+    "smoke_traces_observed": 0,
+    "H_scenarios_observed": 0,
+    "independent_270_case_oracles_approved": 0,
+    "holdouts_genuinely_blind": false,
+    "release": "RELEASE_BLOCKED",
+    "ci_for_later_docs_only_sha": "SEE_GITHUB_ISSUE8_FOR_EXACT_NEW_SHA_CI_LOGS",
+    "PF01": "OPERATIVE_SMOKE_RUNBOOK_CORRECTED",
+    "PF02": "H01_H11_FIXED_PROMPTS_DRAFTED",
+    "PF03": "REAL_HOST_ACTIVATION_NOT_RUN",
+    "PF04": "0_OF_270_INDEPENDENT_APPROVAL_HOLDOUT_NOT_BLIND",
+    "PF05": "ACTIVE_SNAPSHOT_SUPERSEDES_HISTORICAL_STATE"
+  },
+  "task_entries_snapshot_classification": "HISTORICAL_2026_11_02_DO_NOT_USE_AS_OPERATIVE_CURRENT_STATE",
+  "current_task_overrides": {
+    "PF01": "READY_FOR_PURPLE_PREFLIGHT_REVIEW",
+    "PF02": "11_CASE_DEFINITIONS_DRAFT",
+    "PF03": "HOST_ACTIVATION_NOT_RUN",
+    "PF04": "INDEPENDENT_CRITERIA_0_270",
+    "PF05": "SUPERSEDING_CURRENT_STATE",
+    "new_document_CI": "LOOK_UP_FINAL_SHA_IN_ISSUE8"
   }
 }
