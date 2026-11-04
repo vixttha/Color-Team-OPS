@@ -1,3 +1,9 @@
+# PURPLE — PrismCell v0.0.1 promoted template
+
+Owner-approved PR #18 merged canonical `2cdc66f37537c077db68eeb9fa190e24d071039f`, with exact tree matching Purple-tested `45ecbdc2460c22a79fff54557012f62b33c38a10`. Windows/Linux native run #41715667469 passed 110 Node + 25 Python cases per runner. State/checkpoint pins updated; Purple's independent logical audits and past Head handoffs retained. INCALL #14 open; no autonomous agent or unrelated release authority.
+
+## Earlier Head handoffs retained
+
 # Purple Head — PrismCell v0.0.1 exact-SHA native acceptance, November 3, 2026
 
 **PURPLE PASS** for code fixes and exact-SHA native validation on `45ecbdc2460c22a79fff54557012f62b33c38a10`. Owner's Linux and Windows self-hosted runners each PASSED 110 Node + 25 Python cases, clean-room 52-file manifest, [run #41715667469](https://github.com/vixttha/Color-Team-OPS/actions/runs/41715667469).
