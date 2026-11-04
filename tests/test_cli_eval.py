@@ -2,9 +2,13 @@
 import copy
 import json
 import unittest
+import tempfile
+import zipfile
+from unittest.mock import patch
 from pathlib import Path
 
 from devtools import cli_eval as e
+from devtools import cli_eval_evidence as transfer
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -90,6 +94,27 @@ class IngestTests(unittest.TestCase):
 
 
 class ReviewTests(unittest.TestCase):
+    def test_forged_authorization_stale_grade_and_bare_boolean_rejected(self):
+        receipt={'case_id':'yellow-team:normal:01','source_sha':'a'*40,'raw_sha256':'b'*64}
+        rubric={'required_observable_findings':['Reject unauthorized disclosure']}
+        for grade in [
+            {'approved':True,'owner_approved':True,'independent':True},
+            {'case_id':receipt['case_id'],'source_sha':'c'*40,'raw_sha256':'b'*64,'oracle_receipt_sha256':'d'*64},
+            {'case_id':receipt['case_id'],'source_sha':'a'*40,'raw_sha256':'b'*64,'oracle_receipt_sha256':'d'*64,
+             'reviewer_principal':'Purported Purple','pass':True},
+        ]:
+            with self.assertRaises(e.Invalid):
+                e.validate_grade(grade,receipt,rubric,'d'*64,{'reviewers':{}})
+
+    def test_missing_reviewer_capability_is_zero(self):
+        self.assertEqual(e.certification({'oracle_review_receipts':[]}),{})
+
+    def test_environment_never_inherits_api_or_github_secrets(self):
+        with patch.dict(e.os.environ,{'OPENAI_API_KEY':'synthetic','GH_TOKEN':'synthetic',
+                                     'GITHUB_TOKEN':'synthetic','CODEX_THREAD_ID':'synthetic'},clear=False):
+            env=e.minimal_env()
+        self.assertFalse(set(env) & {'OPENAI_API_KEY','GH_TOKEN','GITHUB_TOKEN','CODEX_THREAD_ID'})
+
     def test_forged_role_and_approval_never_certify(self):
         for receipt in [{}, {'independent':True,'approved':True,'reviewer':'Purple'},
                         {'reviewer':'new-codex-session','decision':'APPROVED'}]:
@@ -114,6 +139,37 @@ class ReviewTests(unittest.TestCase):
         self.assertIn('features.shell_tool=false',cmd)
         self.assertIn('model_reasoning_effort="medium"',cmd)
         self.assertIn('gpt-6.1-sol',cmd)
+
+
+class EvidenceTransferTests(unittest.TestCase):
+    def test_roundtrip_and_no_overwrite(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);src=root/'raw';src.mkdir()
+            (src/'receipt.json').write_text('{"synthetic":true}',encoding='utf-8')
+            archive=root/'private.zip'
+            receipt=transfer.export(src,archive)
+            dest=root/'imported'
+            transfer.import_archive(archive,dest,receipt['archive_sha256'])
+            self.assertEqual((dest/'receipt.json').read_bytes(),(src/'receipt.json').read_bytes())
+            with self.assertRaises(e.Invalid): transfer.import_archive(archive,dest,receipt['archive_sha256'])
+            with self.assertRaises(e.Invalid): transfer.export(src,archive)
+            with self.assertRaises(e.Invalid): transfer.import_archive(archive,root/'other','0'*64)
+
+    def test_path_traversal_devices_duplicates_and_tampered_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            for n,name in enumerate(['../escape','/absolute','C:/escape','a\\escape','NUL.txt','x/COM1','trailing.']):
+                archive=root/(str(n)+'.zip')
+                with zipfile.ZipFile(archive,'w') as z:
+                    z.writestr('INDEX.json',json.dumps({name:{'sha256':e.digest(b'x'),'bytes':1}}))
+                    z.writestr(name,b'x')
+                with self.assertRaises(e.Invalid,msg=name):
+                    transfer.import_archive(archive,root/('out'+str(n)),e.digest(archive.read_bytes()))
+            archive=root/'tampered.zip'
+            with zipfile.ZipFile(archive,'w') as z:
+                z.writestr('INDEX.json',json.dumps({'receipt.json':{'sha256':'0'*64,'bytes':1}}))
+                z.writestr('receipt.json',b'x')
+            with self.assertRaises(e.Invalid): transfer.import_archive(archive,root/'tampered-out',e.digest(archive.read_bytes()))
 
 
 if __name__=='__main__': unittest.main()
