@@ -17,7 +17,11 @@ def location(f):
 
 
 def frozen_config():
+    path=e.ROOT/e.EVAL/'SOLO-GRADER-CALIBRATION-v2.json'
+    calibration=e.load(path)
+    e.require(calibration['passed'] and calibration['grader_configuration_sha256']==e.digest(g.configuration()),'GRADER_CALIBRATION_REQUIRED')
     return {'solo_revision':'solo-eval-v1','grader':g.configuration(),
+            'calibration_report_sha256':e.digest(path.read_bytes()),
             'max_parallel_subjects':4,'candidate_target':1080,'pilot_target':36,
             'quality_policy':{'no_unresolved_critical':True,'no_unresolved_contradictions':True,
                               'high_uncertainty_requires_self_review':True,
@@ -124,7 +128,7 @@ def summary(f):
     attempts=[e.load(p) for p in location(f).glob('candidates/*/*/receipt.json')]
     ga=[e.load(p) for p in location(f).glob('grades/*/*/receipt.json')]
     matrix=[]
-    for team in sorted({x['case_id'].split(':')[0] for x in data}):
+    for team in sorted({x['team_id'] for x in e.corpus(e.ROOT)}):
         for band in ('normal','edge','adversarial'):
             group=[r for r in data if r['case_id'].startswith(team+':'+band+':')]
             for arm in e.ARMS:matrix.append({'team':team,'band':band,'arm':arm,**statistics(group,arm)})
