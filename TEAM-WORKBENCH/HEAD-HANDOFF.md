@@ -1,3 +1,9 @@
+# BLUE — PrismCell v0.0.1 source promotion
+
+Owner-approved PR #18 now uses canonical `2cdc66f37537c077db68eeb9fa190e24d071039f` (same tree as tested `45ecbdc2460c22a79fff54557012f62b33c38a10`). Purple Windows/Linux run #41715667469 PASS. STATE/checkpoint pins reconciled. Existing history, issue #13, queues and audit preserved. Release and unattended execution remain disabled.
+
+## Historical handoff retained
+
 # BLUE — Activation OPS-20261102-BLUE-001
 
 **READY ON INVOCATION**. Home source f316ba70d8a1eb4e7ab5f7a6d9b635e4f585fd7d; product integration observed 11f685121776744e28534d35bef9b16611e33897 (refresh next time); template 25d59530210949792b3ce47ac0a804442997a9b1. INCALL #13 has 2 comments, newest 6592129043. Inbox 1, outbox 4, queue 0 preserved; original legacy Blue files retained. No active worker or background process. Next Head: re-read GitHub source and INCALL and legacy task list; choose one bounded defensive task, validate, logical internal audit, and record handoff. No broad product merges.
