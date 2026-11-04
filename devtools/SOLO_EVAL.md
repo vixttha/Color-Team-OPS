@@ -1,4 +1,4 @@
-# Solo evaluation revision 1
+# Solo evaluation protocol and versioned grading revisions
 
 Owner policy: SOLO_DEVELOPER / SELF_REVIEWED / AI_ASSISTED_PROVISIONAL.
 External identities, signatures and blind custody are not required.
@@ -9,6 +9,13 @@ strict output schema, model/effort, retry policy and maximum four isolated model
 subjects. The parent is one supervising Worker. Each subject has read-only
 permissions, disabled external tools, stripped credential environment, and a
 temporary workspace. Candidate and grader calls have separate raw receipts.
+
+Grader revision 2 constrains each quote to an actual nonblank response line in
+the native output schema. Calibration v3 covers the earlier Markdown quote
+failures. Solo freeze v1 stopped after six candidate executions; they and all
+eight associated grader attempts remain excluded from the replacement v2 run.
+Calibration also records a PASS/PARTIAL disagreement about implicit effective-date
+reasoning in one historical answer. These semantic judgments remain provisional.
 
 Before the freeze, run real grader calibration against eight deliberate defects
 and two historical actual outputs. Unit tests separately reject contradictory
