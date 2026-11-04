@@ -44,7 +44,10 @@ def assemble(freeze, cases, criteria):
         if (cli_eval.digest(rubric) != bind["rubric_sha256"] or
                 cli_eval.digest(cli_eval.candidate_input(case)) != bind["input_sha256"]):
             raise ValueError("SOURCE_OR_RUBRIC_CHANGED:" + cid)
-        nonblind = bool(bind.get("holdout"))
+        category = bind.get("holdout")
+        if category not in ("SOURCE_VISIBLE_DEVELOPMENT", "NONBLIND_REGRESSION_ONLY"):
+            raise ValueError("UNKNOWN_HOLDOUT_CLASSIFICATION:" + cid)
+        nonblind = category == "NONBLIND_REGRESSION_ONLY"
         packets.append({
             "case_id": cid,
             "team_id": case["team_id"],
