@@ -73,6 +73,10 @@ ancestor), `technical_outcome`, `valid_alternatives`, `legitimate_refusal`,
 must be committed before the freeze. Review timestamps must precede the freeze.
 An intake failure cannot increment the approval count.
 
+Run `python -B -m devtools.cli_eval prepare-grading --freeze <committed-freeze>`
+to write neutral, arm-label-withheld packets and a separate assignment custody
+map in ignored local storage. This is best-effort label withholding, not protected
+blind custody: output text or access to the Git evidence may reveal an arm.
 The raw local receipt links true arm, case, raw output, source and input. Grade
 custody must provide only neutral IDs and response text to the separate grader;
 withhold arm assignment where practical. Formal grade entries bind the raw digest,

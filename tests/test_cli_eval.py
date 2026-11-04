@@ -134,6 +134,16 @@ class IngestTests(unittest.TestCase):
 
 
 class ReviewTests(unittest.TestCase):
+    def test_grading_packet_withholds_arm_but_preserves_case_and_response(self):
+        case=e.corpus(ROOT)[0]
+        rubric={'required_observable_findings':['Synthetic test criterion']}
+        receipt={'case_id':case['case_id'],'arm':'full','raw_sha256':'a'*64}
+        packet=e.grading_packet(case,rubric,receipt,'Observed synthetic answer',20261104)
+        self.assertNotIn('arm',packet)
+        self.assertEqual(packet['response'],'Observed synthetic answer')
+        self.assertEqual(packet['rubric'],rubric)
+        self.assertEqual(packet['grading_status'],'AWAITING_AUTHENTICATED_REVIEWER')
+
     def test_statistics_exclude_ungraded_and_pair_same_cases(self):
         rows=[{'case_id':'t:normal:01','arm':'generic','independent_correct':True},
               {'case_id':'t:normal:01','arm':'full','independent_correct':False},

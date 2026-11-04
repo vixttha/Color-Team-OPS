@@ -292,6 +292,41 @@ def graded_statistics(rows, arm):
             'paired_baseline_delta':sum(int(graded[c])-int(baseline[c]) for c in paired)/len(paired) if paired else None}
 
 
+def grading_packet(case, rubric, receipt, response, seed):
+    return {'neutral_id':digest(str(seed)+receipt['raw_sha256'])[:24],
+            'case_id':receipt['case_id'],'input':json.loads(candidate_input(case)),
+            'rubric':rubric,'rubric_sha256':digest(rubric),'response':response,
+            'raw_sha256':receipt['raw_sha256'], 'grading_status':'AWAITING_AUTHENTICATED_REVIEWER'}
+
+
+def prepare_grading(freeze_path):
+    f=validate_historical_freeze(freeze_path)
+    location=PRIVATE/digest(f)
+    cases={x['case_id']:x for x in corpus(ROOT)}
+    rubrics=load(ROOT/EVAL/'reviewer-case-criteria.json')['cases']
+    packets,custody=[],{}
+    pairs,sessions=set(),set()
+    for path in sorted(location.glob('*/*/receipt.json')):
+        r=load(path)
+        if r['status']!='COMPLETED': continue
+        validate_observation(r)
+        raw=(path.parent/'stdout.jsonl').read_bytes()
+        require(digest(raw)==r['raw_sha256'],'CORRUPTED_GRADING_TRACE')
+        parsed=parse_trace(raw,r['exit_code'])
+        bind_trace(r,parsed,f,pairs,sessions)
+        cid=r['case_id']
+        require(digest(rubrics[cid])==f['cases'][cid]['rubric_sha256'],'RUBRIC_CHANGED')
+        packet=grading_packet(cases[cid],rubrics[cid],r,parsed['response'],f['seed'])
+        packets.append(packet)
+        custody[packet['neutral_id']]={'case_id':cid,'arm':r['arm'],'raw_sha256':r['raw_sha256']}
+    packets.sort(key=lambda x:x['neutral_id'])
+    # Keep the assignment map outside the label-withheld packet directory.
+    save_new(location/'grading-custody.json',custody)
+    save_new(location/'grading-packets/packet.json',packets)
+    return {'packets':len(packets),'packet_sha256':digest(packets),'custody_sha256':digest(custody),
+            'blinding':'ARM_LABELS_WITHHELD_ONLY_NOT_PROTECTED_CUSTODY','independent_grades':0}
+
+
 def verify_review(receipt, trust, first_output_at):
     """Verify a signed external receipt against an OWNER-ENROLLED trust anchor.
 
@@ -628,6 +663,7 @@ def main():
     sub=parser.add_subparsers(dest='action',required=True)
     p=sub.add_parser('freeze');p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,default=20261104);p.add_argument('--review-plan',type=Path)
     p=sub.add_parser('certify');p.add_argument('--freeze',type=Path,required=True)
+    p=sub.add_parser('prepare-grading');p.add_argument('--freeze',type=Path,required=True)
     p=sub.add_parser('run');p.add_argument('--freeze',type=Path,required=True);p.add_argument('--stage',choices=['pilot','full'],required=True)
     p=sub.add_parser('audit');p.add_argument('--freeze',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -636,6 +672,7 @@ def main():
         elif args.action=='certify':
             approved=certification(validate_freeze(args.freeze))
             result={'approved':len(approved),'cases':approved,'status':'CERTIFIED' if len(approved)==270 else 'CAPABILITY_BLOCKED_INDEPENDENT_REVIEWER'}
+        elif args.action=='prepare-grading': result=prepare_grading(args.freeze)
         elif args.action=='run': result=run(args.freeze,args.stage)
         else: result=audit(args.freeze,args.output)
         print(json.dumps(result if args.action!='freeze' else {'freeze_sha256':digest(result),'source_sha':result['source_sha']},indent=2))
