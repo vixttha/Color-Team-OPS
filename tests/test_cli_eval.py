@@ -15,6 +15,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CorpusTests(unittest.TestCase):
+    def test_historical_checkout_bytes_require_exact_hash_reconstruction(self):
+        blob=b'line one\nline two\n'
+        self.assertEqual(e.frozen_checkout_bytes(blob,e.digest(blob)),blob)
+        crlf=blob.replace(b'\n',b'\r\n')
+        self.assertEqual(e.frozen_checkout_bytes(blob,e.digest(crlf)),crlf)
+        with self.assertRaises(e.Invalid): e.frozen_checkout_bytes(blob,e.digest(blob+b'changed'))
+
     def test_complete_frozen_corpus(self):
         c = e.corpus(ROOT)
         self.assertEqual(len(c), 270)

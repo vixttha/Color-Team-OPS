@@ -439,9 +439,18 @@ def validate_historical_freeze(path):
     rel=Path(path).resolve().relative_to(ROOT).as_posix()
     require(git('show','HEAD:'+rel).strip() == encode(f), 'UNCOMMITTED_FREEZE')
     for name,h in f['file_sha256'].items():
-        require(digest(git('show',f['source_sha']+':'+name)) == h, 'HISTORICAL_SOURCE_MISMATCH')
+        frozen_checkout_bytes(git('show',f['source_sha']+':'+name),h)
     require(f['environment_digest'] == digest(f['environment']), 'ENVIRONMENT_CHANGED')
     return f
+
+
+def frozen_checkout_bytes(blob, expected_raw_sha256):
+    """Reconstruct only exact Git or Git-autocrlf bytes, never fuzzy normalize."""
+    if digest(blob) == expected_raw_sha256:
+        return blob
+    projected=blob.replace(b'\n',b'\r\n')
+    require(b'\r' not in blob and digest(projected) == expected_raw_sha256, 'HISTORICAL_SOURCE_MISMATCH')
+    return projected
 
 
 def minimal_env():
@@ -599,6 +608,9 @@ def audit(freeze_path, output):
                                'independently_graded':sum('signed_grade' in r for r in subset),**stats,
                                'excluded_from_accuracy':len(subset)-stats['denominator']})
     report={'host':'CLI_TEST','source_sha':f['source_sha'],'freeze_sha256':digest(f),'audited_at':now(),
+            'auditor_source_sha':git('rev-parse','HEAD').decode().strip(),
+            'checkout_crlf_projection_paths':[p for p,h in f['file_sha256'].items()
+                                              if digest(git('show',f['source_sha']+':'+p)) != h],
             'attempts':len(rows),'completed_pairs':len(seen),'executed_cases':len({c for c,a in seen}),
             'pilot_expected':36,'full_expected':1080,'independent_oracles':len(certified),
             'independent_grades':sum('signed_grade' in r for r in rows),
