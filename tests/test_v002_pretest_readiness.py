@@ -73,6 +73,23 @@ class PretestReadinessTests(unittest.TestCase):
                 self.assertEqual(len(row["critical_failures"]),2)
                 self.assertEqual(row["criteria_status"],
                                  "DEVELOPMENT_DRAFT_NOT_INDEPENDENTLY_APPROVED")
+    def test_H04_repeat_worker_fixture_is_explicit_and_not_claimed_autonomous(self):
+        # Source-only PF-02 guard: no hosted specialist behavior is inferred.
+        row=next(x for x in self.host["scenarios"] if x["scenario_id"]=="H-04")
+        prompt=row["candidate_prompt"].lower()
+        self.assertIn("owner_id",prompt)
+        self.assertIn("omits a per-record owner authorization check",prompt)
+        self.assertIn("security specialist independently review",prompt)
+        self.assertIn("then return the reviewed work to the engineering specialist",prompt)
+        self.assertIn("even if the first proposal needs no additional code change",prompt)
+        self.assertIn("record each sequential task and review gate",prompt)
+        self.assertIn("same-specialist return",row["fixture"]["description"])
+        self.assertEqual(row["status"],"NOT_RUN")
+        self.assertEqual(row["criteria_status"],"DEVELOPMENT_DRAFT_NOT_INDEPENDENTLY_APPROVED")
+        self.assertIsNone(row["actual_host_session_ref"])
+        self.assertIsNone(row["tool_receipt"])
+        self.assertIsNone(row["verified_by"])
+
     def test_no_fabricated_host_execution_or_receipts(self):
         self.assertEqual(self.host["host_trial_count"],0)
         self.assertIsNone(self.host["tested_candidate_source_sha"])
