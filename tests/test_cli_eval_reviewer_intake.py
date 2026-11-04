@@ -66,8 +66,9 @@ class IndependentReviewerIntakeTests(unittest.TestCase):
                     Path(t) / "new"), (Path(t) / "new").resolve())
                 with self.assertRaisesRegex(ValueError, "OUTPUT_MUST_BE"):
                     intake.ensure_private_destination(Path(t).parent / "outside")
+                (Path(t) / "existing").mkdir()
                 with self.assertRaises(FileExistsError):
-                    intake.ensure_private_destination(Path(t))
+                    intake.ensure_private_destination(Path(t) / "existing")
 
     def test_prepare_writes_only_unsigned_local_material(self):
         with tempfile.TemporaryDirectory() as t:
