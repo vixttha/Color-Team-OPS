@@ -1,5 +1,26 @@
 # CLI_TEST development evaluation
 
+## Owner policy override — solo developer (2026-11-04)
+
+The owner explicitly retired the mandatory external independent reviewer, signed 270-case approvals, and blinded-holdout custody as release prerequisites. The signed external review pathway below remains OPTIONAL, not required. All results in this pathway must be honestly labeled SELF_REVIEWED or AI_ASSISTED_PROVISIONAL, never independently certified.
+
+To create the next real SOLO_DEVELOPER evaluation, use the following in the existing development checkout on feature/v0.0.2-codex-independent-eval:
+
+```powershell
+python -B -m unittest discover -s tests -p "test*.py"
+python -B -m devtools.cli_eval freeze --solo --output evaluation/v0.0.2/CLI-EVAL-SOLO-FREEZE.json
+git add evaluation/v0.0.2/CLI-EVAL-SOLO-FREEZE.json
+git commit -m "Freeze owner-approved solo evaluation before model output"
+python -B -m devtools.cli_eval run --freeze evaluation/v0.0.2/CLI-EVAL-SOLO-FREEZE.json --stage pilot
+python -B -m devtools.cli_eval run --freeze evaluation/v0.0.2/CLI-EVAL-SOLO-FREEZE.json --stage full
+```
+
+Only execute these commands if the working tree is clean, the model account is authenticated, and no new paid usage is required. The solo full gate requires the exact 36/36 completed pilot receipts with intact source, inputs, raw hashes and unique sessions; it does NOT falsely certify semantic correctness. Check pilot quality before expanding to the full 270×4 run. Semantic correctness scores remain unverified until actually reviewed, and the current CLI harness does not yet implement automatic AI-as-judge scoring.
+
+Preserve the old freeze and historical 36 exploratory records unchanged; new evaluation requires a NEW pre-output freeze and new pilot. The 54 source-visible holdouts remain NONBLIND_REGRESSION_ONLY. The reviewer onboarding packet/SSH signing path is optional legacy tooling, not a blocking requirement. After the model evaluation, genuine H-01..H-11 host tests occur, then final ChatGPT Smoke A/B LAST. Release remains blocked until genuine evidence and owner approval.
+
+---
+
 This harness uses existing ChatGPT-account Codex authentication. It neither
 reads/copies credentials nor falls back to a paid API key. The native child
 process requests **gpt-6.1-sol / medium / default service tier**, read-only
@@ -29,7 +50,7 @@ isolation failure stops the affected execution lane and retains its receipt.
 The 36 pilot pairs are nine `normal:01` cases, randomized within each case.
 Model subprocesses are sequential test subjects, not independent reviewers.
 
-`--stage full` requires all 270 signed pre-output independent approvals, all 36
+In OPTIONAL EXTERNAL_INDEPENDENT mode, `--stage full` requires all 270 signed pre-output independent approvals, all 36
 pilot completions, signed pilot grades and no unresolved critical violations.
 Pilot pairs contribute to the 1,080-pair total and are not rerun as new cases.
 The current freeze has **no enrolled reviewers**, so full execution is blocked.
