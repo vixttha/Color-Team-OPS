@@ -4,6 +4,7 @@ import json
 import unittest
 import tempfile
 import zipfile
+import subprocess
 from unittest.mock import patch
 from pathlib import Path
 
@@ -48,6 +49,32 @@ class CorpusTests(unittest.TestCase):
 
 
 class IngestTests(unittest.TestCase):
+    def test_timeout_kills_child_and_returns_incomplete_receipt_material(self):
+        with patch.object(e.subprocess,'run'), patch.object(e.subprocess,'Popen') as launch:
+            proc=launch.return_value
+            proc.communicate.side_effect=[subprocess.TimeoutExpired('synthetic-test',0.01),(b'',b'timed out')]
+            raw,err,code,*_=e.invoke('synthetic-test-executable','fixture','instructions',0.01)
+            proc.kill.assert_called_once()
+            self.assertIsNone(code)
+            self.assertEqual(e.failure_kind(err.decode(),code),'TIMEOUT')
+
+    def test_reused_session_and_relabelled_trace_rejected(self):
+        parsed=self.parse()
+        cid='yellow-team:normal:01'
+        f={'source_sha':'a'*40,'environment_digest':'b'*64,
+           'cases':{cid:{'input_sha256':'c'*64}},
+           'arm_material_sha256':{'yellow-team':{'full':'d'*64,'generic':'e'*64}}}
+        r={'case_id':cid,'arm':'full','source_sha':'a'*40,'environment_digest':'b'*64,
+           'freeze_sha256':e.digest(f),'input_sha256':'c'*64,'arm_sha256':'d'*64,
+           'session_sha256':parsed['session_sha256'],'usage':parsed['usage'],'raw_sha256':'f'*64}
+        for field in ('freeze_sha256','input_sha256','arm_sha256','session_sha256'):
+            bad=dict(r,**{field:'0'*64})
+            with self.assertRaises(e.Invalid): e.bind_trace(bad,parsed,f,set(),set())
+        pairs,sessions=set(),set()
+        e.bind_trace(r,parsed,f,pairs,sessions)
+        duplicate=dict(r,arm='generic',arm_sha256='e'*64)
+        with self.assertRaises(e.Invalid): e.bind_trace(duplicate,parsed,f,pairs,sessions)
+
     def events(self):
         return [
             {'type':'thread.started', 'thread_id':'synthetic-test-thread'},
@@ -83,6 +110,12 @@ class IngestTests(unittest.TestCase):
         self.assertEqual(e.failure_kind('rate limit exceeded', 1), 'RATE_LIMIT_BLOCKED')
         self.assertEqual(e.failure_kind('', None), 'TIMEOUT')
         with self.assertRaises(e.Invalid): e.parse_trace(b'', 1)
+
+    def test_quota_detection_uses_provider_errors_not_candidate_answer(self):
+        answer=json.dumps({'type':'item.completed','item':{'type':'agent_message','text':'Recommend quota monitoring.'}}).encode()+b'\n'
+        self.assertEqual(e.provider_diagnostics(answer,b'',0),'')
+        error=json.dumps({'type':'error','message':'usage limit reached'}).encode()+b'\n'
+        self.assertEqual(e.failure_kind(e.provider_diagnostics(error,b'',0),0),'QUOTA_BLOCKED')
 
     def test_duplicate_and_stale_environment(self):
         r={'case_id':'yellow-team:normal:01','arm':'full','source_sha':'a'*40,

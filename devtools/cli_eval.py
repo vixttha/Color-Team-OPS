@@ -182,6 +182,22 @@ def failure_kind(stderr, exit_code):
     return 'EXECUTION_BLOCKED'
 
 
+def provider_diagnostics(stdout, stderr, exit_code):
+    # Candidate answers may legitimately discuss quotas. Only error events or
+    # nonzero-process diagnostics can signal exhaustion, never answer text.
+    if exit_code != 0:
+        return (stdout+stderr).decode('utf-8',errors='replace')
+    messages=[stderr.decode('utf-8',errors='replace')]
+    for line in stdout.splitlines():
+        try:
+            event=json.loads(line)
+            if isinstance(event,dict) and event.get('type') in ('error','turn.failed'):
+                messages.append(json.dumps(event))
+        except (ValueError,UnicodeError):
+            continue
+    return '\n'.join(messages)
+
+
 def parse_trace(raw, exit_code):
     require(exit_code == 0, 'NONZERO_EXIT')
     require(raw and raw.endswith(b'\n'), 'TRUNCATED_JSONL')
@@ -222,6 +238,18 @@ def bind_receipt(receipt, source, environment, seen):
     key = (receipt['case_id'], receipt['arm'])
     require(key not in seen, 'DUPLICATE_CASE_ARM')
     seen.add(key)
+
+
+def bind_trace(receipt, parsed, frozen, seen_pairs, seen_sessions):
+    cid,arm=receipt['case_id'],receipt['arm']
+    require(cid in frozen['cases'] and arm in ARMS, 'UNKNOWN_CASE_OR_ARM')
+    require(receipt['freeze_sha256'] == digest(frozen), 'WRONG_FREEZE')
+    require(receipt['input_sha256'] == frozen['cases'][cid]['input_sha256'], 'RELABELLED_INPUT')
+    require(receipt['arm_sha256'] == frozen['arm_material_sha256'][cid.split(':')[0]][arm], 'RELABELLED_ARM')
+    require(receipt['session_sha256'] == parsed['session_sha256'] and receipt['usage'] == parsed['usage'], 'FORGED_SESSION_OR_USAGE')
+    require(parsed['session_sha256'] not in seen_sessions, 'REPLAYED_PROVIDER_SESSION')
+    bind_receipt(receipt,frozen['source_sha'],frozen['environment_digest'],seen_pairs)
+    seen_sessions.add(parsed['session_sha256'])
 
 
 def validate_observation(receipt):
@@ -378,6 +406,17 @@ def validate_freeze(path):
     return f
 
 
+def validate_historical_freeze(path):
+    """Audit original immutable sources even after ingestion-only repairs."""
+    f=load(path)
+    rel=Path(path).resolve().relative_to(ROOT).as_posix()
+    require(git('show','HEAD:'+rel).strip() == encode(f), 'UNCOMMITTED_FREEZE')
+    for name,h in f['file_sha256'].items():
+        require(digest(git('show',f['source_sha']+':'+name)) == h, 'HISTORICAL_SOURCE_MISMATCH')
+    require(f['environment_digest'] == digest(f['environment']), 'ENVIRONMENT_CHANGED')
+    return f
+
+
 def minimal_env():
     # Codex reads existing account credentials itself; no token copying or API fallback.
     allowed = {'PATH','SYSTEMROOT','WINDIR','TEMP','TMP','USERPROFILE','HOMEDRIVE','HOMEPATH',
@@ -393,21 +432,25 @@ def invoke(exe, prompt, material, timeout):
         subprocess.run(['git','init','-q',str(scratch)], check=True, capture_output=True)
         instructions = scratch/'instructions.txt'
         instructions.write_text(BOUNDARY+'\n\n'+material, encoding='utf-8')
-        before = {p.name:digest(p.read_bytes()) for p in scratch.iterdir() if p.is_file()}
+        def snapshot():
+            return {p.relative_to(scratch).as_posix():digest(p.read_bytes()) if p.is_file() else 'DIRECTORY'
+                    for p in scratch.rglob('*') if '.git' not in p.relative_to(scratch).parts}
+        before = snapshot()
         start, tick = now(), time.monotonic()
         args = command(exe,scratch,instructions)
-        proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                env=minimal_env(), creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
         code = None
         try:
-            stdout,stderr = proc.communicate(prompt.encode('utf-8'), timeout=timeout)
-            code = proc.returncode
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            stdout,stderr = proc.communicate()
-        after = {p.name:digest(p.read_bytes()) for p in scratch.iterdir() if p.is_file()}
-        require(before == after, 'ISOLATION_VIOLATION_SCRATCH_MUTATION')
-        return stdout,stderr,code,start,now(),time.monotonic()-tick
+            proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                    env=minimal_env(), creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+            try:
+                stdout,stderr = proc.communicate(prompt.encode('utf-8'), timeout=timeout)
+                code = proc.returncode
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                stdout,stderr = proc.communicate()
+        except OSError as exc:
+            stdout,stderr,code=b'',str(exc).encode('utf-8'),1
+        return stdout,stderr,code,start,now(),time.monotonic()-tick,before == snapshot()
 
 
 def run(freeze_path, stage):
@@ -435,15 +478,16 @@ def run(freeze_path, stage):
     location = PRIVATE/digest(f)/stage
     location.mkdir(parents=True,exist_ok=True)
     cases = {x['case_id']:x for x in corpus(ROOT)}
-    seen = set()
+    seen,seen_sessions = set(),set()
     checkpoints=list(location.glob('*/receipt.json'))
     if stage=='full': checkpoints += list((PRIVATE/digest(f)/'pilot').glob('*/receipt.json'))
     for path in sorted(checkpoints):
         r=load(path)
         if r['status'] == 'COMPLETED':
-            bind_receipt(r, f['source_sha'], f['environment_digest'], seen)
+            validate_observation(r)
             require(digest((path.parent/'stdout.jsonl').read_bytes()) == r['raw_sha256'], 'CORRUPTED_CHECKPOINT')
-            parse_trace((path.parent/'stdout.jsonl').read_bytes(),r['exit_code'])
+            parsed=parse_trace((path.parent/'stdout.jsonl').read_bytes(),r['exit_code'])
+            bind_trace(r,parsed,f,seen,seen_sessions)
     for index,(cid,arm) in enumerate(f[stage+'_order']):
         if (cid,arm) in seen:
             continue
@@ -459,7 +503,7 @@ def run(freeze_path, stage):
                 require(previous['status'] == 'EXECUTION_BLOCKED', 'BLOCKED_CHECKPOINT_REQUIRES_NEW_CAPABILITY_AND_NEW_FREEZE')
                 continue
             trial.mkdir()
-            out,err,code,started,ended,latency=invoke(exe,prompt,material,f['environment']['timeout_seconds'])
+            out,err,code,started,ended,latency,isolated=invoke(exe,prompt,material,f['environment']['timeout_seconds'])
             (trial/'stdout.jsonl').write_bytes(out)
             (trial/'stderr.txt').write_bytes(err)
             r={'host':'CLI_TEST','case_id':cid,'arm':arm,'attempt':attempt,'source_sha':f['source_sha'],
@@ -469,12 +513,16 @@ def run(freeze_path, stage):
                'latency_seconds':latency,'exit_code':code,'cli_version':version,'model_requested':MODEL,
                'effort_requested':EFFORT,'model_observed':'NOT_EXPOSED_BY_JSONL',
                'model_identity_provenance':'CLI_REQUEST_NOT_PROVIDER_ATTESTED',
-               'status':failure_kind((out+err).decode('utf-8',errors='replace'),code), 'metrics':ungraded(case)}
-            if code == 0:
+               'status':failure_kind(provider_diagnostics(out,err,code),code), 'metrics':ungraded(case)}
+            if not isolated:
+                r['status']='INVALID_TRACE'
+                r['reason']='ISOLATION_VIOLATION_SCRATCH_MUTATION'
+            elif code == 0 and r['status'] not in ('QUOTA_BLOCKED','RATE_LIMIT_BLOCKED'):
                 try:
                     parsed=parse_trace(out,code)
                     (trial/'response.txt').write_text(parsed.pop('response'),encoding='utf-8')
                     r.update(parsed)
+                    bind_trace(r,parsed,f,seen,seen_sessions)
                 except Invalid as exc:
                     r['status']='INVALID_TRACE'
                     r['reason']=str(exc)
@@ -482,7 +530,6 @@ def run(freeze_path, stage):
             save_new(trial/'receipt.json',r)
             print(cid,arm,'attempt',attempt,r['status'],flush=True)
             if r['status'] == 'COMPLETED':
-                seen.add((cid,arm))
                 break
             if r['status'] != 'EXECUTION_BLOCKED' or attempt == f['environment']['max_attempts_per_pair']:
                 return {'completed':len(seen),'blocked':r['status'],'receipt':str(trial/'receipt.json')}
@@ -490,19 +537,19 @@ def run(freeze_path, stage):
 
 
 def audit(freeze_path, output):
-    f=load(freeze_path)
+    f=validate_historical_freeze(freeze_path)
     cases={x['case_id']:x for x in corpus(ROOT)}
     location=PRIVATE/digest(f)
     rows=[]
-    seen=set()
+    seen,seen_sessions=set(),set()
     for path in sorted(location.glob('*/*/receipt.json')):
         r=load(path)
         validate_observation(r)
         require(digest((path.parent/'stdout.jsonl').read_bytes()) == r['raw_sha256'], 'RAW_HASH_MISMATCH')
         require(digest((path.parent/'stderr.txt').read_bytes()) == r['stderr_sha256'], 'STDERR_HASH_MISMATCH')
         if r['status']=='COMPLETED':
-            bind_receipt(r,f['source_sha'],f['environment_digest'],seen)
-            parse_trace((path.parent/'stdout.jsonl').read_bytes(),r['exit_code'])
+            parsed=parse_trace((path.parent/'stdout.jsonl').read_bytes(),r['exit_code'])
+            bind_trace(r,parsed,f,seen,seen_sessions)
         rows.append(r)
     matrix=[]
     for team in sorted({x['team_id'] for x in cases.values()}):
