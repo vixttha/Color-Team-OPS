@@ -1,3 +1,9 @@
+# PrismCell v0.0.1 — Yellow canonical template migration completed
+
+Owner approved PR #18; canonical `template/prismcell-workbench-v0.0.1` is `2cdc66f37537c077db68eeb9fa190e24d071039f`, identical tree to Purple-tested `45ecbdc2460c22a79fff54557012f62b33c38a10`. Windows/Linux [native run #41715667469](https://github.com/vixttha/Color-Team-OPS/actions/runs/41715667469): each 110 Node + 25 Python tests pass. Yellow's STATE and checkpoint pins updated; existing audits, queues, messages and history retained. This remains on-demand only, no new authentication or release flags. Read live issue #9 before next bounded task.
+
+## Earlier handoffs retained verbatim
+
 # Yellow Head — PrismCell v0.0.1 six repairs (Nov 3, 2026)
 
 P1 (immutable decisions and robust ledgers; team-ID/Git ref; metadata safety) plus P2 (canonical schemas and historical archive; full-file hashed manifests; safe manual owner-runner gating) **implemented on** `45ecbdc2460c22a79fff54557012f62b33c38a10` at [draft PR #18](https://github.com/vixttha/Color-Team-OPS/pull/18).
