@@ -1,0 +1,24 @@
+{
+  "schema_version": "prismcell-project-config-0.0.1",
+  "project_id": "NEBULA_UNIVERSE",
+  "repository": "example/nebula-universe",
+  "repository_url": "https://github.com/example/nebula-universe",
+  "transport": "github-issues-manual",
+  "teams": {
+    "ASTRONOMY": {
+      "branch": "workcells/astronomy",
+      "issue_number": 81,
+      "issue_url": "https://github.com/example/nebula-universe/issues/81"
+    },
+    "STORY": {
+      "branch": "workcells/story",
+      "issue_number": 82,
+      "issue_url": "https://github.com/example/nebula-universe/issues/82"
+    },
+    "REVIEW": {
+      "branch": "workcells/review",
+      "issue_number": 83,
+      "issue_url": "https://github.com/example/nebula-universe/issues/83"
+    }
+  }
+}

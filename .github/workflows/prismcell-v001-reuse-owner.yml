@@ -1,0 +1,79 @@
+# PrismCell v0.0.1 REPAIR ONLY — never a production or paid-hosted runtime.
+# GitHub manual dispatch requires trusted registration of this workflow on the default branch.
+# This feature-only file does NOT by itself provide a runnable manual button. No push triggers.
+name: PrismCell v0.0.1 reusable template native acceptance (owner runners)
+on:
+  workflow_dispatch:
+    inputs:
+      approved_sha:
+        description: 'Owner-reviewed exact 40-character source SHA (development tests only)'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: prismcell-v001-reuse-owner-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  linux:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/prismcell-v0.0.1-reuse-yellow'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact source with no persistent credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ inputs.approved_sha }}
+          persist-credentials: false
+      - name: Node/Python negative cases, schema parity and clean-room new project
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ inputs.approved_sha }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = "color-team-ops-linux-01"
+          test "$RUNNER_OS" = "Linux"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 -c "import jsonschema; print('schema validator available')"
+          node --test PRISMCELL/tests/guard.test.mjs PRISMCELL/tests/engine.test.mjs PRISMCELL/tests/integrity.test.mjs PRISMCELL/tests/starter.test.mjs
+          python3 -B -m unittest discover -s PRISMCELL/tests -p 'test*.py' -v
+          output="$RUNNER_TEMP/prismcell-v001-${{ github.run_id }}-${{ github.run_attempt }}-linux"
+          trap 'rm -rf "$output"' EXIT
+          node PRISMCELL/tools/initialize-project.mjs --config PRISMCELL/tests/fixtures/nebula-project.json --out "$output" --source-sha "$EXPECTED_SHA"
+          node PRISMCELL/tools/verify-manifest.mjs "$output" "$EXPECTED_SHA" 3
+          echo "PRISMCELL_V001_REUSE_LINUX_PASS $EXPECTED_SHA"
+  windows:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/prismcell-v0.0.1-reuse-yellow'
+    runs-on: [self-hosted, Windows, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact source with no persistent credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ inputs.approved_sha }}
+          persist-credentials: false
+      - name: Node/Python negative cases, schema parity and clean-room new project
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ inputs.approved_sha }}
+        run: |
+          $ErrorActionPreference='Stop'
+          if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Wrong runner' }
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Git SHA mismatch' }
+          python -c "import jsonschema; print('schema validator available')"
+          if ($LASTEXITCODE -ne 0) { throw 'Missing schema validator' }
+          node --test PRISMCELL/tests/guard.test.mjs PRISMCELL/tests/engine.test.mjs PRISMCELL/tests/integrity.test.mjs PRISMCELL/tests/starter.test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Node regression failed' }
+          python -B -m unittest discover -s PRISMCELL/tests -p 'test*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Python/schema parity regression failed' }
+          $output=Join-Path $env:RUNNER_TEMP ("prismcell-v001-" + $env:GITHUB_RUN_ID + "-" + $env:GITHUB_RUN_ATTEMPT + "-windows")
+          if (Test-Path -LiteralPath $output) { throw 'Nonempty scratch output exists' }
+          try {
+            node PRISMCELL/tools/initialize-project.mjs --config PRISMCELL/tests/fixtures/nebula-project.json --out $output --source-sha $env:EXPECTED_SHA
+            if ($LASTEXITCODE -ne 0) { throw 'Offline bootstrap failed' }
+            node PRISMCELL/tools/verify-manifest.mjs $output $env:EXPECTED_SHA 3
+            if ($LASTEXITCODE -ne 0) { throw 'Bootstrapped manifest invalid' }
+            Write-Output "PRISMCELL_V001_REUSE_WINDOWS_PASS $env:EXPECTED_SHA"
+          } finally {
+            if (Test-Path -LiteralPath $output) { Remove-Item -LiteralPath $output -Force -Recurse }
+          }

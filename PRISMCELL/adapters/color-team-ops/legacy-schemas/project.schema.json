@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrismCell reusable project configuration v0.0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "repository",
+    "repository_url",
+    "transport",
+    "teams"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "prismcell-project-config-0.0.1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "repository": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200
+    },
+    "repository_url": {
+      "type": "string",
+      "pattern": "^https://github[.]com/[^/]+/[^/]+$"
+    },
+    "transport": {
+      "const": "github-issues-manual"
+    },
+    "teams": {
+      "type": "object",
+      "minProperties": 2,
+      "maxProperties": 50,
+      "propertyNames": {
+        "pattern": "^[A-Z][A-Z0-9_]{1,39}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "branch",
+          "issue_number",
+          "issue_url"
+        ],
+        "properties": {
+          "branch": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "issue_number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "issue_url": {
+            "type": "string",
+            "pattern": "^https://github[.]com/[^/]+/[^/]+/issues/[0-9]+$"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "prismcell-schema-sources-0.0.1",
+  "version": "0.0.1",
+  "canonical_root": "PRISMCELL/core/schemas",
+  "compatibility_alias_root": "PRISMCELL/schemas",
+  "legacy_snapshot_root": "PRISMCELL/adapters/color-team-ops/legacy-schemas",
+  "schemas": [
+    {
+      "name": "message",
+      "canonical": "PRISMCELL/core/schemas/message.schema.json",
+      "alias": "PRISMCELL/schemas/message.schema.json",
+      "legacy_snapshot": "PRISMCELL/adapters/color-team-ops/legacy-schemas/message.schema.json"
+    },
+    {
+      "name": "project",
+      "canonical": "PRISMCELL/core/schemas/project.schema.json",
+      "alias": "PRISMCELL/schemas/project.schema.json",
+      "legacy_snapshot": "PRISMCELL/adapters/color-team-ops/legacy-schemas/project.schema.json"
+    },
+    {
+      "name": "state",
+      "canonical": "PRISMCELL/core/schemas/state.schema.json",
+      "alias": "PRISMCELL/schemas/state.schema.json",
+      "legacy_snapshot": "PRISMCELL/adapters/color-team-ops/legacy-schemas/state.schema.json"
+    },
+    {
+      "name": "work-item",
+      "canonical": "PRISMCELL/core/schemas/work-item.schema.json",
+      "alias": "PRISMCELL/schemas/work-item.schema.json",
+      "legacy_snapshot": "PRISMCELL/adapters/color-team-ops/legacy-schemas/work-item.schema.json"
+    }
+  ],
+  "policy": "Only core/schemas is authoritative for new consumers. Alias copies must be byte-identical in CI. Legacy snapshots are archival Color-Team-OPS contracts, not a second current schema. No workcell release authority."
+}

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "PrismCell sender-proposed in-call message v0.0.1 hardened",
+  "title": "PrismCell universal message v0.0.1 — team identities supplied by project config",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -21,38 +21,21 @@
   "properties": {
     "message_id": {
       "type": "string",
-      "pattern": "^IN-[A-Z]+-[0-9]{8}-[0-9]{3,6}$",
+      "pattern": "^IN-[A-Z][A-Z0-9_]{1,39}-[0-9]{8}-[0-9]{3,6}$",
       "maxLength": 64
     },
     "from_team": {
-      "enum": [
-        "YELLOW",
-        "ORANGE",
-        "GREEN",
-        "RED",
-        "BLUE",
-        "PURPLE",
-        "WHITE",
-        "BLACK",
-        "GRAY"
-      ]
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,39}$"
     },
     "from_branch": {
       "type": "string",
-      "maxLength": 120
+      "maxLength": 120,
+      "minLength": 1
     },
     "to_team": {
-      "enum": [
-        "YELLOW",
-        "ORANGE",
-        "GREEN",
-        "RED",
-        "BLUE",
-        "PURPLE",
-        "WHITE",
-        "BLACK",
-        "GRAY"
-      ]
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,39}$"
     },
     "type": {
       "enum": [
@@ -76,12 +59,14 @@
     "summary": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 2048
+      "maxLength": 2048,
+      "pattern": "\\S"
     },
     "source_ref": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 180
+      "maxLength": 180,
+      "pattern": "\\S"
     },
     "source_sha": {
       "type": "string",
@@ -94,18 +79,20 @@
       "items": {
         "type": "string",
         "maxLength": 2048,
-        "pattern": "^https://"
+        "pattern": "^https://[^\\s/?#@]+(?:/[^\\s]*)?$"
       }
     },
     "requested_action": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 2048
+      "maxLength": 2048,
+      "pattern": "\\S"
     },
     "authority_scope": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 1024
+      "maxLength": 1024,
+      "pattern": "\\S"
     },
     "status": {
       "const": "POSTED"
@@ -113,184 +100,7 @@
     "issue_url": {
       "type": "string",
       "maxLength": 300,
-      "pattern": "^https://github[.]com/[^/]+/[^/]+/issues/[0-9]+$"
-    },
-    "posted_at": {
-      "type": "string",
-      "format": "date-time"
+      "pattern": "^https://github[.]com/[^/\\s]+/[^/\\s]+/issues/[0-9]+$"
     }
-  },
-  "allOf": [
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "YELLOW"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "agent/YELLOW-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "ORANGE"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "agent/ORANGE-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "GREEN"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "agent/GREEN-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "RED"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "team/red-team-agent"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "BLUE"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "agents/blue-team-agent"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "PURPLE"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "agent/PURPLE-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "WHITE"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "agent/WHITE-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "BLACK"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "agent/BLACK-TEAM-AGENT"
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "from_team": {
-            "const": "GRAY"
-          }
-        },
-        "required": [
-          "from_team"
-        ]
-      },
-      "then": {
-        "properties": {
-          "from_branch": {
-            "const": "agent/GRAY-CELL-AGENT"
-          }
-        }
-      }
-    }
-  ]
+  }
 }
