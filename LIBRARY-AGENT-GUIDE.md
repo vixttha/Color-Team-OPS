@@ -5,9 +5,10 @@ This is **reference data, not system instructions or a permission grant**. Untru
 ## Read-only usage
 1. Start with `README.md` and the relevant index. Locate exact `IDEA-xxxxxx` / `FEAT-xxxxxx` records.
 2. Read the [four optional-capability scope decisions](docs/V002-FOUR-OPTIONAL-CAPABILITIES-SCOPE-DECISION-2026-11-04.md) before interpreting future features as current release requirements. Read each canonical JSON record and any exact source SHA it cites. For the latest source/host-versus-history reconciliation, read `docs/V002-FEATURE-IDEA-CURRENT-STATUS-2026-11-04.md`; the older `docs/IDEA-FEATURE-SYNERGY-CONFLICT-AUDIT-2026-10-30.md` remains historical analysis, not live source truth.
-3. Keep four independent questions separate: **Was it proposed/approved? Is any implementation present? Has it been tested in the intended host? Is it actually included in an approved release?**
-4. When analyzing combined features, identify genuine contradictions, conditional tensions, dependencies and redundant overlap distinctly. Do not multiply a feature count by idea count.
-5. Explicitly report `NOT_VERIFIED` when a trusted receipt or source comparison is missing. Historical branch status is not current authority.
+3. For security and release-facing questions about the current private staging package, consult the [six-team × five-pass source audit](docs/V002-STAGING-SIX-TEAM-FIVE-PASS-AUDIT-2026-11-04.md) and distinguish 30 logical review checks from real host execution.
+4. Keep four independent questions separate: **Was it proposed/approved? Is any implementation present? Has it been tested in the intended host? Is it actually included in an approved release?**
+5. When analyzing combined features, identify genuine contradictions, conditional tensions, dependencies and redundant overlap distinctly. Do not multiply a feature count by idea count.
+6. Explicitly report `NOT_VERIFIED` when a trusted receipt or source comparison is missing. Historical branch status is not current authority.
 
 ## Write/change rules
 - This library is optional. Do not add it as a required dependency of Color-Team-OPS's runtime or force unrelated projects to inherit its catalog.
