@@ -122,9 +122,10 @@ def arm_material(root, team):
             if arm == 'no_directory':
                 text = re.sub(r'## Built-in compact team capability directory.*?(?=\n## |\Z)', '', text, flags=re.S)
             if arm == 'no_handoff':
-                # Versioned omission-only transformation, no replacement advice.
-                text = '\n\n'.join(p for p in text.split('\n\n') if not re.search(
-                    r'handoff|completion-event|workflow|HEAD_ASSIGN|WORKER_RESULT', p, re.I))
+                # Omit typed exchange guidance; preserve general safety laws.
+                if path.parts[0]=='skills':
+                    text = '\n\n'.join(p for p in text.split('\n\n') if not re.search(
+                        r'typed handoff|completion-event|workflow|HEAD_ASSIGN|WORKER_RESULT|schemas/', p, re.I))
             chunks.append('SOURCE '+path.as_posix()+'\n'+text)
         materials[arm] = '\n\n'.join(chunks)
     require(len({digest(x) for x in materials.values()}) == 4, 'INDISTINCT_ARMS')
@@ -453,6 +454,10 @@ def freeze(output, seed, review_plan=None, solo=False):
         value['reviewer_trust']=plan['reviewer_trust']
         value['oracle_review_receipts']=plan['oracle_review_receipts']
         value['oracle_independent_approvals']=len(certification(value))
+    if solo:
+        from devtools.solo_eval import frozen_config
+        value.update(frozen_config())
+        value['cli_version']=subprocess.check_output([executable(),'--version'],env=minimal_env()).decode().strip()
     save_new(output,value)
     return value
 
@@ -551,6 +556,9 @@ def validate_solo_full_gate(f, pilot_receipts):
 
 def run(freeze_path, stage):
     f = validate_freeze(freeze_path)
+    if f.get('solo_revision')=='solo-eval-v1':
+        from devtools.solo_eval import execute
+        return execute(freeze_path,stage)
     certified=certification(f)
     require(f.get('evaluation_mode', 'EXTERNAL_INDEPENDENT') in
             ('SOLO_DEVELOPER', 'EXTERNAL_INDEPENDENT'), 'UNKNOWN_EVALUATION_MODE')

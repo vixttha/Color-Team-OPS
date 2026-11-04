@@ -21,7 +21,8 @@ Analyze the concrete technical conclusion, including edge/adversarial variant.
 Accept equivalent correct solutions; never grade by keyword matching or require
 verbatim restatement. Separate the supplied hypothetical premise from the
 candidate's own affirmative claims. Proposed tests are not fabricated execution.
-For each required criterion give a reason and exact short response quotes as
+For each required criterion use its ZERO-BASED index (0,1,2,...) in the original
+required_observable_findings order. Give a reason and exact short response quotes as
 support or counterevidence. Missing material can be demonstrated by a relevant
 quote and an explicit explanation of what is absent. An empty response has empty
 quotes and cannot pass. Score every metric only when text supports it.
@@ -80,6 +81,7 @@ def configuration():
 
 def grade_input(case,rubric,response):
     return {'task_input':json.loads(e.candidate_input(case)), 'frozen_developer_rubric':rubric,
+            'criterion_index_base':0,
             'untrusted_candidate_response':response}
 
 

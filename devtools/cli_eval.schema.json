@@ -31,7 +31,8 @@
     "metrics": {"type": "object", "required": ["holdout", "task_correctness", "independent_grade"], "properties": {"independent_grade": {"const": false}}},
     "usage": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
     "tool_events": {"type": "array", "maxItems": 0},
-    "grading": {"const": "EXPLORATORY_CLI_TEST_UNVERIFIED_INDEPENDENCE"},
+    "grading": {"enum": ["EXPLORATORY_CLI_TEST_UNVERIFIED_INDEPENDENCE", "SOLO_DEVELOPER_UNGRADED"]},
+    "evaluation_mode": {"const": "SOLO_DEVELOPER"},
     "reason": {"type": "string"}
   },
   "additionalProperties": false,
