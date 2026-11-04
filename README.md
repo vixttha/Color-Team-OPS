@@ -3,8 +3,9 @@
 **Status:** Optional, isolated, human-readable and LLM-readable research/development library. **Not a dependency of the Color-Team-OPS plugin, Head mission engine or v0.0.2 release.** This branch preserves the original 36 Color-Team-OPS idea records, five umbrella feature proposals and their historical source provenance.
 
 ## Browse
-- [36 ideas](ideas/INDEX.md) — opportunities, drawbacks, relationships and source decision state
+- [37 ideas](ideas/INDEX.md) — original 36 historical ideas plus the separately captured IDEA-000037
 - [5 feature candidates](features/INDEX.md) — broad capability bundles, **not the count of implemented product functionality**
+- [2026-11-04 current v0.0.2 evidence reconciliation (all 37 ideas + five features)](docs/V002-FEATURE-IDEA-CURRENT-STATUS-2026-11-04.md) — latest source/test/host and actual remaining release gates
 - [Current dated evidence / 36-idea synergy and conflict audit](docs/IDEA-FEATURE-SYNERGY-CONFLICT-AUDIT-2026-10-30.md) — do not confuse the older proposal status with live engineering
 - [LLM + human reading guide](LIBRARY-AGENT-GUIDE.md)
 - [Standalone reusable starter](portable/README.md) — use the empty catalog and generic schemas; **do not copy these 36 example records into an unrelated project**
