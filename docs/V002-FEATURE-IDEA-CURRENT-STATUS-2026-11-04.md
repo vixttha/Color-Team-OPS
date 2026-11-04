@@ -82,6 +82,10 @@ These observations **do not change** each FEAT's historical `proposed/not_planne
 | 270 specialist evaluations | **0 real outputs; 0 independently approved semantic oracles; 54 source-visible holdouts NOT blind** |
 | Final release/owner decision | **RELEASE_BLOCKED**; canonical private v0.0.1 unchanged |
 
+## Explicit optional-capability decision (2026-11-04)
+
+The owner requested documentation confirming that the One-action Mission Planner (IDEA-000037), the optional research Library, protected-host enforcement infrastructure (IDEA-000032/FEAT-000005), and autonomous separate specialist execution are **not mandatory v0.0.2 deliverables**. See [four optional future-capability decisions](V002-FOUR-OPTIONAL-CAPABILITIES-SCOPE-DECISION-2026-11-04.md). This is not authorization to implement them or modify original IDEA/FEAT statuses.
+
 ## What is ACTUALLY left for v0.0.2 (required release path)
 
 1. Run **genuine fresh ChatGPT.com staging Smoke A/B** with unchanged frozen prompts and durable session/transcript evidence; grade only what actual host instrumentation exposes. Existing blocker is inability to invoke such sessions automatically from the current Chat-mode connector. This is not a plugin defect and does not impose a Work-mode, Codex CLI, or local-runner runtime dependency.
