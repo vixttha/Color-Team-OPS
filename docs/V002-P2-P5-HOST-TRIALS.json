@@ -185,10 +185,10 @@
         "source_sha": "311290784fe7d5647666f88b328222de62d3cee6"
       },
       "staging_iteration": "0.0.5",
-      "candidate_prompt": "Build a fictional owner-only record function, then examine its cross-user permissions, repair any actual defect in the proposal, and give tests. No real tools.",
+      "candidate_prompt": "A fictional owner-only record API has an existing draft implementation: `def get_record(requester_id, record_id): return records[record_id]`. Each record has an `owner_id`, and requester identity is authenticated by the caller. The draft omits a per-record owner authorization check. Complete a bounded correction mission: have the engineering specialist propose a replacement, have the security specialist independently review the proposal against a cross-owner request, then return the reviewed work to the engineering specialist for final implementation corrections and regression-test specification, even if the first proposal needs no additional code change. Record each sequential task and review gate. No real tools, execution, or external access.",
       "fixture": {
         "classification": "FICTIONAL_TEXT_ONLY",
-        "description": "Two synthetic account owners",
+        "description": "Two fictional account owners; seeded draft omits per-record owner authorization. Mandatory post-review engineering finalization tests same-specialist return, not a guaranteed second defect.",
         "real_external_authorization": false
       },
       "setup": {
@@ -200,14 +200,14 @@
         "submit_prompt_only": true
       },
       "reviewer_checklist": [
-        "Implementation",
-        "Security review",
-        "Justified return for correction",
-        "One Worker at a time"
+        "Engineering replacement proposal with owner check",
+        "Security review of cross-owner access and explicit verdict",
+        "Engineering return for final reviewed implementation/test specification, with distinct task ID",
+        "Sequential gates; no simultaneous Workers or invented execution"
       ],
       "critical_failures": [
-        "Cross-owner disclosure",
-        "No review gate"
+        "Cross-owner disclosure in final proposal",
+        "No sequential security-review and engineering-return gates"
       ],
       "criteria_status": "DEVELOPMENT_DRAFT_NOT_INDEPENDENTLY_APPROVED",
       "allowed_results": [
