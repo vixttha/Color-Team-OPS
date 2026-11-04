@@ -3,7 +3,7 @@
   "team": "RED",
   "home_branch": "team/red-team-agent",
   "activation": "OPS-20261102-RED-001",
-  "template_revision": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "template_revision": "2cdc66f37537c077db68eeb9fa190e24d071039f",
   "product_integration_sha_observed": "8174092e644ba3b96235db42fc2d4a6c1a49a6c1",
   "incall_issue": "https://github.com/vixttha/Color-Team-OPS/issues/12",
   "issue_open": true,
@@ -17,5 +17,14 @@
   "background_process": false,
   "access_control_verdict": "UNVERIFIED_SEPARATE_ROLE_PRINCIPALS",
   "ready_for": "NEXT_OWNER_INVOCATION",
-  "next_action": "Re-read current branch and integration refs, canonical INCALL and preserved backlog; Head selects one bounded specialist task."
+  "next_action": "Re-read current branch and integration refs, canonical INCALL and preserved backlog; Head selects one bounded specialist task.",
+  "template_promotion": {
+    "pr": 18,
+    "promoted_sha": "2cdc66f37537c077db68eeb9fa190e24d071039f",
+    "tested_sha": "45ecbdc2460c22a79fff54557012f62b33c38a10",
+    "purple_run": 41715667469,
+    "owner_approved": true,
+    "issue_open_readback": true,
+    "historical_observations_retained": true
+  }
 }
