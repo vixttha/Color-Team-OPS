@@ -71,6 +71,10 @@ These observations **do not change** each FEAT's historical `proposed/not_planne
 | 036 | Cross-thread handoff ledger | Issue #8 is shared handoff; no autonomous cross-chat transport claimed |
 | 037 | One-action mission planner/launcher | Captured on library branch only; NOT approved or required for v0.0.2 |
 
+## Latest staging six-perspective logical audit
+
+Current installed staging iteration **0.0.5**, full source parity **29/29 functional files**, and five sequential source checks for each of Purple, Red, Blue, Black, White and Gray Cell are documented in [six-team × five-pass source audit](V002-STAGING-SIX-TEAM-FIVE-PASS-AUDIT-2026-11-04.md). This is source evidence only, not a hosted plugin trial or six independently authenticated agents. The four future capability decisions are separately recorded [here](V002-FOUR-OPTIONAL-CAPABILITIES-SCOPE-DECISION-2026-11-04.md).
+
 ## Verified progress versus release acceptance
 
 | Gate | Actual status |
