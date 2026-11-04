@@ -521,7 +521,7 @@
     {
       "scenario_id": "H-11",
       "name": "Optional Ideas Library absent",
-      "expected_outcome": "Core mission still routes with library unavailable; optional source cannot be a required runtime dependency",
+      "expected_outcome": "Under a user-stated unavailable-library premise, the model proposes a bounded core task without claiming to have accessed the library. This text-only trial does NOT establish actual runtime library absence or dependency independence.",
       "status": "NOT_RUN",
       "candidate_version": "0.0.2",
       "actual_host_session_ref": null,
@@ -538,7 +538,7 @@
       "candidate_prompt": "Given only `def clamp(x): return max(0, min(x, 10))`, suggest a bounded improvement and test proposals. Optional ideas-library documents are unavailable; don't run tools.",
       "fixture": {
         "classification": "FICTIONAL_TEXT_ONLY",
-        "description": "Supplied Python snippet and no optional library",
+        "description": "Supplied Python snippet and a user-stated unavailable-library premise only; no authenticated host library-disable or absence evidence. Runtime independence remains UNVERIFIED.",
         "real_external_authorization": false
       },
       "setup": {
