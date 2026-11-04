@@ -15,14 +15,14 @@
   "plugin_runtime_dependency": false,
   "legacy_material": null,
   "incall_issue": "https://github.com/vixttha/Color-Team-OPS/issues/17",
-  "template_revision": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "template_revision": "2cdc66f37537c077db68eeb9fa190e24d071039f",
   "core_policy_revision": "prismcell-core-0.0.1",
   "migration": {
     "status": "PINNED_WITH_HISTORY_PRESERVED",
     "from_version": "0.0.1",
     "source": "PRISMCELL_WORKBENCH_OPTION_D"
   },
-  "project_config_ref": "PRISMCELL/config/color-team-ops.json@25d59530210949792b3ce47ac0a804442997a9b1",
+  "project_config_ref": "PRISMCELL/config/color-team-ops.json@2cdc66f37537c077db68eeb9fa190e24d071039f",
   "template_upgrade_history": [
     {
       "from": "dee7dfd4efd9e87fcb84252eef76c51c96384f43",
@@ -34,6 +34,14 @@
       "from": "50839b1c95e7390fbcd15366584e5592f7572d3e",
       "to": "25d59530210949792b3ce47ac0a804442997a9b1",
       "reason": "On-demand readiness; keep history"
+    },
+    {
+      "from": "25d59530210949792b3ce47ac0a804442997a9b1",
+      "to": "2cdc66f37537c077db68eeb9fa190e24d071039f",
+      "reason": "Owner Head-approved PrismCell v0.0.1 canonical PR #18; source tree matched Purple native tests; history preserved",
+      "pr": 18,
+      "run": 41715667469,
+      "tested_sha": "45ecbdc2460c22a79fff54557012f62b33c38a10"
     }
   ],
   "background_agent_running": false,
