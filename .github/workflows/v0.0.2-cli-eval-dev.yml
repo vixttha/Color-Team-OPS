@@ -1,0 +1,42 @@
+name: Color OPS CLI evaluation development regression (owner runners)
+on:
+  push:
+    branches: [feature/v0.0.2-codex-independent-eval]
+    paths: [devtools/**, tests/**, .github/workflows/v0.0.2-cli-eval-dev.yml]
+permissions:
+  contents: read
+jobs:
+  regression:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-codex-independent-eval'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: Windows
+            name: color-team-ops-windows-01
+          - os: Linux
+            name: color-team-ops-linux-01
+    runs-on: [self-hosted, X64, color-team-ops, '${{ matrix.os }}']
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Exact source native suite only (no inference, installs or publication)
+        shell: python
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+          EXPECTED_RUNNER: ${{ matrix.name }}
+        run: |
+          import os, pathlib, subprocess, tempfile
+          assert os.environ['RUNNER_NAME'] == os.environ['EXPECTED_RUNNER']
+          assert subprocess.check_output(['git','rev-parse','HEAD']).decode().strip() == os.environ['EXPECTED_SHA']
+          import jsonschema
+          # Fresh checkout materialization avoids inherited CRLF state.
+          with tempfile.TemporaryDirectory(prefix='cto-cli-ci-', dir=os.environ['RUNNER_TEMP']) as d:
+              env = dict(os.environ, GIT_CONFIG_COUNT='1', GIT_CONFIG_KEY_0='core.autocrlf', GIT_CONFIG_VALUE_0='false')
+              subprocess.run(['git','clone','--no-hardlinks','--no-checkout','.',d], check=True, env=env)
+              subprocess.run(['git','checkout','--detach',os.environ['EXPECTED_SHA']], cwd=d, check=True, env=env)
+              subprocess.run(['python','-B','-m','unittest','discover','-s','tests','-p','test*.py'], cwd=d, check=True, env=env)
+              assert not subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all'], cwd=d).strip()
+          print('CLI_DEV_REGRESSION_PASS', os.environ['EXPECTED_SHA'], os.environ['RUNNER_NAME'])
