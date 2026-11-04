@@ -417,7 +417,8 @@ def assess_signed_grade(grade, receipt, frozen, certified, response):
     return dict(result,signature_receipt_sha256=verified['receipt_sha256'])
 
 
-def freeze(output, seed, review_plan=None):
+def freeze(output, seed, review_plan=None, solo=False):
+    require(not (solo and review_plan), 'SOLO_MODE_CANNOT_IMPERSONATE_EXTERNAL_REVIEW')
     require(not git('status','--porcelain=v1','--untracked-files=all').strip(), 'COMMIT_SOURCE_BEFORE_FREEZE')
     cases = corpus(ROOT)
     criteria = load(ROOT/EVAL/'reviewer-case-criteria.json')['cases']
@@ -439,9 +440,11 @@ def freeze(output, seed, review_plan=None):
              'arm_material_sha256':material,'cases':{x['case_id']:{'input_sha256':digest(candidate_input(x)),
              'rubric_sha256':digest(criteria[x['case_id']]),'holdout':ungraded(x)['holdout']} for x in cases},
              'oracle_independent_approvals':0,'reviewer_trust':{'reviewers':{}},'oracle_review_receipts':[],
-             'blockers':['CAPABILITY_BLOCKED_INDEPENDENT_REVIEWER','CAPABILITY_BLOCKED_BLIND_HOLDOUT_CUSTODY'],
+             'evaluation_mode':'SOLO_DEVELOPER' if solo else 'EXTERNAL_INDEPENDENT',
+             'blockers':[] if solo else ['CAPABILITY_BLOCKED_INDEPENDENT_REVIEWER','CAPABILITY_BLOCKED_BLIND_HOLDOUT_CUSTODY'],
+             'limitations':['SELF_REVIEWED_NOT_INDEPENDENTLY_CERTIFIED','54_SOURCE_VISIBLE_HOLDOUTS_NONBLIND'] if solo else [],
              'pilot_order':order(select_cases(cases,'pilot'),seed), 'full_order':order(cases,seed),
-             'grading_policy':'No keyword scoring. Deterministic provenance validation only; semantic grades pending signed external review.',
+             'grading_policy':('Owner-approved solo/developer draft criteria; pre-output frozen; model outputs are ungraded until actual owner/AI-assisted review with evidence, never independent certification.' if solo else 'No keyword scoring. Deterministic provenance validation only; semantic grades pending signed external review.'),
              'release':'RELEASE_BLOCKED'}
     if review_plan:
         rel=Path(review_plan).resolve().relative_to(ROOT).as_posix()
@@ -524,26 +527,49 @@ def invoke(exe, prompt, material, timeout):
         return stdout,stderr,code,start,now(),time.monotonic()-tick,before == snapshot()
 
 
+def validate_solo_full_gate(f, pilot_receipts):
+    """Solo owner-authorized execution gate. NEVER certifies answer quality.
+
+    The later trace-binding loop still checks every receipt's raw bytes,
+    source, environment, session uniqueness and exact frozen inputs.
+    """
+    require(f.get('evaluation_mode') == 'SOLO_DEVELOPER', 'SOLO_MODE_NOT_FROZEN')
+    require(f.get('oracle_independent_approvals', 0) == 0 and
+            not f.get('oracle_review_receipts', []), 'MIXED_OR_FORGED_ORACLE_MODE')
+    expected = {tuple(pair) for pair in f['pilot_order']}
+    completed = {(r['case_id'], r['arm']) for r in pilot_receipts
+                 if r.get('status') == 'COMPLETED'}
+    require(len(expected) == 36 and len(pilot_receipts) == 36 and
+            len(completed) == 36 and completed == expected,
+            'FULL_GATE_BLOCKED_SOLO_PILOT_INCOMPLETE')
+    return 'SOLO_PILOT_EXECUTION_COMPLETE_NOT_QUALITY_CERTIFIED'
+
+
 def run(freeze_path, stage):
     f = validate_freeze(freeze_path)
     certified=certification(f)
+    require(f.get('evaluation_mode', 'EXTERNAL_INDEPENDENT') in
+            ('SOLO_DEVELOPER', 'EXTERNAL_INDEPENDENT'), 'UNKNOWN_EVALUATION_MODE')
     if stage == 'full':
-        require(len(certified)==270, 'FULL_GATE_BLOCKED: 0/270 authenticated independent oracles; pilot plus authentic independent review required')
         pilot=PRIVATE/digest(f)/'pilot'
         pilot_receipts=[load(p) for p in pilot.glob('*/receipt.json')]
-        require(len({(r['case_id'],r['arm']) for r in pilot_receipts if r['status']=='COMPLETED'})==36,
-                'FULL_GATE_BLOCKED: incomplete pilot')
-        require((pilot/'signed-grade-index.json').is_file(), 'FULL_GATE_BLOCKED: independent pilot grades unavailable')
-        grade_index=load(pilot/'signed-grade-index.json')
-        rubrics=load(ROOT/EVAL/'reviewer-case-criteria.json')['cases']
-        for r in pilot_receipts:
-            if r['status']!='COMPLETED': continue
-            g=grade_index.get(r['raw_sha256'])
-            require(g, 'FULL_GATE_BLOCKED: missing independent pilot grade')
-            matching=[p for p in pilot.glob('*/receipt.json') if load(p)['raw_sha256']==r['raw_sha256']]
-            require(len(matching)==1,'AMBIGUOUS_PILOT_RECEIPT')
-            response=parse_trace((matching[0].parent/'stdout.jsonl').read_bytes(),r['exit_code'])['response']
-            assess_signed_grade(g,r,f,certified,response)
+        if f.get('evaluation_mode') == 'SOLO_DEVELOPER':
+            validate_solo_full_gate(f, pilot_receipts)
+        else:
+            require(len(certified)==270, 'FULL_GATE_BLOCKED: 0/270 authenticated independent oracles; pilot plus authentic independent review required')
+            require(len({(r['case_id'],r['arm']) for r in pilot_receipts if r['status']=='COMPLETED'})==36,
+                    'FULL_GATE_BLOCKED: incomplete pilot')
+            require((pilot/'signed-grade-index.json').is_file(), 'FULL_GATE_BLOCKED: independent pilot grades unavailable')
+            grade_index=load(pilot/'signed-grade-index.json')
+            rubrics=load(ROOT/EVAL/'reviewer-case-criteria.json')['cases']
+            for r in pilot_receipts:
+                if r['status']!='COMPLETED': continue
+                g=grade_index.get(r['raw_sha256'])
+                require(g, 'FULL_GATE_BLOCKED: missing independent pilot grade')
+                matching=[p for p in pilot.glob('*/receipt.json') if load(p)['raw_sha256']==r['raw_sha256']]
+                require(len(matching)==1,'AMBIGUOUS_PILOT_RECEIPT')
+                response=parse_trace((matching[0].parent/'stdout.jsonl').read_bytes(),r['exit_code'])['response']
+                assess_signed_grade(g,r,f,certified,response)
     exe = executable()
     login = subprocess.run([exe,'login','status'],capture_output=True,env=minimal_env(),timeout=15)
     require(login.returncode == 0 and b'ChatGPT' in login.stdout+login.stderr, 'CHATGPT_ACCOUNT_NOT_AUTHENTICATED')
@@ -606,7 +632,9 @@ def run(freeze_path, stage):
                 break
             if r['status'] != 'EXECUTION_BLOCKED' or attempt == f['environment']['max_attempts_per_pair']:
                 return {'completed':len(seen),'blocked':r['status'],'receipt':str(trial/'receipt.json')}
-    return {'completed':len(seen),'status':'EXPLORATORY_CLI_TEST_UNVERIFIED_INDEPENDENCE'}
+    return {'completed':len(seen),'status':('SOLO_CLI_TEST_UNGRADED_PENDING_REVIEW'
+            if f.get('evaluation_mode') == 'SOLO_DEVELOPER'
+            else 'EXPLORATORY_CLI_TEST_UNVERIFIED_INDEPENDENCE')}
 
 
 def audit(freeze_path, output):
@@ -652,7 +680,9 @@ def audit(freeze_path, output):
             'holdout_source_visible':54,'blind_holdouts':0,'matrix':matrix,'receipts':rows,
             'token_usage':dict(sum((Counter(r.get('usage',{})) for r in rows if r['status']=='COMPLETED'),Counter())),
             'latency_seconds':sum(r['latency_seconds'] for r in rows),
-            'cost':'NOT_OBSERVABLE','reviewer_status':'CAPABILITY_BLOCKED_INDEPENDENT_REVIEWER',
+            'cost':'NOT_OBSERVABLE','evaluation_mode':f.get('evaluation_mode','EXTERNAL_INDEPENDENT'),
+            'reviewer_status':('SOLO_DEV_NO_EXTERNAL_REVIEW_REQUIRED' if f.get('evaluation_mode')=='SOLO_DEVELOPER' else 'CAPABILITY_BLOCKED_INDEPENDENT_REVIEWER'),
+            'self_reviewed_grades':0,'grading_scope':'NO_INDEPENDENT_OR_SELF_SCORES_UNLESS_EVIDENCED',
             'H_HOST':'NOT_RUN_0_OF_11','SMOKE_LAST':'NOT_RUN_0_OF_2','release':'RELEASE_BLOCKED'}
     save_new(output,report)
     return {k:v for k,v in report.items() if k not in ('matrix','receipts')}
@@ -661,17 +691,17 @@ def audit(freeze_path, output):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     sub=parser.add_subparsers(dest='action',required=True)
-    p=sub.add_parser('freeze');p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,default=20261104);p.add_argument('--review-plan',type=Path)
+    p=sub.add_parser('freeze');p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,default=20261104);p.add_argument('--review-plan',type=Path);p.add_argument('--solo',action='store_true',help='Owner-approved self-reviewed evaluation; no external reviewer requirement')
     p=sub.add_parser('certify');p.add_argument('--freeze',type=Path,required=True)
     p=sub.add_parser('prepare-grading');p.add_argument('--freeze',type=Path,required=True)
     p=sub.add_parser('run');p.add_argument('--freeze',type=Path,required=True);p.add_argument('--stage',choices=['pilot','full'],required=True)
     p=sub.add_parser('audit');p.add_argument('--freeze',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     try:
-        if args.action=='freeze': result=freeze(args.output,args.seed,args.review_plan)
+        if args.action=='freeze': result=freeze(args.output,args.seed,args.review_plan,args.solo)
         elif args.action=='certify':
             approved=certification(validate_freeze(args.freeze))
-            result={'approved':len(approved),'cases':approved,'status':'CERTIFIED' if len(approved)==270 else 'CAPABILITY_BLOCKED_INDEPENDENT_REVIEWER'}
+            result={'approved':len(approved),'cases':approved,'status':('SOLO_DEV_NO_EXTERNAL_REVIEW_REQUIRED' if validate_freeze(args.freeze).get('evaluation_mode')=='SOLO_DEVELOPER' else 'CERTIFIED' if len(approved)==270 else 'CAPABILITY_BLOCKED_INDEPENDENT_REVIEWER')}
         elif args.action=='prepare-grading': result=prepare_grading(args.freeze)
         elif args.action=='run': result=run(args.freeze,args.stage)
         else: result=audit(args.freeze,args.output)
