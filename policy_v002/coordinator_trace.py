@@ -4,14 +4,24 @@ NEVER bundled as plugin runtime. Schema-valid model text is NOT an owner grant,
 authenticated receipt, independent reviewer, or global cross-chat lock.
 """
 from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
 from typing import FrozenSet, Optional
+import json
 import re
+from jsonschema import Draft202012Validator
 
 SHA = re.compile(r"^[0-9a-fA-F]{40}$")
 PHASES = ("HEAD_ASSIGN", "WORKER_RESULT", "VALIDATE",
           "INTERNAL_AUDIT", "HEAD_REVIEW")
 ROLES = ("HEAD", "WORKER", "VALIDATOR", "INTERNAL_AUDITOR", "HEAD")
-DISPOSITIONS = ("ASSIGN", "DONE", "PASS", "PASS", None)
+# Source-only structural validator: never a host identity, approval or receipt.
+@lru_cache(maxsize=1)
+def _completion_event_validator():
+    source = Path(__file__).resolve().parents[1] / "schemas" / "completion-event.schema.json"
+    schema = json.loads(source.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema)
 
 @dataclass(frozen=True)
 class GateResult:
@@ -63,7 +73,12 @@ def assess_external_action(mission, task_id, action, current_sha,
     return GateResult("ELIGIBLE_HOST_CHECK_ONLY", "LIVE_PERMISSION_RECHECK_REQUIRED")
 
 def validate_logical_chain(mission, events, observed_sha):
-    """Check a five-phase per-assignment event ledger without attesting identity."""
+    """Check five-phase logical event cycles; never authenticate host identity.
+
+    A negative Worker or Validate result may be reviewed and repaired only if
+    the logical Internal Auditor records FAIL and Head explicitly selects
+    bounded REPAIR. The negative evidence is preserved, never made into PASS.
+    """
     if (not isinstance(mission, dict) or not isinstance(events, (list, tuple))
         or not isinstance(observed_sha, str) or not SHA.fullmatch(observed_sha)
         or not isinstance(mission.get("mission_id"), str)
@@ -88,9 +103,17 @@ def validate_logical_chain(mission, events, observed_sha):
     prev_team = None
     prev_retry = None
     distinct_handoffs = 0
+    worker_failed = False
+    validation_failed = False
+    audit_failed = False
     for i, event in enumerate(events):
         if not isinstance(event, dict):
             return GateResult("BLOCKED", "INVALID_EVENT_SHAPE")
+        # Enforce the entire opt-in portable event schema BEFORE interpreting
+        # the event. Unknown fields and invalid enum values cannot be treated
+        # like a legitimate UNVERIFIED event by the standalone checker.
+        if not _completion_event_validator().is_valid(event):
+            return GateResult("BLOCKED", "INVALID_EVENT_SCHEMA")
         w = event.get("workflow")
         if not isinstance(w, dict) or w.get("schema_version") != "cto-v002-logical-chain-1":
             return GateResult("BLOCKED", "INVALID_OR_LEGACY_EVENT")
@@ -115,11 +138,22 @@ def validate_logical_chain(mission, events, observed_sha):
         if (event.get("mission_id") != mission["mission_id"]
             or event.get("source_sha") != observed_sha):
             return GateResult("BLOCKED", "CROSS_MISSION_OR_STALE_EVENT")
-        # A FAILED/BLOCKED Worker or a missing-evidence gate cannot be
-        # promoted to logical completion by writing a PASS label later.
-        if event.get("status") != "DONE":
+        # "DONE" means the phase was recorded; a Worker outcome of FAILED
+        # can be acknowledged with FAIL and explicitly repaired. BLOCKED work
+        # still hard-stops; it must not silently bypass missing authority.
+        status = event["status"]
+        disposition = w["review_disposition"]
+        if status == "BLOCKED" or (status == "FAILED" and
+            not (phase_index == 1 and disposition == "FAIL")):
             return GateResult("BLOCKED", "FAILED_OR_BLOCKED_PHASE")
-        if event.get("evidence_state") == "MISSING":
+        if phase_index != 1 and status != "DONE":
+            return GateResult("BLOCKED", "FAILED_OR_BLOCKED_PHASE")
+        # MISSING can be preserved only as a negative Worker/Validate finding.
+        # It may not be carried into a successful PASS/ACCEPT chain.
+        if event["evidence_state"] == "MISSING" and not (
+            (phase_index == 1 and status == "FAILED" and disposition == "FAIL")
+            or (phase_index == 2 and disposition == "FAIL")
+        ):
             return GateResult("BLOCKED", "MISSING_EVIDENCE_CANNOT_PASS")
         if (w.get("phase") != phase or w.get("actor_role") != ROLES[phase_index]):
             return GateResult("BLOCKED", "OUT_OF_ORDER_OR_FORGED_ROLE_PHASE")
@@ -154,18 +188,43 @@ def validate_logical_chain(mission, events, observed_sha):
         else:
             if task_id != current_task or team != current_team or attempt != current_retry:
                 return GateResult("BLOCKED", "CROSS_TASK_OR_OVERLAPPING_WORKER")
-            needed = DISPOSITIONS[phase_index]
-            if needed and w.get("review_disposition") != needed:
-                return GateResult("BLOCKED", "MISSING_OR_FAILED_GATE")
-            if phase_index == 4:
-                if w.get("review_disposition") not in ("ACCEPT", "REPAIR"):
+            if phase_index == 1:
+                if (status == "DONE" and disposition != "DONE") or (
+                    status == "FAILED" and disposition != "FAIL"
+                ):
+                    return GateResult("BLOCKED", "WORKER_STATUS_DISPOSITION_CONFLICT")
+                worker_failed = status == "FAILED"
+            elif phase_index == 2:
+                if disposition not in ("PASS", "FAIL"):
+                    return GateResult("BLOCKED", "MISSING_OR_FAILED_GATE")
+                if worker_failed and disposition != "FAIL":
+                    return GateResult("BLOCKED", "FAILED_WORKER_CANNOT_VALIDATE_PASS")
+                validation_failed = worker_failed or disposition == "FAIL"
+            elif phase_index == 3:
+                if disposition not in ("PASS", "FAIL"):
+                    return GateResult("BLOCKED", "MISSING_OR_FAILED_GATE")
+                if validation_failed and disposition != "FAIL":
+                    return GateResult("BLOCKED", "NEGATIVE_FINDING_CANNOT_AUDIT_PASS")
+                audit_failed = validation_failed or disposition == "FAIL"
+            elif phase_index == 4:
+                if disposition not in ("ACCEPT", "REPAIR", "BLOCK"):
                     return GateResult("BLOCKED", "HEAD_REVIEW_NOT_ACCEPTED")
-                prev_review = w["review_disposition"]
+                if audit_failed and disposition == "ACCEPT":
+                    return GateResult("BLOCKED", "NEGATIVE_FINDING_CANNOT_BE_ACCEPTED")
+                if disposition == "BLOCK":
+                    if i != len(events) - 1:
+                        return GateResult("BLOCKED", "HEAD_BLOCK_MUST_BE_TERMINAL")
+                    return GateResult("BLOCKED", "AUDITED_FAILURE_STOPPED" if audit_failed
+                                      else "HEAD_STOPPED_LOGICAL_CHAIN")
+                prev_review = disposition
                 if prev_review == "ACCEPT":
                     completed_task_ids.add(task_id)
                 prev_task, prev_team, prev_retry = task_id, team, attempt
         if phase_index == 0:
             current_task, current_team, current_retry = task_id, team, attempt
+            worker_failed = False
+            validation_failed = False
+            audit_failed = False
         previous = event_id
         seen_ids.add(event_id)
     if prev_review == "REPAIR":

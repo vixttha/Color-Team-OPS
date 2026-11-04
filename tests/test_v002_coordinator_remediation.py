@@ -210,6 +210,8 @@ class R03LogicalEventTests(unittest.TestCase):
         self.assertTrue(list(schema("completion-event").iter_errors(rows[1])))
         self.assertEqual(self.check(rows).status,"BLOCKED")
         rows=deepcopy(self.steps);rows[2]["evidence_state"]="OBSERVED"
+        self.assertEqual(self.check(rows).code,"INVALID_EVENT_SCHEMA")
+        rows[2]["observed_by"]="model-only-claim"
         self.assertEqual(self.check(rows).status,"UNVERIFIED")
     def test_insufficient_head_review_or_forged_pass_labels_rejected(self):
         self.steps[3]["workflow"]["review_disposition"]="UNVERIFIED"
@@ -247,6 +249,138 @@ class R03LogicalEventTests(unittest.TestCase):
     def test_missing_evidence_cannot_be_promoted_by_pass_label(self):
         rows=deepcopy(self.steps);rows[2]["evidence_state"]="MISSING"
         self.assertEqual(self.check(rows).code,"MISSING_EVIDENCE_CANNOT_PASS")
+
+    def test_failed_worker_audited_negative_then_head_repair_is_truthful(self):
+        rows = deepcopy(self.steps)
+        rows[1]["status"] = "FAILED"
+        rows[1]["workflow"]["review_disposition"] = "FAIL"
+        rows[2]["workflow"]["review_disposition"] = "FAIL"
+        rows[3]["workflow"]["review_disposition"] = "FAIL"
+        rows[4]["workflow"]["review_disposition"] = "REPAIR"
+        self.assertEqual(self.check(rows).code, "REPAIR_PENDING_NEXT_CYCLE")
+        followup = cycle("task-1", "yellow-team", 6, rows[-1]["event_id"], attempt=1)
+        self.assertEqual(self.check(rows + followup).status, "LOGICAL_VALID_UNVERIFIED")
+        self.assertEqual(rows[1]["status"], "FAILED")
+        self.assertEqual(rows[2]["workflow"]["review_disposition"], "FAIL")
+
+    def test_failed_validation_audited_then_bounded_repair(self):
+        rows = deepcopy(self.steps)
+        rows[2]["workflow"]["review_disposition"] = "FAIL"
+        rows[3]["workflow"]["review_disposition"] = "FAIL"
+        rows[4]["workflow"]["review_disposition"] = "REPAIR"
+        followup = cycle("task-1", "yellow-team", 6, rows[-1]["event_id"], attempt=1)
+        self.assertEqual(self.check(rows + followup).status, "LOGICAL_VALID_UNVERIFIED")
+
+    def test_failed_worker_cannot_be_accepted_or_self_verified(self):
+        rows = deepcopy(self.steps)
+        rows[1]["status"] = "FAILED"
+        rows[1]["workflow"]["review_disposition"] = "FAIL"
+        self.assertEqual(self.check(rows).code, "FAILED_WORKER_CANNOT_VALIDATE_PASS")
+        rows[2]["workflow"]["review_disposition"] = "FAIL"
+        self.assertEqual(self.check(rows).code, "NEGATIVE_FINDING_CANNOT_AUDIT_PASS")
+        rows[3]["workflow"]["review_disposition"] = "FAIL"
+        self.assertEqual(self.check(rows).code, "NEGATIVE_FINDING_CANNOT_BE_ACCEPTED")
+
+    def test_failed_validation_with_unaudited_accept_is_blocked(self):
+        rows = deepcopy(self.steps)
+        rows[2]["workflow"]["review_disposition"] = "FAIL"
+        self.assertEqual(self.check(rows).code, "NEGATIVE_FINDING_CANNOT_AUDIT_PASS")
+        rows[3]["workflow"]["review_disposition"] = "FAIL"
+        self.assertEqual(self.check(rows).code, "NEGATIVE_FINDING_CANNOT_BE_ACCEPTED")
+
+    def test_missing_evidence_retained_as_negative_never_passed(self):
+        rows = deepcopy(self.steps)
+        rows[1]["status"] = "FAILED"
+        rows[1]["evidence_state"] = "MISSING"
+        rows[1]["workflow"]["review_disposition"] = "FAIL"
+        rows[2]["evidence_state"] = "MISSING"
+        rows[2]["workflow"]["review_disposition"] = "FAIL"
+        rows[3]["workflow"]["review_disposition"] = "FAIL"
+        rows[4]["workflow"]["review_disposition"] = "REPAIR"
+        self.assertEqual(self.check(rows).code, "REPAIR_PENDING_NEXT_CYCLE")
+        rows[4]["workflow"]["review_disposition"] = "ACCEPT"
+        self.assertEqual(self.check(rows).code, "NEGATIVE_FINDING_CANNOT_BE_ACCEPTED")
+
+    def test_audited_failed_worker_may_end_with_head_block_only(self):
+        rows = deepcopy(self.steps)
+        rows[1]["status"] = "FAILED"
+        rows[1]["workflow"]["review_disposition"] = "FAIL"
+        rows[2]["workflow"]["review_disposition"] = "FAIL"
+        rows[3]["workflow"]["review_disposition"] = "FAIL"
+        rows[4]["workflow"]["review_disposition"] = "BLOCK"
+        self.assertEqual((self.check(rows).status, self.check(rows).code),
+                         ("BLOCKED", "AUDITED_FAILURE_STOPPED"))
+        more = cycle("task-2", "orange-team", 6, rows[-1]["event_id"])
+        self.assertEqual(self.check(rows + more).code, "HEAD_BLOCK_MUST_BE_TERMINAL")
+
+    def test_unreviewed_failed_worker_does_not_self_repair(self):
+        rows = deepcopy(self.steps)
+        rows[1]["status"] = "FAILED"
+        rows[1]["workflow"]["review_disposition"] = "FAIL"
+        rows[2]["workflow"]["review_disposition"] = "FAIL"
+        rows[3]["workflow"]["review_disposition"] = "FAIL"
+        rows.pop(4)
+        more = cycle("task-1", "yellow-team", 6, rows[-1]["event_id"], attempt=1)
+        self.assertEqual(self.check(rows + more).status, "BLOCKED")
+
+    def test_failed_worker_repair_respects_budget(self):
+        rows = deepcopy(self.steps)
+        rows[1]["status"] = "FAILED"
+        rows[1]["workflow"]["review_disposition"] = "FAIL"
+        rows[2]["workflow"]["review_disposition"] = "FAIL"
+        rows[3]["workflow"]["review_disposition"] = "FAIL"
+        rows[4]["workflow"]["review_disposition"] = "REPAIR"
+        self.doc["max_retries"] = 0
+        more = cycle("task-1", "yellow-team", 6, rows[-1]["event_id"], attempt=1)
+        self.assertEqual(self.check(rows + more).code, "RETRY_BUDGET_EXCEEDED")
+
+    def test_schema_invalid_event_enums_never_return_logical_valid(self):
+        for key, value in (
+            ("evidence_state", "INVENTED_PROOF"),
+            ("evidence_state", None),
+            ("status", "COMPLETED"),
+            ("status", None),
+            ("team", "gold-team"),
+        ):
+            with self.subTest(key=key, value=value):
+                rows = deepcopy(self.steps)
+                rows[2][key] = value
+                self.assertEqual((self.check(rows).status, self.check(rows).code),
+                                 ("BLOCKED", "INVALID_EVENT_SCHEMA"))
+
+    def test_schema_rejects_invalid_dispositions_and_actor_provenance(self):
+        for field, value in (
+            ("review_disposition", "FAKE_PASS"),
+            ("review_disposition", None),
+            ("actor_provenance_ref", ""),
+            ("actor_provenance_ref", {"fake": "claim"}),
+            ("provenance_kind", "HOST_SIGNED"),
+            ("repair_attempt", True),
+        ):
+            with self.subTest(field=field):
+                rows = deepcopy(self.steps)
+                rows[2]["workflow"][field] = value
+                self.assertEqual(self.check(rows).code, "INVALID_EVENT_SCHEMA")
+
+    def test_schema_rejects_unknown_optional_fields_and_missing_keys(self):
+        for mutation in ("top_extra", "workflow_extra", "missing_status", "missing_role"):
+            with self.subTest(mutation=mutation):
+                rows = deepcopy(self.steps)
+                row = rows[2]
+                if mutation == "top_extra": row["independent_approval"] = True
+                elif mutation == "workflow_extra": row["workflow"]["host_grant"] = "fake"
+                elif mutation == "missing_status": row.pop("status")
+                else: row["workflow"].pop("actor_role")
+                self.assertEqual(self.check(rows).code, "INVALID_EVENT_SCHEMA")
+
+    def test_real_observed_claim_requires_schema_receipt_but_not_host_pass(self):
+        rows = deepcopy(self.steps)
+        rows[2]["evidence_state"] = "OBSERVED"
+        self.assertEqual(self.check(rows).code, "INVALID_EVENT_SCHEMA")
+        rows[2]["observed_by"] = "model-written-observation-claim"
+        self.assertEqual((self.check(rows).status, self.check(rows).code),
+                         ("UNVERIFIED", "OBSERVED_CLAIM_NEEDS_TRUSTED_HOST"))
+
     def test_schema_events_never_authorize_external_operation(self):
         self.assertTrue(all(x["workflow"]["authority_effect"]=="NO_EXTERNAL_PERMISSION" for x in self.steps))
         self.assertEqual(self.check().status,"LOGICAL_VALID_UNVERIFIED")
