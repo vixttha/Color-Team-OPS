@@ -18,39 +18,36 @@ class PretestReadinessTests(unittest.TestCase):
         cls.freeze=read_json("evaluation/v0.0.2/SMOKE-PROMPT-FREEZE.json")
         cls.host=read_json("docs/V002-P2-P5-HOST-TRIALS.json")
     def test_two_smoke_prompts_match_frozen_candidate_text(self):
+        # Markdown quote markers and the operator preface are not candidate input.
         for section,start,end in (
             ("SMOKE_A","## Smoke A — unhinted routing from ordinary task","**Reviewer observations"),
             ("SMOKE_B","## Smoke B — genuine task work requiring a security correction","**Reviewer observations")
         ):
             with self.subTest(case=section):
-                self.assertEqual(self.smoke.split(start,1)[1].split(end,1)[0].strip(),
-                                 self.freeze["prompts"][section])
-                self.assertNotIn("yellow-team",self.freeze["prompts"][section])
-                self.assertNotIn("orange-team",self.freeze["prompts"][section])
+                wrapped=self.smoke.split(start,1)[1].split(end,1)[0].strip()
+                extracted="\n".join(line[2:] if line.startswith("> ") else ""
+                                    for line in wrapped.splitlines() if line.startswith(">"))
+                expected=self.freeze["candidate_input_exact"][section]
+                self.assertEqual(expected,extracted)
+                self.assertEqual(self.freeze["prompts"][section],expected)
+                self.assertEqual(self.freeze["prompts"][section].encode("utf8"),extracted.encode("utf8"))
+
     def test_candidate_input_exact_is_unwrapped_and_byte_stable(self):
-        # Static source assertion only: never a real host invocation.
+        # Both public freeze fields must be safe to submit, without hints.
         self.assertEqual(set(self.freeze["candidate_input_exact"]), {"SMOKE_A", "SMOKE_B"})
-        self.assertIn("Submit candidate_input_exact", self.freeze["candidate_input_contract"])
+        self.assertEqual(set(self.freeze["prompts"]), {"SMOKE_A", "SMOKE_B"})
+        self.assertIn("verbatim",self.freeze["candidate_input_contract"])
         for case in ("SMOKE_A", "SMOKE_B"):
             with self.subTest(case=case):
-                wrapped=self.freeze["prompts"][case]
-                lines=wrapped.splitlines()
-                quoted=[line[2:] if line.startswith("> ") else ""
-                        for line in lines if line.startswith(">")]
-                self.assertTrue(quoted)
-                # Strip only the operator wrapper, not candidate code fences.
-                extracted="\n".join(quoted)
                 candidate=self.freeze["candidate_input_exact"][case]
-                self.assertEqual(candidate,extracted)
-                self.assertEqual(candidate.encode("utf-8"),extracted.encode("utf-8"))
-                self.assertNotIn("Give the staging-enabled",candidate)
-                self.assertNotIn("Give the actual staging-enabled",candidate)
-                self.assertNotIn("literal candidate-facing input",candidate)
+                self.assertEqual(candidate,self.freeze["prompts"][case])
                 self.assertFalse(candidate.startswith(">"))
-                for forbidden in ("yellow-team","orange-team","reviewer observations",
-                                  "expected coordination route","answer key"):
-                    self.assertNotIn(forbidden,candidate.lower())
-        self.assertIn("```python\n",self.freeze["candidate_input_exact"]["SMOKE_B"])
+                for forbidden in ("Give the staging-enabled", "Give the actual staging-enabled",
+                                  "literal candidate-facing input", "reviewer observations",
+                                  "yellow-team", "orange-team", "answer key",
+                                  "expected coordination route"):
+                    self.assertNotIn(forbidden.lower(),candidate.lower())
+        self.assertIn("```python\n",self.freeze["prompts"]["SMOKE_B"])
 
     def test_correct_installed_release_binding_not_old_staging(self):
         self.assertIn(RELEASE,self.smoke)
