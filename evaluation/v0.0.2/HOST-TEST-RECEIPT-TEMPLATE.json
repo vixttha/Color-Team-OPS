@@ -1,0 +1,49 @@
+{
+  "schema_version": "cto-v002-host-receipt-1",
+  "classification": "BLANK_TEMPLATE_NOT_EVIDENCE",
+  "test_id": null,
+  "stage": {
+    "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
+    "version": "0.0.5",
+    "release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "installed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "verified_at_session": false,
+    "ui_selection_evidence_ref": null
+  },
+  "chat": {
+    "host": "ChatGPT.com",
+    "fresh_session_verified": false,
+    "session_url": null,
+    "session_ref": null,
+    "started_at": null,
+    "model_id": null
+  },
+  "prompt": {
+    "exact_text": null,
+    "fixture_ref": null,
+    "reviewer_hints_excluded": null
+  },
+  "observed": {
+    "verbatim_transcript_ref": null,
+    "output_sha256": null,
+    "role_trace": [],
+    "host_skill_telemetry": "NOT_OBSERVABLE",
+    "host_receipts": [],
+    "tool_calls": [],
+    "agent_identities_authenticated": false
+  },
+  "review": {
+    "criteria_ref": null,
+    "criteria_independent_approval": false,
+    "result": "NOT_RUN",
+    "checklist": [],
+    "critical_failures": [],
+    "rationale": null,
+    "independent_reviewer_ref": null
+  },
+  "provenance": {
+    "actual_trial_executed": false,
+    "docs_git_sha_is_not_installed_sha": true
+  },
+  "release": "RELEASE_BLOCKED"
+}
