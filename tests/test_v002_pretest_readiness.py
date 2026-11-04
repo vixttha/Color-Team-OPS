@@ -66,7 +66,7 @@ class PretestReadinessTests(unittest.TestCase):
         self.assertEqual(c["host_trials"],0)
         self.assertEqual(p["holdout_total"],54)
         self.assertEqual(p["independent_oracle_count"],0)
-        self.assertIn("NOT BLINDED",(ROOT/"evaluation/v0.0.2/INDEPENDENT-EVALUATION-PREREGISTRATION.md").read_text())
+        self.assertIn("NOT BLINDED",(ROOT/"evaluation/v0.0.2/INDEPENDENT-EVALUATION-PREREGISTRATION.md").read_text(encoding="utf8"))
     def test_all_active_trackers_are_bound_to_same_staging_identity(self):
         docs=[read_json("docs/"+n) for n in (
             "V002-P0-P7-ACCEPTANCE.json","V002-MASTER-RELEASE-GATES.json",
@@ -84,7 +84,7 @@ class PretestReadinessTests(unittest.TestCase):
         self.assertEqual(x["host_trials"]["count"],0)
         self.assertEqual(x["canonical_installed_version"],"0.0.1")
     def test_preflight_describes_truthful_capture_limits(self):
-        doc=(ROOT/"docs/V002-HOST-TEST-OPERATOR-PREFLIGHT.md").read_text()
+        doc=(ROOT/"docs/V002-HOST-TEST-OPERATOR-PREFLIGHT.md").read_text(encoding="utf8")
         for token in ("NOT_OBSERVABLE","LOGICAL_ONLY","fresh ChatGPT","verbatim",
                       "Plugin Creator","separate Purple","RELEASE_BLOCKED"):
             self.assertIn(token,doc)
