@@ -17,7 +17,7 @@ def location(f):
 
 
 def frozen_config():
-    path=e.ROOT/e.EVAL/'SOLO-GRADER-CALIBRATION-v2.json'
+    path=e.ROOT/e.EVAL/'SOLO-GRADER-CALIBRATION-v3.json'
     calibration=e.load(path)
     e.require(calibration['passed'] and calibration['grader_configuration_sha256']==e.digest(g.configuration()),'GRADER_CALIBRATION_REQUIRED')
     return {'solo_revision':'solo-eval-v1','grader':g.configuration(),

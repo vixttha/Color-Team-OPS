@@ -1,12 +1,13 @@
 """Non-independent, AI-assisted semantic assessment with deterministic counterchecks."""
 from __future__ import annotations
 import argparse
+import copy
 import json
 from pathlib import Path
 from jsonschema import Draft202012Validator
 from devtools import cli_eval as e
 
-VERSION='solo-semantic-grader-1'
+VERSION='solo-semantic-grader-2'
 STATES=['PASS','FAIL','PARTIAL','NOT_OBSERVABLE']
 UNOBSERVABLE=('specialist_selection','host_skill_activation','unhinted_routing')
 METRICS=('task_correctness','required_specialist_behavior','specialist_selection',
@@ -25,7 +26,9 @@ For each required criterion use its ZERO-BASED index (0,1,2,...) in the original
 required_observable_findings order. Give a reason and exact short response quotes as
 support or counterevidence. Missing material can be demonstrated by a relevant
 quote and an explicit explanation of what is absent. An empty response has empty
-quotes and cannot pass. Score every metric only when text supports it.
+quotes and cannot pass. Quotes must be chosen verbatim from allowed_evidence_passages,
+including Markdown punctuation; these are complete nonblank response lines. Never
+paraphrase a quote. Score every metric only when text supports it.
 The input names its team: specialist_selection, host_skill_activation and
 unhinted_routing MUST be NOT_OBSERVABLE. Role narration is not tool activation.
 Required specialist behavior means relevant domain work, not naming a color.
@@ -70,9 +73,30 @@ SCHEMA=obj({'criteria':{'type':'array','items':obj({'index':{'type':'integer'},*
             'overall':{'type':'string','enum':STATES},'injection_detected':{'type':'boolean'}})
 
 
+def passages(response):
+    return list(dict.fromkeys(line for line in response.splitlines() if line.strip()))
+
+
+def response_schema(response):
+    schema=copy.deepcopy(SCHEMA)
+    options=passages(response)
+    schema['$defs']={'response_passage':{'type':'string','enum':options or ['']}}
+    def visit(node):
+        if isinstance(node,dict):
+            if 'quotes' in node.get('properties',{}):
+                node['properties']['quotes']['items']={'$ref':'#/$defs/response_passage'}
+                if not options:node['properties']['quotes']['maxItems']=0
+            for value in node.values():visit(value)
+        elif isinstance(node,list):
+            for value in node:visit(value)
+    visit(schema)
+    return schema
+
+
 def configuration():
     return {'version':VERSION,'model_requested':e.MODEL,'effort_requested':e.EFFORT,
             'instructions_sha256':e.digest(INSTRUCTIONS),'output_schema_sha256':e.digest(SCHEMA),
+            'quotation_policy':'native schema enum of exact nonblank response lines',
             'timeout_seconds':180,'max_attempts':2,'classification':'SOLO_DEVELOPER / SELF_REVIEWED / AI_ASSISTED_PROVISIONAL',
             'arm_visibility':'WITHHELD_WHERE_PRACTICAL','independent':False,
             'limitations':['same model family may share systematic bias','developer rubrics may be imperfect',
@@ -82,6 +106,7 @@ def configuration():
 def grade_input(case,rubric,response):
     return {'task_input':json.loads(e.candidate_input(case)), 'frozen_developer_rubric':rubric,
             'criterion_index_base':0,
+            'allowed_evidence_passages':passages(response),
             'untrusted_candidate_response':response}
 
 
@@ -119,6 +144,7 @@ def grade(case,rubric,response,directory,binding,exe=None):
     directory=Path(directory)
     prompt=e.encode(grade_input(case,rubric,response))
     config=configuration()
+    native_schema=response_schema(response)
     for attempt in range(1,config['max_attempts']+1):
         trial=directory/str(attempt)
         if (trial/'receipt.json').is_file():
@@ -127,7 +153,8 @@ def grade(case,rubric,response,directory,binding,exe=None):
             e.require(e.digest((trial/'stdout.jsonl').read_bytes())==r['raw_sha256'],'GRADER_RAW_HASH_CHANGED')
             if r['status']=='GRADED':
                 parsed=e.parse_trace((trial/'stdout.jsonl').read_bytes(),r['exit_code'])
-                result=validate_grade(json.loads(parsed['response']),response,rubric)
+                result=json.loads(parsed['response']);Draft202012Validator(native_schema).validate(result)
+                result=validate_grade(result,response,rubric)
                 e.require(e.digest(result)==r['grade_sha256'],'GRADER_RESULT_CHANGED')
                 return r,result
             if r['status'] in ('QUOTA_BLOCKED','RATE_LIMIT_BLOCKED','TIMEOUT','INVALID_TRACE'):return r,None
@@ -135,10 +162,11 @@ def grade(case,rubric,response,directory,binding,exe=None):
         trial.mkdir(parents=True)
         (trial/'input.json').write_bytes(prompt)
         out,err,code,start,end,latency,isolated=e.invoke(exe or e.executable(),prompt.decode('utf-8'),INSTRUCTIONS,
-                                                      config['timeout_seconds'],response_schema=SCHEMA)
+                                                      config['timeout_seconds'],response_schema=native_schema)
         (trial/'stdout.jsonl').write_bytes(out);(trial/'stderr.txt').write_bytes(err)
         r={'kind':'AI_GRADER','classification':config['classification'],'independent':False,
            'configuration_sha256':e.digest(config),'input_sha256':e.digest(prompt),'response_sha256':e.digest(response),
+           'native_schema_sha256':e.digest(native_schema),
            'rubric_sha256':e.digest(rubric),'binding':binding,'raw_sha256':e.digest(out),'stderr_sha256':e.digest(err),
            'attempt':attempt,'started_at':start,'ended_at':end,'latency_seconds':latency,'exit_code':code,
            'model_requested':e.MODEL,'effort_requested':e.EFFORT,'model_observed':'NOT_EXPOSED_BY_JSONL',
@@ -150,7 +178,8 @@ def grade(case,rubric,response,directory,binding,exe=None):
                 parsed=e.parse_trace(out,code)
                 r.update({k:parsed[k] for k in ('session_sha256','usage','tool_events')})
                 (trial/'response.txt').write_text(parsed['response'],encoding='utf-8')
-                result=validate_grade(json.loads(parsed['response']),response,rubric)
+                result=json.loads(parsed['response']);Draft202012Validator(native_schema).validate(result)
+                result=validate_grade(result,response,rubric)
                 r['grade_sha256']=e.digest(result);r['status']='GRADED'
                 e.save_new(trial/'grade.json',result)
             except (ValueError,KeyError,TypeError) as exc:r['status']='INVALID_GRADE';r['reason']=str(exc)[:800]
@@ -179,6 +208,11 @@ def calibration(output):
     historical=e.PRIVATE/'87e7284864ec457009dbcb18038eb8eb98eb59388cadc0cbcedeed4efbe9d099'/'pilot'
     for path in sorted(historical.glob('*/receipt.json'))[:2]:
         r=e.load(path);samples.append(('historical-'+path.parent.name,r['case_id'],(path.parent/'response.txt').read_text(encoding='utf-8'),None))
+    old=e.PRIVATE/'solo-v1/f086c36aa5c63599c22275b7c02dc8691f777b203e32f4fd5e1fda740b356c7b'
+    for path in sorted(old.glob('candidates/*/*/receipt.json')):
+        r=e.load(path)
+        if r['case_id']=='black-team:normal:01' and r['arm'] in ('no_directory','no_handoff'):
+            samples.append(('prior-quote-defect-'+r['arm'],r['case_id'],(path.parent/'response.txt').read_text(encoding='utf-8'),None))
     from concurrent.futures import ThreadPoolExecutor
     def work(sample):
         name,cid,text,critical=sample

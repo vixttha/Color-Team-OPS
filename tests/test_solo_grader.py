@@ -6,6 +6,12 @@ from devtools import solo_grader as g
 
 
 class GraderTests(unittest.TestCase):
+    def test_native_schema_only_allows_real_response_passages(self):
+        schema=g.response_schema('**Actual evidence:** supplied facts\nNo execution occurred.')
+        self.assertEqual(schema['$defs']['response_passage']['enum'],
+                         ['**Actual evidence:** supplied facts','No execution occurred.'])
+        self.assertNotIn('Actual evidence: supplied facts',schema['$defs']['response_passage']['enum'])
+
     def sample(self):
         response='Deny the tenantless request. No query was executed.'
         rubric={'required_observable_findings':['Deny tenantless access']}
