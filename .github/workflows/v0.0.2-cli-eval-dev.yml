@@ -14,8 +14,10 @@ jobs:
         include:
           - os: Windows
             name: color-team-ops-windows-01
+            python: python
           - os: Linux
             name: color-team-ops-linux-01
+            python: python3
     runs-on: [self-hosted, X64, color-team-ops, '${{ matrix.os }}']
     timeout-minutes: 15
     steps:
@@ -23,12 +25,12 @@ jobs:
         with:
           persist-credentials: false
       - name: Exact source native suite only (no inference, installs or publication)
-        shell: python
+        shell: '${{ matrix.python }} {0}'
         env:
           EXPECTED_SHA: ${{ github.sha }}
           EXPECTED_RUNNER: ${{ matrix.name }}
         run: |
-          import os, pathlib, subprocess, tempfile
+          import os, pathlib, subprocess, tempfile, sys
           assert os.environ['RUNNER_NAME'] == os.environ['EXPECTED_RUNNER']
           assert subprocess.check_output(['git','rev-parse','HEAD']).decode().strip() == os.environ['EXPECTED_SHA']
           import jsonschema
@@ -37,6 +39,6 @@ jobs:
               env = dict(os.environ, GIT_CONFIG_COUNT='1', GIT_CONFIG_KEY_0='core.autocrlf', GIT_CONFIG_VALUE_0='false')
               subprocess.run(['git','clone','--no-hardlinks','--no-checkout','.',d], check=True, env=env)
               subprocess.run(['git','checkout','--detach',os.environ['EXPECTED_SHA']], cwd=d, check=True, env=env)
-              subprocess.run(['python','-B','-m','unittest','discover','-s','tests','-p','test*.py'], cwd=d, check=True, env=env)
+              subprocess.run([sys.executable,'-B','-m','unittest','discover','-s','tests','-p','test*.py'], cwd=d, check=True, env=env)
               assert not subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all'], cwd=d).strip()
           print('CLI_DEV_REGRESSION_PASS', os.environ['EXPECTED_SHA'], os.environ['RUNNER_NAME'])
