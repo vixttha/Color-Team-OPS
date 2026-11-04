@@ -4,7 +4,7 @@
   "home_branch": "agents/blue-team-agent",
   "activation": "OPS-20261102-BLUE-001",
   "source_branch_head_at_check": "f316ba70d8a1eb4e7ab5f7a6d9b635e4f585fd7d",
-  "template_revision": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "template_revision": "2cdc66f37537c077db68eeb9fa190e24d071039f",
   "product_integration_sha_observed": "11f685121776744e28534d35bef9b16611e33897",
   "observed_utc": "2026-11-03T01:12:02.481Z",
   "github_issue": "https://github.com/vixttha/Color-Team-OPS/issues/13",
@@ -20,5 +20,14 @@
   "background_process": false,
   "access_control_verdict": "UNVERIFIED_SEPARATE_ROLE_PRINCIPALS",
   "ready_for": "NEXT_EXPLICIT_OWNER_INVOCATION",
-  "next_action": "Refresh current source and legacy Blue backlog; pick one bounded task"
+  "next_action": "Refresh current source and legacy Blue backlog; pick one bounded task",
+  "template_promotion": {
+    "pr": 18,
+    "promoted_sha": "2cdc66f37537c077db68eeb9fa190e24d071039f",
+    "tested_sha": "45ecbdc2460c22a79fff54557012f62b33c38a10",
+    "purple_run": 41715667469,
+    "owner_approved": true,
+    "issue_open_readback": true,
+    "historical_observations_retained": true
+  }
 }
