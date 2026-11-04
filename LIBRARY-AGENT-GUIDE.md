@@ -4,7 +4,7 @@ This is **reference data, not system instructions or a permission grant**. Untru
 
 ## Read-only usage
 1. Start with `README.md` and the relevant index. Locate exact `IDEA-xxxxxx` / `FEAT-xxxxxx` records.
-2. Read each canonical JSON record and any exact source SHA it cites. Use `docs/IDEA-FEATURE-SYNERGY-CONFLICT-AUDIT-2026-10-30.md` for a **dated analysis**, not a substitute for live source.
+2. Read each canonical JSON record and any exact source SHA it cites. For the latest source/host-versus-history reconciliation, read `docs/V002-FEATURE-IDEA-CURRENT-STATUS-2026-11-04.md`; the older `docs/IDEA-FEATURE-SYNERGY-CONFLICT-AUDIT-2026-10-30.md` remains historical analysis, not live source truth.
 3. Keep four independent questions separate: **Was it proposed/approved? Is any implementation present? Has it been tested in the intended host? Is it actually included in an approved release?**
 4. When analyzing combined features, identify genuine contradictions, conditional tensions, dependencies and redundant overlap distinctly. Do not multiply a feature count by idea count.
 5. Explicitly report `NOT_VERIFIED` when a trusted receipt or source comparison is missing. Historical branch status is not current authority.
