@@ -4,7 +4,7 @@
   "home_branch": "agent/PURPLE-TEAM-AGENT",
   "activation": "OPS-20261102-PURPLE-001",
   "source_branch_head_at_check": "773c55e5696eee6d2da1e2033cec15da629aeca8",
-  "template_revision": "25d59530210949792b3ce47ac0a804442997a9b1",
+  "template_revision": "2cdc66f37537c077db68eeb9fa190e24d071039f",
   "product_integration_sha_observed": "11f685121776744e28534d35bef9b16611e33897",
   "observed_utc": "2026-11-03T01:12:27.002Z",
   "github_issue": "https://github.com/vixttha/Color-Team-OPS/issues/14",
