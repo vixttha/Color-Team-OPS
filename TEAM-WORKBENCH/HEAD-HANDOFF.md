@@ -1,3 +1,11 @@
+# Yellow Head — PrismCell v0.0.1 independent GitHub live adoption verified
+
+PrismCell canonical `2cdc66f37537c077db68eeb9fa190e24d071039f` passed a live install in new private repo [9ThreadDevTeam](https://github.com/vixttha/9ThreadDevTeam) with three different logical team names, three real branches, three real INCALL issues, 51 source-equal starter documents and 51/51 checked SHA-256 manifest entries. [Live adoption audit](trials/PRISMCELL-V001-9THREADDEVTEAM-LIVE-ADOPTION-2026-11-03.md). [Consumer acceptance detail](https://github.com/vixttha/9ThreadDevTeam/blob/trial/prismcell-v001-live/PRISMCELL-ADOPTION/LIVE-TRIAL-REPORT.md).
+
+Actual GitHub issue comment #6621439287 received as a nonprivileged sender claim, Head ACKNOWLEDGE recorded and fresh-session recovery passed; replay, override and recipient-ID mismatch rejected. 3/3 workcells READY_ON_INVOCATION, release lock and autonomous runtime disabled; consumer main unmodified. This closes bounded **real GitHub repository** adoption evidence, not universal-provider/credential security certification. Preserve current nine home source pins and original PrismCell v0.0.1 version. Yellow idle.
+
+## Earlier Head handoffs retained verbatim
+
 # Yellow HEAD — post-promotion recheck complete (Nov 3, 2026)
 
 **Result:** Existing PrismCell v0.0.1 nine-workcell on-demand setup **PASS**, 9/9 `STATE.json` and `OPERATIONS-CHECKPOINT.json` pins synchronized to `2cdc66f37537c077db68eeb9fa190e24d071039f`. [PR #18](https://github.com/vixttha/Color-Team-OPS/pull/18) merged; that merge has zero file changes versus separately native-tested `45ecbdc2460c22a79fff54557012f62b33c38a10`. Windows/Linux [run #41715667469](https://github.com/vixttha/Color-Team-OPS/actions/runs/41715667469) full job logs rechecked. No live second-repository project install, autonomous execution, independent agent credentials, or separate GitHub ACL acceptance is claimed.
