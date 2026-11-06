@@ -193,6 +193,7 @@ def inspect_checkpoints(root, private, frozen, freeze_sha):
         "distinct_graded_pairs": 0,
         "candidate_terminal_attempts": 0,
         "grader_terminal_attempts": 0,
+        "grader_terminal_status_counts": {},
         "invalid_checkpoint_receipts": 0,
         "pilot_acceptance_bound_to_36_grades": False,
         "supervisor_lock_present": (private / "supervisor.lock").exists(),
@@ -276,6 +277,9 @@ def inspect_checkpoints(root, private, frozen, freeze_sha):
                 graded.add(linked)
             elif receipt.get("status") in ("QUOTA_BLOCKED", "RATE_LIMIT_BLOCKED", "TIMEOUT", "INVALID_TRACE", "INVALID_GRADE"):
                 summary["grader_terminal_attempts"] += 1
+                status = receipt["status"]
+                counts = summary["grader_terminal_status_counts"]
+                counts[status] = counts.get(status, 0) + 1
         except (ValueError, KeyError, TypeError, OSError, UnicodeError):
             summary["invalid_checkpoint_receipts"] += 1
     summary["distinct_completed_pairs"] = len(candidate_pair_seen)
