@@ -1,0 +1,29 @@
+name: Color OPS resume existing 270-case CLI_TEST matrix (Windows owner runner)
+on:
+  push:
+    branches: [feature/v0.0.2-codex-independent-eval]
+    paths:
+      - .github/workflows/v0.0.2-windows-full-eval-resume.yml
+permissions:
+  contents: read
+concurrency:
+  group: color-ops-v002-one-active-full-eval-supervisor
+  cancel-in-progress: false
+jobs:
+  resume-frozen-evaluation:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-codex-independent-eval' && startsWith(github.event.head_commit.message, 'Run authorized v002 full model evaluation from existing checkpoint')
+    runs-on: [self-hosted, X64, color-team-ops, Windows]
+    timeout-minutes: 300
+    steps:
+      - name: Checkout additive model resume supervisor (no retained Git credentials)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Resume frozen 270 x 4 evaluation with existing ChatGPT Codex subscription
+        shell: powershell
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CTO_FULL_RESUME_AUTH: OWNER_APPROVED_RESUME_FROZEN_270x4_2026_11_05
+        run: |
+          python -B .github/scripts/v002_windows_full_resume.py
+          if ($LASTEXITCODE -ne 0) { throw 'Bounded full evaluation stopped; inspect sanitized checkpoint status' }
