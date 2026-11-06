@@ -1,0 +1,25 @@
+name: Color OPS Windows read-only post-quota recovery verification
+on:
+  push:
+    branches: [feature/v0.0.2-codex-independent-eval]
+    paths:
+      - .github/workflows/v0.0.2-windows-post-quota-verify.yml
+permissions:
+  contents: read
+jobs:
+  verify-recovered-local-grader:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-codex-independent-eval'
+    runs-on: [self-hosted, X64, color-team-ops, Windows]
+    timeout-minutes: 8
+    steps:
+      - name: Checkout companion verifier without retained credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify original frozen receipt plus one append-only successful grade
+        shell: powershell
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -B .github/scripts/v002_windows_post_quota_verify.py
+          if ($LASTEXITCODE -ne 0) { throw 'Post-recovery validation failed; see sanitized summary' }
