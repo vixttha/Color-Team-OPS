@@ -1,0 +1,26 @@
+name: Color OPS Windows frozen quota recovery check (no model calls)
+on:
+  push:
+    branches: [feature/v0.0.2-codex-independent-eval]
+    paths:
+      - .github/workflows/v0.0.2-windows-quota-recovery-check.yml
+      - .github/scripts/v002_windows_quota_recovery_check.py
+jobs:
+  verify-one-quota-recovery-slot:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-codex-independent-eval'
+    runs-on: [self-hosted, X64, color-team-ops, Windows]
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source (no persisted GitHub credentials)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Check exact frozen receipt and available second attempt; no model calls
+        shell: powershell
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -B .github/scripts/v002_windows_quota_recovery_check.py
+          if ($LASTEXITCODE -ne 0) { throw 'Quota recovery check blocked; see sanitized code' }
