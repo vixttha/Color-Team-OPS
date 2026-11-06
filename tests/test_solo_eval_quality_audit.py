@@ -71,19 +71,26 @@ class FrozenQualityAuditTests(unittest.TestCase):
             self.assertFalse(status["pilot_acceptance_present_and_bound"])
 
     def test_pilot_acceptance_bound_and_lock_blocks_resume(self):
-        freeze = {"dummy": "freeze"}
+        arms = ("generic", "full", "no_directory", "no_handoff")
+        pairs = [(f"team-{i}", arm) for i in range(9) for arm in arms]
+        freeze = {"dummy": "freeze", "pilot_order": pairs}
         pilot = {"freeze_sha256": e.digest(freeze),
                  "summary": {"candidate_completed": 36, "graded": 36,
                              "critical_pairs": 0, "contradiction_pairs": 0,
                              "high_uncertainty": 0}}
+        records = [{"case_id": cid, "arm": arm,
+                    "grade": {"critical_violations": [], "contradictions": [],
+                              "uncertainty": "LOW"}} for cid, arm in pairs]
         with tempfile.TemporaryDirectory() as tmp:
             p = Path(tmp)
             (p / "pilot-acceptance.json").write_text(json.dumps(pilot), encoding="utf-8")
-            status = a.local_checkpoint_status(freeze, [], [], [], p)
+            with self.assertRaises(e.Invalid):
+                a.local_checkpoint_status(freeze, records[:-1], [], [], p)
+            status = a.local_checkpoint_status(freeze, records, [], [], p)
             self.assertEqual(status["resume_disposition"],
                              "PRECHECK_PASS_LOCAL_AUTH_QUOTA_UNVERIFIED")
             (p / "supervisor.lock").write_text("not-authority", encoding="utf-8")
-            status = a.local_checkpoint_status(freeze, [], [], [], p)
+            status = a.local_checkpoint_status(freeze, records, [], [], p)
             self.assertEqual(status["resume_disposition"], "BLOCKED_INSPECT_LOCALLY")
             self.assertTrue(status["supervisor_lock_present"])
 
