@@ -101,6 +101,23 @@ def local_checkpoint_status(freeze, records, candidate_attempts, grader_attempts
         e.require(audit.get("freeze_sha256") == e.digest(freeze),
                   "PILOT_ACCEPTANCE_FREEZE_MISMATCH")
         s.quality_gate(audit["summary"])
+        expected = {tuple(pair) for pair in freeze["pilot_order"]}
+        graded_pilot = [r for r in records
+                        if (r["case_id"], r["arm"]) in expected and r.get("grade")]
+        e.require(len(expected) == len(graded_pilot) == 36 and
+                  {(r["case_id"], r["arm"]) for r in graded_pilot} == expected,
+                  "PILOT_ACCEPTANCE_WITHOUT_VERIFIED_GRADED_PAIRS")
+        actual_counts = {
+            "critical_pairs": sum(bool(r["grade"]["critical_violations"])
+                                  for r in graded_pilot),
+            "contradiction_pairs": sum(bool(r["grade"]["contradictions"])
+                                       for r in graded_pilot),
+            "high_uncertainty": sum(r["grade"]["uncertainty"] == "HIGH"
+                                    for r in graded_pilot),
+        }
+        e.require(all(audit["summary"][key] == value
+                      for key, value in actual_counts.items()),
+                  "PILOT_ACCEPTANCE_COUNTS_DO_NOT_MATCH_EVIDENCE")
         pilot_valid = True
     blockers = []
     if lock:
