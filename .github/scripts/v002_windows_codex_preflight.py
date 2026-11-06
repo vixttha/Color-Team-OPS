@@ -44,8 +44,9 @@ def file_sha(path):
 
 def git_check(root, *args):
     try:
+        env = dict(os.environ, GIT_OPTIONAL_LOCKS="0", GIT_TERMINAL_PROMPT="0")
         run = subprocess.run(["git", "-C", str(root), *args],
-                             capture_output=True, timeout=8, check=False)
+                             capture_output=True, timeout=8, check=False, env=env)
         return run.stdout if run.returncode == 0 else None
     except (OSError, subprocess.TimeoutExpired):
         return None
