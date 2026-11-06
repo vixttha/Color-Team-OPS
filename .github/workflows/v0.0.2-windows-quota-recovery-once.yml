@@ -1,0 +1,26 @@
+name: Color OPS single frozen grader quota recovery (owner Windows runner)
+on:
+  push:
+    branches: [feature/v0.0.2-codex-independent-eval]
+    paths:
+      - .github/workflows/v0.0.2-windows-quota-recovery-once.yml
+permissions:
+  contents: read
+jobs:
+  one-graded-pair-only:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-codex-independent-eval'
+    runs-on: [self-hosted, X64, color-team-ops, Windows]
+    timeout-minutes: 8
+    steps:
+      - name: Checkout frozen-compatible recovery companion without Git credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Append exactly one second-attempt grader receipt using existing ChatGPT subscription
+        shell: powershell
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CTO_ONE_GRADER_CALL: OWNER_AUTHORIZED_QUOTA_RECOVERY_2026_11_05
+        run: |
+          python -B .github/scripts/v002_windows_quota_recovery_execute.py
+          if ($LASTEXITCODE -ne 0) { throw 'One-call recovery blocked; see sanitized disposition' }
