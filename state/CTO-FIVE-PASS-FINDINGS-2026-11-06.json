@@ -1,0 +1,155 @@
+{
+  "schema_version": "cto-red-five-pass-findings-1",
+  "audit_date": "2026-11-06",
+  "home_branch": "team/red-team-agent",
+  "source_snapshot": {
+    "integration": "42d79e31ecd510d8c4fb3a49eb98a6ff509a68c4",
+    "evaluation": "a09a3226e73b55b1542ad485824f559002dc5c01",
+    "prismcell": "2cdc66f37537c077db68eeb9fa190e24d071039f",
+    "source_functional": "0e9561fd06034674eca4fcf07ceef9381f8249a2"
+  },
+  "classification": "FIVE_SOURCE_AND_EVIDENCE_PASSES_NO_LIVE_PENTEST",
+  "branch_count": 29,
+  "branch_protected_true_count": 0,
+  "native_tests": {
+    "integration_per_os": 979,
+    "prismcell_node_per_os": 110,
+    "prismcell_python_per_os": 25,
+    "evaluation_dev_per_os_at_earlier_sha": 1042
+  },
+  "model": {
+    "candidate_total": 1080,
+    "completed": 209,
+    "graded_provisional": 209,
+    "remaining": 871,
+    "terminal_quota_blocks": 1,
+    "accuracy_exclusions": 3,
+    "holdouts": "54_NONBLIND_REGRESSION_ONLY"
+  },
+  "host": {
+    "H_cases_done": 0,
+    "H_cases_total": 11,
+    "smoke_done": 0,
+    "smoke_total": 2
+  },
+  "release_status": "RELEASE_BLOCKED",
+  "findings": [
+    {
+      "id": "CTO-R5-01",
+      "severity": "HIGH CONDITIONAL",
+      "classification": "CONFIRMED_CONFIG_AND_THREAT_PATH",
+      "title": "Unprotected trigger branches can feed executable code to personal development runners",
+      "limitations": "No unauthorized writer/compromise demonstrated",
+      "remediation": "Restrict who can push; gate new code at owner-reviewed immutable SHA; keep runner offline when not testing",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-02",
+      "severity": "ACCEPTANCE BLOCKER",
+      "classification": "HOST_NOT_RUN",
+      "title": "Actual staging H-01–H-11 and Smoke A/B remain 0/11 and 0/2",
+      "limitations": "Source-only 979 CI cases cannot substitute for installed host",
+      "remediation": "Run authentic staging H first, unchanged Smoke A/B last per owner order",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-03",
+      "severity": "MEDIUM",
+      "classification": "CONFIRMED_DOCUMENT_DRIFT",
+      "title": "Older integration release-gates JSON conflicts with latest owner solo-developer policy/current model counts",
+      "limitations": "Issue #8 top supersedes old snapshots",
+      "remediation": "Do not treat historical JSON as current owner gate; annotate/reconcile when a bounded docs edit is authorized",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-04",
+      "severity": "MEDIUM",
+      "classification": "TRUST_BOUNDARY_LIMIT",
+      "title": "Nine PrismCell identities are logical; one connected admin and 29 unprotected branches do not establish per-role write isolation",
+      "limitations": "No forged live foreign-branch write observed",
+      "remediation": "Require trustworthy role provenance before any automated privileged use; remain supervised otherwise",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-05",
+      "severity": "ACCEPTANCE BLOCKER",
+      "classification": "INCOMPLETE_EVALUATION",
+      "title": "Model evaluation stopped with 209/1080 completed/graded, 871 remaining and terminal candidate quota checkpoint",
+      "limitations": "Partial self-reviewed AI-assisted grades not independent certification; 3 accuracy exclusions; 54 visible holdouts",
+      "remediation": "Keep frozen receipts; resolve terminal checkpoint without overwriting evidence, then finish genuine trials and owner self-review",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-06",
+      "severity": "MEDIUM",
+      "classification": "PORTABILITY_NOT_VERIFIED",
+      "title": "PrismCell real clean install in a different repository G1–G5 NOT_RUN; draft PR #20 holds documentation correction",
+      "limitations": "Offline 52-file fixture is not second-repository installation",
+      "remediation": "Run only when owner designates a safe separate test repo; no production copies or paid services",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-07",
+      "severity": "MEDIUM",
+      "classification": "CROSS_BRANCH_REGRESSION_RISK",
+      "title": "Blue workcell carries older integration product/source/workflows; comparisons show major divergence",
+      "limitations": "No unauthorized merge seen; preserving legacy files is intentional",
+      "remediation": "Allowlist selective evidence/patch promotion; prohibit broad workcell merges",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-08",
+      "severity": "MEDIUM CONDITIONAL",
+      "classification": "CI_AUTHORIZATION_DESIGN",
+      "title": "Evaluation workflow uses a source-controlled commit-message prefix and environment constant to gate costly model-run workflow",
+      "limitations": "These strings are not cryptographic owner consent; GitHub writer permissions remain prerequisite",
+      "remediation": "Prefer separately approved trusted SHA/manual gate before spending quota or touching owner runner",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-09",
+      "severity": "LOW-MEDIUM CONDITIONAL",
+      "classification": "FILESYSTEM_RISK",
+      "title": "Optional idea/feature library generator writes derived INDEX.md without destination-symlink rejection",
+      "limitations": "Requires operator running optional utility in filesystem with unsafe symlink; no exploit run",
+      "remediation": "Reject symlink index targets and verify path confinement before writing; keep optional utility separate from product runtime",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-10",
+      "severity": "MEDIUM PORTABILITY",
+      "classification": "SOURCE_DESIGN_MISMATCH",
+      "title": "PrismCell universal core declares project reuse but requires github-issues-manual, github.com URLs and GitHub receipts",
+      "limitations": "Reusable across GitHub projects; not host/provider-neutral transport today",
+      "remediation": "Describe precisely as GitHub-manual-Issues core or implement a separate validated transport adapter if explicitly approved",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-11",
+      "severity": "LOW OPERATIONS",
+      "classification": "DEFAULT_BRANCH_ONBOARDING",
+      "title": "main only contains minimal README, while v0.0.1 release and v0.0.2 integration are elsewhere",
+      "limitations": "Intentional release restraint, not product failure or missing tests",
+      "remediation": "Provide non-promotional source pointers/read-only status in main only if separately approved",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-12",
+      "severity": "MEDIUM EVIDENCE",
+      "classification": "NON_EQUIVALENT_PASS_STATUSES",
+      "title": "Green Action result on bounded full-evaluation resume reflects graceful quota stop, not full matrix pass; newer eval HEAD distinct from previous dual-OS dev regression SHA",
+      "limitations": "Terminal read-only checkpoint audit exactly reports matrix_complete=false",
+      "remediation": "Consume exact job output, commit and evidence classifications; never translate job success to released quality",
+      "confirmed_exploitation": false
+    },
+    {
+      "id": "CTO-R5-13",
+      "severity": "MEDIUM CONDITIONAL",
+      "classification": "STAGED_CLOUD_SCOPE",
+      "title": "PrismCell cloud-control prototype's dispatch endpoint always denies and durable authorization/leases are not deployed",
+      "limitations": "Correct fail-closed staging posture, not a breach",
+      "remediation": "Do not call it an active autonomous service or enable it without actual scoped credentials and durable CAS",
+      "confirmed_exploitation": false
+    }
+  ]
+}

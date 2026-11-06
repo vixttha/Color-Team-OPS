@@ -2,7 +2,7 @@
   "schema_version": "red-hq-queue-1",
   "mission_id": "RED-HQ-001",
   "policy": "one active item; queued work executes only in invoked/authorized sessions",
-  "last_updated": "2026-11-02",
+  "last_updated": "2026-11-06",
   "items": [
     {
       "id": "RED-W001",
@@ -143,6 +143,17 @@
       "status": "QUEUED",
       "prerequisites": "Authorized new exact template SHA, pinned home mappings, schema-negative tests and issue round-trip evidence",
       "deliverable": "Three-pass source-bound retest and updated PC-RED finding dispositions",
+      "owner": "RED TEAM AGENT",
+      "last_tested_source_sha": null,
+      "completed_at": null
+    },
+    {
+      "id": "RED-W014",
+      "title": "Revalidate personal-runner trust boundaries and stale source-ledger risk after authorized changes",
+      "priority": "P1",
+      "status": "QUEUED",
+      "prerequisites": "Owner approval for any actual workflow/runner change; fresh GitHub branch and Issue #8 refs",
+      "deliverable": "Source-linked mitigations and independent exact-SHA read-only retest",
       "owner": "RED TEAM AGENT",
       "last_tested_source_sha": null,
       "completed_at": null
