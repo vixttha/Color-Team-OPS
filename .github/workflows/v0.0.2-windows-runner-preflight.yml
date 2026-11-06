@@ -1,0 +1,26 @@
+name: Color OPS Windows Codex read-only checkpoint preflight
+on:
+  push:
+    branches: [feature/v0.0.2-codex-independent-eval]
+    paths:
+      - .github/workflows/v0.0.2-windows-runner-preflight.yml
+      - .github/scripts/v002_windows_codex_preflight.py
+permissions:
+  contents: read
+jobs:
+  read-only-windows-preflight:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-codex-independent-eval'
+    runs-on: [self-hosted, X64, color-team-ops, Windows]
+    timeout-minutes: 8
+    steps:
+      - name: Checkout development-only preflight in isolated CI workspace
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Read-only Codex login and frozen checkpoint inventory (no inference)
+        shell: powershell
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -B .github/scripts/v002_windows_codex_preflight.py
+          if ($LASTEXITCODE -ne 0) { throw 'Preflight failed safely; see sanitized preflight status' }
