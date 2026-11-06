@@ -1,0 +1,30 @@
+name: Color OPS terminal frozen full-evaluation audit (read-only)
+on:
+  push:
+    branches: [feature/v0.0.2-codex-independent-eval]
+    paths:
+      - .github/workflows/v0.0.2-windows-post-full-eval-audit.yml
+permissions:
+  contents: read
+# Deliberately match the active evaluator's concurrency group: the audit is
+# sequenced only AFTER the current full model evaluation releases the group.
+concurrency:
+  group: color-ops-v002-one-active-full-eval-supervisor
+  cancel-in-progress: false
+jobs:
+  verify-frozen-evaluation:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/feature/v0.0.2-codex-independent-eval'
+    runs-on: [self-hosted, X64, color-team-ops, Windows]
+    timeout-minutes: 8
+    steps:
+      - name: Checkout additive auditor without Git credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify original local checkpoints and quality after the active evaluator
+        shell: powershell
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -B .github/scripts/v002_windows_final_model_checkpoint_audit.py
+          if ($LASTEXITCODE -ne 0) { throw 'Original frozen evidence audit failed closed; see sanitized status' }
