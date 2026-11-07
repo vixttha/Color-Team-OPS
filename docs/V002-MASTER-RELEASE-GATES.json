@@ -80,7 +80,7 @@
     "auto_merge_or_publish_allowed": false,
     "paid_cloud_provisioning_allowed": false
   },
-  "final_status": "RELEASE_BLOCKED_MISSING_ACTUAL_STAGING_HOST_BEHAVIOR_AND_SEPARATE_PURPLE_EVALUATION",
+  "final_status": "RELEASE_BLOCKED_EVALUATION_INCOMPLETE_HOST_H_AND_SMOKE_NOT_RUN",
   "release_ready": false,
   "measured_99_percent_claim": false,
   "latest_reviewed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
@@ -153,8 +153,8 @@
   "staging_plugin": {
     "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
     "name": "color-team-ops-v002-staging",
-    "version": "0.0.5",
-    "release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "version": "0.0.7",
+    "release_id": "pluginrel_6aee11be79648191bfd8c1ba28c72121",
     "discoverability": "PRIVATE",
     "installed": true,
     "files": 32,
@@ -165,7 +165,10 @@
     "staging_zip_sha256": null,
     "staging_post_version_update_zip_sha_status": "NOT_ASSERTED",
     "installed_host_missions_verified": 0,
-    "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918"
+    "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918",
+    "source_zip_sha256_classification": "BASELINE_SOURCE_ZIP_NOT_CURRENT_STAGING_OVERLAY",
+    "stage_only_overlay": "MISSION_CONTROL_TEST_MODE_NOT_CANONICAL_PRODUCT_SOURCE",
+    "current_payload_hash_receipt": "31/31_SHA256_AND_BYTES_PASS_PREVIOUSLY_VERIFIED_NO_HOST_ACTIVATION"
   },
   "historical_staging_snapshot_before_pretest": {
     "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
@@ -186,13 +189,13 @@
   "current_pretest_readiness": {
     "verified_installed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
     "installed_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
-    "installed_release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
-    "installed_iteration": "0.0.5",
+    "installed_release_id": "pluginrel_6aee11be79648191bfd8c1ba28c72121",
+    "installed_iteration": "0.0.7",
     "source_native_CI_run_id": 41762883010,
     "baseline_tests_per_os": 968,
     "source_candidate_zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
     "source_reference_is_not_docs_git_sha": true,
-    "formal_smoke_rubric": "DEVELOPMENT_DRAFT_SEPARATE_PURPLE_SIGNOFF_PENDING",
+    "formal_smoke_rubric": "SOLO_DEVELOPER_PREDECLARED_CRITERIA_HOST_NOT_RUN",
     "fresh_host_selected_plugin_verified": false,
     "smoke_traces_observed": 0,
     "H_scenarios_observed": 0,
@@ -203,7 +206,34 @@
     "PF01": "OPERATIVE_SMOKE_RUNBOOK_CORRECTED",
     "PF02": "H01_H11_FIXED_PROMPTS_DRAFTED",
     "PF03": "REAL_HOST_ACTIVATION_NOT_RUN",
-    "PF04": "0_OF_270_INDEPENDENT_APPROVAL_HOLDOUT_NOT_BLIND",
-    "PF05": "ACTIVE_SNAPSHOT_SUPERSEDES_HISTORICAL_STATE"
+    "PF04": "270_DEV_AUTHORED_FROZEN_CASE_SPECIFIC_CRITERIA_54_NONBLIND_HOLDOUTS_209_OF_1080_PROVISIONAL_TRIALS",
+    "PF05": "LATEST_OPERATIVE_RECONCILIATION_2026_11_07_HISTORICAL_GATES_SUPERSEDED"
+  },
+  "current_operational_snapshot_2026_11_07": {
+    "authoritative_source": "https://github.com/vixttha/Color-Team-OPS/issues/8",
+    "current_product_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
+    "integration_docs_sha": "42d79e31ecd510d8c4fb3a49eb98a6ff509a68c4",
+    "evaluation_branch_sha": "a09a3226e73b55b1542ad485824f559002dc5c01",
+    "model_freeze_sha256": "116c8468e98bfed123c7014586c6791114f2d57b596cb8af918192c437d3186b",
+    "genuine_candidate_pairs": 209,
+    "provisional_grades": 209,
+    "candidate_pairs_remaining": 871,
+    "quota_blocked_pair": "blue-team:edge:05 / no_handoff",
+    "original_receipts_modified": false,
+    "holdout_classification": "54_NONBLIND_REGRESSION_ONLY",
+    "reviewer_policy": "SOLO_DEVELOPER_SELF_REVIEWED_AI_ASSISTED_PROVISIONAL_NO_EXTERNAL_REVIEWER_REQUIRED",
+    "model_grade_semantics": "NOT_FULLY_INDEPENDENTLY_VERIFIED",
+    "no_handoff_ablation_isolation": "FAILED_REMOVES_UNRELATED_ROUTING_AND_SAFETY_DIRECTIVES",
+    "private_staging_version": "0.0.7",
+    "private_staging_release_id": "pluginrel_6aee11be79648191bfd8c1ba28c72121",
+    "staging_overlay_needs_final_source_disposition": true,
+    "h_host": "0_OF_11_NOT_RUN",
+    "smoke_host": "0_OF_2_NOT_RUN_LAST",
+    "owner_runner_trust_stop": "IN_FORCE_FOR_SELF_HOSTED_RUNNER_EXECUTION_ONLY",
+    "owned_runner_required_for_cloud_only_plugin": false,
+    "approved_development_eval_changes_wholesale_merged": false,
+    "final_owner_release_approval": false,
+    "original_m1_m5_stage_entries": "HISTORICAL_SOURCE_RECORD_NOT_CURRENT_OWNER_POLICY",
+    "status": "RELEASE_BLOCKED"
   }
 }
