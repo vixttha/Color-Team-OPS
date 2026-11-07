@@ -4,8 +4,8 @@
   "test_id": null,
   "stage": {
     "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
-    "version": "0.0.5",
-    "release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "version": "0.0.7",
+    "release_id": "pluginrel_6aee11be79648191bfd8c1ba28c72121",
     "installed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
     "verified_at_session": false,
     "ui_selection_evidence_ref": null
@@ -39,11 +39,13 @@
     "checklist": [],
     "critical_failures": [],
     "rationale": null,
-    "independent_reviewer_ref": null
+    "independent_reviewer_ref": null,
+    "review_mode": "SOLO_DEVELOPER_SELF_REVIEWED_AI_ASSISTED_PROVISIONAL"
   },
   "provenance": {
     "actual_trial_executed": false,
-    "docs_git_sha_is_not_installed_sha": true
+    "docs_git_sha_is_not_installed_sha": true,
+    "stage_release_readback": "PLUGIN_CREATOR_METADATA_AND_INSTALLED_FILE_MANIFEST_NO_HOST_ACTIVATION"
   },
   "release": "RELEASE_BLOCKED"
 }

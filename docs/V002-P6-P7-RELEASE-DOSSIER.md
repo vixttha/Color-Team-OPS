@@ -1,5 +1,23 @@
 # CTO-V002 P0–P7 — Owner-facing release-readiness dossier
 
+## Operative reconciliation — November 7, 2026 (DRAFT / NO RELEASE)
+
+**Canonical source versus staging:** The official private plugin remains `plugins_6ae3edf1ea4c819182f275592273e2cc` v0.0.1. Existing private test staging is `plugins_6ae9238966508191b3402640e65217bf`, iteration **0.0.7**, current release `pluginrel_6aee11be79648191bfd8c1ba28c72121`. The 0.0.7 staging-only Mission Control test-mode overlay is **not automatically part of the canonical v0.0.2 product source**. Manifest `source_sha=0e9561fd06034674eca4fcf07ceef9381f8249a2` is the historical functional source baseline, not a Git reference to the overlay. Plugin files, frozen evaluations, and original grades were not changed by these documentation reconciliations.
+
+**Source branches, without premature merge:** Integration baseline `42d79e31ecd510d8c4fb3a49eb98a6ff509a68c4` has verified Windows/Linux `979/979` historical CI. Separate evaluation development branch `feature/v0.0.2-codex-independent-eval` at `a09a3226e73b55b1542ad485824f559002dc5c01` is **50 commits ahead**; its evaluator/harness additions and workflow files must not be blindly merged into the installed skills-only package. Select only reviewed release-relevant source changes, preserve historical frozen source hashes and all existing receipts, then validate that final exact revision through an authorized executor. The docs-only reconciliation branch is **not** an accepted production candidate.
+
+**Evaluation status:** `270 x 4 = 1,080` frozen CLI_TEST case-arm pairs, `209` completed candidate responses and `209` corresponding AI-assisted provisional grades, `871` left. Original quota-blocked candidate `blue-team:edge:05/no_handoff` must be recovered by **append-only attempt 2**, never editing attempt 1 or the 44 frozen source hashes. Source-hash/receipt integrity is not full semantic grade correctness. The `no_handoff` ablation removes non-handoff directory/safety guidance and cannot establish isolated causal value. Preserve all 54 source-visible holdouts as nonblind. No external independent reviewer or signed oracles are mandatory under the owner's November 4 solo-developer policy.
+
+**Test order / no invented tests:** Finish actual model evaluation and honest semantic review through an authorized safe execution route, then the eleven genuine fresh private ChatGPT staging H-case tests, then unchanged Smoke A/B **LAST**. H=0/11 `NOT_RUN`; Smoke=0/2 `NOT_RUN`. The stage test operator preflight, blank receipt, and 11 H scenario metadata on this isolated branch are now pinned to staging 0.0.7. No fresh ChatGPT sessions, Codex calls, workflow jobs, merges, plugin updates or official release occurred during reconciliation.
+
+**Runner scope:** Owner self-hosted runner execution remains stopped by [master Issue #8](https://github.com/vixttha/Color-Team-OPS/issues/8) until its separate security requirements are satisfied. That restriction does **not** add a user-owned runtime dependency to the cloud-only plugin. Do not require new runners, paid GitHub-hosted execution, Work mode, separate external reviewer, new staging identity or additional coordinators. PrismCell is separate.
+
+**Audit outcome:** Documentation-only provenance correction, **unverified on actual ChatGPT host**, no new exact-SHA native CI. `RELEASE_BLOCKED` and final owner-only release authority preserved. Historical sections below are retained as historical evidence, not operative policy.
+
+---
+
+
+
 ## Superseding ACTIVE pretest checkpoint — 2026-11-03
 
 **All older staging versions, SHA snapshots, native test counts, and owner-authorization statements in the historical sections below are NON-OPERATIVE.** Private stage `plugins_6ae9238966508191b3402640e65217bf`, iteration `0.0.5`, release `pluginrel_6aea9f63eee88191ba42a906ae04049d`, manifest source `0e9561fd06034674eca4fcf07ceef9381f8249a2`, 32 files, functional file parity and matching startup prompts independently reviewed in [Issue #19](https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918). Canonical private v0.0.1 unchanged. The latest accepted SOURCE baseline ran [CI #41762883010](https://github.com/vixttha/Color-Team-OPS/actions/runs/41762883010) **968/968 on each owner self-hosted OS**, four matching 32-file ZIP builds SHA256 `8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2`. A later documentation-only Git SHA is not the installed manifest source and needs its own CI tracked in Issue #8.
