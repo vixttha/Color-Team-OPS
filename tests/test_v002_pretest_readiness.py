@@ -6,7 +6,7 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE="0e9561fd06034674eca4fcf07ceef9381f8249a2"
 PLUGIN="plugins_6ae9238966508191b3402640e65217bf"
-RELEASE="pluginrel_6aea9f63eee88191ba42a906ae04049d"
+RELEASE="pluginrel_6aee11be79648191bfd8c1ba28c72121"
 
 def read_json(path):
     return json.loads((ROOT/path).read_text(encoding="utf8"))
@@ -53,8 +53,13 @@ class PretestReadinessTests(unittest.TestCase):
         self.assertIn(RELEASE,self.smoke)
         self.assertIn(SOURCE,self.smoke)
         self.assertEqual(self.host["staging_plugin"]["release_id"],RELEASE)
+        self.assertEqual(self.host["staging_plugin"]["version"],"0.0.7")
         self.assertEqual(self.host["staging_plugin"]["source_sha"],SOURCE)
         self.assertNotIn("pluginrel_6ae9238a",self.smoke.split("## Smoke A")[0])
+        self.assertNotIn("0.0.5",self.smoke.split("## Smoke A")[0])
+        self.assertTrue(all(x["installed_staging_release_id"]==RELEASE
+                            and x["staging_iteration"]=="0.0.7"
+                            for x in self.host["scenarios"]))
     def test_eleven_unique_fixed_candidate_prompts(self):
         rows=self.host["scenarios"]
         self.assertEqual([r["scenario_id"] for r in rows],
@@ -113,7 +118,10 @@ class PretestReadinessTests(unittest.TestCase):
         for x in docs:
             with self.subTest(doc=x.get("schema_version",x["mission_id"])):
                 self.assertEqual(x["staging_plugin"]["release_id"],RELEASE)
+                self.assertEqual(x["staging_plugin"]["version"],"0.0.7")
                 self.assertEqual(x["staging_plugin"]["source_sha"],SOURCE)
+                self.assertEqual(x["current_pretest_readiness"]["installed_release_id"],RELEASE)
+                self.assertEqual(x["current_pretest_readiness"]["installed_iteration"],"0.0.7")
                 self.assertTrue(x["current_pretest_readiness"]["source_reference_is_not_docs_git_sha"])
     def test_no_release_promoted_by_documentation(self):
         x=read_json("docs/V002-P0-P7-ACCEPTANCE.json")
@@ -125,7 +133,10 @@ class PretestReadinessTests(unittest.TestCase):
     def test_preflight_describes_truthful_capture_limits(self):
         doc=(ROOT/"docs/V002-HOST-TEST-OPERATOR-PREFLIGHT.md").read_text(encoding="utf8")
         for token in ("NOT_OBSERVABLE","LOGICAL_ONLY","fresh ChatGPT","verbatim",
-                      "Plugin Creator","separate Purple","RELEASE_BLOCKED"):
+                      "SOLO_DEVELOPER","Internal Auditor","RELEASE_BLOCKED"):
             self.assertIn(token,doc)
+        self.assertIn(RELEASE,doc)
+        self.assertIn("not required",doc)
+        self.assertNotIn("separate Purple readiness signoff",doc)
 
 if __name__=="__main__": unittest.main()
