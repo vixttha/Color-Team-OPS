@@ -309,8 +309,8 @@
   "staging_plugin": {
     "plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
     "name": "color-team-ops-v002-staging",
-    "version": "0.0.5",
-    "release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
+    "version": "0.0.7",
+    "release_id": "pluginrel_6aee11be79648191bfd8c1ba28c72121",
     "discoverability": "PRIVATE",
     "installed": true,
     "files": 32,
@@ -321,7 +321,9 @@
     "staging_zip_sha256": null,
     "staging_post_version_update_zip_sha_status": "NOT_ASSERTED",
     "installed_host_missions_verified": 0,
-    "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918"
+    "evidence_issue_comment": "https://github.com/vixttha/Color-Team-OPS/issues/19#issuecomment-6621358918",
+    "source_zip_sha256_classification": "HISTORICAL_BASELINE_SOURCE_ARCHIVE_NOT_STAGING_0_0_7_OVERLAY",
+    "staging_only_overlay": "MISSION_CONTROL_PRIVATE_TEST_MODE_NOT_CANONICAL_RUNTIME"
   },
   "historical_staging_snapshot_before_pretest": {
     "id": "plugins_6ae9238966508191b3402640e65217bf",
@@ -335,13 +337,13 @@
   "current_pretest_readiness": {
     "verified_installed_source_sha": "0e9561fd06034674eca4fcf07ceef9381f8249a2",
     "installed_plugin_id": "plugins_6ae9238966508191b3402640e65217bf",
-    "installed_release_id": "pluginrel_6aea9f63eee88191ba42a906ae04049d",
-    "installed_iteration": "0.0.5",
+    "installed_release_id": "pluginrel_6aee11be79648191bfd8c1ba28c72121",
+    "installed_iteration": "0.0.7",
     "source_native_CI_run_id": 41762883010,
     "baseline_tests_per_os": 968,
     "source_candidate_zip_sha256": "8dded98d15f310b606ce7d31ef99e1e66cae04e84529e869f911806b3b4d7dc2",
     "source_reference_is_not_docs_git_sha": true,
-    "formal_smoke_rubric": "DEVELOPMENT_DRAFT_SEPARATE_PURPLE_SIGNOFF_PENDING",
+    "formal_smoke_rubric": "SOLO_DEVELOPER_PREDECLARED_CASE_CRITERIA_HOST_NOT_RUN",
     "fresh_host_selected_plugin_verified": false,
     "smoke_traces_observed": 0,
     "H_scenarios_observed": 0,
@@ -352,8 +354,8 @@
     "PF01": "OPERATIVE_SMOKE_RUNBOOK_CORRECTED",
     "PF02": "H01_H11_FIXED_PROMPTS_DRAFTED",
     "PF03": "REAL_HOST_ACTIVATION_NOT_RUN",
-    "PF04": "0_OF_270_INDEPENDENT_APPROVAL_HOLDOUT_NOT_BLIND",
-    "PF05": "ACTIVE_SNAPSHOT_SUPERSEDES_HISTORICAL_STATE"
+    "PF04": "270_FROZEN_DEVELOPER_CRITERIA_54_NONBLIND_HOLDOUTS_MODEL_PAIRS_209_OF_1080",
+    "PF05": "ACTIVE_RECONCILIATION_2026_11_07_HISTORICAL_COUNTS_UNMODIFIED"
   },
   "task_entries_snapshot_classification": "HISTORICAL_2026_11_02_DO_NOT_USE_AS_OPERATIVE_CURRENT_STATE",
   "current_task_overrides": {
@@ -363,5 +365,24 @@
     "PF04": "INDEPENDENT_CRITERIA_0_270",
     "PF05": "SUPERSEDING_CURRENT_STATE",
     "new_document_CI": "LOOK_UP_FINAL_SHA_IN_ISSUE8"
+  },
+  "operational_release_snapshot_2026_11_07": {
+    "status": "RELEASE_BLOCKED",
+    "origin": "CURRENT_MASTER_ISSUE_8",
+    "official_version": "0.0.1",
+    "staging_version": "0.0.7",
+    "staging_release_id": "pluginrel_6aee11be79648191bfd8c1ba28c72121",
+    "observed_model_completed_pairs": 209,
+    "observed_model_provisional_graded_pairs": 209,
+    "model_pairs_remaining": 871,
+    "frozen_evaluation_receipts_unchanged": true,
+    "original_quota_blocked_case": "blue-team:edge:05 / no_handoff",
+    "host_H": "0_OF_11_NOT_RUN",
+    "host_smoke": "0_OF_2_NOT_RUN_LAST",
+    "solo_evaluator_policy": "NO_EXTERNAL_REVIEWER_REQUIRED",
+    "self_hosted_runner_execution": "STOP_SEPARATE_SECURITY_GUARD_NOT_PRODUCT_RUNTIME_GATE",
+    "runtime_source_unchanged": true,
+    "head_release_approval": false,
+    "note": "Priority-status detail, older build counters and pretest history are preserved verbatim as historical snapshots; do not treat outdated external reviewer requirements as current."
   }
 }
