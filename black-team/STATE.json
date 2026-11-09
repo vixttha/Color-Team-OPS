@@ -6,9 +6,9 @@
     "name": "main",
     "sha": "a28c2908da47d16dbdf7e55eb29a0c1ce9b6c7d3"
   },
-  "as_of": "2026-11-02",
-  "phase": "PRISMCELL_THREE_PASS_ASSESSMENT_COMMITTED_PENDING_OWNER_HANDOFF",
-  "integration_seen_sha": "db4eb42e2de7abf4ff3d464e747bfc1b22c575c6",
+  "as_of": "2026-11-09",
+  "phase": "W46_THREAT_MAINTENANCE_COMPLETE_RELEASE_BLOCKED",
+  "integration_seen_sha": "228c199070ed670b459662ffb22a1c9e88c1e9b9",
   "integration_run": {
     "id": 41536557201,
     "verified_linux_tests": 869,
@@ -22,15 +22,12 @@
   "threat_register_count": 6,
   "advisory_register_count": 3,
   "initial_report": "reports/2026-11-02-baseline.md",
-  "latest_weekly": "weekly/2026-W45.md",
+  "latest_weekly": "weekly/2026-W46.md",
   "next_review_actions": [
-    "Track PRISMCELL PC-01..PC-09 against exact template SHA and future workcell migrations",
-    "Review any new branch heads and ensure other teams' workspaces do not gain unapproved runner-triggering workflows",
-    "Re-read Black Team branch HEAD and compare integration source SHA",
-    "Verify all six threat paths and whether repairs have landed",
-    "Check latest GitHub Actions and MITRE/vendor/CISA/NVD advisories for applicability",
-    "Revisit optional exporter provenance and eval receipt issues",
-    "Append next ISO-week journal and update source/review state"
+    "Revalidate BTI-04 exporter and BTI-06 receipt behavior against exact current integration SHA",
+    "Obtain authoritative branch protection and runner gate evidence without dispatching jobs",
+    "Check version-matched GHSA/NVD/KEV applicability after dependency inventory",
+    "Maintain release lock and record next weekly delta"
   ],
   "prohibitions": [
     "Do not change integration, release, main or unrelated branch",
@@ -59,5 +56,8 @@
     "scope": "SOURCE_AND_SCHEMA_ONLY",
     "live_penetration": "NOT_RUN",
     "head_disposition": "RECOMMEND_CONDITIONAL_ACCEPT_AFTER_SCHEMA_HARDENING"
-  }
+  },
+  "current_integration_ci": "NOT_RUN_AT_CURRENT_SHA_HISTORICAL_CI_ONLY",
+  "current_branch_protection": "NOT_FRESHLY_VERIFIABLE_ISSUE8_REPORTS_UNPROTECTED",
+  "last_review_scope": "READ_ONLY_GITHUB_SOURCE_AND_PUBLIC_ADVISORY_REVIEW_NO_HOST_TEST"
 }
