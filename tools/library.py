@@ -12,6 +12,50 @@ ROOT = Path(__file__).resolve().parents[1]
 DECISION_STATES = {"adopted", "parked", "rejected", "superseded", "duplicate", "retired"}
 
 
+SUPPORTED_SCHEMA_KEYS = {
+    "$schema", "title", "type", "required", "properties",
+    "additionalProperties", "const", "enum", "minLength", "pattern",
+    "minItems", "uniqueItems", "items",
+}
+
+
+def schema_issues(spec, where):
+    """Fail closed if the bundled schema outgrows this limited interpreter."""
+    if not isinstance(spec, dict):
+        return [f"{where}: expected schema object"]
+    issues = [f"{where}: unsupported schema keyword {key}" for key in
+              sorted(set(spec) - SUPPORTED_SCHEMA_KEYS)]
+    if "type" in spec and spec["type"] not in ("object", "array", "string", "integer"):
+        issues.append(f"{where}: unsupported schema type")
+    for key in ("minLength", "minItems"):
+        if key in spec and (type(spec[key]) is not int or spec[key] < 0):
+            issues.append(f"{where}: invalid {key}")
+    for key in ("uniqueItems", "additionalProperties"):
+        if key in spec and type(spec[key]) is not bool:
+            issues.append(f"{where}: invalid {key}")
+    for key in ("required", "enum"):
+        if key in spec and (not isinstance(spec[key], list) or
+                            (key == "required" and not all(isinstance(v, str) for v in spec[key]))):
+            issues.append(f"{where}: invalid {key}")
+    if "pattern" in spec:
+        if not isinstance(spec["pattern"], str):
+            issues.append(f"{where}: invalid pattern")
+        else:
+            try:
+                re.compile(spec["pattern"])
+            except re.error:
+                issues.append(f"{where}: invalid pattern")
+    props = spec.get("properties", {})
+    if not isinstance(props, dict):
+        issues.append(f"{where}: invalid properties")
+    else:
+        for key, child in props.items():
+            issues.extend(schema_issues(child, f"{where}.properties.{key}"))
+    if "items" in spec:
+        issues.extend(schema_issues(spec["items"], f"{where}.items"))
+    return issues
+
+
 def shape(value, schema, where):
     """Check only the JSON-Schema v1 keywords used by this template."""
     issues = []
@@ -130,7 +174,8 @@ def validate(root=ROOT):
     except (ValueError, OSError) as exc:
         return [f"schema unavailable or invalid: {exc}"], {}, {}
     for path, schema in (("ideas", idea_schema), ("features", feat_schema)):
-        if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+        problems.extend(schema_issues(schema, f"{path}.schema"))
+        if not isinstance(schema, dict) or schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
             problems.append(f"{path}: schema dialect changed")
     if problems:
         return problems, {}, {}
@@ -177,9 +222,13 @@ def validate(root=ROOT):
 
 
 def cell(text):
-    return (str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            .replace("|", "&#124;").replace("\r", " ").replace("\n", " "))
-
+    """Escape record text as plain data inside a GitHub Markdown table."""
+    value = (str(text).replace("&", "&amp;").replace("<", "&lt;")
+             .replace(">", "&gt;").replace("|", "&#124;")
+             .replace("\r", " ").replace("\n", " "))
+    for ch in "\\\`*_[]()!~":
+        value = value.replace(ch, "\\" + ch)
+    return value
 
 def index(kind, rows):
     name = "Ideas" if kind == "ideas" else "Features"
