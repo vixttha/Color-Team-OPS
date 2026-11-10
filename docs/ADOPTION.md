@@ -1,7 +1,9 @@
-# How any project can adopt v0.0.1
+# Adoption review — portable v0.0.2 development candidate
 
 ## Zero-install copy
-Use GitHub's web UI, Git, or whatever file tooling is already available. Copy the `ideas/` and `features/` folders from this branch into a separate host project, keeping the blank `records/` folders (represented by `.gitkeep`). Copy the `templates/` for quick intake, and optionally the agent guide, `tools/`, `tests/` and documentation.
+**This is a draft procedure; it is not a receipt for a completed fresh-adopter test.** Before copying, inspect the host's governing instructions, existing `ideas/`, `features/`, `templates/`, `tools/`, and target paths. Select a new isolated destination or stop for human-owned reconciliation; do not merge independent canonical registries automatically.
+
+Use GitHub's web UI, Git, or whatever file tooling is already available. Copy `ideas/` and `features/` from this branch as a single isolated library root into an explicitly authorized separate host project. Keep the blank `records/` folders (represented by `.gitkeep`). Copy `templates/` **when using the example-file steps**; otherwise create records manually according to the schemas. Optionally copy the guide, `tools/`, `tests/` and docs into that same root so relative paths remain valid.
 
 **Never overwrite** an existing host file or `AGENTS.md`. Stop and reconcile if a directory already exists or an ID conflicts. No account credentials, cloud API, plugin, hosted service, local runner, Python package or new execution environment is necessary for record storage or browsing.
 
@@ -11,7 +13,7 @@ Each adopter starts at `IDEA-000001` / `FEAT-000001` in its own repository, with
 Examples are stored in `templates/`, never in `*/records/`. Remove example-only placeholders before declaring a record meaningful. Update the two indexes manually or with the optional tool.
 
 ## Optional validation
-If Python 3 is already available, the dependency-free `tools/library.py` helper offers `check` and `build` actions; `tests/` provides offline regressions. They are not installed by default, are not a runtime dependency, and do not grant authority.
+If Python 3 is already available, the dependency-free `tools/library.py` helper offers `check` and `build` actions; `tests/` provides offline regressions. **Do not run this helper on untrusted or concurrently writable filesystems with elevated permissions.** Symlink checks are preflights, not atomic anti-race guarantees. When the new branch has not passed exact-SHA regression and independent adopter acceptance, keep it experimental. They are not installed by default, are not a runtime dependency, and do not grant authority.
 
 ## Scope of this branch
 This branch is an optional experiment in `vixttha/Color-Team-OPS`. Using this template somewhere else does **not** mean installing Color-Team-OPS, Governance-Branch, CHAMELEON or any other project. No auto-merge, product release, CI provisioning, or policy mutation is part of adoption.
