@@ -1,6 +1,8 @@
-# Idea + Feature Library — v0.0.1
+# Idea + Feature Library — v0.0.2 development candidate
 
-**Status: reusable experimental template; optional; NOT a Color-Team-OPS product release.**
+**Status: unreleased v0.0.2 development candidate. Optional side template; NOT a Color-Team-OPS product release, a Governance dependency, or independently accepted for unrelated adopters.**
+
+The frozen [v0.0.1 branch](https://github.com/vixttha/Color-Team-OPS/tree/idea-feature-library-v0.0.1) remains the comparison baseline. See the [six-team one-lane audit](docs/V002-SIX-TEAM-ONE-LANE-AUDIT.md) for confirmed source findings, development patches, missing executed test receipts and release gates.
 
 This branch contains exactly two portable record libraries:
 
@@ -13,7 +15,7 @@ A human can use the files directly in GitHub. An LLM can read and suggest edits 
 
 ## Quick use (GitHub website only)
 
-1. Copy `ideas/`, `features/`, and optionally `templates/` and `LIBRARY-AGENT-GUIDE.md` into your project's repository, avoiding overwriting any existing paths. See [adoption instructions](docs/ADOPTION.md).
+1. Copy `ideas/`, `features/`, **and `templates/` if following the examples below** into an isolated, collision-free location in your repository. The agent guide is optional. Never overwrite existing paths. See [adoption instructions](docs/ADOPTION.md).
 2. For a new idea, copy [the example](templates/idea.example.json) into `ideas/records/IDEA-000001.json`, edit its ID, title, and facts. For a new feature, use [the feature example](templates/feature.example.json) at `features/records/FEAT-000001.json`. Use the next unused ID, never recycle an ID.
 3. Link features to existing ideas by `idea_ids`; keep decisions, implementation, tests, and release claims separate.
 4. Edit or regenerate `INDEX.md` as a **read-only view** of records; records always prevail if an index becomes stale. An optional standard-library-only Python helper can validate and generate indexes, but is *not required*.
@@ -38,4 +40,4 @@ Only an actual project's release authority can assert shipped versions. The temp
 - [Isolation / threat boundaries](docs/ISOLATION.md)
 - [Provenance and source separation](docs/PROVENANCE.md)
 
-Template version: `0.0.1`. This is **not** the version of any adopting project's product.
+Development target: `0.0.2` (**not released**); frozen baseline: `0.0.1`. Neither is an adopting project's product version.
