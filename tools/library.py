@@ -54,16 +54,39 @@ def shape(value, schema, where):
 def safe_repo_path(value):
     return (isinstance(value, str) and bool(value) and
             "\\" not in value and not PurePosixPath(value).is_absolute() and
+            not PureWindowsPath(value).drive and
             not PureWindowsPath(value).is_absolute() and
+            not any(c in value for c in '<>:"|?*') and
+            not any(ord(c) < 32 or ord(c) == 127 for c in value) and
             all(p not in ("", ".", "..") for p in value.split("/")))
+
+def has_link_component(root, path):
+    """Reject pre-existing symlinks along template-owned input/output paths.
+
+    This is a read-only preflight, NOT an atomic filesystem security boundary:
+    hostile concurrent changes still require host-level isolation.
+    """
+    current = root
+    if current.is_symlink():
+        return True
+    for name in path.relative_to(root).parts:
+        current = current / name
+        if current.is_symlink():
+            return True
+    return False
 
 
 def read_records(root, section, schema):
     problems, records = [], {}
     folder = root / section / "records"
+    if has_link_component(root, folder):
+        return [f"{section}/records: symlink component is forbidden"], records
     if not folder.is_dir():
         return [f"missing {section}/records directory"], records
     for path in sorted(folder.iterdir()):
+        if has_link_component(root, path):
+            problems.append(f"{path}: symlink record entry forbidden")
+            continue
         if path.name == ".gitkeep":
             continue
         if not path.is_file() or path.suffix != ".json":
@@ -81,7 +104,10 @@ def read_records(root, section, schema):
         if not isinstance(ident, str) or path.stem != ident:
             problems.append(f"{path}: mismatched ID and filename")
             continue
-        problems.extend(shape(row, schema, str(path)))
+        schema_errors = shape(row, schema, str(path))
+        problems.extend(schema_errors)
+        if schema_errors:
+            continue  # Never run semantic checks on malformed record fields.
         if ident in records:
             problems.append(f"{path}: repeated record ID")
         records[ident] = row
@@ -96,8 +122,14 @@ def validate(root=ROOT):
     except (ValueError, OSError) as exc:
         return [f"schema unavailable or invalid: {exc}"], {}, {}
     for path, schema in (("ideas", idea_schema), ("features", feat_schema)):
+        for filename in (f"{path}/schema/v1/{'idea' if path == 'ideas' else 'feature'}.schema.json",
+                         f"{path}/INDEX.md"):
+            if has_link_component(root, root / filename):
+                problems.append(f"{filename}: symlink component forbidden")
         if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
             problems.append(f"{path}: schema dialect changed")
+    if problems:
+        return problems, {}, {}
     p, ideas = read_records(root, "ideas", idea_schema)
     problems.extend(p)
     p, feats = read_records(root, "features", feat_schema)
