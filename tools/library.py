@@ -226,7 +226,7 @@ def cell(text):
     value = (str(text).replace("&", "&amp;").replace("<", "&lt;")
              .replace(">", "&gt;").replace("|", "&#124;")
              .replace("\r", " ").replace("\n", " "))
-    for ch in "\\\`*_[]()!~":
+    for ch in "\\`*_[]()!~":
         value = value.replace(ch, "\\" + ch)
     return value
 
