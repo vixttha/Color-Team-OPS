@@ -116,16 +116,20 @@ def read_records(root, section, schema):
 
 def validate(root=ROOT):
     problems = []
+    # Inspect path components before opening schemas or indexes.
+    for section, filename in (("ideas", "idea"), ("features", "feature")):
+        for candidate in (f"{section}/schema/v1/{filename}.schema.json",
+                          f"{section}/INDEX.md"):
+            if has_link_component(root, root / candidate):
+                problems.append(f"{candidate}: symlink component forbidden")
+    if problems:
+        return problems, {}, {}
     try:
         idea_schema = json.loads((root / "ideas/schema/v1/idea.schema.json").read_text(encoding="utf-8"))
         feat_schema = json.loads((root / "features/schema/v1/feature.schema.json").read_text(encoding="utf-8"))
     except (ValueError, OSError) as exc:
         return [f"schema unavailable or invalid: {exc}"], {}, {}
     for path, schema in (("ideas", idea_schema), ("features", feat_schema)):
-        for filename in (f"{path}/schema/v1/{'idea' if path == 'ideas' else 'feature'}.schema.json",
-                         f"{path}/INDEX.md"):
-            if has_link_component(root, root / filename):
-                problems.append(f"{filename}: symlink component forbidden")
         if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
             problems.append(f"{path}: schema dialect changed")
     if problems:
@@ -142,6 +146,8 @@ def validate(root=ROOT):
             test.get("outcome") not in {"pass", "fail", "mixed", "inconclusive"} or
             not test.get("refs")):
             problems.append(f"{ident}: tested without outcome and references")
+        if test.get("status") != "tested" and "outcome" in test:
+            problems.append(f"{ident}: premature testing outcome")
         for target in row.get("related_ideas", []):
             if target == ident or target not in ideas:
                 problems.append(f"{ident}: missing or self-linked idea {target}")
@@ -157,6 +163,8 @@ def validate(root=ROOT):
             test.get("outcome") not in {"pass", "fail", "mixed", "inconclusive"} or
             not test.get("refs")):
             problems.append(f"{ident}: tested without outcome and references")
+        if test.get("status") != "tested" and "outcome" in test:
+            problems.append(f"{ident}: premature testing outcome")
         if row.get("lifecycle_status") == "verified":
             if (row.get("implementation_status") != "implemented" or
                 test.get("status") != "tested" or test.get("outcome") != "pass" or
