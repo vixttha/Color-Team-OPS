@@ -302,7 +302,11 @@ def run(root, action):
     views = {"ideas": index("ideas", ideas), "features": index("features", feats)}
     if action == "build":
         for kind, content in views.items():
-            (root / kind / "INDEX.md").write_text(content, encoding="utf-8")
+            # Path.write_text uses platform-native newline translation on Windows.
+            # Force identical LF bytes on Linux/Windows for generated-index parity.
+            with (root / kind / "INDEX.md").open("w", encoding="utf-8",
+                                                  newline="\n") as handle:
+                handle.write(content)
     else:
         for kind, expected in views.items():
             path = root / kind / "INDEX.md"
