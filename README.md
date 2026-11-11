@@ -20,7 +20,9 @@ A human can use the files directly in GitHub. An LLM can read and suggest edits 
 3. Link features to existing ideas by `idea_ids`; keep decisions, implementation, tests, and release claims separate.
 4. Edit or regenerate `INDEX.md` as a **read-only view** of records; records always prevail if an index becomes stale. An optional standard-library-only Python helper can validate and generate indexes, but is *not required*.
 
-Run optional checks when Python happens to be available: `python tools/library.py check`, `python tools/library.py build`, `python -m unittest discover -s tests -v`. Copy `tools/` and `tests/` if those helpers are wanted.
+Run optional checks when Python happens to be available: `python tools/library.py check`, `python tools/library.py build`, `python -m unittest discover -s tests -v`. Copy `tools/` and `tests/` if those helpers are wanted. **v0.0.2 adds count-neutral populated-adopter tests, a bounded validator, local `maxLength` schema support and read-only `python tools/adopter.py <host-library-root>` no-clobber planning.** Starter publishers can also use `python tools/library.py check --expect-empty`; do **not** apply that flag to populated adopters.
+
+[One-lane ChatGPT + owner GitHub runner contract](docs/V002-ONE-LANE-SELFHOSTED-PIPELINE.md) is an optional development/test workflow, never a runtime dependency. The pinned one-shot CI pipeline must not be used to imply an independent human/security audit.
 
 ## One-way Governance isolation
 
