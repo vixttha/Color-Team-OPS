@@ -119,6 +119,16 @@ class AdopterProfiles(unittest.TestCase):
         with self.assertRaises(ValueError):
             adopter.plan(ROOT, self.host)
 
+    def test_indexes_have_exact_lf_bytes_after_build(self):
+        row = self.example("idea")
+        row["title"] = "Synthetic \u00e9vidence example"
+        self.put("ideas", row)
+        self.assertEqual(library.run(self.host, "build"), 0)
+        for section in ("ideas", "features"):
+            raw = (self.host / section / "INDEX.md").read_bytes()
+            self.assertTrue(raw.endswith(b"\n"))
+            self.assertNotIn(b"\r", raw, "Index must use LF, not platform CRLF")
+
     def test_schema_unsupported_keyword_is_still_rejected(self):
         schema_path = self.host / "features/schema/v1/feature.schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
