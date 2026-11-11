@@ -126,11 +126,11 @@ class AdopterProfiles(unittest.TestCase):
         schema_path.write_text(json.dumps(schema), encoding="utf-8")
         self.assertIn("unsupported schema keyword if", " ".join(library.validate(self.host)[0]))
 
-    def test_source_starter_empty_check_is_explicit(self):
-        problems, ideas, features = library.validate(ROOT)
+    def test_empty_host_fixture_is_supported(self):
+        problems, ideas, features = library.validate(self.host)
         self.assertEqual(problems, [])
         self.assertEqual(len(ideas) + len(features), 0)
-        self.assertEqual(library.run(ROOT, "check"), 0)
+        self.assertEqual(library.run(self.host, "check"), 0)
 
 
 if __name__ == "__main__":
