@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout exact event SHA without credentials
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af683
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
           ref: ${{ github.sha }}
@@ -39,7 +39,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           test -z "$(git status --porcelain --untracked-files=all)"
           test -f ops/acceptance/idea-feature-library-v002-arm.txt
-          test "$(cat ops/acceptance/idea-feature-library-v002-arm.txt)" = "APPROVED-SCOPED-V002-ONE-LANE"
+          test "$(cat ops/acceptance/idea-feature-library-v002-arm.txt)" = "APPROVED-SCOPED-V002-ONE-LANE-RETEST-01"
           test ! -e AGENTS.md
           test ! -e governance
           test ! -e plugin.json
@@ -71,7 +71,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout exact event SHA
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af683
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
           ref: ${{ github.sha }}
