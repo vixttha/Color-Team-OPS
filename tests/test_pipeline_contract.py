@@ -1,4 +1,5 @@
 """Static owner-arm workflow contract (does NOT parse general YAML)."""
+import re
 import unittest
 from pathlib import Path
 
@@ -21,6 +22,10 @@ class PipelinePolicyTests(unittest.TestCase):
         self.assertIn("needs: [head-and-worker-linux]", source)
         self.assertIn("ref: ${{ github.sha }}", source)
         self.assertIn("persist-credentials: false", source)
+        resolved = re.findall(r"uses: (actions/checkout)@([0-9a-f]{40})\b", source)
+        self.assertEqual(len(resolved), 2, "both checkout pins must be 40-hex SHA")
+        self.assertEqual({sha for name, sha in resolved},
+                         {"11d5960a326750d5838078e36cf38b85af677262"})
         self.assertIn("color-team-ops-linux-01", source)
         self.assertIn("color-team-ops-windows-01", source)
 
