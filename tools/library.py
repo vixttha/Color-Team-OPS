@@ -206,6 +206,8 @@ def validate(root=ROOT):
     for ident, row in ideas.items():
         if row.get("lifecycle_status") in DECISION_STATES and "decision" not in row:
             problems.append(f"{ident}: decision-bearing state without recorded decision")
+        if row.get("lifecycle_status") not in DECISION_STATES and "decision" in row:
+            problems.append(f"{ident}: premature decision on non-decision state")
         test = row.get("testing") or {}
         if test.get("status") == "tested" and (
             test.get("outcome") not in {"pass", "fail", "mixed", "inconclusive"} or
@@ -213,13 +215,30 @@ def validate(root=ROOT):
             problems.append(f"{ident}: tested without outcome and references")
         if test.get("status") != "tested" and "outcome" in test:
             problems.append(f"{ident}: premature testing outcome")
+        if test.get("status") == "tested" and not row.get("evidence"):
+            problems.append(f"{ident}: tested idea without evidence")
         for target in row.get("related_ideas", []):
             if target == ident or target not in ideas:
                 problems.append(f"{ident}: missing or self-linked idea {target}")
         for ev in row.get("evidence", []):
             if not safe_repo_path(ev.get("path")):
                 problems.append(f"{ident}: unsafe evidence path")
+    compatible_states = {
+        "proposed": {"not_planned"},
+        "planned": {"not_planned", "planned"},
+        "in_progress": {"in_progress"},
+        "implemented": {"implemented"},
+        "verified": {"implemented"},
+        "deprecated": {"implemented", "removed"},
+        "retired": {"removed"},
+    }
     for ident, row in feats.items():
+        impl = row.get("implementation_status")
+        lifecycle = row.get("lifecycle_status")
+        if lifecycle in compatible_states and impl not in compatible_states[lifecycle]:
+            problems.append(f"{ident}: incompatible lifecycle and implementation status")
+        if impl == "implemented" and not row.get("evidence"):
+            problems.append(f"{ident}: implemented without source evidence")
         for target in row.get("idea_ids", []):
             if target not in ideas:
                 problems.append(f"{ident}: unresolved idea {target}")
@@ -230,6 +249,11 @@ def validate(root=ROOT):
             problems.append(f"{ident}: tested without outcome and references")
         if test.get("status") != "tested" and "outcome" in test:
             problems.append(f"{ident}: premature testing outcome")
+        if test.get("status") == "tested" and not any(
+                e.get("kind") in ("test", "audit") and e.get("source_sha") and
+                e.get("source_path") and e.get("receipt")
+                for e in row.get("evidence", [])):
+            problems.append(f"{ident}: tested without source-bound test/audit evidence")
         if row.get("lifecycle_status") == "verified":
             if (row.get("implementation_status") != "implemented" or
                 test.get("status") != "tested" or test.get("outcome") != "pass" or
