@@ -132,6 +132,28 @@ class HardeningTests(unittest.TestCase):
         errors, _, _ = library.validate(self.root)
         self.assertIn("symlink component forbidden", " ".join(errors))
 
+    def test_oversized_record_rejected(self):
+        row = self.example("idea")
+        row["summary"] = "X" * (library.MAX_RECORD_BYTES + 1)
+        self.write("ideas", row)
+        errors, _, _ = library.validate(self.root)
+        self.assertIn("oversize record", " ".join(errors))
+
+    def test_nonfinite_json_constant_rejected(self):
+        path = self.root / "ideas/records/IDEA-000001.json"
+        path.write_text('{"id":"IDEA-000001","title":NaN}', encoding="utf-8")
+        errors, _, _ = library.validate(self.root)
+        self.assertIn("bad JSON", " ".join(errors))
+
+    def test_schema_maxlength_bad_contract_is_rejected(self):
+        p = self.root / "features/schema/v1/feature.schema.json"
+        spec = json.loads(p.read_text(encoding="utf-8"))
+        spec["properties"]["title"]["minLength"] = 10
+        spec["properties"]["title"]["maxLength"] = 2
+        p.write_text(json.dumps(spec), encoding="utf-8")
+        errors, _, _ = library.validate(self.root)
+        self.assertIn("maxLength below minLength", " ".join(errors))
+
     def test_markdown_title_is_escaped_as_data(self):
         tick = chr(96)
         raw = "[Click](https://example.invalid) *bold* " + tick + "code" + tick
