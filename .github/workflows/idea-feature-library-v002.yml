@@ -1,0 +1,134 @@
+# Optional standalone library only. One reviewed owner-arm push, not PR execution.
+name: Portable Idea Feature v0.0.2 one-lane acceptance (owner runners)
+on:
+  push:
+    branches: [idea-feature-library-v0.0.2]
+    paths:
+      - ops/acceptance/idea-feature-library-v002-arm.txt
+permissions:
+  contents: read
+concurrency:
+  group: idea-feature-library-v002-owner-lane
+  cancel-in-progress: false
+
+jobs:
+  head-and-worker-linux:
+    name: HEAD preflight then WORKER Linux
+    if: >-
+      github.repository == 'vixttha/Color-Team-OPS' &&
+      github.ref == 'refs/heads/idea-feature-library-v0.0.2' &&
+      github.event_name == 'push' &&
+      github.actor == 'vixttha'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact event SHA without credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+          clean: true
+      - name: HEAD source and safety preflight
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_OS" = Linux
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          test -f ops/acceptance/idea-feature-library-v002-arm.txt
+          test "$(cat ops/acceptance/idea-feature-library-v002-arm.txt)" = "APPROVED-SCOPED-V002-ONE-LANE"
+          test ! -e AGENTS.md
+          test ! -e governance
+          test ! -e plugin.json
+          test ! -e .codex-plugin
+          echo "HEAD_PREFLIGHT_SOURCE_OK=$EXPECTED_SHA"
+      - name: WORKER deterministic source and populated-profile regression
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          set -euo pipefail
+          python3 -B tools/library.py check --expect-empty
+          python3 -B -m unittest discover -s tests -p 'test_*.py' -v
+          python3 -B tools/library.py build --expect-empty
+          git diff --exit-code -- ideas/INDEX.md features/INDEX.md
+          python3 -B tools/library.py check --expect-empty
+          test -z "$(git status --porcelain --untracked-files=all)"
+          echo "WORKER_LINUX_STRUCTURAL_PASS=$EXPECTED_SHA"
+
+  validate-and-audit-windows:
+    name: VALIDATE Windows then INTERNAL AUDITOR then HEAD
+    needs: [head-and-worker-linux]
+    if: >-
+      github.repository == 'vixttha/Color-Team-OPS' &&
+      github.ref == 'refs/heads/idea-feature-library-v0.0.2' &&
+      github.actor == 'vixttha'
+    runs-on: [self-hosted, Windows, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact event SHA
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+          clean: true
+      - name: VALIDATE isolated Windows checkout and entire suite
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RUNNER_OS -ne 'Windows' -or $env:RUNNER_NAME -ne 'color-team-ops-windows-01') { throw 'Unapproved runner' }
+          if ((git rev-parse HEAD).Trim() -ne $env:EXPECTED_SHA) { throw 'GitHub event SHA mismatch' }
+          $env:GIT_CONFIG_COUNT = '1'
+          $env:GIT_CONFIG_KEY_0 = 'core.autocrlf'
+          $env:GIT_CONFIG_VALUE_0 = 'false'
+          $scratch = Join-Path $env:RUNNER_TEMP ('library-v002-' + $env:GITHUB_RUN_ID + '-' + $env:GITHUB_RUN_ATTEMPT)
+          if (Test-Path -LiteralPath $scratch) { throw 'Scratch directory exists' }
+          git clone --no-hardlinks --no-checkout . $scratch
+          if ($LASTEXITCODE -ne 0) { throw 'Local clone failed' }
+          Set-Location -LiteralPath $scratch
+          git checkout --detach $env:EXPECTED_SHA
+          if ($LASTEXITCODE -ne 0 -or (git rev-parse HEAD).Trim() -ne $env:EXPECTED_SHA) { throw 'Disposable checkout SHA mismatch' }
+          if (git status --porcelain --untracked-files=all) { throw 'Checkout dirty' }
+          python -B tools/library.py check --expect-empty
+          if ($LASTEXITCODE -ne 0) { throw 'Source preflight failed' }
+          python -B -m unittest discover -s tests -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Windows regression failed' }
+          python -B tools/library.py build --expect-empty
+          if ($LASTEXITCODE -ne 0) { throw 'Windows index generation failed' }
+          git diff --exit-code -- ideas/INDEX.md features/INDEX.md
+          if ($LASTEXITCODE -ne 0) { throw 'Indexes differ' }
+          python -B tools/library.py check --expect-empty
+          if ($LASTEXITCODE -ne 0 -or (git status --porcelain --untracked-files=all)) { throw 'Post-check state not clean' }
+          Write-Output "VALIDATE_WINDOWS_STRUCTURAL_PASS=$env:EXPECTED_SHA"
+      - name: INTERNAL AUDITOR fail-closed checks then HEAD candidate verdict
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $scratch = Join-Path $env:RUNNER_TEMP ('library-v002-' + $env:GITHUB_RUN_ID + '-' + $env:GITHUB_RUN_ATTEMPT)
+          if (-not (Test-Path -LiteralPath $scratch)) { throw 'Validated checkout missing' }
+          Set-Location -LiteralPath $scratch
+          if ((git rev-parse HEAD).Trim() -ne $env:EXPECTED_SHA) { throw 'Audit source changed' }
+          if (git status --porcelain --untracked-files=all) { throw 'Audited source modified' }
+          if ((@(Get-ChildItem -LiteralPath 'ideas/records' -File -Filter '*.json')).Count -ne 0) { throw 'Source contains private ideas' }
+          if ((@(Get-ChildItem -LiteralPath 'features/records' -File -Filter '*.json')).Count -ne 0) { throw 'Source contains private features' }
+          foreach ($blocked in @('AGENTS.md', 'governance', 'policy_v002', 'plugin.json', '.codex-plugin')) {
+            if (Test-Path -LiteralPath $blocked) { throw "Forbidden runtime/authority file: $blocked" }
+          }
+          Write-Output "INTERNAL_AUDITOR_LOGICAL_CHECK_PASS=$env:EXPECTED_SHA"
+          Write-Output "HEAD_CANDIDATE_TESTS_PASS=$env:EXPECTED_SHA"
+          Write-Output 'LIMITATIONS: no authenticated external reviewer, no true cross-repo rollout, no release authorization, no hostile-host race guarantee'
+      - name: Clean only this run scratch checkout
+        if: always()
+        shell: powershell
+        run: |
+          $scratch = Join-Path $env:RUNNER_TEMP ('library-v002-' + $env:GITHUB_RUN_ID + '-' + $env:GITHUB_RUN_ATTEMPT)
+          if (Test-Path -LiteralPath $scratch) { Remove-Item -LiteralPath $scratch -Recurse -Force }
