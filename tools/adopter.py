@@ -48,7 +48,11 @@ def candidates(source):
             path = source / prefix / name
             if path.is_file():
                 files.append(path.relative_to(source))
-    return sorted(set(files), key=lambda p: p.as_posix())
+    ordered = sorted(set(files), key=lambda p: p.as_posix())
+    for relative in ordered:
+        if library.has_link_component(source, source / relative):
+            raise ValueError(f"source symlink component forbidden: {relative}")
+    return ordered
 
 
 def plan(source, destination):
