@@ -15,7 +15,7 @@ ALLOWED = {
 }
 FORBIDDEN_ROOT = (
     "AGENTS.md", "GOVERNANCE-START.md", "governance", "src", "skills",
-    "policy_v002", "plugin.json", ".codex-plugin", ".github",
+    "policy_v002", "plugin.json", ".codex-plugin",
     "requirements.txt", "pyproject.toml"
 )
 
@@ -42,13 +42,20 @@ class OneWayBoundaryTests(unittest.TestCase):
                     elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
                         self.assertNotIn(node.func.id, {"eval", "exec", "__import__"})
 
-    def test_template_has_only_its_own_empty_records(self):
+    def test_records_are_host_local_and_not_upstream_runtime(self):
         for kind in ("ideas", "features"):
             with self.subTest(kind=kind):
                 folder = ROOT / kind / "records"
                 self.assertTrue(folder.is_dir())
-                self.assertEqual(list(folder.glob("*.json")), [])
+                self.assertFalse(folder.is_symlink())
         self.assertFalse((ROOT / "governance" / "catalog.yaml").exists())
+
+    def test_optional_ci_is_only_explicitly_scoped_library_gate(self):
+        workflows = ROOT / ".github" / "workflows"
+        if workflows.exists():
+            self.assertEqual(
+                {p.name for p in workflows.iterdir()},
+                {"idea-feature-library-v002.yml"})
 
     def test_one_way_rule_is_explicit(self):
         text = (ROOT / "docs" / "ONE-WAY-BOUNDARY.md").read_text(encoding="utf-8")
