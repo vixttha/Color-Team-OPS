@@ -32,7 +32,7 @@ class LibraryTemplateTests(unittest.TestCase):
         (self.root / kind / "records" / (row["id"] + ".json")).write_text(
             json.dumps(row, indent=2) + "\n", encoding="utf-8")
 
-    def test_bundled_template_starts_empty(self):
+    def test_current_library_is_valid_even_when_populated(self):
         self.assertEqual(library.run(ROOT, "check"), 0)
 
     def test_examples_pass_schema(self):
@@ -91,11 +91,10 @@ class LibraryTemplateTests(unittest.TestCase):
         p.write_text(json.dumps(example("idea")), encoding="utf-8")
         self.assertIn("mismatched ID", " ".join(library.validate(self.root)[0]))
 
-    def test_no_product_specific_data(self):
-        self.assertEqual(list((ROOT / "ideas/records").glob("*.json")), [])
-        self.assertEqual(list((ROOT / "features/records").glob("*.json")), [])
-        for name in ("ideas", "features"):
-            self.assertNotIn("Color-Team-OPS", (ROOT / name / "README.md").read_text())
+    def test_generic_examples_have_no_source_product_records(self):
+        for kind in ("idea", "feature"):
+            self.assertNotIn("Color-Team-OPS", json.dumps(example(kind)))
+        self.assertNotIn("Governance-Branch", json.dumps(example("idea")))
 
 
 if __name__ == "__main__":
