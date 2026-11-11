@@ -10,11 +10,13 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 
 ROOT = Path(__file__).resolve().parents[1]
 DECISION_STATES = {"adopted", "parked", "rejected", "superseded", "duplicate", "retired"}
+MAX_RECORD_BYTES = 65536
+MAX_RECORD_FILES = 10000
 
 
 SUPPORTED_SCHEMA_KEYS = {
     "$schema", "title", "type", "required", "properties",
-    "additionalProperties", "const", "enum", "minLength", "pattern",
+    "additionalProperties", "const", "enum", "minLength", "maxLength", "pattern",
     "minItems", "uniqueItems", "items",
 }
 
@@ -27,7 +29,7 @@ def schema_issues(spec, where):
               sorted(set(spec) - SUPPORTED_SCHEMA_KEYS)]
     if "type" in spec and spec["type"] not in ("object", "array", "string", "integer"):
         issues.append(f"{where}: unsupported schema type")
-    for key in ("minLength", "minItems"):
+    for key in ("minLength", "maxLength", "minItems"):
         if key in spec and (type(spec[key]) is not int or spec[key] < 0):
             issues.append(f"{where}: invalid {key}")
     for key in ("uniqueItems", "additionalProperties"):
@@ -37,6 +39,10 @@ def schema_issues(spec, where):
         if key in spec and (not isinstance(spec[key], list) or
                             (key == "required" and not all(isinstance(v, str) for v in spec[key]))):
             issues.append(f"{where}: invalid {key}")
+    if ("minLength" in spec and "maxLength" in spec and
+            type(spec["minLength"]) is int and type(spec["maxLength"]) is int and
+            spec["maxLength"] < spec["minLength"]):
+        issues.append(f"{where}: maxLength below minLength")
     if "pattern" in spec:
         if not isinstance(spec["pattern"], str):
             issues.append(f"{where}: invalid pattern")
@@ -73,6 +79,8 @@ def shape(value, schema, where):
     if isinstance(value, str):
         if len(value) < schema.get("minLength", 0):
             issues.append(f"{where}: text too short")
+        if "maxLength" in schema and len(value) > schema["maxLength"]:
+            issues.append(f"{where}: text too long")
         if "pattern" in schema and not re.fullmatch(schema["pattern"], value):
             issues.append(f"{where}: invalid format")
     if isinstance(value, list):
@@ -127,7 +135,13 @@ def read_records(root, section, schema):
         return [f"{section}/records: symlink component is forbidden"], records
     if not folder.is_dir():
         return [f"missing {section}/records directory"], records
-    for path in sorted(folder.iterdir()):
+    try:
+        entries = sorted(folder.iterdir())
+    except OSError as exc:
+        return [f"{section}/records: unreadable directory: {exc}"], records
+    if len(entries) > MAX_RECORD_FILES:
+        return [f"{section}/records: too many entries"], records
+    for path in entries:
         if has_link_component(root, path):
             problems.append(f"{path}: symlink record entry forbidden")
             continue
@@ -137,7 +151,13 @@ def read_records(root, section, schema):
             problems.append(f"{path}: unexpected record entry")
             continue
         try:
-            row = json.loads(path.read_text(encoding="utf-8"))
+            if path.stat().st_size > MAX_RECORD_BYTES:
+                problems.append(f"{path}: oversize record")
+                continue
+            row = json.loads(
+                path.read_text(encoding="utf-8"),
+                parse_constant=lambda c: (_ for _ in ()).throw(
+                    ValueError("invalid nonfinite JSON constant: " + c)))
         except (ValueError, OSError) as exc:
             problems.append(f"{path}: bad JSON: {exc}")
             continue
@@ -276,5 +296,19 @@ def run(root, action):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["check", "build"])
+    parser.add_argument("--root", type=Path, default=ROOT,
+                        help="Existing host-local library root (no writes for check)")
+    parser.add_argument("--expect-empty", action="store_true",
+                        help="Check that a starter has zero canonical records")
     args = parser.parse_args()
-    raise SystemExit(run(ROOT, args.action))
+    root = args.root.absolute()
+    if args.expect_empty:
+        problems, ideas, feats = validate(root)
+        if problems:
+            for issue in problems:
+                print("FAIL:", issue)
+            raise SystemExit(1)
+        if ideas or feats:
+            print("FAIL: starter must contain zero canonical records")
+            raise SystemExit(1)
+    raise SystemExit(run(root, args.action))
