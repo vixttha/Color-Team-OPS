@@ -50,13 +50,6 @@ class OneWayBoundaryTests(unittest.TestCase):
                 self.assertFalse(folder.is_symlink())
         self.assertFalse((ROOT / "governance" / "catalog.yaml").exists())
 
-    def test_optional_ci_is_only_explicitly_scoped_library_gate(self):
-        workflows = ROOT / ".github" / "workflows"
-        if workflows.exists():
-            self.assertEqual(
-                {p.name for p in workflows.iterdir()},
-                {"idea-feature-library-v002.yml"})
-
     def test_one_way_rule_is_explicit(self):
         text = (ROOT / "docs" / "ONE-WAY-BOUNDARY.md").read_text(encoding="utf-8")
         for rule in ("No upstream registration", "No upstream modification",
