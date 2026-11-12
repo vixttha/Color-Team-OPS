@@ -38,7 +38,9 @@ class SixTeamRepairs(unittest.TestCase):
         issues, ideas, features = library.validate(self.host)
         self.assertTrue(issues)
         self.assertEqual((ideas, features), ({}, {}))
-        self.assertIn("bad JSON", " ".join(issues))
+        self.assertTrue(
+            any("bad JSON" in issue or "JSON nesting exceeds" in issue
+                for issue in issues), issues)
 
     def test_red_parseable_nested_record_rejected_at_depth_limit(self):
         path = self.host / "ideas/records/IDEA-000001.json"
