@@ -1,4 +1,4 @@
-# Feature Library
+# Provenistem — Feature library
 
 A feature is a durable identity for a **project-owned capability**, distinct from brainstorming and from release membership. The files in `records/` are canonical; `INDEX.md` is a derived view and begins empty.
 
