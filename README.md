@@ -1,34 +1,13 @@
-# Purple Feature & Idea Library — Color-Team-OPS example
+# RETIRED — historical Provenistem / Idea + Feature Library lane
 
-**Status:** Optional, isolated, human-readable and LLM-readable research/development library. **Not a dependency of the Color-Team-OPS plugin, Head mission engine or v0.0.2 release.** This branch preserves the original 36 Color-Team-OPS idea records, five umbrella feature proposals and their historical source provenance.
+**Status: RETIRED / RELOCATED (owner-approved 2026-11-12).** This branch is no longer a source, install, CI or release authority for Provenistem. No current implementation, package copy, source workflow or approval arm is intentionally present at this branch HEAD.
 
-## Browse
-- [37 ideas](ideas/INDEX.md) — original 36 historical ideas plus the separately captured IDEA-000037
-- [5 feature candidates](features/INDEX.md) — broad capability bundles, **not the count of implemented product functionality**
-- [2026-11-04 current v0.0.2 evidence reconciliation (all 37 ideas + five features)](docs/V002-FEATURE-IDEA-CURRENT-STATUS-2026-11-04.md) — latest source/test/host and actual remaining release gates
-- [Four optional future-capability decisions (2026-11-04)](docs/V002-FOUR-OPTIONAL-CAPABILITIES-SCOPE-DECISION-2026-11-04.md) — One-action planner, optional library, protected-host infrastructure, and autonomous specialists are **not** v0.0.2 release prerequisites
-- [Six-team × five-pass source audit of current private v0.0.2 staging](docs/V002-STAGING-SIX-TEAM-FIVE-PASS-AUDIT-2026-11-04.md) — 30 sequential logical reviews, 29/29 current functional file parity, unresolved real-host acceptance
-- [Current dated evidence / 36-idea synergy and conflict audit](docs/IDEA-FEATURE-SYNERGY-CONFLICT-AUDIT-2026-10-30.md) — do not confuse the older proposal status with live engineering
-- [LLM + human reading guide](LIBRARY-AGENT-GUIDE.md)
-- [Standalone reusable starter](portable/README.md) — use the empty catalog and generic schemas; **do not copy these 36 example records into an unrelated project**
-- [Portability and product isolation](docs/PORTABILITY-AND-ISOLATION.md)
+**Authoritative maintained tracker source:** [Governance-Branch-Bible / provenistem/main / packages/provenistem](https://github.com/vixttha/Governance-Branch-Bible/tree/provenistem/main/packages/provenistem).
 
-## How to use this optional library
-Read `ideas/INDEX.md`, `features/INDEX.md` and the dated audit. For a specific concept, open the original JSON record. Cross-check live engineering state from its exact GitHub branch+SHA; source snapshots may be stale. Discuss pros/cons, combinations, conflicts and approval boundaries. Proposed records never authorize work, team dispatch, merge, budget spend or publication.
+**Official private v0.0.2 release:** [Governance-Branch-Bible / provenistem-v0.0.2](https://github.com/vixttha/Governance-Branch-Bible/releases/tag/provenistem-v0.0.2). The package's exact Git tree `ae25b1ed1f6d87e7a7647fca2eba338cc9184d08` matches the original historical 24-file v0.0.2 package byte-for-byte. Original prior versions and Git commit ancestry remain recoverable from this repository's Git history.
 
-Color-Team-OPS runtime **must work when `ideas/`, `features/`, `portable/` and these research docs are completely absent**. The master v0.0.2 candidate currently contains copied proposal records, but that is historical integration provenance, not evidence they must ship or execute. Exclude this optional library from the final runtime package unless the owner separately approves it, and test absence.
+**Historical original Color-Team-OPS tag/release:** [Provenistem v0.0.2 — moved](https://github.com/vixttha/Color-Team-OPS/releases/tag/provenistem-v0.0.2), preserved for source provenance and GitHub Actions receipts only. Older CI and PR discussions remain historically valid for their exact original SHAs.
 
-## Provenance guard
-The existing idea records intentionally retain `captured/adopted`, `not_planned`, `untested` **as the status of the original proposal import**. This is not a live implementation index: the team registry, host prototype, router, and evaluation scaffold have advanced on other branches. The current audit documents these differences without rewriting approval or test history. A human owner decides approval, and verified source evidence—not text assertions—supports implementation/testing/release states.
+**Do not:** restore package development here; re-arm legacy tests; retag old v0.0.2; interpret a previous source test as current release authorization; alter unrelated Color-Team-OPS product functionality, idea catalogs, skills, or project release policies.
 
-No Python, external account, cloud vendor, GitHub Actions runner, plugin, or local execution environment is needed to read, copy or edit the JSON/Markdown library. Existing `tools/` scripts are optional developer helpers and currently contain **project-specific assumptions**; use `portable/` for a blank reusable format.
-
-## Library compatibility repair — 2026-10-30
-
-The 36 idea and 5 feature records remain an **unchanged historical snapshot**. The checker is now count-neutral, references and indexes are validated, and the unrelated-project template is available at [`portable/v0.0.1`](portable/v0.0.1/README.md) with an optional no-clobber adopter. New generic adoption must start from that blank starter, not from the historical records.
-
-Read [schema-profile reconciliation](docs/SCHEMA-PROFILES-AND-COMPATIBILITY.md), [historical versus engineering status](docs/HISTORICAL-STATUS-VS-ENGINEERING.md), and [test/acceptance instructions](docs/PORTABILITY-FIX-ACCEPTANCE-2026-10-30.md). `portable/` root files remain backward-compatibility research examples; they are **not** a second authoritative release catalog. No runtime or v0.0.2 integration branch was changed by this work.
-
-## New owner-requested concept (separate from original 36)
-
-The 36 imported idea records and five proposed feature umbrellas above remain the frozen historical source set. A **37th, newly captured idea** is [IDEA-000037 — One-action mission pipeline planner and adaptive team launcher](ideas/records/IDEA-000037.json), with a [detailed concept and acceptance boundaries](docs/IDEA-000037-ONE-ACTION-MISSION-PIPELINE.md). This addition is captured/not_planned/untested and not approved for v0.0.2 implementation or release; the optional library is still not a runtime dependency.
+**Current product purpose:** Provenistem only tracks a project's Ideas & Features and progress. B is independently usable/isolated in Governance-Bible, while A (single native tracker consolidation) remains unimplemented pending lossless compatibility proof. This historical branch has no active responsibilities.
