@@ -1,12 +1,12 @@
-# One-way Boundary — Idea + Feature Library v0.0.2 development candidate
+# Provenistem — One-way Governance boundary (v0.0.2)
 
 **Authority scope:** This is a rule for *this optional side template and its adopters*. It does **not** amend, register with, send instructions to, or impose a new requirement on Governance-Branch.
 
 ## One-way rule
 
 ```
-Side template  --may understand the concept of-->  Governance-Branch
-Governance-Branch  --must not depend on-->  side template
+Provenistem  --may understand the concept of-->  Governance-Branch
+Governance-Branch  --must not depend on-->  Provenistem
 ```
 
 Governance-Branch must remain **agnostic** to the existence, identity, version, location, build process, catalog, and life cycle of this little side template. The dependency direction must never reverse.
@@ -32,4 +32,4 @@ When Governance and the side template occupy the same candidate directory, **STO
 
 ### Verification limit
 
-Static checks in `tests/test_one_way_boundary.py` detect obvious forbidden imports, activation files and non-blank template records. The v0.0.2 development tests add local record/parser/index hardening, but these do not prove anything about Governance-Branch's runtime or external write controls. They are useful regression guards, not immutable GitHub branch protections, continuous monitoring, full code security analysis or a promise about all future commits. Production-wide enforcement requires independent reviews and write-authority restrictions.
+Static checks in `tests/test_one_way_boundary.py` detect obvious forbidden imports, activation files and non-blank template records. Provenistem v0.0.2 tests add local record/parser/index hardening, but these do not prove anything about Governance-Branch's runtime or external write controls. They are useful regression guards, not immutable GitHub branch protections, continuous monitoring, full code security analysis or a promise about all future commits. Production-wide enforcement requires independent reviews and write-authority restrictions.
