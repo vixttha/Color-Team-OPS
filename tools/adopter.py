@@ -20,7 +20,7 @@ PACKAGE_DOCS = {
 PACKAGE_TOOL_FILES = {"library.py", "adopter.py"}
 PACKAGE_TEST_FILES = {
     "test_library.py", "test_one_way_boundary.py", "test_hardening.py",
-    "test_adopter_profiles.py",
+    "test_adopter_profiles.py", "test_v002_six_team_repairs.py",
 }
 
 
