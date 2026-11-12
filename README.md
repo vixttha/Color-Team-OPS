@@ -1,8 +1,8 @@
 # Provenistem — v0.0.2
 
-**Product:** Provenistem · **Version:** v0.0.2 · **Distribution:** private, standalone, optional. This package was accepted by scoped source and adopter tests; every new adopter still requires its own compatibility review. This is not a Color-Team-OPS product release or a Governance runtime dependency. The GitHub release/tag is the publication record, not this document.
+**Product:** Provenistem · **Versioning:** independent · **Mode:** portable, standalone and optionally host-integrated. Governance-Branch can offer a separately authorized optional adapter without becoming dependent on Provenistem; Provenistem does not require Governance. This branch documents a future neutral package contract and does not republish the historical v0.0.2 release.
 
-The frozen [v0.0.1 branch](https://github.com/vixttha/Color-Team-OPS/tree/idea-feature-library-v0.0.1) remains the comparison baseline. See [source and extraction provenance](docs/PROVENANCE.md) for exact source references and acceptance limits. The package intentionally excludes development audit reports and self-hosted CI machinery.
+The earlier v0.0.1 design remains a historical baseline; the v0.0.2 private tag is immutable. See the [product-neutral provenance boundary](docs/PROVENANCE.md) and [owner-locked optional integration rules](docs/PORTABILITY-AND-MODULE-CONTRACT.md). Internal development audit reports and CI machinery are excluded from portable packages.
 
 **The living record of a project's possibilities.** Provenistem preserves the distinction between what a project imagines, what people decide, what is implemented, what testing actually supports, and what official release authority declares shipped. It makes project knowledge traceable without turning a suggestion into a command or an evidence reference into authenticated proof.
 
@@ -13,7 +13,7 @@ Provenistem contains exactly two portable record libraries:
 
 A human can use the files directly in GitHub. An LLM can read and suggest edits by following [the agent guide](LIBRARY-AGENT-GUIDE.md). No plugin, Governance installation, cloud service, runner, Python, or local environment is required to *use the records*.
 
-**Starts empty.** `ideas/records/` and `features/records/` intentionally contain no project-specific ideas or features. Example documents in `templates/` are examples only, never canonical records. The source Color-Team-OPS library's 36 ideas and 5 candidate features are *not* included in this portable template.
+**Starts empty.** `ideas/records/` and `features/records/` intentionally contain no real adopter records. Documents in `templates/` are synthetic examples only, never canonical project data.
 
 ## Quick use (GitHub website only)
 
@@ -28,7 +28,7 @@ No GitHub Actions workflow, runner configuration, release authorization, or deve
 
 ## One-way Governance isolation
 
-[The one-way boundary contract](docs/ONE-WAY-BOUNDARY.md) prohibits a Governance-Branch dependency on Provenistem, upstream registration, automatic synchronization, and overwriting Governance-owned `ideas/` or `features/` paths. The template may know the concept of Governance but cannot make Governance know it exists.
+[The interoperability boundary](docs/ONE-WAY-BOUNDARY.md) allows Governance-Branch to *offer* Provenistem as an opt-in, host-owned module, but forbids mandatory dependencies, upstream mutations, silent installation, schema conversion and overwriting canonical `ideas/` or `features/` paths. The adapter is a future design, not a shipped integration.
 
 ## Authority and trust
 
