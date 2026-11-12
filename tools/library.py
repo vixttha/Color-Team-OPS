@@ -6,12 +6,14 @@ Not a JSON-Schema compliance engine; does not authenticate evidence or approve r
 import argparse
 import json
 import re
+from decimal import Decimal
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 ROOT = Path(__file__).resolve().parents[1]
 DECISION_STATES = {"adopted", "parked", "rejected", "superseded", "duplicate", "retired"}
 MAX_RECORD_BYTES = 65536
 MAX_RECORD_FILES = 10000
+MAX_JSON_DEPTH = 96
 
 
 SUPPORTED_SCHEMA_KEYS = {
@@ -62,6 +64,42 @@ def schema_issues(spec, where):
     return issues
 
 
+def within_depth(value, limit=MAX_JSON_DEPTH):
+    """Bound already-parsed JSON nesting without recursive Python calls."""
+    stack = [(value, 0)]
+    while stack:
+        item, depth = stack.pop()
+        if depth > limit:
+            return False
+        if isinstance(item, dict):
+            stack.extend((child, depth + 1) for child in item.values())
+        elif isinstance(item, list):
+            stack.extend((child, depth + 1) for child in item)
+    return True
+
+
+def json_identity(value):
+    """JSON value equality for uniqueItems; object key order is insignificant.
+
+    Keep booleans distinct from numbers and treat 1 and 1.0 as equal.
+    Caller must first enforce MAX_JSON_DEPTH on untrusted records.
+    """
+    if value is None:
+        return ("null",)
+    if isinstance(value, bool):
+        return ("bool", value)
+    if isinstance(value, (int, float, Decimal)):
+        return ("number", Decimal(str(value)).normalize())
+    if isinstance(value, str):
+        return ("string", value)
+    if isinstance(value, list):
+        return ("array", tuple(json_identity(item) for item in value))
+    if isinstance(value, dict):
+        return ("object", tuple(sorted(
+            (key, json_identity(item)) for key, item in value.items())))
+    raise TypeError("unsupported JSON value")
+
+
 def shape(value, schema, where):
     """Check only the JSON-Schema v1 keywords used by this template."""
     issues = []
@@ -81,12 +119,12 @@ def shape(value, schema, where):
             issues.append(f"{where}: text too short")
         if "maxLength" in schema and len(value) > schema["maxLength"]:
             issues.append(f"{where}: text too long")
-        if "pattern" in schema and not re.fullmatch(schema["pattern"], value):
+        if "pattern" in schema and re.search(schema["pattern"], value) is None:
             issues.append(f"{where}: invalid format")
     if isinstance(value, list):
         if len(value) < schema.get("minItems", 0):
             issues.append(f"{where}: too few entries")
-        if schema.get("uniqueItems") and len(set(map(json.dumps, value))) != len(value):
+        if schema.get("uniqueItems") and len({json_identity(item) for item in value}) != len(value):
             issues.append(f"{where}: duplicate entries")
         for i, item in enumerate(value):
             issues.extend(shape(item, schema.get("items", {}), f"{where}[{i}]"))
@@ -158,8 +196,11 @@ def read_records(root, section, schema):
                 path.read_text(encoding="utf-8"),
                 parse_constant=lambda c: (_ for _ in ()).throw(
                     ValueError("invalid nonfinite JSON constant: " + c)))
-        except (ValueError, OSError) as exc:
+        except (ValueError, OSError, RecursionError) as exc:
             problems.append(f"{path}: bad JSON: {exc}")
+            continue
+        if not within_depth(row):
+            problems.append(f"{path}: JSON nesting exceeds {MAX_JSON_DEPTH}")
             continue
         if not isinstance(row, dict):
             problems.append(f"{path}: expected object")
@@ -191,8 +232,13 @@ def validate(root=ROOT):
     try:
         idea_schema = json.loads((root / "ideas/schema/v1/idea.schema.json").read_text(encoding="utf-8"))
         feat_schema = json.loads((root / "features/schema/v1/feature.schema.json").read_text(encoding="utf-8"))
-    except (ValueError, OSError) as exc:
+    except (ValueError, OSError, RecursionError) as exc:
         return [f"schema unavailable or invalid: {exc}"], {}, {}
+    for name, spec in (("ideas", idea_schema), ("features", feat_schema)):
+        if not within_depth(spec):
+            problems.append(f"{name}: schema nesting exceeds {MAX_JSON_DEPTH}")
+    if problems:
+        return problems, {}, {}
     for path, schema in (("ideas", idea_schema), ("features", feat_schema)):
         problems.extend(schema_issues(schema, f"{path}.schema"))
         if not isinstance(schema, dict) or schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
