@@ -33,7 +33,7 @@ class AdopterProfiles(unittest.TestCase):
         path = self.host / section / "records" / (row["id"] + ".json")
         path.write_text(json.dumps(row, indent=2), encoding="utf-8")
 
-    def test_ddw_extension_preserved_and_maxlength_enforced(self):
+    def test_synthetic_host_schema_extension_and_maxlength(self):
         schema_path = self.host / "features/schema/v1/feature.schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         schema["properties"]["limitations"] = {
@@ -53,7 +53,7 @@ class AdopterProfiles(unittest.TestCase):
         self.put("features", feature)
         self.assertIn("text too long", " ".join(library.validate(self.host)[0]))
 
-    def test_mondex_populated_profile_no_assumptions_about_counts(self):
+    def test_synthetic_populated_host_not_bound_to_default_counts(self):
         # Representative synthetic records: no actual adopter data or source repository.
         for i in range(1, 21):
             row = self.example("idea")
