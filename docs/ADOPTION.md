@@ -1,5 +1,7 @@
 # Provenistem — Standalone adoption guide (v0.0.2)
 
+**Purpose:** track project Ideas & Features and their status/progress, nothing broader. See [the owner-locked product scope](PRODUCT-SCOPE-LOCK.md).
+
 ## Zero-install copy
 **This is a draft procedure; it is not a receipt for a completed fresh-adopter test.** Before copying, inspect the host's governing instructions, existing `ideas/`, `features/`, `templates/`, `tools/`, and target paths. Select a new isolated destination or stop for human-owned reconciliation; do not merge independent canonical registries automatically.
 
