@@ -47,15 +47,16 @@ Missing exact SHA; unexpected commit; unaudited workflow modification; unknown/u
 
 **No automatic merge, publication, cross-project update, runner installation, Governance modification or final release attestation.**
 
-## Gate ledger (fill from live evidence only)
+## Gate ledger — exact SHA and receipt (last updated 2026-11-11)
 
-- Pipeline source SHA: **PENDING**
-- First arm SHA: `52cfd9a76b703a76fd26ec5d62fd353a7a8707a4`; first GitHub Actions run [43108868818](https://github.com/vixttha/Color-Team-OPS/actions/runs/43108868818) **FAILED in setup, before test execution**. Job [130819270641](https://github.com/vixttha/Color-Team-OPS/actions/runs/43108868818/job/130819270641) log: checkout action pin had 37 hex characters, was unavailable. Linux runner was assigned; Windows was skipped. **No regression PASS claim.**
-- Second run [43109348951](https://github.com/vixttha/Color-Team-OPS/actions/runs/43109348951) @ `8de6404773628105be964a2b490e79e3d5d10e22`: Linux entire source regression **PASS**; Windows executed **38/38 unit tests successfully** but failed index reproducibility because `Path.write_text` generated CRLF bytes, rather than committed LF bytes. No overall PASS; logical internal audit step was skipped.
-- Final arm: **NOT ARMED** until exact LF-byte fix and new negative test are reviewed; this is an explicitly bounded third total run, NOT blanket permission for retries.
-- Linux regression: **PASS at second run's exact SHA** (new LF fix requires fresh evidence).
-- Windows regression: **38 Python tests PASS at second run's exact SHA**, overall Windows job FAIL at deterministic index gate (new LF fix requires fresh evidence).
-- MONDEX upgrade: **NOT APPLIED**
-- D-D-World upgrade: **NOT APPLIED**
-- Independently authenticated review: **NOT REQUESTED / NOT CLAIMED**
-- v0.0.2 final release: **NOT AUTHORIZED**
+- **Previously accepted source:** `b1f6fb86f52dd7491d2c8d36158f0fe08eaf5855`, [run 43109873746](https://github.com/vixttha/Color-Team-OPS/actions/runs/43109873746), **SUCCESS: 39/39 Linux and 39/39 Windows; scripted internal auditor PASS**. This is historical evidence, not acceptance for any later source change.
+- **Earlier diagnostics:** first arm `52cfd9a76b703a76fd26ec5d62fd353a7a8707a4`, [run 43108868818](https://github.com/vixttha/Color-Team-OPS/actions/runs/43108868818), failed pre-checkout due invalid pinned Action SHA; second arm [43109348951](https://github.com/vixttha/Color-Team-OPS/actions/runs/43109348951) failed Windows deterministic index bytes following 38 successful unit tests. Both defects were repaired before the successful run above.
+- **Six-team uncovered repairs (Nov 11):** depth-bounded JSON and `RecursionError` handling; `NAMESPACE_COLLISION` stopping the read-only adopter planner when the chosen installation root has Governance canonical markers; JSON Schema substring `pattern` semantics; object-order-independent and number-aware `uniqueItems` equality. Added `tests/test_v002_six_team_repairs.py` and retained original negative tests. **A new exact-SHA Linux/Windows source run is required; previous 39/39 does not prove these new repairs.**
+- **MONDEX host candidate:** [draft PR #51](https://github.com/vixttha/MONDEX/pull/51) at `58f2229703234ab506c8a6a9de9a7faf1a6a8d08`, [real 40/40 Linux and 40/40 Windows host acceptance run 43117842754](https://github.com/vixttha/MONDEX/actions/runs/43117842754) **PASS for that SHA**; later six-team repair backport must be tested separately.
+- **D-D-World host candidate:** [draft PR #13](https://github.com/vixttha/D-D-World/pull/13), original owner-runner candidate `7508438376d0991f97b2d2369572a3f359ee4d5e`. User reports dedicated Linux/Windows self-hosted runners started. Recheck labels and exact candidate SHA before one armed run. No D-D real host PASS yet.
+- **Outside independent review:** waived for the requested internal process; not claimed.
+- **Final release:** not authorized; no automatic merge, publication, source/adopter version bump, or Governance changes.
+
+## New repair-run gate
+
+The source workflow is push-armed only by a deliberate change to `ops/acceptance/idea-feature-library-v002-arm.txt` on this dedicated branch. To validate the new repairs, update the workflow's checked arm string to a new one-use token, review the full exact-SHA diff and runner ownership, and only then change the arm file. Never dispatch automatically from ordinary repair commits. The same evidence rules apply to the host upgrade branches.
