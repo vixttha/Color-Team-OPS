@@ -1,5 +1,7 @@
 # Provenistem — owner-locked standalone and optional integration contract
 
+**Controlling product mission:** [Provenistem tracks project Ideas & Features, their relationships and progress](PRODUCT-SCOPE-LOCK.md). The later explicit owner scope lock supersedes any earlier implication that this is a general knowledge/provenance/evidence/governance platform. Keep integration minimal. A dedicated adapter is an option *if needed*, never a product requirement. This architecture document retains only compatible interoperability safeguards.
+
 **Decision:** `GB-PROVENISTEM-OPTIONAL-RELATIONSHIP-2026-11-12`  
 **Owner ratified:** 2026-11-12  
 **Status:** `STANDALONE_LOCKED / OPTIONAL_INTEGRATION_DESIGN / NO_ADAPTER_IMPLEMENTED`  
