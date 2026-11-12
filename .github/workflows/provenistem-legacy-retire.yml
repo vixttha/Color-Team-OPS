@@ -1,0 +1,46 @@
+name: Retire Provenistem legacy Color-Team-OPS release metadata
+on:
+  push:
+    branches: [idea-feature-library-v0.0.2]
+    paths: [ops/acceptance/provenistem-legacy-retire-arm.txt]
+permissions:
+  contents: read
+concurrency:
+  group: provenistem-legacy-relocation-retirement
+  cancel-in-progress: false
+jobs:
+  retire:
+    if: >-
+      github.repository == 'vixttha/Color-Team-OPS' &&
+      github.actor == 'vixttha' &&
+      github.ref == 'refs/heads/idea-feature-library-v0.0.2' &&
+      github.event.head_commit.message == 'chore(provenistem): owner-arm historical release relocation'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 8
+    permissions:
+      contents: write
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Checkout exact owner-authorized retirement script
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Validate event and original tag preservation marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$RUNNER_OS" = Linux
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(cat ops/acceptance/provenistem-legacy-retire-arm.txt)" = APPROVED-PROVENISTEM-LEGACY-METADATA-RETIRED
+          test -f tools/provenistem_legacy_retire.py
+          echo COLOR_OPS_LEGACY_RELEASE_PRESERVATION_PREFLIGHT_PASS
+      - name: Mark original GitHub release historical without changing tag target
+        shell: bash
+        env:
+          GH_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 -B tools/provenistem_legacy_retire.py
