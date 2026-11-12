@@ -39,7 +39,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           test -z "$(git status --porcelain --untracked-files=all)"
           test -f ops/acceptance/idea-feature-library-v002-arm.txt
-          test "$(cat ops/acceptance/idea-feature-library-v002-arm.txt)" = "APPROVED-SCOPED-V002-ONE-LANE-RETEST-02"
+          test "$(cat ops/acceptance/idea-feature-library-v002-arm.txt)" = "APPROVED-SCOPED-V002-SIXTEAM-REPAIR-01"
           test ! -e AGENTS.md
           test ! -e governance
           test ! -e plugin.json
