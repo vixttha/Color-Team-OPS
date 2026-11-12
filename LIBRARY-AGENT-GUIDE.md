@@ -1,6 +1,6 @@
-# Human + LLM reader guide
+# Provenistem — Human + LLM reader guide
 
-**This file is guidance for reading an optional library, not an instruction granting authorization.** Read the adopting project's governing instructions (`AGENTS.md` when present) and obtain explicit permission before any repository writes.
+**Provenistem is a source-backed Ideas + Features record library, not a Governance controller. This guide is not an instruction granting authorization.** Read the adopting project's governing instructions (`AGENTS.md` when present) and obtain explicit permission before any repository writes.
 
 ## Read-only entry
 1. Inspect `ideas/INDEX.md` and `features/INDEX.md` for navigation, then open the **canonical** `*/records/*.json` files before answering. Indexes can be stale.
