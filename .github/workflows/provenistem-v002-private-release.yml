@@ -1,0 +1,94 @@
+# Private, owner-authorized, one-shot publication of Provenistem.
+# Not a Color-Team-OPS product release. No PR or hosted-runner trigger.
+name: Provenistem v0.0.2 private package release
+on:
+  push:
+    branches: [idea-feature-library-v0.0.2]
+    paths:
+      - ops/acceptance/provenistem-v002-private-release-arm.txt
+permissions:
+  contents: read
+concurrency:
+  group: provenistem-v002-private-package-publication
+  cancel-in-progress: false
+
+jobs:
+  verify-and-publish:
+    name: HEAD → VALIDATE → INTERNAL AUDITOR → private release
+    if: >-
+      github.repository == 'vixttha/Color-Team-OPS' &&
+      github.ref == 'refs/heads/idea-feature-library-v0.0.2' &&
+      github.actor == 'vixttha' &&
+      github.event_name == 'push'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 12
+    permissions:
+      contents: write
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      GIT_CONFIG_COUNT: "1"
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: "false"
+      PACKAGE_SHA: 77e33e7e82ab6d1accc5b331ce2c5b5408db75d2
+      EVENT_SHA: ${{ github.sha }}
+    steps:
+      - name: Checkout reviewed publisher source, no stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          path: harness
+          persist-credentials: false
+          clean: true
+      - name: Checkout exactly branded 24-file package commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 77e33e7e82ab6d1accc5b331ce2c5b5408db75d2
+          path: package
+          persist-credentials: false
+          clean: true
+      - name: HEAD verify owner approval, runner identity, exact SHAs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$RUNNER_OS" = Linux
+          test "$RUNNER_ARCH" = X64
+          test "$(git -C harness rev-parse HEAD)" = "$EVENT_SHA"
+          test "$(git -C package rev-parse HEAD)" = "$PACKAGE_SHA"
+          test "$(cat harness/ops/acceptance/provenistem-v002-private-release-arm.txt)" = "APPROVED-PROVENISTEM-V002-PRIVATE-PUBLISH-ONESHOT"
+          test "$(git -C package ls-files | wc -l)" -eq 24
+          grep -F -q '# Provenistem — v0.0.2' package/README.md
+          test ! -e package/.github
+          test ! -e package/ops
+          test ! -e package/governance
+          test ! -e package/AGENTS.md
+          test ! -e package/src
+          test -z "$(find package/ideas/records package/features/records -maxdepth 1 -name '*.json' -print)"
+          test -z "$(git -C package status --porcelain --untracked-files=all)"
+          echo "PROVENISTEM_PUBLISH_PREFLIGHT_PASS=$PACKAGE_SHA"
+      - name: VALIDATE branded package in the clean Git checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B package/tools/library.py check --expect-empty
+          python3 -B -m unittest discover -s package/tests -p 'test_*.py' -v
+          python3 -B package/tools/library.py build --expect-empty
+          git -C package diff --exit-code -- ideas/INDEX.md features/INDEX.md
+          test -z "$(git -C package status --porcelain --untracked-files=all)"
+          echo "PROVENISTEM_BRANDED_PACKAGE_TESTS_PASS=$PACKAGE_SHA"
+      - name: INTERNAL AUDITOR verify package/harness unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C harness rev-parse HEAD)" = "$EVENT_SHA"
+          test "$(git -C package rev-parse HEAD)" = "$PACKAGE_SHA"
+          test -z "$(git -C package status --porcelain --untracked-files=all)"
+          test -z "$(git -C harness status --porcelain --untracked-files=all)"
+          echo "PROVENISTEM_RELEASE_AUDIT_PASS=$PACKAGE_SHA"
+      - name: Publish private Provenistem Git tag and release only
+        shell: bash
+        env:
+          GH_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 -B harness/.github/scripts/provenistem_v002_private_publish.py
