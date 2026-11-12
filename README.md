@@ -1,8 +1,8 @@
-# Idea + Feature Library — v0.0.2 development candidate
+# Idea + Feature Library — v0.0.2 portable release candidate
 
-**Status: unreleased v0.0.2 development candidate. Optional side template; NOT a Color-Team-OPS product release, a Governance dependency, or independently accepted for unrelated adopters.**
+**Status: v0.0.2 portable package candidate (not published; awaiting explicit owner release authorization).** Source and two existing adopter candidates passed scoped Linux/Windows regression testing. Every new adopter still requires its own compatibility review. This is an optional side template, not a Color-Team-OPS product release or Governance dependency.
 
-The frozen [v0.0.1 branch](https://github.com/vixttha/Color-Team-OPS/tree/idea-feature-library-v0.0.1) remains the comparison baseline. See the [six-team one-lane audit](docs/V002-SIX-TEAM-ONE-LANE-AUDIT.md) for confirmed source findings, development patches, missing executed test receipts and release gates.
+The frozen [v0.0.1 branch](https://github.com/vixttha/Color-Team-OPS/tree/idea-feature-library-v0.0.1) remains the comparison baseline. See [source and extraction provenance](docs/PROVENANCE.md) for exact source references and acceptance limits. The package intentionally excludes development audit reports and self-hosted CI machinery.
 
 This branch contains exactly two portable record libraries:
 
@@ -22,7 +22,7 @@ A human can use the files directly in GitHub. An LLM can read and suggest edits 
 
 Run optional checks when Python happens to be available: `python tools/library.py check`, `python tools/library.py build`, `python -m unittest discover -s tests -v`. Copy `tools/` and `tests/` if those helpers are wanted. **v0.0.2 adds count-neutral populated-adopter tests, a bounded validator, local `maxLength` schema support and read-only `python tools/adopter.py <host-library-root>` no-clobber planning.** Starter publishers can also use `python tools/library.py check --expect-empty`; do **not** apply that flag to populated adopters.
 
-[One-lane ChatGPT + owner GitHub runner contract](docs/V002-ONE-LANE-SELFHOSTED-PIPELINE.md) is an optional development/test workflow, never a runtime dependency. The pinned one-shot CI pipeline must not be used to imply an independent human/security audit.
+No GitHub Actions workflow, runner configuration, release authorization, or development test-arm file is included in this portable package. Any CI is optional and host-owned. Prior source/host test receipts do not imply independent external security certification.
 
 ## One-way Governance isolation
 
@@ -42,4 +42,4 @@ Only an actual project's release authority can assert shipped versions. The temp
 - [Isolation / threat boundaries](docs/ISOLATION.md)
 - [Provenance and source separation](docs/PROVENANCE.md)
 
-Development target: `0.0.2` (**not released**); frozen baseline: `0.0.1`. Neither is an adopting project's product version.
+Candidate version: `0.0.2` (**not published or tagged**); frozen baseline: `0.0.1`. Neither is an adopting project's product version.
