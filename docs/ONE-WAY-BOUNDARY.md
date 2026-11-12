@@ -1,35 +1,43 @@
-# Provenistem — One-way Governance boundary (v0.0.2)
+# Provenistem — One-way runtime boundary and optional integration
 
-**Authority scope:** This is a rule for *this optional side template and its adopters*. It does **not** amend, register with, send instructions to, or impose a new requirement on Governance-Branch.
+**Architecture decision:** `GB-PROVENISTEM-OPTIONAL-RELATIONSHIP-2026-11-12`  
+**Status:** owner-ratified future design; private v0.0.2 historical tag unchanged.
 
-## One-way rule
+See [the locked product-neutral integration contract](PORTABILITY-AND-MODULE-CONTRACT.md).
+
+## Permanent one-way rule
 
 ```
-Provenistem  --may understand the concept of-->  Governance-Branch
-Governance-Branch  --must not depend on-->  Provenistem
+Provenistem core  --requires-->  no host framework
+Host-owned optional adapter  -->  Provenistem's supported local contract
+Host core  --requires-->  no Provenistem runtime
 ```
 
-Governance-Branch must remain **agnostic** to the existence, identity, version, location, build process, catalog, and life cycle of this little side template. The dependency direction must never reverse.
+**Governance-Branch may know that Provenistem exists as an opt-in module** and, after independent owner approval, may implement a Governance-owned adapter. This narrowly supersedes the v0.0.2 *documentation* clause that forbade Governance from even being aware of the package. It does **not** allow Governance core to depend on Provenistem, nor Provenistem core to depend on Governance. No adapter is shipped by this document, and no installation/activation is assumed.
 
-1. **No upstream registration:** Do not add this template to Governance's catalog, adoption registry, default discovery, release manifest, bootstrap, CLI, dependencies, or test requirements.
-2. **No upstream modification:** Installing or editing this template must never write to, open a PR against, bump a version in, or auto-sync with Governance-Branch's source or Bible.
-3. **No runtime dependency:** This template must work without Governance; Governance must work when the template does not exist. No API calls, callbacks, environment requirements, imports, workflow triggers, or monitoring hooks connecting either product.
-4. **No shared authority:** The side template cannot grant permissions, approve a mission, verify independent evidence, advance Governance gates, or claim release membership.
-5. **No imported project records:** Every adopter owns its own identities and records. Never import Color-Team-OPS's 36 ideas / five feature candidates or another project's decisions as default data.
-6. **No path collisions:** Refuse to replace existing `ideas/`, `features/`, `tools/`, `AGENTS.md`, or Governance-managed files. A repository with Governance installed must choose a separately isolated optional location, with an explicit host-owned migration plan, rather than automatically merging two canonical libraries.
-7. **Names are not contracts:** `IDEA-xxxxxx` and `FEAT-xxxxxx` are project-local identifiers, not proof of a shared schema or a global ID registry. Governance's YAML/UUIDv7 idea records and this JSON template are **not** automatically compatible.
-8. **No inferred upstream state:** The template may cite Governance as design inspiration, but it must not track Governance's current version, progress, policy, release, or active missions as a prerequisite.
-9. **No automatic synchronization:** Two template branches or project copies may evolve independently. Any schema change requires explicit local review, opt-in transfer and field-by-field verification. No cross-repo mirroring.
-10. **Optional removal:** Deleting the entire side template must leave the host product and Governance operational, except for user-authored links explicitly referencing removed records.
+1. **No upstream registration:** Provenistem itself must never automatically register into a host's capability catalog, bootstrap, CLI, module registry, default install, dependencies or release plan. An expressly opt-in **host-owned adapter**, added through the host's own approved product process, is a separate action.
+2. **No upstream modification:** Installing or updating Provenistem never writes into an unrelated control plane's source, permissions, policy, product manifests, version history or canonical records.
+3. **No runtime dependency:** Provenistem works without Governance-Branch; Governance-Branch works without Provenistem. Optional adapter code is kept outside both standalone cores.
+4. **No shared authority:** Ideas, decisions, source references and test states cannot grant work, publish releases, attest evidence, skip security gates, or change authorization.
+5. **No imported project records:** Every adopting project owns its own IDs and data. No actual adopter, maintainer, demonstration team or development project's canonical records ship by default.
+6. **No path collisions:** Do not replace an occupied `ideas/`, `features/`, `tools/`, `AGENTS.md` or governance namespace. Use a separately owner-approved location such as `modules/provenistem/`.
+7. **Names are not contracts:** `IDEA-xxxxxx`, `FEAT-xxxxxx`, JSON/YAML IDs and schema versions are project-local; collisions or identical labels do not establish schema compatibility or shared authority.
+8. **No inferred upstream state:** Package presence, a recommendation, an index or a cached record does not prove the live host's module status, runner readiness, provider permissions, release state or owner consent.
+9. **No automatic synchronization:** Versioning, data migrations and compatibility changes need exact-source checks and project-owner authorization. No silent mirroring or cross-repo installation.
+10. **Optional removal:** Either product must continue to function if the other is absent. Disabling an adapter does not delete host records or change the host's release authority.
 
-### What the little piece *may* do
+## Collision response and real limits
 
-It may be copied into a project, help a person or LLM review that project's own Ideas and Features, and document that it is a **small optional piece of a larger developer ecosystem**. Awareness is explanatory, not executable or authoritative.
+A read-only planner must stop with `NAMESPACE_COLLISION` when recognized canonical namespaces conflict. The existing planner uses known root markers such as `ideas/library.yaml`, `src/governance_branch/libraries/ideas.py`, `governance/`, and incompatible canonical schema signatures. Recognizing such markers is defensive compatibility behavior, **not** a dependency or claim to recognize all possible conflicts.
 
-### Conflict response
+Owner review is needed for unknown schemas, unverified repository state, symlink/path races and every proposed migration. The library does not secure an arbitrary compromised host. An authenticated external review is not implied by static checks.
 
-When Governance and the side template occupy the same candidate directory, **STOP** and report `NAMESPACE_COLLISION`. The read-only `tools/adopter.py` now enforces that stop for recognized markers at the **selected destination root**: `ideas/library.yaml`, canonical `uid`/`$defs` idea schema signatures, a `src/governance_branch/libraries/ideas.py` file, or an existing `governance/` path. It returns `writes: false` and **no upgrade entries**, with a nonzero exit status. A standalone `AGENTS.md` mention of Governance is not an installation marker; do not block legitimate hosts merely for describing an independent project. A separately isolated optional subdirectory under a governed host remains eligible for its own plan. This signature-based detection is conservative but not exhaustive; human review of unknown schemas and destination ownership remains required. Do not replace or merge Governance catalogs. When a source revision or compatibility contract is unknown, report `UNVERIFIED` rather than guessing.
+## Product neutrality
 
-### Verification limit
+Future **final shipping packages** must not expose or assume any unrelated customer's, adopter's or internal development project's name, private repository, real records, host-specific runner, internal CI evidence, team role or secret. Use neutral synthetic examples. Keep historical provenance in separate internal development evidence, not in portable product defaults.
 
-Static checks in `tests/test_one_way_boundary.py` detect obvious forbidden imports, activation files and non-blank template records. Provenistem v0.0.2 tests add local record/parser/index hardening, but these do not prove anything about Governance-Branch's runtime or external write controls. They are useful regression guards, not immutable GitHub branch protections, continuous monitoring, full code security analysis or a promise about all future commits. Production-wide enforcement requires independent reviews and write-authority restrictions.
+Published v0.0.2 is a frozen historical artifact. This owner lock is a **future-architecture decision**; do not force-update its tag, claim the optional Governance adapter has been implemented, or silently change v0.3.1 product release scope.
+
+## Verification limit
+
+Static checks in `tests/test_one_way_boundary.py` guard obvious forbidden imports and the documented one-way contract. The additional modularity policy test validates the new architecture metadata. These checks are not branch protection, an installed integration, independent attestation, or runtime security proof.
