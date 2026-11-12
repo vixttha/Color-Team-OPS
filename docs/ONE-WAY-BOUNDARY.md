@@ -28,7 +28,7 @@ It may be copied into a project, help a person or LLM review that project's own 
 
 ### Conflict response
 
-When Governance and the side template occupy the same candidate directory, **STOP** and report `NAMESPACE_COLLISION`. Do not replace or merge their catalogs. When a source revision or compatibility contract is unknown, report `UNVERIFIED` rather than guessing.
+When Governance and the side template occupy the same candidate directory, **STOP** and report `NAMESPACE_COLLISION`. The read-only `tools/adopter.py` now enforces that stop for recognized markers at the **selected destination root**: `ideas/library.yaml`, canonical `uid`/`$defs` idea schema signatures, a `src/governance_branch/libraries/ideas.py` file, or an existing `governance/` path. It returns `writes: false` and **no upgrade entries**, with a nonzero exit status. A standalone `AGENTS.md` mention of Governance is not an installation marker; do not block legitimate hosts merely for describing an independent project. A separately isolated optional subdirectory under a governed host remains eligible for its own plan. This signature-based detection is conservative but not exhaustive; human review of unknown schemas and destination ownership remains required. Do not replace or merge Governance catalogs. When a source revision or compatibility contract is unknown, report `UNVERIFIED` rather than guessing.
 
 ### Verification limit
 
