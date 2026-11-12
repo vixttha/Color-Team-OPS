@@ -1,4 +1,4 @@
-# Ideas Library
+# Provenistem — Ideas library
 
 Human-readable exploration backed by schema-guided JSON records. The files in `records/` are canonical; `INDEX.md` is a derived view and begins empty.
 
