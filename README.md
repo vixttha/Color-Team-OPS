@@ -4,7 +4,7 @@
 
 The earlier v0.0.1 design remains a historical baseline; the v0.0.2 private tag is immutable. See the [product-neutral provenance boundary](docs/PROVENANCE.md) and [owner-locked optional integration rules](docs/PORTABILITY-AND-MODULE-CONTRACT.md). Internal development audit reports and CI machinery are excluded from portable packages.
 
-**The living record of a project's possibilities.** Provenistem preserves the distinction between what a project imagines, what people decide, what is implemented, what testing actually supports, and what official release authority declares shipped. It makes project knowledge traceable without turning a suggestion into a command or an evidence reference into authenticated proof.
+**Provenistem is a portable Ideas & Features tracker for any project.** Record ideas and features, connect related items, and follow their status and development progress. Decision, origin, testing and evidence-reference fields are supporting tracking details—not a broader governance or verification product. [This simple scope is owner-locked.](docs/PRODUCT-SCOPE-LOCK.md)
 
 Provenistem contains exactly two portable record libraries:
 
