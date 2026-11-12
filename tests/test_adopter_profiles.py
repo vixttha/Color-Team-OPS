@@ -100,6 +100,29 @@ class AdopterProfiles(unittest.TestCase):
         self.assertEqual(local.read_bytes(), before)
         self.assertEqual((self.host / "ideas/records/IDEA-000001.json").read_bytes(), record_before)
 
+    def test_planner_includes_all_portable_regression_suites(self):
+        expected = {
+            "test_library.py",
+            "test_one_way_boundary.py",
+            "test_hardening.py",
+            "test_adopter_profiles.py",
+            "test_v002_six_team_repairs.py",
+        }
+        listed = {
+            p.name for p in adopter.candidates(ROOT)
+            if p.parts[0] == "tests"
+        }
+        self.assertEqual(listed, expected)
+        clean = self.root / "fresh-adopter"
+        plan = adopter.plan(ROOT, clean)
+        self.assertEqual(plan["status"], "NEW_DESTINATION")
+        self.assertFalse(plan["writes"])
+        self.assertIn(
+            {"path": "tests/test_v002_six_team_repairs.py", "action": "ADD"},
+            plan["entries"],
+        )
+        self.assertFalse(clean.exists())
+
     def test_clean_host_plan_never_writes(self):
         dest = self.root / "brand-new-root"
         result = adopter.plan(ROOT, dest)
