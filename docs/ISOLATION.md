@@ -1,6 +1,6 @@
-# Non-interference and security boundary
+# Provenistem — Non-interference and security boundary
 
-This template only stores project-owned Ideas and Features metadata. It is **not** a Color-Team-OPS worker, team skill, runtime library, policy engine, scheduler, release system or authorization framework.
+Provenistem only stores project-owned Ideas and Features metadata. It is **not** a Color-Team-OPS worker, team skill, runtime library, policy engine, scheduler, release system or authorization framework.
 
 - No required application imports, network calls, environment variables, secrets, hosted provider, plugin, dedicated infrastructure, self-hosted runner, or paid GitHub Actions.
 - No agent prompt overrides host instructions, human permissions, code owners, branch protection, exact-SHA verification or externally required security/release gates.
