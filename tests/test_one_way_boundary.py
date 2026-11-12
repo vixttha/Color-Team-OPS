@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / "tools"
 ALLOWED = {
-    "argparse", "json", "re", "pathlib", "copy", "sys", "tempfile",
+    "argparse", "json", "re", "decimal", "pathlib", "copy", "sys", "tempfile",
     "unittest", "shutil", "check_idea_feature_library", "library"
 }
 FORBIDDEN_ROOT = (
