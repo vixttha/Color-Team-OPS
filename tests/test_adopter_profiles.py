@@ -54,7 +54,7 @@ class AdopterProfiles(unittest.TestCase):
         self.assertIn("text too long", " ".join(library.validate(self.host)[0]))
 
     def test_mondex_populated_profile_no_assumptions_about_counts(self):
-        # Representative generated *synthetic* records, not MONDEX private content.
+        # Representative synthetic records: no actual adopter data or source repository.
         for i in range(1, 21):
             row = self.example("idea")
             row["id"] = f"IDEA-{i:06d}"
