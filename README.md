@@ -1,10 +1,12 @@
-# Idea + Feature Library — v0.0.2 portable release candidate
+# Provenistem — v0.0.2
 
-**Status: v0.0.2 portable package candidate (not published; awaiting explicit owner release authorization).** Source and two existing adopter candidates passed scoped Linux/Windows regression testing. Every new adopter still requires its own compatibility review. This is an optional side template, not a Color-Team-OPS product release or Governance dependency.
+**Product:** Provenistem · **Version:** v0.0.2 · **Distribution:** private, standalone, optional. This package was accepted by scoped source and adopter tests; every new adopter still requires its own compatibility review. This is not a Color-Team-OPS product release or a Governance runtime dependency. The GitHub release/tag is the publication record, not this document.
 
 The frozen [v0.0.1 branch](https://github.com/vixttha/Color-Team-OPS/tree/idea-feature-library-v0.0.1) remains the comparison baseline. See [source and extraction provenance](docs/PROVENANCE.md) for exact source references and acceptance limits. The package intentionally excludes development audit reports and self-hosted CI machinery.
 
-This branch contains exactly two portable record libraries:
+**The living record of a project's possibilities.** Provenistem preserves the distinction between what a project imagines, what people decide, what is implemented, what testing actually supports, and what official release authority declares shipped. It makes project knowledge traceable without turning a suggestion into a command or an evidence reference into authenticated proof.
+
+Provenistem contains exactly two portable record libraries:
 
 - [Ideas](ideas/README.md): possibilities, pros/cons, reasons, exploration, and human decisions.
 - [Features](features/README.md): stable capability identities, implementation status, scoped evidence, and references to ideas.
@@ -26,7 +28,7 @@ No GitHub Actions workflow, runner configuration, release authorization, or deve
 
 ## One-way Governance isolation
 
-[The one-way boundary contract](docs/ONE-WAY-BOUNDARY.md) prohibits a Governance-Branch dependency on this side template, upstream registration, automatic synchronization, and overwriting Governance-owned `ideas/` or `features/` paths. The template may know the concept of Governance but cannot make Governance know it exists.
+[The one-way boundary contract](docs/ONE-WAY-BOUNDARY.md) prohibits a Governance-Branch dependency on Provenistem, upstream registration, automatic synchronization, and overwriting Governance-owned `ideas/` or `features/` paths. The template may know the concept of Governance but cannot make Governance know it exists.
 
 ## Authority and trust
 
@@ -42,4 +44,4 @@ Only an actual project's release authority can assert shipped versions. The temp
 - [Isolation / threat boundaries](docs/ISOLATION.md)
 - [Provenance and source separation](docs/PROVENANCE.md)
 
-Candidate version: `0.0.2` (**not published or tagged**); frozen baseline: `0.0.1`. Neither is an adopting project's product version.
+Provenistem version: `0.0.2`; frozen experimental library baseline: `0.0.1`. Neither is the adopting project's product version. A private GitHub release must refer to the exact 24-file package commit, not the larger development branch.
