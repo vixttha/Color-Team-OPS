@@ -1,5 +1,7 @@
 # Provenistem — One-way runtime boundary and optional integration
 
+**Controlling scope:** Provenistem is only a project Ideas & Features tracker. See [the owner-locked scope](PRODUCT-SCOPE-LOCK.md). A separate adapter is an optional future compatibility mechanism, **not mandatory**, and no integration is currently implemented.
+
 **Architecture decision:** `GB-PROVENISTEM-OPTIONAL-RELATIONSHIP-2026-11-12`  
 **Status:** owner-ratified future design; private v0.0.2 historical tag unchanged.
 
