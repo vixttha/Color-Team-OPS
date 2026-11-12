@@ -55,6 +55,38 @@ def candidates(source):
     return ordered
 
 
+def governance_collision(destination):
+    """Identify canonical Governance namespaces at the requested installation root.
+
+    Do not scan parent directories: an isolated optional subdirectory is allowed.
+    These are positive markers, not a claim to detect every Governance edition.
+    """
+    found = []
+    for relative in ("ideas/library.yaml",
+                     "src/governance_branch/libraries/ideas.py",
+                     "governance"):
+        if (destination / relative).exists() or (destination / relative).is_symlink():
+            found.append(relative)
+    idea_schema = destination / "ideas/schema/v1/idea.schema.json"
+    if idea_schema.exists() or idea_schema.is_symlink():
+        if library.has_link_component(destination, idea_schema):
+            found.append("ideas/schema/v1/idea.schema.json (symlink)")
+        else:
+            try:
+                if idea_schema.stat().st_size > library.MAX_RECORD_BYTES:
+                    found.append("ideas/schema/v1/idea.schema.json (unrecognized oversized schema)")
+                else:
+                    spec = json.loads(idea_schema.read_text(encoding="utf-8"))
+                    if isinstance(spec, dict) and (
+                        "uid" in spec.get("required", []) or
+                        "uid" in spec.get("properties", {}) or
+                        "$defs" in spec or "$ref" in spec):
+                        found.append("ideas/schema/v1/idea.schema.json (Governance schema signature)")
+            except (OSError, ValueError, TypeError, RecursionError):
+                found.append("ideas/schema/v1/idea.schema.json (unreadable schema)")
+    return sorted(set(found))
+
+
 def plan(source, destination):
     source = Path(source).absolute()
     destination = Path(destination).absolute()
@@ -71,6 +103,11 @@ def plan(source, destination):
                             for p in candidates(source)]}
     if library.has_link_component(destination, destination):
         raise ValueError("host root symlink")
+    collision = governance_collision(destination)
+    if collision:
+        # Deliberately no upgrade file actions: this is a hard stop.
+        return {"status": "NAMESPACE_COLLISION", "writes": False,
+                "entries": [], "markers": collision}
     entries = []
     for relative in candidates(source):
         target = destination / relative
@@ -103,6 +140,8 @@ def main(argv=None):
         print(json.dumps({"status": "BLOCKED", "writes": False, "error": str(exc)}))
         return 2
     print(json.dumps(result, indent=2, sort_keys=True))
+    if result["status"] == "NAMESPACE_COLLISION":
+        return 2
     return 1 if any(e["action"] in ("REVIEW_LOCAL_DIFFERENCE", "CONFLICT_DIRECTORY")
                     for e in result["entries"]) else 0
 
