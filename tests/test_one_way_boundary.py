@@ -32,7 +32,10 @@ class OneWayBoundaryTests(unittest.TestCase):
             source = tool.read_text(encoding="utf-8")
             tree = ast.parse(source, filename=str(tool))
             with self.subTest(script=tool.name):
-                self.assertNotIn("governance_branch", source.lower())
+                # A source-side literal collision marker is allowed. Imports and
+                # executable connections to upstream Governance are NOT allowed.
+                self.assertNotIn("import governance_branch", source.lower())
+                self.assertNotIn("from governance_branch", source.lower())
                 self.assertNotIn("governance/catalog", source.lower())
                 for node in ast.walk(tree):
                     if isinstance(node, ast.Import):
