@@ -32,6 +32,24 @@ class ModularityContractTests(unittest.TestCase):
         self.assertEqual(p["adapter_implementation_status"], "NOT_IMPLEMENTED")
         self.assertTrue((ROOT / p["source_of_authority"]).is_file())
 
+    def test_owner_locked_simple_ideas_features_scope(self):
+        p = self.policy["product_scope"]
+        self.assertEqual(p["decision_id"], "PROVENISTEM-SCOPE-2026-11-12")
+        self.assertEqual(p["status"], "PRODUCT_SCOPE_LOCKED")
+        self.assertEqual(p["primary_mission"], "TRACK_PROJECT_IDEAS_AND_FEATURES")
+        self.assertEqual(p["tracks"], [
+            "ideas", "features", "relationships", "status", "progress"])
+        self.assertTrue(p["no_unapproved_scope_expansion"])
+        self.assertTrue(p["later_narrow_scope_supersedes_earlier_broad_descriptions"])
+        self.assertIn("general_knowledge_platform", p["excludes"])
+        self.assertIn("evidence_attestation", p["excludes"])
+        self.assertTrue((ROOT / p["authority"]).is_file())
+        self.assertFalse(self.policy["optional_integration"]["adapter_required"])
+        self.assertTrue(self.policy["optional_integration"][
+            "prefer_minimal_compatible_host_integration"])
+        scope = (ROOT / p["authority"]).read_text(encoding="utf-8")
+        self.assertIn("Ideas & Features tracker", scope)
+
     def test_no_host_runtime_dependency(self):
         p = self.policy
         for key in ("standalone", "stores_project_local_ideas_and_features"):
