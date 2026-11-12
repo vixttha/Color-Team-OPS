@@ -93,7 +93,7 @@ class LibraryTemplateTests(unittest.TestCase):
 
     def test_generic_examples_have_no_source_product_records(self):
         for kind in ("idea", "feature"):
-            self.assertNotIn("Color-Team-OPS", json.dumps(example(kind)))
+            self.assertNotIn("PRIVATE-HOST-RECORD-DO-NOT-SHIP", json.dumps(example(kind)))
         self.assertNotIn("Governance-Branch", json.dumps(example("idea")))
 
 
