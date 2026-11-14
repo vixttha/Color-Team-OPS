@@ -1,0 +1,6 @@
+# Review ownership (enforcement requires repository rulesets)
+* @vixttha
+/.github/workflows/ @vixttha
+/docs/CONSTITUTION.md @vixttha
+/docs/design/ @vixttha
+/docs/decisions/ @vixttha

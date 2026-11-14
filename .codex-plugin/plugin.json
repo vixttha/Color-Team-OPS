@@ -1,0 +1,27 @@
+{
+  "interface": {
+    "capabilities": [],
+    "category": "Productivity",
+    "defaultPrompt": "Use Color Team OPS to plan and route a bounded cloud-only software development mission. Check host capabilities and request no local runner.",
+    "developerName": "Victor Lambov",
+    "displayName": "Color Team OPS",
+    "longDescription": "Twelve specialist and routing skills for evidence-based software work in supported browser LLM hosts. No local runner, desktop install or cloud service is required for skill guidance. Continuous autonomous execution is not present in v0.0.1.",
+    "shortDescription": "Cloud-only coding team skills"
+  },
+  "name": "color-team-ops",
+  "version": "0.0.1",
+  "description": "Cloud-only, browser-first, evidence-gated software engineering role skills; never requires local hardware, self-hosted runners or desktop tooling.",
+  "author": {
+    "name": "Victor Lambov",
+    "email": "buktop03@gmail.com"
+  },
+  "keywords": [
+    "security",
+    "software-development",
+    "cloud-only",
+    "team-routing",
+    "code-review"
+  ],
+  "repository": "https://github.com/vixttha/Color-Team-OPS",
+  "skills": "./skills"
+}

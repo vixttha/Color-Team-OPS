@@ -1,0 +1,6 @@
+{
+  "mission_id": "demo-m-001",
+  "action": "BLOCK",
+  "reason": "Illustrative handoff lacks authenticated evidence",
+  "verification": "UNVERIFIED"
+}

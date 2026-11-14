@@ -1,0 +1,77 @@
+name: Color Team OPS v0.0.1 - owner runner validation
+on:
+  push:
+    branches: [release/v0.0.1-cloud-only]
+permissions:
+  contents: read
+jobs:
+  windows:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/release/v0.0.1-cloud-only'
+    runs-on: [self-hosted, Windows, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact tested source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Run Windows isolated tests
+        shell: powershell
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RUNNER_NAME -ne 'color-team-ops-windows-01' -or $env:RUNNER_OS -ne 'Windows') { throw 'Windows runner identity mismatch' }
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Source revision mismatch' }
+          python --version
+          python -m venv .cto-test-venv
+          $py = Join-Path $env:GITHUB_WORKSPACE '.cto-test-venv\Scripts\python.exe'
+          & $py -m pip install --disable-pip-version-check -r requirements-ci.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency install failed' }
+          & $py -B -m unittest discover -s tests -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
+          Write-Output "CTO_V0001_WINDOWS_PASS $env:EXPECTED_SHA"
+      - name: Clean Windows test environment
+        if: always()
+        shell: powershell
+        run: |
+          if (Test-Path -LiteralPath '.cto-test-venv') { Remove-Item -LiteralPath '.cto-test-venv' -Recurse -Force }
+  linux:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/release/v0.0.1-cloud-only'
+    runs-on: [self-hosted, Linux, X64, color-team-ops]
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact tested source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Run Linux isolated tests
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_NAME" = color-team-ops-linux-01
+          test "$RUNNER_OS" = Linux
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 --version
+          echo 'Using preinstalled Linux test libraries; requirements-ci.txt documents the developer dependencies'
+          python3 -c "import jsonschema, yaml; print('jsonschema, PyYAML imports PASS')"
+          python3 -B -m unittest discover -s tests -p 'test_*.py' -v
+          echo "CTO_V0001_LINUX_PASS $EXPECTED_SHA"
+      - name: Build twice and verify portable v0.0.1 ZIP
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git archive --format=zip --output=color-team-ops-v0.0.1.zip HEAD plugin.json .codex-plugin/plugin.json README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md docs examples schemas skills
+          git archive --format=zip --output=color-team-ops-v0.0.1-check.zip HEAD plugin.json .codex-plugin/plugin.json README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md docs examples schemas skills
+          cmp color-team-ops-v0.0.1.zip color-team-ops-v0.0.1-check.zip
+          python3 -c "import zipfile; z=zipfile.ZipFile('color-team-ops-v0.0.1.zip'); assert z.testzip() is None; p=z.namelist(); assert 'plugin.json' in p; assert sum(x.startswith('skills/') and x.endswith('/SKILL.md') for x in p)==12; assert not any(x.startswith('.github/') or x.startswith('tests/') for x in p)"
+          sha256sum color-team-ops-v0.0.1.zip
+          rm -- color-team-ops-v0.0.1-check.zip
+      - name: Clean Linux test environment
+        if: always()
+        shell: bash
+        run: rm -rf -- .cto-test-deps color-team-ops-v0.0.1.zip

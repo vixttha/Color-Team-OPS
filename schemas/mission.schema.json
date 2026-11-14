@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mission_id",
+    "host",
+    "goal",
+    "allowed_teams",
+    "allowed_actions",
+    "max_handoffs",
+    "max_retries",
+    "cloud_only",
+    "runner_required",
+    "state"
+  ],
+  "properties": {
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "host": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{40}$"
+    },
+    "allowed_teams": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "orange-team",
+          "yellow-team",
+          "green-team",
+          "blue-team",
+          "red-team",
+          "purple-team",
+          "white-team",
+          "black-team",
+          "gray-cell"
+        ]
+      },
+      "minItems": 1
+    },
+    "allowed_actions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "read",
+          "analyze",
+          "propose_patch",
+          "write_authorized_branch",
+          "open_draft_pr"
+        ]
+      },
+      "minItems": 1
+    },
+    "max_handoffs": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "max_retries": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "cloud_only": {
+      "const": true
+    },
+    "runner_required": {
+      "const": false
+    },
+    "state": {
+      "enum": [
+        "DRAFT",
+        "AUTHORIZED",
+        "COMPLETE",
+        "IDLE",
+        "BLOCKED",
+        "CANCELLED"
+      ]
+    },
+    "budget_usd": {
+      "type": "number",
+      "minimum": 0
+    },
+    "permissions_note": {
+      "type": "string"
+    },
+    "authorization_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorized_branch": {
+      "type": "string",
+      "pattern": "^(?!main$|master$)[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "AUTHORIZED"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "required": [
+          "authorization_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "allowed_actions": {
+            "contains": {
+              "enum": [
+                "write_authorized_branch",
+                "open_draft_pr"
+              ]
+            }
+          }
+        },
+        "required": [
+          "allowed_actions"
+        ]
+      },
+      "then": {
+        "required": [
+          "repository",
+          "source_sha",
+          "authorized_branch",
+          "authorization_ref"
+        ]
+      }
+    }
+  ]
+}
