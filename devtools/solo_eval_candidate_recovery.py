@@ -58,7 +58,8 @@ def _target(frozen, base):
 def _verify_first(frozen, base):
     case, prompt, material, parent, first = _target(frozen, base)
     receipt_path = first / "receipt.json"
-    e.require(receipt_path.is_file(), "FIRST_RECEIPT_MISSING")
+    e.require(receipt_path.is_file() and not receipt_path.is_symlink(),
+              "FIRST_RECEIPT_MISSING_OR_SYMLINKED")
     receipt = e.load(receipt_path)
     e.validate_observation(receipt)
     expected = {"case_id": TARGET_CASE, "arm": TARGET_ARM, "attempt": 1,
@@ -69,7 +70,9 @@ def _verify_first(frozen, base):
                 "freeze_sha256": EXPECTED_FREEZE_SHA,
                 "environment_digest": frozen["environment_digest"],
                 "input_sha256": e.digest(prompt), "arm_sha256": e.digest(material),
-                "model_requested": e.MODEL, "effort_requested": e.EFFORT}
+                "model_requested": e.MODEL, "effort_requested": e.EFFORT,
+                "model_observed": "NOT_EXPOSED_BY_JSONL",
+                "model_identity_provenance": "CLI_REQUEST_NOT_PROVIDER_ATTESTED"}
     e.require(all(receipt.get(k) == val for k, val in expected.items()),
               "BLOCKED_CANDIDATE_BINDING_MISMATCH")
     for name, field in (("input.json", "input_sha256"),
