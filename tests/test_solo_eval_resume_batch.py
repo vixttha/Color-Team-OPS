@@ -105,9 +105,11 @@ class BoundedResumeTests(unittest.TestCase):
                      for i in range(270)
                  }}), \
                  patch.object(r.s, "candidate", side_effect=candidate), \
+                 patch.object(r.observed_candidate, "candidate", side_effect=candidate) as fresh, \
                  patch.object(r.g, "grade", side_effect=graded) as grade:
                 report = r.run(Path("freeze.json"), 1, 900)
             self.assertEqual(calls, [*saved_pairs, self.all_pairs[2]])
+            fresh.assert_called_once()
             self.assertEqual(grade.call_count, 3)
             self.assertEqual(report["saved_responses_graded_this_run"], 2)
             self.assertEqual(report["fresh_candidates_completed_this_run"], 1)
@@ -162,6 +164,15 @@ class BoundedResumeTests(unittest.TestCase):
         self.assertEqual(report["saved_responses_graded_this_run"], 1)
         self.assertEqual(report["fresh_candidates_completed_this_run"], 0)
         self.assertEqual(report["status"], "TIME_BUDGET_STOP")
+
+
+    def test_fresh_candidate_uses_observed_runner_never_frozen_execution(self):
+        # Routing/ownership test against the real additive supervisor.
+        source = Path(r.__file__).read_text(encoding="utf-8")
+        self.assertIn("observed_candidate.candidate(frozen, case, arm, exe)", source)
+        self.assertIn("elif existing_candidate:", source)
+        self.assertIn("receipt, response = s.candidate(frozen, case, arm, exe)", source)
+
 
 
 if __name__ == "__main__":
