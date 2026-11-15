@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import re
 from pathlib import Path
 
 from devtools import cli_eval as e
@@ -140,6 +141,20 @@ def recovered_for_resume(frozen, case, arm):
     return receipt, parsed["response"]
 
 
+
+def observed_cli_version(exe):
+    """Observe the actual selected Codex executable; never copy a frozen label."""
+    try:
+        raw = subprocess.check_output([exe, "--version"], env=e.minimal_env(),
+                                      timeout=15)
+        version = raw.decode("utf-8").strip()
+    except (OSError, UnicodeError, subprocess.SubprocessError) as exc:
+        raise e.Invalid("CODEX_EXECUTOR_VERSION_UNVERIFIED") from exc
+    e.require(re.fullmatch(r"codex-cli [0-9]+\.[0-9]+\.[0-9]+(?:[-+][0-9A-Za-z.\-]+)?",
+                           version) is not None, "CODEX_EXECUTOR_VERSION_INVALID")
+    return version
+
+
 def execute_one(freeze_path, explicit):
     """One externally authorized call. Never call without true owner/host approval."""
     e.require(explicit == ONE_CALL_ACK, "EXPLICIT_CANDIDATE_CALL_APPROVAL_REQUIRED")
@@ -149,6 +164,7 @@ def execute_one(freeze_path, explicit):
                           timeout=15, env=e.minimal_env(), check=False)
     e.require(auth.returncode == 0 and b"ChatGPT" in auth.stdout + auth.stderr,
               "CHATGPT_SUBSCRIPTION_LOGIN_REQUIRED")
+    actual_cli_version = observed_cli_version(exe)
     lock = base / "supervisor.lock"
     with lock.open("x", encoding="utf-8") as file:
         file.write(e.now())
@@ -177,7 +193,7 @@ def execute_one(freeze_path, explicit):
                   "raw_sha256": e.digest(out), "stderr_sha256": e.digest(err),
                   "started_at": started, "ended_at": ended,
                   "latency_seconds": latency, "exit_code": code,
-                  "cli_version": frozen["cli_version"],
+                  "cli_version": actual_cli_version,
                   "model_requested": e.MODEL, "effort_requested": e.EFFORT,
                   "model_observed": "NOT_EXPOSED_BY_JSONL",
                   "model_identity_provenance": "CLI_REQUEST_NOT_PROVIDER_ATTESTED",
@@ -208,6 +224,12 @@ def execute_one(freeze_path, explicit):
         return {"disposition": record["status"], "case_id": TARGET_CASE,
                 "arm": TARGET_ARM, "candidate_model_calls": 1,
                 "new_append_only_attempt": 2, "original_attempt_retained": True,
+                "observed_cli_version": actual_cli_version,
+                "frozen_cli_version": frozen["cli_version"],
+                "cli_version_changed": actual_cli_version != frozen["cli_version"],
+                "comparison_policy": ("CROSS_VERSION_REPORT_SEPARATELY"
+                                      if actual_cli_version != frozen["cli_version"]
+                                      else "MATCHES_FROZEN_CLI_VERSION"),
                 "grade": "NOT_RUN", "release": "RELEASE_BLOCKED"}
     finally:
         lock.unlink()
