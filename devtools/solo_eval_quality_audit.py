@@ -143,6 +143,29 @@ def local_checkpoint_status(freeze, records, candidate_attempts, grader_attempts
     }
 
 
+
+ 
+def executor_version_report(frozen, receipts):
+    """Expose cross-version cohorts without editing frozen receipts or scores."""
+    frozen_version = frozen["cli_version"]
+    versions = Counter()
+    for receipt in receipts:
+        version = receipt.get("cli_version")
+        e.require(isinstance(version, str) and bool(version.strip()),
+                  "MISSING_EXECUTOR_VERSION_PROVENANCE")
+        versions[version] += 1
+    cross_version = sum(count for ver, count in versions.items()
+                        if ver != frozen_version)
+    return {
+        "frozen_cli_version": frozen_version,
+        "candidate_cli_version_counts": dict(sorted(versions.items())),
+        "candidate_cross_version_attempts": cross_version,
+        "comparison_policy": ("CROSS_CLI_VERSION_SEPARATE_COHORT"
+                              if cross_version else "FROZEN_CLI_VERSION_MATCH"),
+        "cli_version_provenance": "RECEIPT_RECORDED_NOT_PROVIDER_ATTESTED",
+    }
+
+
 def audit(freeze_path):
     f = e.validate_historical_freeze(freeze_path)
     e.require(f.get("evaluation_mode") == "SOLO_DEVELOPER"
@@ -176,6 +199,7 @@ def audit(freeze_path):
         "unhinted_routing": "NOT_OBSERVABLE",
         "chatgpt_host_activation": "NOT_OBSERVABLE",
         "release": "RELEASE_BLOCKED",
+        **executor_version_report(f, candidates),
         **status,
     }
 
