@@ -90,7 +90,7 @@ class CandidateQuotaRecoveryTests(unittest.TestCase):
 
     def test_missing_original_receipt_is_rejected(self):
         (self.first / "receipt.json").unlink()
-        with self.assertRaisesRegex(e.Invalid, "FIRST_RECEIPT_MISSING"):
+        with self.assertRaisesRegex(e.Invalid, "FIRST_RECEIPT_MISSING_OR_SYMLINKED"):
             recovery.check(Path("synthetic-freeze.json"))
 
     def test_tampered_original_raw_trace_is_rejected(self):
@@ -190,6 +190,12 @@ class CandidateQuotaRecoveryTests(unittest.TestCase):
         self.assertEqual(receipt["attempt"], 2)
         self.assertEqual(receipt["status"], "COMPLETED")
         self.assertEqual((self.parent / "2" / "response.txt").read_text(), parsed["response"])
+
+    def test_forged_model_provenance_is_rejected(self):
+        altered = dict(self.receipt, model_identity_provenance="FABRICATED")
+        (self.first / "receipt.json").write_bytes(e.encode(altered) + b"\n")
+        with self.assertRaisesRegex(e.Invalid, "BLOCKED_CANDIDATE_BINDING_MISMATCH"):
+            recovery.check(Path("synthetic-freeze.json"))
 
     def test_changed_frozen_model_is_rejected(self):
         self.freeze["environment"]["model_requested"] = "unauthorized-model"
