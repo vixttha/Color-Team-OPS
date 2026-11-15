@@ -19,6 +19,7 @@ class Gate2Pipeline(unittest.TestCase):
         for name in ('input.json','stdout.jsonl','stderr.txt','receipt.json'):
             (self.original/name).write_bytes(('immutable-' + name).encode())
         self.frozen = {'source_sha': p.recovery.EXPECTED_SOURCE_SHA,
+                       'cli_version': 'codex-cli 0.166.0',
                        'cases': {p.TARGET[0]: {'rubric_sha256': 'synthetic-rubric'}}}
         self.case = {'case_id': p.TARGET[0], 'team_id': 'blue-team'}
         self.target = {'first': self.original, 'case': self.case}
@@ -82,19 +83,22 @@ class Gate2Pipeline(unittest.TestCase):
 
     def run_synthetic(self, retry=None, grade=None, post=None, before=None):
         if retry is None:
-            retry={'disposition':'COMPLETED','candidate_model_calls':1,'new_append_only_attempt':2}
+            retry={'disposition':'COMPLETED','candidate_model_calls':1,'new_append_only_attempt':2,
+                   'observed_cli_version':'codex-cli 0.169.0'}
         if grade is None:
             grade=({'status':'GRADED'},
                    {'critical_violations':[],'contradictions':[],'uncertainty':'LOW'})
         if before is None:
             before=[*self.saved, self.rec]
-        candidate_receipt={'attempt':2,'status':'COMPLETED','raw_sha256': 'synthetic-candidate-hash'}
+        candidate_receipt={'attempt':2,'status':'COMPLETED','raw_sha256': 'synthetic-candidate-hash',
+                           'cli_version':'codex-cli 0.169.0'}
         with patch.object(p,'preflight',return_value=(self.frozen,self.base,self.target,self.snapshot)), \
              patch.object(p.recovery,'execute_one',return_value=retry) as candidate, \
              patch.object(p.recovery,'recovered_for_resume',return_value=(candidate_receipt,'real-only-in-production')) as recovered, \
              patch.object(p.s,'rows',return_value=before), \
              patch.object(p.e,'load',return_value={'cases':{p.TARGET[0]:{'required_observable_findings':['synthetic']}}}), \
              patch.object(p.e,'executable',return_value='mock-codex'), \
+             patch.object(p.recovery,'observed_cli_version',return_value='codex-cli 0.169.0'), \
              patch.object(p.g,'grade',return_value=grade) as grader, \
              patch.object(p.audit,'audit',return_value=self.a1 if post is None else post):
             try:
@@ -113,6 +117,12 @@ class Gate2Pipeline(unittest.TestCase):
         self.assertEqual(result['provisional_grades'],210)
         self.assertFalse(result['quality_independent'])
         self.assertTrue(result['original_attempt_1_retained'])
+        self.assertTrue(result['cli_version_changed'])
+        self.assertEqual(result['frozen_cli_version'], 'codex-cli 0.166.0')
+        self.assertEqual(result['candidate_cli_version'], 'codex-cli 0.169.0')
+        self.assertEqual(result['grader_cli_version'], 'codex-cli 0.169.0')
+        provenance=e.load(self.base/'grades'/'synthetic-candidate-hash'/'executor-provenance.json')
+        self.assertEqual(provenance['comparison_policy'], 'CROSS_CLI_VERSION_SEPARATE_COHORT')
         self.assertEqual(p.original_hashes(self.original),self.snapshot)
 
     def test_failed_retry_never_grades(self):
@@ -141,6 +151,47 @@ class Gate2Pipeline(unittest.TestCase):
                 'contradictions':[], 'uncertainty':'HIGH'})
         result,_,_,_=self.run_synthetic(grade=grade)
         self.assertEqual(result['disposition'],'REQUIRES_SEMANTIC_REVIEW')
+
+
+    def test_candidate_cli_version_receipt_mismatch_blocks_grade(self):
+        original = dict(self.a1)
+        with patch.object(p, 'preflight',
+                          return_value=(self.frozen,self.base,self.target,self.snapshot)), \
+             patch.object(p.recovery, 'execute_one',
+                          return_value={'disposition':'COMPLETED','candidate_model_calls':1,
+                                        'new_append_only_attempt':2,
+                                        'observed_cli_version':'codex-cli 0.169.0'}), \
+             patch.object(p.recovery, 'recovered_for_resume',
+                          return_value=({'attempt':2,'status':'COMPLETED',
+                                         'raw_sha256':'synthetic-candidate-hash',
+                                         'cli_version':'codex-cli 0.166.0'},'response')), \
+             patch.object(p.g,'grade',side_effect=AssertionError('no grader call')):
+            with self.assertRaisesRegex(e.Invalid,'CANDIDATE_EXECUTOR_VERSION_RECEIPT_MISMATCH'):
+                p.execute_once(Path('freeze.json'), p.recovery.ONE_CALL_ACK)
+        self.assertEqual(p.original_hashes(self.original), self.snapshot)
+
+    def test_grader_cli_version_probe_failure_prevents_grade(self):
+        with patch.object(p, 'preflight',
+                          return_value=(self.frozen,self.base,self.target,self.snapshot)), \
+             patch.object(p.recovery,'execute_one',
+                          return_value={'disposition':'COMPLETED','candidate_model_calls':1,
+                                        'new_append_only_attempt':2,
+                                        'observed_cli_version':'codex-cli 0.169.0'}), \
+             patch.object(p.recovery,'recovered_for_resume',
+                          return_value=({'attempt':2,'status':'COMPLETED',
+                                         'raw_sha256':'synthetic-candidate-hash',
+                                         'cli_version':'codex-cli 0.169.0'},'response')), \
+             patch.object(p.s,'rows',return_value=[*self.saved,self.rec]), \
+             patch.object(p.e,'load',return_value={'cases':{p.TARGET[0]:{}}}), \
+             patch.object(p.e,'executable',return_value='mock-codex'), \
+             patch.object(p.recovery,'observed_cli_version',
+                          side_effect=e.Invalid('CODEX_EXECUTOR_VERSION_UNVERIFIED')), \
+             patch.object(p.g,'grade',side_effect=AssertionError('no grader call')):
+            with self.assertRaisesRegex(e.Invalid,'CODEX_EXECUTOR_VERSION_UNVERIFIED'):
+                p.execute_once(Path('freeze.json'), p.recovery.ONE_CALL_ACK)
+        self.assertFalse((self.base/'supervisor.lock').exists())
+        self.assertEqual(p.original_hashes(self.original),self.snapshot)
+
 
 
 if __name__ == '__main__':
