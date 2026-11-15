@@ -35,7 +35,7 @@ class CandidateQuotaRecoveryTests(unittest.TestCase):
             "full_order": [[recovery.TARGET_CASE, recovery.TARGET_ARM]],
             "cases": {recovery.TARGET_CASE: {"input_sha256": e.digest(self.prompt)}},
             "arm_material_sha256": {"blue-team": {recovery.TARGET_ARM: e.digest(self.material)}},
-            "cli_version": "0.0.0-synthetic",
+            "cli_version": "codex-cli 0.166.0",
         }
         self.parent = self.base / "candidates" / e.digest(recovery.TARGET_CASE + "|" + recovery.TARGET_ARM)[:24]
         self.first = self.parent / "1"
@@ -170,6 +170,8 @@ class CandidateQuotaRecoveryTests(unittest.TestCase):
                       "grade": None}
         with patch.object(e, "executable", return_value="codex.exe"), \
              patch.object(recovery.subprocess, "run", return_value=auth), \
+             patch.object(recovery.subprocess, "check_output",
+                          return_value=b"codex-cli 0.169.0"), \
              patch.object(e, "invoke", return_value=(trace, b"", 0,
                           "2026-11-06T05:48:00+00:00", "2026-11-06T05:48:01+00:00",
                           1.0, True)) as invoked, \
@@ -189,7 +191,49 @@ class CandidateQuotaRecoveryTests(unittest.TestCase):
         receipt = e.load(self.parent / "2" / "receipt.json")
         self.assertEqual(receipt["attempt"], 2)
         self.assertEqual(receipt["status"], "COMPLETED")
+        self.assertEqual(receipt["cli_version"], "codex-cli 0.169.0")
+        self.assertEqual(self.freeze["cli_version"], "codex-cli 0.166.0")
+        self.assertEqual(status["observed_cli_version"], receipt["cli_version"])
+        self.assertEqual(status["frozen_cli_version"], self.freeze["cli_version"])
+        self.assertTrue(status["cli_version_changed"])
+        self.assertEqual(status["comparison_policy"], "CROSS_VERSION_REPORT_SEPARATELY")
         self.assertEqual((self.parent / "2" / "response.txt").read_text(), parsed["response"])
+
+
+    def test_cli_version_probe_observes_live_executable_not_frozen_metadata(self):
+        with patch.object(recovery.subprocess, "check_output",
+                          return_value=b"codex-cli 0.169.0") as probe, \
+             patch.object(e, "invoke", side_effect=AssertionError("no model call")):
+            observed = recovery.observed_cli_version("native-codex.exe")
+        self.assertEqual(observed, "codex-cli 0.169.0")
+        self.assertEqual(self.freeze["cli_version"], "codex-cli 0.166.0")
+        self.assertEqual(probe.call_args.args[0], ["native-codex.exe", "--version"])
+
+    def test_cli_version_probe_accepts_official_prerelease_shape(self):
+        with patch.object(recovery.subprocess, "check_output",
+                          return_value=b"codex-cli 0.170.0-beta.1\\n"):
+            self.assertEqual(recovery.observed_cli_version("native-codex.exe"),
+                             "codex-cli 0.170.0-beta.1")
+
+    def test_invalid_cli_version_output_is_rejected(self):
+        for result in (b"", b"0.169.0", b"codex-cli 0.169.0\\nevil",
+                       b"codex-cli 0.169.0; ignored", b"codex-cli 0.169.0\\x00"):
+            with self.subTest(output=result), \
+                 patch.object(recovery.subprocess, "check_output", return_value=result):
+                with self.assertRaisesRegex(e.Invalid, "CODEX_EXECUTOR_VERSION_INVALID"):
+                    recovery.observed_cli_version("codex.exe")
+
+    def test_cli_version_probe_failure_stops_before_attempt_two(self):
+        auth = MagicMock(returncode=0, stdout=b"ChatGPT login", stderr=b"")
+        with patch.object(e, "executable", return_value="codex.exe"), \
+             patch.object(recovery.subprocess, "run", return_value=auth), \
+             patch.object(recovery.subprocess, "check_output",
+                          side_effect=OSError("version command unavailable")), \
+             patch.object(e, "invoke", side_effect=AssertionError("no model call")):
+            with self.assertRaisesRegex(e.Invalid, "CODEX_EXECUTOR_VERSION_UNVERIFIED"):
+                recovery.execute_one(Path("synthetic-freeze.json"), recovery.ONE_CALL_ACK)
+        self.assertFalse((self.parent / "2").exists())
+        self.assertFalse((self.base / "supervisor.lock").exists())
 
     def test_forged_model_provenance_is_rejected(self):
         altered = dict(self.receipt, model_identity_provenance="FABRICATED")
@@ -238,6 +282,8 @@ class CandidateQuotaRecoveryTests(unittest.TestCase):
         auth = MagicMock(returncode=0, stdout=b"ChatGPT login", stderr=b"")
         with patch.object(e, "executable", return_value="codex.exe"), \
              patch.object(recovery.subprocess, "run", return_value=auth), \
+             patch.object(recovery.subprocess, "check_output",
+                          return_value=b"codex-cli 0.169.0"), \
              patch.object(e, "invoke", return_value=(self.raw, self.err, 1,
                           "2026-11-06T05:48:00+00:00", "2026-11-06T05:48:01+00:00",
                           1.0, True)) as invoked:
