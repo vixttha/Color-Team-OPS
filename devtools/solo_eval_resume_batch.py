@@ -131,7 +131,8 @@ def run(freeze_path: Path, max_new_pairs: int, runtime_seconds: int):
                 receipt, response = observed_candidate.candidate(frozen, case, arm, exe)
             if receipt["status"] != "COMPLETED":
                 disposition = "CANDIDATE_" + receipt["status"]
-                blocked_detail = "CANDIDATE_STOP"
+                blocked_detail = (candidate_recovery.safe_executor_diagnostic(receipt.get("reason"))
+                                  or "CANDIDATE_STOP")
                 break
             if not existing_candidate:
                 new_pairs += 1
@@ -208,6 +209,7 @@ def main():
         # Codex authentication diagnostics, or model response material.
         print(json.dumps({"status": "RESUME_BLOCKED",
                           "error_class": type(exc).__name__,
+                          "diagnostic": candidate_recovery.safe_executor_diagnostic(exc),
                           "release": "RELEASE_BLOCKED"}), flush=True)
         raise SystemExit(2)
 

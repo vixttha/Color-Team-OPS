@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 from devtools import cli_eval as e
 from devtools import solo_eval as s
+from devtools import solo_eval_candidate_recovery as recovery
 from devtools import solo_eval_observed_candidate as observed
 
 
@@ -42,26 +43,38 @@ class ObservedCandidateTests(unittest.TestCase):
             self.addCleanup(p.stop)
 
     def test_new_candidate_uses_observed_cli_not_frozen_value(self):
-        parsed = {"status": "COMPLETED", "response": "synthetic safe answer",
-                  "session_sha256": e.digest("session-1"),
-                  "usage": {"input_tokens": 3, "output_tokens": 4},
-                  "tool_events": [], "grading": "SOLO_DEVELOPER_UNGRADED"}
-        with patch.object(observed, "observed_cli_version",
-                          return_value="codex-cli 0.169.0") as version, \
-             patch.object(e, "invoke", return_value=(
-                 b"synthetic trace\n", b"", 0, "2026-11-14T00:00:00+00:00",
-                 "2026-11-14T00:00:01+00:00", 1.0, True)) as invoked, \
-             patch.object(e, "parse_trace", return_value=parsed):
-            receipt, response = observed.candidate(
-                self.frozen, self.case, self.arm, "codex-native.exe")
-        self.assertEqual(response, "synthetic safe answer")
-        self.assertEqual(receipt["status"], "COMPLETED")
-        self.assertEqual(receipt["cli_version"], "codex-cli 0.169.0")
+        answer = "synthetic safe answer"
+        events = [
+            {"type": "thread.started", "thread_id": "synthetic-session"},
+            {"type": "turn.started"},
+            {"type": "item.completed", "item": {
+                "id": "synthetic-message", "type": "agent_message", "text": answer,
+            }},
+            {"type": "turn.completed", "usage": {"input_tokens": 3, "output_tokens": 4}},
+        ]
+        trace = b"".join(e.encode(event) + b"\n" for event in events)
+        for label in ("codex-cli 0.100.0", "codex-cli 0.166.0", "codex-cli 0.169.0",
+                      "codex-cli 3.1.0-beta.1+build.7"):
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as tmp, \
+                 patch.object(s, "location", return_value=Path(tmp)), \
+                 patch.object(recovery.subprocess, "check_output",
+                              return_value=(label + "\r\n").encode()) as version, \
+                 patch.object(e, "invoke", return_value=(
+                     trace, b"", 0, "2026-11-14T00:00:00+00:00",
+                     "2026-11-14T00:00:01+00:00", 1.0, True)) as invoked:
+                receipt, response = observed.candidate(
+                    self.frozen, self.case, self.arm, "codex-native.exe")
+                trial = Path(tmp) / self.parent.relative_to(self.base) / "1"
+                self.assertEqual(response, answer)
+                self.assertEqual(receipt["status"], "COMPLETED")
+                self.assertEqual(receipt["cli_version"], label)
+                self.assertEqual(e.load(trial / "receipt.json")["cli_version"], label)
+                self.assertEqual(s.verify_candidate(self.frozen, trial, set(), set())["response"],
+                                 answer)
+                version.assert_called_once()
+                self.assertEqual(version.call_args.args[0], ["codex-native.exe", "--version"])
+                invoked.assert_called_once()
         self.assertEqual(self.frozen["cli_version"], "codex-cli 0.166.0")
-        self.assertEqual(e.load(self.parent / "1" / "receipt.json")["cli_version"],
-                         "codex-cli 0.169.0")
-        version.assert_called_once_with("codex-native.exe")
-        invoked.assert_called_once()
 
     def test_invalid_version_stops_before_writing_or_calling_model(self):
         with patch.object(observed, "observed_cli_version",

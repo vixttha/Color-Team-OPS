@@ -182,6 +182,7 @@ def main():
         # Fail closed, no raw text or credentials in logs.
         print(json.dumps({"disposition": "GATE_2_EXECUTION_BLOCKED",
                           "error_class": type(exc).__name__,
+                          "diagnostic": recovery.safe_executor_diagnostic(exc),
                           "release": "RELEASE_BLOCKED"}))
         raise SystemExit(2)
 

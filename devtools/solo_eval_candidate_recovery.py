@@ -150,9 +150,27 @@ def observed_cli_version(exe):
         version = raw.decode("utf-8").strip()
     except (OSError, UnicodeError, subprocess.SubprocessError) as exc:
         raise e.Invalid("CODEX_EXECUTOR_VERSION_UNVERIFIED") from exc
-    e.require(re.fullmatch(r"codex-cli [0-9]+\.[0-9]+\.[0-9]+(?:[-+][0-9A-Za-z.\-]+)?",
+    e.require(re.fullmatch(r"codex-cli [0-9]+\.[0-9]+\.[0-9]+"
+                           r"(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?"
+                           r"(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?",
                            version) is not None, "CODEX_EXECUTOR_VERSION_INVALID")
     return version
+
+
+def safe_executor_diagnostic(error):
+    """Report known executor failures without copying subprocess output."""
+    reason = str(error)
+    if reason in {
+        "CODEX_EXECUTOR_VERSION_UNVERIFIED",
+        "CODEX_EXECUTOR_VERSION_INVALID",
+        "TRUNCATED_JSONL",
+        "CORRUPT_JSONL",
+        "MISSING_OR_DUPLICATE_PROVIDER_RECEIPT",
+        "UNEXPECTED_EVENT",
+        "UNINTENDED_TOOL_OR_WRITER_ACCESS",
+    }:
+        return reason
+    return None
 
 
 def execute_one(freeze_path, explicit):

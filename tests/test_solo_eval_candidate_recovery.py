@@ -211,17 +211,23 @@ class CandidateQuotaRecoveryTests(unittest.TestCase):
 
     def test_cli_version_probe_accepts_official_prerelease_shape(self):
         with patch.object(recovery.subprocess, "check_output",
-                          return_value=b"codex-cli 0.170.0-beta.1\\n"):
+                          return_value=b"codex-cli 0.170.0-beta.1+build.7\r\n"):
             self.assertEqual(recovery.observed_cli_version("native-codex.exe"),
-                             "codex-cli 0.170.0-beta.1")
+                             "codex-cli 0.170.0-beta.1+build.7")
 
     def test_invalid_cli_version_output_is_rejected(self):
-        for result in (b"", b"0.169.0", b"codex-cli 0.169.0\\nevil",
-                       b"codex-cli 0.169.0; ignored", b"codex-cli 0.169.0\\x00"):
+        for result in (b"", b"0.169.0", b"codex-cli 0.169.0\nevil",
+                       b"codex-cli 0.169.0; ignored", b"codex-cli 0.169.0\x00"):
             with self.subTest(output=result), \
                  patch.object(recovery.subprocess, "check_output", return_value=result):
                 with self.assertRaisesRegex(e.Invalid, "CODEX_EXECUTOR_VERSION_INVALID"):
                     recovery.observed_cli_version("codex.exe")
+
+    def test_executor_diagnostics_only_expose_known_reason_codes(self):
+        known = e.Invalid("CODEX_EXECUTOR_VERSION_INVALID")
+        self.assertEqual(recovery.safe_executor_diagnostic(known), str(known))
+        self.assertEqual(recovery.safe_executor_diagnostic("TRUNCATED_JSONL"), "TRUNCATED_JSONL")
+        self.assertIsNone(recovery.safe_executor_diagnostic(OSError("private subprocess output")))
 
     def test_cli_version_probe_failure_stops_before_attempt_two(self):
         auth = MagicMock(returncode=0, stdout=b"ChatGPT login", stderr=b"")
