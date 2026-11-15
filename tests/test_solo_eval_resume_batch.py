@@ -117,5 +117,52 @@ class BoundedResumeTests(unittest.TestCase):
             self.assertEqual(len(reports), 1)
 
 
+    def test_verified_recovered_candidate_uses_attempt_two_not_frozen_retry(self):
+        frozen = {
+            "full_order": self.all_pairs,
+            "cases": {self.cid(i): {"rubric_sha256": "rubric"} for i in range(270)},
+            "source_sha": r.EXPECTED_SOURCE_SHA,
+        }
+        cid, arm = self.all_pairs[0]
+        existing = [{"case_id": cid, "arm": arm, "grade": None}]
+        before = {
+            "candidate_completed": 209, "graded": 208, "ungraded": 1,
+            "critical_pairs": 0, "contradiction_pairs": 0, "high_uncertainty": 0,
+            "candidate_attempts": 210, "grader_invocations": 209,
+            "candidate_outcomes": {"COMPLETED": 209, "QUOTA_BLOCKED": 1},
+            "grader_outcomes": {"GRADED": 208, "QUOTA_BLOCKED": 1},
+        }
+        after = dict(before, graded=209, ungraded=0, grader_invocations=210)
+        auth = MagicMock(returncode=0, stdout=b"ChatGPT login", stderr=b"")
+        recovered_receipt = {"status": "COMPLETED", "raw_sha256": "recovered-raw"}
+        grade_result = {"overall": "PASS", "critical_violations": [],
+                        "contradictions": [], "uncertainty": "LOW"}
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(r, "validate_frozen",
+                              return_value=(frozen, Path(tmp), existing)), \
+                 patch.object(r, "status_snapshot", side_effect=[before, after]), \
+                 patch.object(e, "executable", return_value="codex.exe"), \
+                 patch.object(r.subprocess, "run", return_value=auth), \
+                 patch.object(e, "corpus", return_value=[
+                     {"case_id": self.cid(i), "team_id": "yellow-team"}
+                     for i in range(270)]), \
+                 patch.object(e, "load", return_value={"cases": {
+                     self.cid(i): {"required_observable_findings": ["synthetic"]}
+                     for i in range(270)}}), \
+                 patch.object(r.time, "monotonic", side_effect=[0, 1, 600]), \
+                 patch.object(r.candidate_recovery, "recovered_for_resume",
+                              return_value=(recovered_receipt, "verified response")) as recovered, \
+                 patch.object(r.s, "candidate",
+                              side_effect=AssertionError("frozen candidate must not be retried")), \
+                 patch.object(r.g, "grade", return_value=({"status": "GRADED"}, grade_result)) as grader:
+                report = r.run(Path("synthetic-freeze.json"), 1, 900)
+        self.assertEqual(recovered.call_count, 1)
+        self.assertEqual(grader.call_count, 1)
+        self.assertEqual(grader.call_args.args[2], "verified response")
+        self.assertEqual(report["saved_responses_graded_this_run"], 1)
+        self.assertEqual(report["fresh_candidates_completed_this_run"], 0)
+        self.assertEqual(report["status"], "TIME_BUDGET_STOP")
+
+
 if __name__ == "__main__":
     unittest.main()
