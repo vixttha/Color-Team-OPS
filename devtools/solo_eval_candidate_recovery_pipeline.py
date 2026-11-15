@@ -80,6 +80,8 @@ def execute_once(freeze_path: Path, external_approval: str):
     receipt, response = retrieved
     e.require(receipt["status"] == "COMPLETED" and receipt["attempt"] == 2,
               "CANDIDATE_ATTEMPT_2_NOT_COMPLETED")
+    e.require(receipt.get("cli_version") == result.get("observed_cli_version"),
+              "CANDIDATE_EXECUTOR_VERSION_RECEIPT_MISMATCH")
 
     # Check raw receipt count BEFORE adding a grader. Original 209 remain intact.
     before_grade = s.rows(frozen)
@@ -94,6 +96,8 @@ def execute_once(freeze_path: Path, external_approval: str):
                "case_id": TARGET[0],
                "rubric_sha256": frozen["cases"][TARGET[0]]["rubric_sha256"]}
 
+    grader_exe = e.executable()
+    grader_cli_version = recovery.observed_cli_version(grader_exe)
     lock = base / "supervisor.lock"
     # Cooperate with original supervisor; do not run a grader if another task
     # has taken the lock. The external executor must also serialize jobs.
@@ -102,10 +106,26 @@ def execute_once(freeze_path: Path, external_approval: str):
     try:
         grade_receipt, grade = g.grade(
             case, rubric, response, base / "grades" / receipt["raw_sha256"],
-            binding, e.executable())
+            binding, grader_exe)
     finally:
         lock.unlink()
     check_original(target["first"], original)
+    # Add provenance outside original frozen receipts; never change grade schema.
+    changed_cli = (receipt["cli_version"] != frozen["cli_version"] or
+                   grader_cli_version != frozen["cli_version"])
+    provenance = {"freeze_sha256": e.digest(frozen),
+                  "source_sha": frozen["source_sha"],
+                  "candidate_raw_sha256": receipt["raw_sha256"],
+                  "frozen_cli_version": frozen["cli_version"],
+                  "candidate_cli_version": receipt["cli_version"],
+                  "grader_cli_version": grader_cli_version,
+                  "cli_version_changed": changed_cli,
+                  "comparison_policy": ("CROSS_CLI_VERSION_SEPARATE_COHORT"
+                                        if changed_cli else "FROZEN_CLI_VERSION_MATCH"),
+                  "model_identity": "REQUEST_ONLY_NOT_PROVIDER_ATTESTED",
+                  "quality_independent": False}
+    e.save_new(base / "grades" / receipt["raw_sha256"] /
+               "executor-provenance.json", provenance)
     e.require(grade is not None and grade_receipt["status"] == "GRADED",
               "GRADER_BLOCKED_CHECKPOINT_RETAINED")
 
@@ -130,6 +150,11 @@ def execute_once(freeze_path: Path, external_approval: str):
             "grader_attempts_permitted_by_original_freeze": 2,
             "candidate_completed": status["verified_completed_candidate_pairs"],
             "provisional_grades": status["verified_graded_pairs"],
+            "frozen_cli_version": frozen["cli_version"],
+            "candidate_cli_version": receipt["cli_version"],
+            "grader_cli_version": grader_cli_version,
+            "cli_version_changed": changed_cli,
+            "comparison_policy": provenance["comparison_policy"],
             "all_receipts_reaudited": True,
             "quality_independent": False,
             "release": "RELEASE_BLOCKED"}
