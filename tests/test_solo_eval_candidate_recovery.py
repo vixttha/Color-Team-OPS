@@ -251,5 +251,32 @@ class CandidateQuotaRecoveryTests(unittest.TestCase):
             recovery.check(Path("synthetic-freeze.json"))
 
 
+
+class AuthenticFrozenSourceBindingTests(unittest.TestCase):
+    """Real committed freeze: no mocks or synthetic recovery fixtures."""
+
+    def test_recovery_and_resume_constants_match_authentic_freeze(self):
+        frozen_path = e.ROOT / e.EVAL / "CLI-EVAL-SOLO-FREEZE-v2.json"
+        self.assertTrue(frozen_path.is_file(), "ORIGINAL_FROZEN_FILE_REQUIRED")
+        frozen = e.load(frozen_path)
+        actual_digest = e.digest(frozen)
+        self.assertEqual(recovery.EXPECTED_SOURCE_SHA, frozen["source_sha"])
+        self.assertEqual(supervisor.EXPECTED_SOURCE_SHA, frozen["source_sha"])
+        self.assertEqual(recovery.EXPECTED_FREEZE_SHA, actual_digest)
+        self.assertEqual(supervisor.EXPECTED_FREEZE_SHA, actual_digest)
+
+    def test_target_and_environment_match_authentic_freeze(self):
+        frozen = e.load(e.ROOT / e.EVAL / "CLI-EVAL-SOLO-FREEZE-v2.json")
+        self.assertEqual(frozen["candidate_target"], 1080)
+        self.assertEqual(len(frozen["full_order"]), 1080)
+        self.assertIn([recovery.TARGET_CASE, recovery.TARGET_ARM],
+                      frozen["full_order"])
+        self.assertEqual(frozen["environment"]["model_requested"], e.MODEL)
+        self.assertEqual(frozen["environment"]["effort_requested"], e.EFFORT)
+        self.assertEqual(frozen["environment"]["permissions"], "read-only")
+        self.assertEqual(frozen["environment"]["tools"], "NONE_AUTHORIZED")
+        self.assertEqual(frozen["environment"]["max_attempts_per_pair"], 2)
+
+
 if __name__ == "__main__":
     unittest.main()
