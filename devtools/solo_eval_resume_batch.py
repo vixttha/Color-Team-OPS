@@ -21,6 +21,7 @@ from devtools import cli_eval as e
 from devtools import solo_eval as s
 from devtools import solo_grader as g
 from devtools import solo_eval_candidate_recovery as candidate_recovery
+from devtools import solo_eval_observed_candidate as observed_candidate
 
 EXPECTED_FREEZE_SHA = "116c8468e98bfed123c7014586c6791114f2d57b596cb8af918192c437d3186b"
 EXPECTED_SOURCE_SHA = "f789912bee3b8e50d323244299f3bf4e61969055"
@@ -120,8 +121,14 @@ def run(freeze_path: Path, max_new_pairs: int, runtime_seconds: int):
             # attempt 1. Read only the exact verified append-only candidate /2
             # if one exists; never modify the 44 frozen evaluator/source files.
             recovered = candidate_recovery.recovered_for_resume(frozen, case, arm)
-            receipt, response = (recovered if recovered is not None else
-                                 s.candidate(frozen, case, arm, exe))
+            if recovered is not None:
+                receipt, response = recovered
+            elif existing_candidate:
+                # Read the original verified successful response; no new model call.
+                receipt, response = s.candidate(frozen, case, arm, exe)
+            else:
+                # Never write the frozen historical CLI version into new receipts.
+                receipt, response = observed_candidate.candidate(frozen, case, arm, exe)
             if receipt["status"] != "COMPLETED":
                 disposition = "CANDIDATE_" + receipt["status"]
                 blocked_detail = "CANDIDATE_STOP"
