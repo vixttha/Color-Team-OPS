@@ -94,6 +94,32 @@ class FrozenQualityAuditTests(unittest.TestCase):
             self.assertEqual(status["resume_disposition"], "BLOCKED_INSPECT_LOCALLY")
             self.assertTrue(status["supervisor_lock_present"])
 
+
+    def test_cli_version_drift_is_visible_not_disguised(self):
+        frozen = {"cli_version": "codex-cli 0.166.0"}
+        receipts = [{"cli_version": "codex-cli 0.166.0"},
+                    {"cli_version": "codex-cli 0.169.0"}]
+        result = a.executor_version_report(frozen, receipts)
+        self.assertEqual(result["candidate_cross_version_attempts"], 1)
+        self.assertEqual(result["frozen_cli_version"], "codex-cli 0.166.0")
+        self.assertEqual(result["candidate_cli_version_counts"],
+                         {"codex-cli 0.166.0": 1, "codex-cli 0.169.0": 1})
+        self.assertEqual(result["comparison_policy"],
+                         "CROSS_CLI_VERSION_SEPARATE_COHORT")
+        self.assertEqual(frozen["cli_version"], "codex-cli 0.166.0")
+
+    def test_same_cli_version_is_not_a_false_drift(self):
+        result = a.executor_version_report(
+            {"cli_version": "codex-cli 0.166.0"},
+            [{"cli_version": "codex-cli 0.166.0"}])
+        self.assertEqual(result["candidate_cross_version_attempts"], 0)
+        self.assertEqual(result["comparison_policy"], "FROZEN_CLI_VERSION_MATCH")
+
+    def test_missing_cli_version_provenance_fails_closed(self):
+        with self.assertRaisesRegex(e.Invalid, "MISSING_EXECUTOR_VERSION_PROVENANCE"):
+            a.executor_version_report({"cli_version": "codex-cli 0.166.0"},
+                                      [{"status": "COMPLETED"}])
+
     def test_existing_frozen_files_are_never_rewritten(self):
         freeze=e.load(e.ROOT / e.EVAL / "CLI-EVAL-SOLO-FREEZE-v2.json")
         self.assertIn("devtools/solo_eval.py", freeze["file_sha256"])
