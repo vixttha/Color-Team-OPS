@@ -61,7 +61,6 @@ def _verify_first(frozen, base):
     e.require(receipt_path.is_file() and not receipt_path.is_symlink(),
               "FIRST_RECEIPT_MISSING_OR_SYMLINKED")
     receipt = e.load(receipt_path)
-    e.validate_observation(receipt)
     expected = {"case_id": TARGET_CASE, "arm": TARGET_ARM, "attempt": 1,
                 "status": TARGET_STATUS, "host": "CLI_TEST",
                 "evaluation_mode": "SOLO_DEVELOPER",
@@ -75,6 +74,7 @@ def _verify_first(frozen, base):
                 "model_identity_provenance": "CLI_REQUEST_NOT_PROVIDER_ATTESTED"}
     e.require(all(receipt.get(k) == val for k, val in expected.items()),
               "BLOCKED_CANDIDATE_BINDING_MISMATCH")
+    e.validate_observation(receipt)
     for name, field in (("input.json", "input_sha256"),
                         ("stdout.jsonl", "raw_sha256"),
                         ("stderr.txt", "stderr_sha256")):
