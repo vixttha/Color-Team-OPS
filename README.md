@@ -13,7 +13,7 @@
 **Historical sections below document earlier source snapshots. Where an earlier paragraph says staging did not exist or owner approval was missing, that statement is superseded by the verified private installation above.**
 
 
-**Most recent owner-authorized Development HQ scope:** cloud-only **skills-only** initial v0.0.2, no mandatory protected hosting provider, personal computer, local runner, paid service or global cross-session lock. [P0 decision](docs/V002-P0-ORANGE-TRUST-SCOPE.md) is RESOLVED; real installed host and independent evaluation requirements are NOT waived.
+**Most recent owner-authorized Development HQ scope:** cloud-only **skills-only** initial v0.0.2, no mandatory protected hosting provider, developer-managed workstation, local runner, paid service or global cross-session lock. [P0 decision](docs/V002-P0-ORANGE-TRUST-SCOPE.md) is RESOLVED; real installed host and independent evaluation requirements are NOT waived.
 
 **Current P0–P7 source progress (at tested SHA `3350430b3a292bb6d0d8fa7e90105d929f564e7c`):** 864/864 native tests on Linux and Windows; 4 matching 32-file packages; 270 concrete specialist synthetic fixtures and 270 executed **source-only reference router** case tests; 12 skills/nine references audited; five official-source browser-provider compatibility study; optional individual web-skill export tooling. Independent labels **0**, actual model/installed-host trials **0**. See [latest dossier](docs/V002-P6-P7-RELEASE-DOSSIER.md) and [machine status](docs/V002-P0-P7-ACCEPTANCE.json). This README update itself changes the commit SHA, requiring subsequent exact-SHA validation.
 
