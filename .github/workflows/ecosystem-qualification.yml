@@ -1,0 +1,80 @@
+name: Ecosystem adoption qualification (public hosted only)
+on:
+  push:
+    branches: [audit/ecosystem-public-runner-qualification-20261126]
+permissions:
+  contents: read
+jobs:
+  qualification:
+    if: github.repository == 'vixttha/Color-Team-OPS' && github.ref == 'refs/heads/audit/ecosystem-public-runner-qualification-20261126'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: d4477294fd5cf2801c8e971aa6e53f5a4029b129
+          path: vib
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 5cbe59ea1d2a7b15b41c0586a5d72e708011db0d
+          path: veraphify
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: f5a3fe61e1cb2b5c9ba3f0143869a305d5832ab1
+          path: provenistem
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 0f52b1849578d7283f37db740bf9fafe6ef03d70
+          path: readme-hq
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: vixttha/README-HQ
+          ref: b1bbc9a72a5193afcaeaf823f097753070bfa43f
+          path: readme-upstream
+          persist-credentials: false
+      - name: Check exact refs, VIB manifest hashes and empty ledgers
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          pins = {"vib":"d4477294fd5cf2801c8e971aa6e53f5a4029b129","veraphify":"5cbe59ea1d2a7b15b41c0586a5d72e708011db0d","provenistem":"f5a3fe61e1cb2b5c9ba3f0143869a305d5832ab1","readme-hq":"0f52b1849578d7283f37db740bf9fafe6ef03d70","readme-upstream":"b1bbc9a72a5193afcaeaf823f097753070bfa43f"}
+          for name, sha in pins.items():
+              actual = subprocess.check_output(['git', '-C', name, 'rev-parse', 'HEAD'], text=True).strip()
+              assert actual == sha, name
+          root = pathlib.Path('vib')
+          manifest = json.loads((root/'vib-install.json').read_text())
+          assert manifest['target_repository'] == 'vixttha/Color-Team-OPS'
+          assert manifest['target_repository_id'] == 1439026865
+          assert manifest['product_branch'] == 'main' and manifest['enforcement'] == 'disabled'
+          for path, expected in manifest['package_files_sha256'].items():
+              raw = subprocess.check_output(['git','-C','vib','show','HEAD:'+path])
+              assert hashlib.sha256(raw).hexdigest() == expected, path
+          assert json.loads((root/'ledger/issue-versions.json').read_text())['issues'] == []
+          assert json.loads((root/'ledger/handoff.json').read_text())['active'] is None
+          assert json.loads(pathlib.Path('readme-hq/ADOPTION-RECEIPT.json').read_text())['source_sha'] == pins['readme-upstream']
+          print('Exact refs, VIB manifest, empty ledger and README HQ pin verified')
+          PY
+          python -m compileall -q vib/tools
+      - name: Veraphify core smoke (not archive qualification)
+        shell: bash
+        run: node veraphify/veraphifiy.mjs --help
+      - name: Provenistem starter and offline tests
+        working-directory: provenistem
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/library.py check --expect-empty
+          python -m unittest discover -s tests -v
+      - name: README HQ exact upstream baseline verification
+        working-directory: readme-upstream
+        shell: bash
+        run: python tools/check_readme_hq.py
