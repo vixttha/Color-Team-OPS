@@ -21,7 +21,7 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: 5cbe59ea1d2a7b15b41c0586a5d72e708011db0d
+          ref: 000cf9aeb185d69d4adca8af727ab2d2a72d6607
           path: veraphify
           persist-credentials: false
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -46,7 +46,7 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           import hashlib, json, pathlib, subprocess
-          pins = {"vib":"d4477294fd5cf2801c8e971aa6e53f5a4029b129","veraphify":"5cbe59ea1d2a7b15b41c0586a5d72e708011db0d","provenistem":"f5a3fe61e1cb2b5c9ba3f0143869a305d5832ab1","readme-hq":"0f52b1849578d7283f37db740bf9fafe6ef03d70","readme-upstream":"b1bbc9a72a5193afcaeaf823f097753070bfa43f"}
+          pins = {"vib":"d4477294fd5cf2801c8e971aa6e53f5a4029b129","veraphify":"000cf9aeb185d69d4adca8af727ab2d2a72d6607","provenistem":"f5a3fe61e1cb2b5c9ba3f0143869a305d5832ab1","readme-hq":"0f52b1849578d7283f37db740bf9fafe6ef03d70","readme-upstream":"b1bbc9a72a5193afcaeaf823f097753070bfa43f"}
           for name, sha in pins.items():
               actual = subprocess.check_output(['git', '-C', name, 'rev-parse', 'HEAD'], text=True).strip()
               assert actual == sha, name
@@ -66,8 +66,12 @@ jobs:
           python -m compileall -q vib/tools
       - name: Veraphify core smoke (not archive qualification)
         shell: bash
-        run: node veraphify/veraphifiy.mjs --help
+        run: |
+          set -euo pipefail
+          node veraphify/veraphifiy.mjs --help
+          test "$(node veraphify/veraphifiy.mjs --version)" = v0.0.9
       - name: Provenistem starter and offline tests
+        if: ${{ !cancelled() }}
         working-directory: provenistem
         shell: bash
         run: |
@@ -75,6 +79,7 @@ jobs:
           python tools/library.py check --expect-empty
           python -m unittest discover -s tests -v
       - name: README HQ exact upstream baseline verification
+        if: ${{ !cancelled() }}
         working-directory: readme-upstream
         shell: bash
         run: python tools/check_readme_hq.py
