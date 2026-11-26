@@ -1,0 +1,39 @@
+name: License and version governance
+on:
+  push:
+    branches: [policy/canonical-version-workflow-26]
+  pull_request:
+    branches: [main]
+    paths:
+      - LICENSE
+      - COLOR-TEAM-OPS-NOTICE.md
+      - VERSION-WORKFLOW.md
+      - README.md
+      - .github/workflows/license-governance.yml
+permissions:
+  contents: read
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify committed license and governance links
+        shell: bash
+        run: |
+          set -eu
+          test "$(git rev-parse HEAD:LICENSE)" = "90abd0e6c64a135f42451762337a397bf27f4862"
+          test -s COLOR-TEAM-OPS-NOTICE.md
+          test -s VERSION-WORKFLOW.md
+          git grep -F '[LICENSE](LICENSE)' HEAD -- README.md
+          git grep -F '(COLOR-TEAM-OPS-NOTICE.md)' HEAD -- README.md
+          git grep -F '(VERSION-WORKFLOW.md)' HEAD -- README.md
+          git rev-parse HEAD
+      - name: Public privacy guard synthetic regression
+        run: python tools/public_privacy_check.py --self-test
