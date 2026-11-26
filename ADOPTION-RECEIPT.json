@@ -1,0 +1,11 @@
+{
+  "source_repository": "vixttha/README-HQ",
+  "source_sha": "b1bbc9a72a5193afcaeaf823f097753070bfa43f",
+  "version": "v0.0.6",
+  "upstream_blob_count": 214,
+  "adoption_mode": "pinned linked agent workspace; full package mirror not performed",
+  "target_repository": "vixttha/Color-Team-OPS",
+  "target_branch": "readme-hq",
+  "product_baseline_sha": "8232c300027513a980f679e256d2b8bfe059a57c",
+  "status": "linked workspace only; qualification NOT_RUN"
+}

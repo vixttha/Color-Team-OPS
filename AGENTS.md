@@ -1,0 +1,3 @@
+# Agent entry point
+
+Resolve the upstream source to b1bbc9a72a5193afcaeaf823f097753070bfa43f and read [upstream instructions](https://github.com/vixttha/README-HQ/blob/b1bbc9a72a5193afcaeaf823f097753070bfa43f/AGENTS.md) before acting. Independently resolve the Color Team OPS target revision. Use the upstream guide and audit workflow from README.md. Record findings, local draft, source commit, expected and observed checks, and owner disposition here. Do not change main, publish a homepage, modify a release, or update another tool branch without separate authority. No mandatory tool dependency. Upgrade source pins only by explicit reviewed adoption. No runtime checks performed for this linked workspace.
