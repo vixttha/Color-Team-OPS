@@ -6,7 +6,10 @@
     "veraphifiy.mjs": "49199c8992a2aaa49d58bff789729269da734421",
     "LICENSE": "1466aeaa07d9f7fd502ca697353b5feace5f4e5a",
     "docs/adopter-walkthrough.md": "7d58ddfdb7aae5d2989b151cd75cb725c16f2f20",
-    ".gitattributes": "59f5d2959020374d3b4645f1124666e7a8abdb5a"
+    ".gitattributes": "59f5d2959020374d3b4645f1124666e7a8abdb5a",
+    "test-vault/javascript/inspect-evidence.mjs": "951935535ea8566ac266afb9e954945e494211e9",
+    "test-vault/handoff-profile.json": "d5bf5921531cf4e4558adeb9dead1626ce8f77dc",
+    "test-vault/LICENSE": "30e65839065c0ea88ca00a2de47d65de4313e154"
   },
   "matches_tested_preview": {
     "veraphifiy.mjs": false,
@@ -17,5 +20,11 @@
   "target_repository": "vixttha/Color-Team-OPS",
   "target_branch": "Veraphify",
   "source_version": "v0.0.9 preview",
-  "status": "core copied; runtime NOT_RUN"
+  "status": "core and runtime dependency closure copied; renewed smoke pending",
+  "repair": {
+    "previous_target_sha": "5cbe59ea1d2a7b15b41c0586a5d72e708011db0d",
+    "failed_run": 45802211213,
+    "finding": "ERR_MODULE_NOT_FOUND",
+    "license": "Lydite MIT notice retained"
+  }
 }
