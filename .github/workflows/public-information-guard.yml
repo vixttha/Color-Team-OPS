@@ -1,0 +1,75 @@
+name: Public information guard
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  privacy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Scan tracked text and test synthetic examples
+        run: |
+          python - <<'PY'
+          import pathlib, re, subprocess, sys
+          from collections import Counter
+          email = re.compile(r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", re.I)
+          paths = re.compile(r"(?:[A-Za-z]:\\Users\\|/Users/|/home/)([\w.-]+)", re.I)
+          narrative = re.compile(r"\b(?:solo" + r" developer|solo" + r" dev|one-person" + r" team)\b", re.I)
+          def check(s):
+              counts = Counter()
+              for match in email.finditer(s):
+                  domain = match.group().rsplit('@', 1)[1].lower()
+                  if domain not in {'users.noreply.github.com','noreply.github.com','example.com','example.org','example.net','example.invalid'}:
+                      counts['email-review'] += 1
+              for match in paths.finditer(s):
+                  if match.group(1).lower() not in {'runner','user','username','example','ubuntu','sandbox','oai','root'}:
+                      counts['workstation-path-review'] += 1
+              counts['personal-narrative-review'] += len(narrative.findall(s))
+              return +counts
+          # Synthetic examples only; construct strings to avoid self-matches.
+          assert check('sample' + '@' + 'example.com') == Counter()
+          assert check('sample' + '@' + 'mail.invalid')['email-review'] == 1
+          assert check('/Users/' + 'sample-person')['workstation-path-review'] == 1
+          assert check('solo' + ' developer')['personal-narrative-review'] == 1
+          assert check('project maintainer') == Counter()
+          totals = Counter()
+          checked = skipped = 0
+          try:
+              entries = subprocess.check_output(['git','ls-files','-z'], stderr=subprocess.DEVNULL).split(b'\0')
+              for entry in filter(None, entries):
+                  name = entry.decode('utf-8', errors='replace')
+                  totals.update(check(name))
+                  p = pathlib.Path(name)
+                  if p.is_symlink() or not p.is_file():
+                      skipped += 1
+                      continue
+                  data = p.read_bytes()
+                  if b'\0' in data:
+                      skipped += 1
+                      continue
+                  try:
+                      content = data.decode('utf-8')
+                  except UnicodeDecodeError:
+                      skipped += 1
+                      continue
+                  totals.update(check(content))
+                  checked += 1
+          except (OSError, subprocess.SubprocessError):
+              print('Privacy inventory failed; manual review required.')
+              sys.exit(2)
+          print(f'Tracked text files checked: {checked}; unsupported entries: {skipped}')
+          for category, count in sorted(totals.items()):
+              print(f'{category}: {count}')
+          print('Synthetic regression assertions: 5 passed')
+          if totals or skipped:
+              print('Privacy review required; values and paths intentionally withheld.')
+              sys.exit(1)
+          print('Bounded generic scan passed; this does not certify anonymity.')
+          PY
