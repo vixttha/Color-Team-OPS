@@ -1,0 +1,21 @@
+{
+  "source_repository": "vixttha/Veraphify",
+  "source_sha": "add4a029312c958a5e126990fc49e802c0112c27",
+  "upstream_tested_preview_sha": "66e822b56528c5f3e7b7730709d4b472ae2d5f1e",
+  "source_blobs": {
+    "veraphifiy.mjs": "49199c8992a2aaa49d58bff789729269da734421",
+    "LICENSE": "1466aeaa07d9f7fd502ca697353b5feace5f4e5a",
+    "docs/adopter-walkthrough.md": "7d58ddfdb7aae5d2989b151cd75cb725c16f2f20",
+    ".gitattributes": "59f5d2959020374d3b4645f1124666e7a8abdb5a"
+  },
+  "matches_tested_preview": {
+    "veraphifiy.mjs": false,
+    "LICENSE": true,
+    "docs/adopter-walkthrough.md": false,
+    ".gitattributes": true
+  },
+  "target_repository": "vixttha/Color-Team-OPS",
+  "target_branch": "Veraphify",
+  "source_version": "v0.0.9 preview",
+  "status": "core copied; runtime NOT_RUN"
+}
