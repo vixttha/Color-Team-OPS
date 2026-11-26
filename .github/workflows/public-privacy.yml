@@ -1,0 +1,23 @@
+name: Public privacy audit
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Synthetic regression tests
+        run: python3 tools/public_privacy_check.py --self-test
+      - name: Audit reachable Git objects without exposing matches
+        env:
+          PRIVACY_PRIVATE_TERMS: ${{ secrets.PRIVACY_PRIVATE_TERMS }}
+        run: python3 tools/public_privacy_check.py
