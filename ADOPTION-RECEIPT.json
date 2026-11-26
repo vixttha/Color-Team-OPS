@@ -1,0 +1,8 @@
+{
+  "source_repository": "vixttha/Version-Issues-Hub",
+  "source_sha": "4fc9ac47462101b941ea2f78fc939d42a9de0032",
+  "product_baseline_sha": "8232c300027513a980f679e256d2b8bfe059a57c",
+  "source_status": "main-bound installed candidate; not published v0.0.1",
+  "adoption_status": "source copy only, live checks not run",
+  "warning": "Default main is a placeholder; integration branch is distinct. Do not claim issues or change integration until product-ref governance is resolved. Staging 0.0.9 is optional advisory."
+}
